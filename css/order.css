@@ -1,0 +1,146 @@
+body {
+    background: #ffffff;
+}
+
+.cursor{
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.accordion {
+    margin-top: 60px; /* Add space above accordion */
+    margin-bottom: 60px;
+}
+.accordion .card {
+	border-radius: 0;
+	border-width: 1px 0 1px 0;
+}
+.accordion .card:first-child {
+	border-top: none;
+}
+.accordion .card .card-header {
+	background: #fff;
+	padding-top: 7px;
+	padding-bottom: 7px;
+	border-radius: 0;
+	margin-bottom: -2px;
+	font-family: "Roboto", sans-serif;
+}
+.accordion .card-header:hover {
+	background: #f8f8f8;
+}
+.accordion .card-header h2 span {
+	float: left;
+	margin-top: 10px;
+}
+.accordion .card-header .btn {
+	font-size: 1.04rem;
+	font-weight: 500;
+	width: 100%;
+	text-align: left;
+	position: relative;
+	top: -2px;
+}
+.accordion .card-header i {
+	float: right;
+	font-size: 1.3rem;
+	font-weight: bold;
+	position: relative;
+    top: 5px;
+    padding-top: 2px;
+}
+.accordion .card-header button:hover {
+	color: #23384e;
+}
+.accordion .card-body {
+    background: white;
+    border: thistle;
+}
+.accordion .highlight {
+	color: #fff;
+	background: #202d3c !important;
+}
+
+input[type="radio"]{
+    cursor: pointer !important;
+}
+
+.card {
+    border: none !important;
+    background-color: transparent !important;
+}
+
+.mb-3{
+	padding-top: 60px !important;
+}
+
+.qty .count {
+    color: #000;
+    display: inline-block;
+    vertical-align: top;
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 30px;
+    padding: 0 2px
+    ;min-width: 35px;
+    text-align: center;
+}
+.qty .plus {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: top;
+    color: white;
+    width: 30px;
+    height: 30px;
+    font: 30px/1 Arial,sans-serif;
+    text-align: center;
+    border-radius: 50%;
+    }
+.qty .minus {
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: top;
+    color: white;
+    width: 30px;
+    height: 30px;
+    font: 30px/1 Arial,sans-serif;
+    text-align: center;
+    border-radius: 50%;
+    background-clip: padding-box;
+}
+
+.qty div {
+    text-align: center;
+}
+
+.minus:hover{
+    background-color: #717fe0 !important;
+}
+.plus:hover{
+    background-color: #717fe0 !important;
+}
+/*Prevent text selection*/
+.qty span{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+.qty input{  
+    border: 0;
+    width: 2%;
+}
+nput::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input:disabled{
+    background-color:white;
+}
+
+.count{
+	margin-left: 5px !important;
+	margin-right: 5px !important;
+}

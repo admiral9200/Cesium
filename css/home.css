@@ -1,0 +1,13 @@
+.jumbotron{
+    background-color: transparent !important;
+    margin: 0 !important;
+}
+
+h1{
+    color: white !important;
+}
+
+form{
+    padding-top: 3%;
+    padding-right: 10%;
+}

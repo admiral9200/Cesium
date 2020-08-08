@@ -1,0 +1,17 @@
+h1{
+    text-align: center;
+    font-size: 40px !important;
+}
+
+.chk{
+    width: 150px;
+}
+
+.chk-p{
+    margin-left: 30%;
+    margin-right: 30%;
+}
+
+.alert{
+    margin-bottom: 0 !important;
+}
