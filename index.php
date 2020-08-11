@@ -1,3 +1,9 @@
+<?php
+session_start();
+if (isset($_SESSION['email'])){
+    header("location: home.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -72,14 +78,16 @@
                                                     </div>
                                                 </div>
                                                 <div class="group">
-                                                    <input id="check" type="checkbox" class="check chk-box">
+                                                    <input id="check" name="rememberme" type="checkbox" class="check chk-box">
                                                     <label for="check" class="color"><span class="icon"></span> Να με θυμάσαι</label>
                                                 </div>
                                                 <div class="group"> 
                                                     <input type="submit" class="button btn btn-lg" name="login" value="Συνδεση">
                                                     <?php
-                                                        if (isset($_COOKIE['false'])){
-                                                            echo "Το email ή ο κωδικός που έχεις εισάγει είναι λάθος";
+                                                        if (isset($_SESSION['error'])){
+                                                            $error = $_SESSION['error'];
+                                                            echo "<p class='mt-3' style='color: red !important'>$error</p>";
+                                                            unset($_SESSION['error']);
                                                         }
                                                     ?>
                                                 </div>

@@ -1,6 +1,6 @@
 <?php
 session_start();
 session_destroy();
-unset($_SESSION['email']);
+session_unset();
 header("location: ../index.php");
 ?>

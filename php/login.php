@@ -16,10 +16,15 @@ if (isset($_POST['login'])){
             $_SESSION['email'] = $email;
             $_SESSION['firstName'] = $firstName;
             $_SESSION['lastName'] = $lastName;
+            if (!empty($_POST['rememberme'])){
+                setcookie("user_login" , $email, time() + (1 * 365 * 24 * 60 * 60));
+                setcookie("pass_login" , $pass, time() + (1 * 365 * 24 * 60 * 60));
+                $_SESSION['email'] = $email;
+            }
             header('location: ../home.php');
         }
         else{
-            $_COOKIE['false'] = true;
+            $_SESSION['error'] = "Το email ή ο κωδικός που έχεις εισάγει είναι λάθος!";
             header("location: ../index.php");
         }
     }

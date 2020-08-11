@@ -1,5 +1,5 @@
 <?php
-include("db_connect.php");
+include("./php/db_connect.php");
 session_start();
 if (!isset($_SESSION['email'])) {
     header('location: index.php');
@@ -58,7 +58,7 @@ if (!isset($_SESSION['email'])) {
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <h1>Έχεις όρεξη για καφέ; Πρόσθεσε τη διεύθυνση σου και παράγγειλε!</h1>
-                <form action="./php/address.php" method="POST">
+                <form action="./php/order.php" method="POST">
                     <button type="submit" class="btn btn-primary btn-lg btn-block">Παράγγειλε τώρα</button>        
                 </form>
             </div>
@@ -68,7 +68,7 @@ if (!isset($_SESSION['email'])) {
         <!-- server side check form -->
         <form action="./php/add_address.php" class="form-group needs-validation" method="POST" novalidate>
             <div class="row">
-                <div class="group col-5">
+                <div class="group col-5">   
                     <input name="address" type="text" class="input form-control form-control-lg w-100" placeholder="Πρόσθεσε εδώ την διεύθυνσή σου" required>
                     <div class="invalid-feedback">
                         Πρέπει να συμπληρώσεις την διεύθυνσή σου.
@@ -85,6 +85,13 @@ if (!isset($_SESSION['email'])) {
                 </div>
             </div>
         </form>
+        <?php
+        if (isset($_SESSION['addresses'])){
+            $message = $_SESSION['addresses'];
+            echo "<p class='mt-3' style='color: red !important'>$message</p>";
+            unset($_SESSION['addresses']);
+        }
+        ?>
         <hr class="mt-5 mb-5">
         <h2 style="color: black !important;" class="mb-5">Οι διευθύνσεις μου</h2>
         <div class="row">
@@ -100,16 +107,45 @@ if (!isset($_SESSION['email'])) {
                             </div>
                         </div>
                     </li>
-                    <li class="list-group-item mt-2 mb-4">
-                        <div class="row">
-                            <div class="col-3">
-                                <h6><?php if (isset($_SESSION['email'])) { echo $_SESSION['firstName']; } ?></h6>
-                            </div>
-                            <div class="col-3">
-                                <h6>Νέα Ιωνία</h6>
-                            </div>
-                        </div>
-                    </li>
+                    <?php
+                    if (isset($_SESSION['delete_message'])){
+                        $delete_message = $_SESSION['delete_message'];
+                        echo "<div class='alert alert-danger alert-dismissible fade show'>
+                                <button type='button' class='close' data-dismiss='alert'>&times;</button>
+                                $delete_message
+                            </div>";
+                        unset($_SESSION['delete_message']);
+                    }
+                    $email = $_SESSION['email'];
+                    $addresses_query = "SELECT * FROM address WHERE email='$email'";
+                    $result = mysqli_query($con, $addresses_query);
+                    if (mysqli_num_rows($result) > 0){
+                        $i = 0;
+                        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
+                            $address = $_SESSION['address'] = $row['address'];
+                            $state = $row['state'];
+                            echo "<li class='list-group-item mt-2 mb-3'>
+                                    <div class='row '>
+                                        <div class='col-3 align-middle'>
+                                            <h6>$address</h6>
+                                        </div>
+                                        <div class='col-3 align-middle'>
+                                            <h6>$state</h6>
+                                        </div>
+                                        <div class='col-3'>
+                                            <a class='btn btn-primary btn-danger' href='./php/delete.php?address=".$_SESSION['address']."' role='button'>Διαγραφή</a>
+                                        </div>
+                                    </div>
+                                </li>";
+                            $i += 1;
+                        }
+                    }
+                    else{
+                        echo "<li class='list-group-item mt-2 mb-4'>
+                                <h6>Δεν υπάρχει ενεργή διεύθυνση</h6>
+                              </li>";
+                    }
+                    ?>
                 </ul>
             </div>
         </div>
@@ -127,15 +163,11 @@ if (!isset($_SESSION['email'])) {
                             <div class="col-3">
                                 <h6>Ημερομηνία</h6>
                             </div>
-                            <div class="col-3">
-                                <h6>Περιεχόμενα</h6>
-                            </div>
-                            <div class="col-3">
-                                <h6>Κόστος</h6>
-                            </div>
                         </div>
                     </li>
-                    <!-- DYNAMIC PHP PAST ORDERS-->
+                    <?php
+                    //dynamically present all orders like addresses
+                    ?>
                     <li class="list-group-item mt-2 mb-4">
                         <div class="row">
                             <div class="col-3">
