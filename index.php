@@ -141,8 +141,8 @@ if (isset($_SESSION['email'])){
             </div>
         </div>
     </div>
-    <?php echo file_get_contents("card.html"); ?>
+    <?php echo file_get_contents("./html/card.html"); ?>
     <!-- SALE SECTION -->
-    <?php echo file_get_contents("sale.html"); ?>
+    <?php echo file_get_contents("./html/sale.html"); ?>
     <!-- Site footer -->
-    <?php echo file_get_contents("footer.html"); ?>
+    <?php echo file_get_contents("./html/footer.html"); ?>

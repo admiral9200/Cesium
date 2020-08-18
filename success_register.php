@@ -33,4 +33,18 @@
         </div>
     </div>
     <!-------------------- Site footer --------------------------->
-    <?php echo file_get_contents("footer.html"); ?>
+    <div class="card bg-dark text-white w-100 bottom-fixed">
+    <img class="card-img" src="./images/light_salmon.jpg" alt="Card image">
+    <div class="container card-img-overlay">
+        <div class="row">
+            <div class="col-8">
+                <h2 class="card-title">Chipαρε τον καφέ σου!</h2>
+                <h5 class="card-text">Με κάθε εγγραφή για πρώτη φορά έχεις 1+1 καφέ δώρο της επιλογής σου.</h5>
+                <p>Κατά το τέλος της παραγγελίας σου χρησιμοποιήσε τον κωδικό NEWCHIPCOFFEE για να ενεργοποιήσεις την προσφορά.</p>
+            </div>
+            <div class="col-4 user-select-none">
+                <img src="./images/sale.png" alt="Sale">
+            </div>
+        </div>
+    </div>
+</div>

@@ -58,9 +58,7 @@ if (!isset($_SESSION['email'])) {
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <h1>Έχεις όρεξη για καφέ; Πρόσθεσε τη διεύθυνση σου και παράγγειλε!</h1>
-                <form action="./php/order.php" method="POST">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block">Παράγγειλε τώρα</button>        
-                </form>
+                <a href="order.php" class="btn btn-primary btn-lg btn-block" role="button">Παράγγειλε τώρα</a>        
             </div>
         </div>
     </div>
@@ -166,26 +164,43 @@ if (!isset($_SESSION['email'])) {
                         </div>
                     </li>
                     <?php
-                    //dynamically present all orders like addresses
+                    $orders_query = "SELECT * FROM orders WHERE email='$email'";
+                    $orders_result = mysqli_query($con , $orders_query);
+                    if (mysqli_num_rows($orders_result) > 0){
+                        $i = 0;
+                        while ($row_orders = mysqli_fetch_array($orders_result, MYSQLI_ASSOC)){
+                            $code = $row_orders['code'];
+                            $date = $row_orders['date'];
+                            $time = $row_orders['time'];
+                            $material = $row_orders['material'];
+                            $price = $row_orders['price'];
+                            echo "<li class='list-group-item mt-2 mb-4'>
+                                    <div class='row'>
+                                        <div class='col-3'>
+                                            <h6>$code</h6>
+                                        </div>
+                                        <div class='col-3'>
+                                            <h6>$date</h6>
+                                            <p>$time</p>
+                                        </div>
+                                        <div class='col-3'>
+                                            <h6>$material</h6>
+                                            <h6></h6>
+                                        </div>
+                                        <div class='col-3'>
+                                            <h6>".$price."0€</h6>
+                                        </div>
+                                    </div>
+                                </li>";
+                            $i += 1;
+                        }
+                    }
+                    else{
+                        echo "<li class='list-group-item mt-2 mb-4'>
+                                <h6>Δεν υπάρχει καμία παραγγελία.</h6>
+                              </li>";
+                    }
                     ?>
-                    <li class="list-group-item mt-2 mb-4">
-                        <div class="row">
-                            <div class="col-3">
-                                <h6>12797547</h6>
-                            </div>
-                            <div class="col-3">
-                                <h6>25/07/20</h6>
-                                <p>16:20:51</p>
-                            </div>
-                            <div class="col-3">
-                                <h6>1x Freddo Cappuccino</h6>
-                                <h6>1x Freddo Espresso</h6>
-                            </div>
-                            <div class="col-3">
-                                <h6>1,50€</h6>
-                            </div>
-                        </div>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -216,6 +231,6 @@ if (!isset($_SESSION['email'])) {
         </div>
     </div>
     <!-- SALE SECTION -->
-    <?php echo file_get_contents("sale.html"); ?>
+    <?php echo file_get_contents("./html/sale.html"); ?>
     <!-- Site footer -->
-    <?php echo file_get_contents("footer.html"); ?>
+    <?php echo file_get_contents("./html/footer.html"); ?>
