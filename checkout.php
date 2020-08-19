@@ -3,6 +3,12 @@ session_start();
 if (!isset($_SESSION['email'])) {
     header('location: index.php');
 }
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    if(isset($_POST['checkout'])){
+        header("location: success.php");
+    }
+    //CHECK WHAT PAYMENT USED PAYPAL isset or CREDIT isset...
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,27 +64,33 @@ if (!isset($_SESSION['email'])) {
         </div>
     </div>
     <div class="container-fluid space order">
-        <form action="success.php" method="POST" class="needs-validation" novalidate>
+        <form action="" method="POST" class="needs-validation" novalidate>
             <div class="row d-flex justify-content-center">
                 <div class="col-md-4 box">
                     <h4 class="mb-2">1. Στοιχεία Παραγγελίας</h4>
                     <div class="row space">
                         <div class="col-md-8">
                             <label for="firstName">Όνομα στο κουδούνι *</label>
-                            <input type="text" class="form-control" id="firstName" required>
+                            <input type="text" class="form-control" name="firstName" required>
+                            <div class="invalid-feedback">
+                                    Πρέπει να συμπληρώσεις όνομα στο κουδούνι.
+                            </div>
                         </div>
                         <div class="col-md-4">
                             <label for="lastName">Όροφος *</label>
-                            <input type="text" class="form-control" id="lastName" required>
+                            <input type="number" class="form-control" name="lastName" required>
+                            <div class="invalid-feedback">
+                                    Πρέπει να συμπληρώσεις τον όροφο.
+                            </div>
                         </div>
                     </div>
                     <div class="space">
                         <label for="address">Προαιρετικό τηλ. επικοινωνίας</label>
-                        <input type="text" class="form-control" id="address">
+                        <input type="text" class="form-control" name="phone">
                     </div>
                     <div class="form-group">
                         <label for="exampleFormControlTextarea1">Σχόλια διεύθυνσης</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Π.χ. Καλέστε στο τηλέφωνο αντί να χτυπήσετε κουδούνι"></textarea>
+                        <textarea class="form-control" name="comment" rows="3" placeholder="Π.χ. Καλέστε στο τηλέφωνο αντί να χτυπήσετε κουδούνι"></textarea>
                     </div>
                 </div>
                 <div class="col-md-4 box">
@@ -100,47 +112,69 @@ if (!isset($_SESSION['email'])) {
                 <div class="col-md-4 box">
                     <h4 class="d-flex justify-content-between align-items-center mb-4">3. Ολοκλήρωση</h4>
                     <ul class="list-group mb-1">
-                        <!-- DYNAMIC PRODUCTS IN CART li -->
-                        <li class="list-group-item d-flex justify-content-between lh-condensed">
-                            <div>
-                                <h6 class="my-0">1x Cappuccino</h6>
-                                <small class="text-muted">Μέτριος, Μαύρη ζάχαρη</small>
-                            </div>
-                            <span class="text-muted">0,70€</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between lh-condensed">
-                            <div>
-                                <h6 class="my-0">1x Freddo Cappuccino</h6>
-                                <small class="text-muted">Γλυκός, Λευκή ζάχαρη</small>
-                            </div>
-                            <span class="text-muted">0,80€</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between bg-light">
+                        <?php
+                        include("./php/db_connect.php");
+                        $email = $_SESSION['email'];
+                        $cart_query = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cart WHERE email = '$email'";
+                        $result_cart = mysqli_query($con, $cart_query);
+                        $totalCost = 0;
+                        while($rowCart = mysqli_fetch_array($result_cart, MYSQLI_ASSOC)){
+                            $coffee = $rowCart['coffee'];
+                            $sugar = $rowCart['sugar'];
+                            $sugarType = $rowCart['sugarType'];
+                            $milk = $rowCart['milk'];
+                            $cinnamon = $rowCart['cinnamon'];
+                            $choco = $rowCart['choco'];
+                            $price = $rowCart['price'];
+                            $quantity = $rowCart['qty'];
+                            $totalCost += $price;
+                            echo "<li class='list-group-item d-flex justify-content-between lh-condensed'>
+                                    <div>
+                                        <h6 class='my-0'>".$quantity."x $coffee</h6>
+                                        <small class='text-muted'>
+                                        ".$sugar.", ".$sugarType."";
+                                        if($milk == 1){
+                                            echo ", Γάλα";
+                                        }
+                                        if($cinnamon == 1){
+                                            echo ", Κανέλα";
+                                        }
+                                        if($choco == 1){
+                                            echo ", Σκόνη Σοκολάτας";
+                                        }
+                                        echo "</small>
+                                        </div>
+                                    <span class='text-muted'>".$price."€</span>
+                                </li>";
+                        }
+                        ?>
+                        <!-- PROMO CODE -->
+                        <!-- <li class="list-group-item d-flex justify-content-between bg-light">
                             <div class="text-success">
                                 <h6 class="my-0">Promo code</h6>
                                 <small>NEWCHIPCOFFEE</small>
                             </div>
                             <span class="text-success">-0,70€</span>
-                        </li>
+                        </li> -->
                         <li class="list-group-item d-flex justify-content-between">
                             <h5>Κόστος</h5>
-                            <h5>0,80€</h5>
+                            <h5><?php $costString = sprintf("%0.2f", $totalCost); echo $costString; ?>€</h5>
                         </li>
                     </ul>
                     <div class="card p-2">
-                            <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Promo code">
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-secondary">Εξαργύρωση</button>
-                                </div>
+                        <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Promo code">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-secondary">Εξαργύρωση</button>
                             </div>
+                        </div>
                     </div>
-                    <button class="btn btn-primary btn-lg btn-block my-2" type="submit">Αποστολή Παραγγελίας</button>
+                    <button class="btn btn-primary btn-lg btn-block my-2" type="submit" name="checkout">Αποστολή Παραγγελίας</button>
                 </div>
             </div>
         </form>
     </div>
     <!---------------------SALE SEcTi0N---------------------->
     <?php echo file_get_contents("./html/sale.html"); ?>
-    <!-------------------- Site footer --------------------------->
+    <!-------------------- Site footer ---------------------->
     <?php echo file_get_contents("./html/footer.html"); ?>
