@@ -21,13 +21,10 @@ if (!isset($_SESSION['email'])) {
     <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css">
     <script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
         (function() {
           'use strict';
           window.addEventListener('load', function() {
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
             var forms = document.getElementsByClassName('needs-validation');
-            // Loop over them and prevent submission
             var validation = Array.prototype.filter.call(forms, function(form) {
               form.addEventListener('submit', function(event) {
                 if (form.checkValidity() === false) {
@@ -50,10 +47,9 @@ if (!isset($_SESSION['email'])) {
             <div class="dropdown">
                 <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php if (isset($_SESSION['email'])) { echo $_SESSION['firstName']; } ?></button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="profile.php">Ο λογαριασμός μου</a>
-                  <a class="dropdown-item" href="home.php">Οι παραγγελίες μου</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="./php/logout.php">Αποσύνδεση</a>
+                    <a class="dropdown-item" href="profile.php">Ο λογαριασμός μου</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="./php/logout.php">Αποσύνδεση</a>
                 </div>
             </div>
         </nav>
@@ -135,7 +131,7 @@ if (!isset($_SESSION['email'])) {
                             <div class="input-group">
                             <input type="text" class="form-control" placeholder="Promo code">
                                 <div class="input-group-append">
-                                    <button type="button" class="btn btn-secondary">Redeem</button>
+                                    <button type="button" class="btn btn-secondary">Εξαργύρωση</button>
                                 </div>
                             </div>
                     </div>
@@ -145,6 +141,6 @@ if (!isset($_SESSION['email'])) {
         </form>
     </div>
     <!---------------------SALE SEcTi0N---------------------->
-    <?php echo file_get_contents("sale.html"); ?>
+    <?php echo file_get_contents("./html/sale.html"); ?>
     <!-------------------- Site footer --------------------------->
-    <?php echo file_get_contents("footer.html"); ?>
+    <?php echo file_get_contents("./html/footer.html"); ?>

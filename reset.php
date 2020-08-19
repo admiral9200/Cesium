@@ -56,4 +56,4 @@
         </div>
     </div>
     <!-------------------- Site footer --------------------------->
-    <?php echo file_get_contents("footer.html"); ?>
+    <?php echo file_get_contents("./html/footer.html"); ?>

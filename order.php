@@ -4,6 +4,11 @@ $email = $_SESSION['email'];
 if (!isset($_SESSION['email'])) {
     header('location: index.php');
 }
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    if(isset($_POST['continue'])){
+        header("location: checkout.php");
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -197,7 +202,7 @@ if (!isset($_SESSION['email'])) {
                     <h4 class="mt-3 mb-3">Το καλάθι σου</h4>
                     <ul class="list-group list-group-flush">
                         <?php
-                        $cart_query = "SELECT count, coffee, sugar, sugarType, milk, cinnamon, choco, price FROM cart WHERE email = '$email'";
+                        $cart_query = "SELECT count, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cart WHERE email = '$email'";
                         $result_cart = mysqli_query($con, $cart_query);
                         $j = 0;
                         $totalCost = 0;
@@ -212,6 +217,7 @@ if (!isset($_SESSION['email'])) {
                                 $cinnamon = $rowCart['cinnamon'];
                                 $choco = $rowCart['choco'];
                                 $price = $rowCart['price'];
+                                $quantity = $rowCart['qty'];
                                 $totalCost += $price;
                                 echo "<li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-1'>
                                         <h5>$coffee</h5>
@@ -238,9 +244,9 @@ if (!isset($_SESSION['email'])) {
                                             </div>
                                             <div class='col-8 space'>
                                                 <div class='qty d-flex justify-content-center mt-2'>
-                                                    <a class='minus bg-dark'>-</a>
-                                                    <input type='number' class='count' name='qty' value='1'>
-                                                    <a class='plus bg-dark'>+</a>
+                                                    <a class='minus'>-</a>
+                                                    <input type='number' class='count' name='qty' value='$quantity' disabled>
+                                                    <a class='plus'>+</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -266,7 +272,9 @@ if (!isset($_SESSION['email'])) {
                                 €</strong></span>
                         </li>
                     </ul>
-                    <button type="submit" class="btn btn-primary btn-block btn-lg" <?php if($count == 0) echo "style='cursor: not-allowed' disabled"; ?>>Συνέχεια</button>
+                    <form action="" method="POST">
+                        <button type="submit" name="continue" class="btn btn-primary btn-block btn-lg" <?php if($count == 0) echo "style='cursor: not-allowed' disabled"; ?>>Συνέχεια</button>
+                    </form>
                 </div>
             </div>
         </div>

@@ -86,17 +86,17 @@ input[type="radio"]{
 }
 
 .qty .count {
-    color: #000;
     display: inline-block;
     vertical-align: top;
     font-size: 25px;
     font-weight: 700;
     line-height: 30px;
-    padding: 0 2px
-    ;min-width: 35px;
+    padding: 0 2px;
+    min-width: 35px;
     text-align: center;
 }
 .qty .plus {
+    background-color: #202d3c;
     cursor: pointer;
     display: inline-block;
     vertical-align: top;
@@ -106,8 +106,9 @@ input[type="radio"]{
     font: 30px/1 Arial,sans-serif;
     text-align: center;
     border-radius: 50%;
-    }
+}
 .qty .minus {
+    background-color: #202d3c;
     cursor: pointer;
     display: inline-block;
     vertical-align: top;
@@ -125,10 +126,12 @@ input[type="radio"]{
 }
 
 .minus:hover{
-    background-color: #717fe0 !important;
+    background-color: #007BFF !important;
+    color: white !important;
 }
 .plus:hover{
-    background-color: #717fe0 !important;
+    background-color: #007BFF !important;
+    color: white !important;
 }
 /*Prevent text selection*/
 .qty span{
@@ -140,11 +143,11 @@ input[type="radio"]{
     border: 0;
     width: 2%;
 }
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
+
 input:disabled{
     background-color:white;
 }
