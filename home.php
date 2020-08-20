@@ -47,7 +47,7 @@ if (!isset($_SESSION['email'])) {
                 <img src="./images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
             <div class="dropdown">
-                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Καλωσήρθες <?php if (isset($_SESSION['email'])) { echo $_SESSION['firstName']; } ?></button>
+                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php if (isset($_SESSION['email'])) { echo $_SESSION['firstName']; } ?></button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a class="dropdown-item" href="profile.php">Ο λογαριασμός μου</a>
                   <div class="dropdown-divider"></div>
@@ -55,15 +55,19 @@ if (!isset($_SESSION['email'])) {
                 </div>
             </div>
         </nav>
+        <?php
+        $email = $_SESSION['email'];
+        $addresses_query = "SELECT * FROM address WHERE email='$email'";
+        $result = mysqli_query($con, $addresses_query);
+        ?>
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <h1>Έχεις όρεξη για καφέ; Πρόσθεσε τη διεύθυνση σου και παράγγειλε!</h1>
-                <a href="order.php" class="btn btn-primary btn-lg btn-block" role="button">Παράγγειλε τώρα</a>        
+                <button class="btn btn-primary btn-lg btn-block" role="button" onclick="location.href='order.php'" <?php if(mysqli_num_rows($result) == 0){ echo "style='cursor: not-allowed' disabled"; } ?>>Παράγγειλε τώρα</button>        
             </div>
         </div>
     </div>
     <div class="container space">
-        <!-- server side check form -->
         <form action="./php/add_address.php" class="form-group needs-validation" method="POST" novalidate>
             <div class="row">
                 <div class="group col-5">   
@@ -114,9 +118,6 @@ if (!isset($_SESSION['email'])) {
                             </div>";
                         unset($_SESSION['delete_message']);
                     }
-                    $email = $_SESSION['email'];
-                    $addresses_query = "SELECT * FROM address WHERE email='$email'";
-                    $result = mysqli_query($con, $addresses_query);
                     if (mysqli_num_rows($result) > 0){
                         $i = 0;
                         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
@@ -205,31 +206,8 @@ if (!isset($_SESSION['email'])) {
             </div>
         </div>
     </div>
-    <div class="container space">
-        <div class="card-deck">
-            <div class="card">
-              <img src="./images/coffee1.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Πολλές Ποικιλίες</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              </div>
-            </div>
-            <div class="card">
-              <img src="./images/coffee2.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Πολύ Προσιτές Τιμές</h5>
-                <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-              </div>
-            </div>
-            <div class="card">
-              <img src="./images/coffee3.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h5 class="card-title">Άμεση Εξυπηρέτηση</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-              </div>
-            </div>
-        </div>
-    </div>
+    <!-- CARD -->
+    <?php echo file_get_contents("./html/card.html"); ?>
     <!-- SALE SECTION -->
     <?php echo file_get_contents("./html/sale.html"); ?>
     <!-- Site footer -->

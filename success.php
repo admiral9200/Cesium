@@ -29,10 +29,9 @@ if (!isset($_SESSION['email'])) {
             <div class="dropdown">
                 <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php if (isset($_SESSION['email'])) { echo $_SESSION['firstName']; } ?></button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="profile.php">Ο λογαριασμός μου</a>
-                  <a class="dropdown-item" href="home.php">Οι παραγγελίες μου</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="./php/logout.php">Αποσύνδεση</a>
+                    <a class="dropdown-item" href="profile.php">Ο λογαριασμός μου</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="./php/logout.php">Αποσύνδεση</a>
                 </div>
             </div>
         </nav>
@@ -49,13 +48,30 @@ if (!isset($_SESSION['email'])) {
                 <div class="row">
                     <div class="col-6 text-center">
                         <h5>Διεύθυνση Παράδοσης</h5>
-                        <!-- DYNAMIC PHP -->
-                        <p>Λαοδικείας 69 - 4ος όροφος</p>
+                        <p>
+                            <?php
+                            include("./php/db_connect.php");
+                            $email = $_SESSION['email'];
+                            $finalQuery = "SELECT address FROM address WHERE email = '$email'";
+                            $resultFinal = mysqli_query($con, $finalQuery);
+                            $row = mysqli_fetch_assoc($resultFinal);
+                            echo $row['address'];
+                            echo " - ";
+                            $getFloorQuery = "SELECT floor, time FROM checkout WHERE email = '$email'";
+                            $resultGetFloorTime = mysqli_query($con, $getFloorQuery);
+                            $rowGetFloorTime = mysqli_fetch_assoc($resultGetFloorTime);
+                            echo $rowGetFloorTime['floor'];
+                            echo "ος όροφος";
+                            ?>
+                        </p>
                     </div>
                     <div class="col-6 text-center">
                         <h5>Ώρα Παραγγελίας</h5>
-                        <!-- GET TIME ORDER SUBMITED-->
-                        <p>16:20:52</p>
+                        <p>
+                            <?php
+                            echo $rowGetFloorTime['time'];
+                            ?>
+                        </p>
                     </div>
                 </div>
             </div>

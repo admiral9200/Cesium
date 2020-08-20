@@ -3,12 +3,6 @@ session_start();
 if (!isset($_SESSION['email'])) {
     header('location: index.php');
 }
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    if(isset($_POST['checkout'])){
-        header("location: success.php");
-    }
-    //CHECK WHAT PAYMENT USED PAYPAL isset or CREDIT isset...
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -64,21 +58,21 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         </div>
     </div>
     <div class="container-fluid space order">
-        <form action="" method="POST" class="needs-validation" novalidate>
+        <form action="./php/checkoutProcess.php" method="POST" class="needs-validation" novalidate>
             <div class="row d-flex justify-content-center">
                 <div class="col-md-4 box">
                     <h4 class="mb-2">1. Στοιχεία Παραγγελίας</h4>
                     <div class="row space">
                         <div class="col-md-8">
-                            <label for="firstName">Όνομα στο κουδούνι *</label>
-                            <input type="text" class="form-control" name="firstName" required>
+                            <label for="doorbell">Όνομα στο κουδούνι *</label>
+                            <input type="text" class="form-control" name="doorname" required>
                             <div class="invalid-feedback">
                                     Πρέπει να συμπληρώσεις όνομα στο κουδούνι.
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <label for="lastName">Όροφος *</label>
-                            <input type="number" class="form-control" name="lastName" required>
+                            <label for="floor">Όροφος *</label>
+                            <input type="number" class="form-control" name="floor" required>
                             <div class="invalid-feedback">
                                     Πρέπει να συμπληρώσεις τον όροφο.
                             </div>
@@ -86,7 +80,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     </div>
                     <div class="space">
                         <label for="address">Προαιρετικό τηλ. επικοινωνίας</label>
-                        <input type="text" class="form-control" name="phone">
+                        <input type="number" class="form-control" name="phone">
                     </div>
                     <div class="form-group">
                         <label for="exampleFormControlTextarea1">Σχόλια διεύθυνσης</label>
@@ -98,9 +92,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                     <div class="form-group">
                         <div class="d-block mt-4">
                             <div class="list-group form-check">
-                                <input class="form-check-input" type="radio" name="RadioInputName" value="Value1" id="card" required/>
+                                <input class="form-check-input" type="radio" name="payment" value="credit" id="card" required/>
                                 <label class="list-group-item form-check-label" for="card">Πιστωτική/Χρεωστική Κάρτα</label>
-                                <input class="form-check-input" type="radio" name="RadioInputName" value="Value2" id="paypal" required/>
+                                <input class="form-check-input" type="radio" name="payment" value="paypal" id="paypal" required/>
                                 <label class="list-group-item form-check-label" for="paypal">PayPal</label>
                                 <div class="invalid-feedback">
                                     Πρέπει να διαλέξεις έναν τρόπο πληρωμής.

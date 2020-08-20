@@ -60,7 +60,7 @@ else{
         $choco = "choco_".$row['code'];
         if (isset($_POST[$form]) && isset($_POST[$sugar])){
             $count++;
-            $cart_query = "INSERT INTO cart (email, code, count, coffee, sugar, sugarType, price, qty) VALUES('$email', '$code', '$count', '$name', '$_POST[$sugar]', '$_POST[$sugarType]', '$price', 1)";
+            $cart_query = "INSERT INTO cart (email, count, coffee, sugar, sugarType, price, qty) VALUES('$email', '$count', '$name', '$_POST[$sugar]', '$_POST[$sugarType]', '$price', 1)";
             mysqli_query($con, $cart_query);
             if(isset($_POST[$milk])){
                 $milkAdded = 1;
