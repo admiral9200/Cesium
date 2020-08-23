@@ -57,10 +57,10 @@ if (!isset($_SESSION['email'])) {
             <h1>Ολοκλήρωση Παραγγελίας</h1>
         </div>
     </div>
-    <div class="container-fluid space order">
+    <div class="container space">
         <form action="./php/checkoutProcess.php" method="POST" class="needs-validation" novalidate>
             <div class="row d-flex justify-content-center">
-                <div class="col-md-4 box">
+                <div class="col-4 col-sm-12 col-md-4 box">
                     <h4 class="mb-2">1. Στοιχεία Παραγγελίας</h4>
                     <div class="row space">
                         <div class="col-md-8">
@@ -87,7 +87,7 @@ if (!isset($_SESSION['email'])) {
                         <textarea class="form-control" name="comment" rows="3" placeholder="Π.χ. Καλέστε στο τηλέφωνο αντί να χτυπήσετε κουδούνι"></textarea>
                     </div>
                 </div>
-                <div class="col-md-4 box">
+                <div class="col-4 col-sm-12 col-md-4 box">
                     <h4 class="mb-2">2. Τρόπος Πληρωμής</h4>
                     <div class="form-group">
                         <div class="d-block mt-4">
@@ -103,7 +103,7 @@ if (!isset($_SESSION['email'])) {
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 box">
+                <div class="col-md-4 col-sm-12 box">
                     <h4 class="d-flex justify-content-between align-items-center mb-4">3. Ολοκλήρωση</h4>
                     <ul class="list-group mb-1">
                         <?php
