@@ -64,17 +64,17 @@ else{
             mysqli_query($con, $cart_query);
             if(isset($_POST[$milk])){
                 $milkAdded = 1;
-                $milkAdded_query = "UPDATE cart SET milk = '$milkAdded' WHERE email = '$email' AND code = '$code' AND count = '$count' AND sugar = '$_POST[$sugar]' AND sugarType = '$_POST[$sugarType]'";
+                $milkAdded_query = "UPDATE cart SET milk = '$milkAdded' WHERE email = '$email' AND count = '$count' AND sugar = '$_POST[$sugar]' AND sugarType = '$_POST[$sugarType]'";
                 mysqli_query($con, $milkAdded_query) or trigger_error("Query Failed! SQL: $milkAdded_query - Error: ".mysqli_error($con), E_USER_ERROR);
             }
             if(isset($_POST[$cinnamon])){
                 $cinnamonAdded = 1;
-                $cinnamonAdded_query = "UPDATE cart SET cinnamon= '$cinnamonAdded' WHERE email = '$email' AND code = '$code'  AND count = '$count' AND sugar = '$_POST[$sugar]' AND sugarType = '$_POST[$sugarType]'";
+                $cinnamonAdded_query = "UPDATE cart SET cinnamon= '$cinnamonAdded' WHERE email = '$email' AND count = '$count' AND sugar = '$_POST[$sugar]' AND sugarType = '$_POST[$sugarType]'";
                 mysqli_query($con, $cinnamonAdded_query) or trigger_error("Query Failed! SQL: $milkAdded_query - Error: ".mysqli_error($con), E_USER_ERROR);
             }
             if(isset($_POST[$choco])){
                 $cinnamonAdded = 1;
-                $chocoAdded_query = "UPDATE cart SET choco = '$cinnamonAdded' WHERE email = '$email' AND code = '$code' AND count = '$count' AND sugar = '$_POST[$sugar]' AND sugarType = '$_POST[$sugarType]'";
+                $chocoAdded_query = "UPDATE cart SET choco = '$cinnamonAdded' WHERE email = '$email' AND count = '$count' AND sugar = '$_POST[$sugar]' AND sugarType = '$_POST[$sugarType]'";
                 mysqli_query($con, $chocoAdded_query) or trigger_error("Query Failed! SQL: $milkAdded_query - Error: ".mysqli_error($con), E_USER_ERROR);
             }
             break;
