@@ -171,45 +171,56 @@ if (!isset($_SESSION['email'])) {
                         </div>
                     </li>
                     <?php
-                    $orders_query = "SELECT * FROM orders WHERE email='$email'";
+                    $orders_query = "SELECT id, date, time FROM orders WHERE email='$email'";
                     $orders_result = mysqli_query($con , $orders_query);
                     if (mysqli_num_rows($orders_result) > 0){
-                        $row_orders = $orders_result -> fetch_all(MYSQLI_ASSOC); 
+                        $row_orders = $orders_result -> fetch_all(MYSQLI_ASSOC);
+                        $id = $date = $time = $qty = $coffee = array();
                         foreach ($row_orders as $rowOrders) {
-                            $id = $rowOrders['id'];
-                            $date = $rowOrders['date'];
-                            $time = $rowOrders['time'];
-                            $coffee = $rowOrders['coffee'];
-                            $qty = $rowOrders['qty'];
-                        ?>
-                        <li class='list-group-item mt-2 mb-4'>
-                            <div class='row'>
-                                <div class='col-3'>
-                                    <h6><?php echo $id ?></h6>
-                                </div>
-                                <div class='col-3'>
-                                    <h6><?php echo $date ?></h6>
-                                    <p><?php echo $time ?></p>
-                                </div>
-                                <div class='col-3'>
-                                    <h6><?php echo $qty."x ".$coffee; ?></h6>
-                                </div>
-                                <div class='col-3'>
-                                    <h6>
+                            $id[] = $rowOrders['id'];
+                            $date[] = $rowOrders['date'];
+                            $time[] = $rowOrders['time'];
+                        }
+                        $ids = array_unique($id);
+                        foreach($ids as $key => $val){
+                            ?>
+                            <li class='list-group-item mt-2 mb-4'>
+                                <div class='row'>
+                                    <div class='col-3'>
+                                        <h6><?php echo $ids[$key]; ?></h6>
+                                    </div>
+                                    <div class='col-3'>
+                                        <h6><?php echo $date[$key]; ?></h6>
+                                        <p><?php echo $time[$key]; ?></p>
+                                    </div>
+                                    <div class='col-3'>
                                         <?php
-                                        $totalCost = 0;
-                                        foreach ($row_orders as $rowPrice) {
-                                            $price = $rowPrice['price'];
-                                            $totalCost += $price;
+                                        $sqlCPQ = "SELECT coffee, price, qty FROM orders WHERE id = '$ids[$key]'";
+                                        $resultCPQ = mysqli_query($con, $sqlCPQ);
+                                        $rowCPQ = $resultCPQ -> fetch_all(MYSQLI_ASSOC);
+                                        foreach($rowCPQ as $rowCPQ_){
+                                            $coffee = $rowCPQ_['coffee'];
+                                            $qty = $rowCPQ_['qty'];
+                                            echo "<h6>".$qty."x ".$coffee."</h6>";
                                         }
-                                        $costString = sprintf("%0.2f", $totalCost);
-                                        echo $costString;
                                         ?>
-                                        €
-                                    </h6>
+                                    </div>
+                                    <div class='col-3'>
+                                        <h6>
+                                            <?php
+                                            $totalCost = 0;
+                                            foreach($rowCPQ as $rowCPQ_){
+                                                $price = $rowCPQ_['price'];
+                                                $totalCost += $price;
+                                            }
+                                            $costString = sprintf("%0.2f", $totalCost);
+                                            echo $costString;
+                                            ?>
+                                            €
+                                        </h6>
+                                    </div>
                                 </div>
-                            </div>
-                        </li>
+                            </li>
                         <?php
                         }
                     }

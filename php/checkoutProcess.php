@@ -46,7 +46,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         echo $idNumber;
         $sqlIncID = "UPDATE id SET id = '$idNumber'";
         mysqli_query($con, $sqlIncID);
-        //header("location: ../success.php");
+        header("location: ../success.php");
     }
 }
 else{
