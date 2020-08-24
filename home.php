@@ -162,44 +162,62 @@ if (!isset($_SESSION['email'])) {
                             <div class="col-3">
                                 <h6>Ημερομηνία</h6>
                             </div>
+                            <div class="col-3">
+                                <h6>Περιεχόμενα</h6>
+                            </div>
+                            <div class="col-3">
+                                <h6>Κόστος</h6>
+                            </div>
                         </div>
                     </li>
                     <?php
                     $orders_query = "SELECT * FROM orders WHERE email='$email'";
                     $orders_result = mysqli_query($con , $orders_query);
                     if (mysqli_num_rows($orders_result) > 0){
-                        $i = 0;
-                        while ($row_orders = mysqli_fetch_array($orders_result, MYSQLI_ASSOC)){
-                            $code = $row_orders['code'];
-                            $date = $row_orders['date'];
-                            $time = $row_orders['time'];
-                            $material = $row_orders['material'];
-                            $price = $row_orders['price'];
-                            echo "<li class='list-group-item mt-2 mb-4'>
-                                    <div class='row'>
-                                        <div class='col-3'>
-                                            <h6>$code</h6>
-                                        </div>
-                                        <div class='col-3'>
-                                            <h6>$date</h6>
-                                            <p>$time</p>
-                                        </div>
-                                        <div class='col-3'>
-                                            <h6>$material</h6>
-                                            <h6></h6>
-                                        </div>
-                                        <div class='col-3'>
-                                            <h6>".$price."0€</h6>
-                                        </div>
-                                    </div>
-                                </li>";
-                            $i += 1;
+                        $row_orders = $orders_result -> fetch_all(MYSQLI_ASSOC); 
+                        foreach ($row_orders as $rowOrders) {
+                            $id = $rowOrders['id'];
+                            $date = $rowOrders['date'];
+                            $time = $rowOrders['time'];
+                            $coffee = $rowOrders['coffee'];
+                            $qty = $rowOrders['qty'];
+                        ?>
+                        <li class='list-group-item mt-2 mb-4'>
+                            <div class='row'>
+                                <div class='col-3'>
+                                    <h6><?php echo $id ?></h6>
+                                </div>
+                                <div class='col-3'>
+                                    <h6><?php echo $date ?></h6>
+                                    <p><?php echo $time ?></p>
+                                </div>
+                                <div class='col-3'>
+                                    <h6><?php echo $qty."x ".$coffee; ?></h6>
+                                </div>
+                                <div class='col-3'>
+                                    <h6>
+                                        <?php
+                                        $totalCost = 0;
+                                        foreach ($row_orders as $rowPrice) {
+                                            $price = $rowPrice['price'];
+                                            $totalCost += $price;
+                                        }
+                                        $costString = sprintf("%0.2f", $totalCost);
+                                        echo $costString;
+                                        ?>
+                                        €
+                                    </h6>
+                                </div>
+                            </div>
+                        </li>
+                        <?php
                         }
                     }
-                    else{
-                        echo "<li class='list-group-item mt-2 mb-4'>
-                                <h6>Δεν υπάρχει καμία παραγγελία.</h6>
-                              </li>";
+                    else{?>
+                        <li class='list-group-item mt-2 mb-4'>
+                            <h6>Δεν υπάρχει καμία παραγγελία.</h6>
+                        </li>
+                    <?php
                     }
                     ?>
                 </ul>
