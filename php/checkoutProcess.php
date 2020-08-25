@@ -46,6 +46,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         echo $idNumber;
         $sqlIncID = "UPDATE id SET id = '$idNumber'";
         mysqli_query($con, $sqlIncID);
+        $sqlClearCart = "DELETE FROM cart WHERE email = '$email'";
+        mysqli_query($con, $sqlClearCart);
         header("location: ../success.php");
     }
 }

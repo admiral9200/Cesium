@@ -32,19 +32,44 @@
             <a href="index.php">Πίσω στην αρχική</a>
         </div>
     </div>
-    <!-------------------- Site footer --------------------------->
-    <div class="card bg-dark text-white w-100 bottom-fixed">
-    <img class="card-img" src="./images/light_salmon.jpg" alt="Card image">
-    <div class="container card-img-overlay">
-        <div class="row">
-            <div class="col-8">
-                <h2 class="card-title">Chipαρε τον καφέ σου!</h2>
-                <h5 class="card-text">Με κάθε εγγραφή για πρώτη φορά έχεις 1+1 καφέ δώρο της επιλογής σου.</h5>
-                <p>Κατά το τέλος της παραγγελίας σου χρησιμοποιήσε τον κωδικό NEWCHIPCOFFEE για να ενεργοποιήσεις την προσφορά.</p>
-            </div>
-            <div class="col-4 user-select-none">
-                <img src="./images/sale.png" alt="Sale">
-            </div>
+    <footer class="site-footer fixed-bottom">
+    <div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-5">
+        <h6>Επικοινωνια</h6>
+        <ul class="footer-links">
+            <li><a class="phone" href="/"><i class="fa fa-phone"></i></a> 210-xxxxxxx</li>
+            <li><a class="email" href="/"><i class="fa fa-envelope"></i></a> support@chipcoffee.gr</li>
+            <li>Η ομάδα μας είναι στη διάθεσή σου, κάθε μέρα, 07:00 - 03:00, για να σε βοηθήσει με οποιαδήποτε ερώτηση έχεις.</li>
+        </ul>
+        </div>
+        <div class="col-xs-6 col-md-4">
+        <h6>Χρησιμα</h6>
+        <ul class="footer-links">
+            <li><a href="#">Ρυθμίσεις Cookies</a></li>
+            <li><a href="#">Όροι Χρήσης</a></li>
+            <li><a href="#">Πολιτική Προστασίας Δεδομένων</a></li>
+            <li><a href="#">Συχνές Ερωτήσεις</a></li>
+        </ul>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <h6>Ακολουθησε το ChipCoffee στα social media!</h6>
+            <ul class="social-icons float-left">
+                <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+                <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a class="instagram" href="#"><i class="fa fa-instagram"></i></a></li>   
+            </ul>
         </div>
     </div>
-</div>
+    <hr>
+    </div>
+    <div class="container">
+    <div class="row">
+        <div class="col-md-8 col-sm-6 col-xs-12">
+        <p class="copyright-text">Copyright &copy; 2020 All Rights Reserved by <a href="#">Chip Coffee</a>.</p>
+        </div>
+    </div>
+    </div>
+</footer>
+</body>
+</html>

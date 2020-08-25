@@ -1,12 +1,14 @@
-document.getElementById('async').addEventListener('submit' , postReq);
-
-function postReq(e){
-    e.preventDefault();
-    var sugar1 = document.getElementById('').value;
-    var params = "sugar=" + sugar1;
+function minus(){
     var xhr = new XMLHttpRequest();
-    xhr.open('POST' , './php/cart.php' , true);
+    xhr.open('GET' , './php/cart.php?qty=minus' , true);
     xhr.setRequestHeader('Content-type' , 'application/x-www-form-urlencoded');
-    //xhr.onload()
-    xhr.send(params);
+    xhr.send();
+    console.log("clicked");
+}
+
+function plus(){
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', './php/cart.php?qty=plus', true);
+    xhr.setRequestHeader('Content-type' , 'application/x-www-form-urlencoded');
+    xhr.send();
 }

@@ -40,18 +40,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 $(this).parent().find(".card-header .btn i").html("add");
             });
         });
-        /* $(document).ready(function () {
-            $('.count').prop('disabled', true);
-            $(document).on('click', '.plus', function () {
-                $('.count').val(parseInt($('.count').val()) + 1);
-            });
-            $(document).on('click', '.minus', function () {
-                $('.count').val(parseInt($('.count').val()) - 1);
-                if ($('.count').val() == 0) {
-                    $('.count').val(1);
-                }
-            });
-        }); */
     </script>
 </head>
 <body>
@@ -159,7 +147,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                                             </div> 
                                             </div>
                                             <div class='row space justify-content-center mt-3'>
-                                                <button type='submit' name='form$code' class='btn btn-primary btn-md'>Προσθήκη στο καλάθι</button>
+                                                <button type='submit' name='addToCart' value='form$code' class='btn btn-primary btn-md'>Προσθήκη στο καλάθι</button>
                                             </div>
                                         </form>
                                     </div>  
@@ -234,23 +222,24 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                                 if($choco == 1){
                                     echo ", Σκόνη Σοκολάτας";
                                 }
-                                echo " 
-                                        </p>
-                                    </li>
-                                    <li>
-                                        <div class='row d-flex justify-content-center space'>
-                                            <div class='col-4 d-flex justify-content-center mt-3'>
-                                                <h6>".$price."€</h6>
-                                            </div>
-                                            <div class='col-8 space'>
-                                                <div class='qty d-flex justify-content-center mt-2'>
-                                                    <a class='minus'>-</a>
-                                                    <input type='number' class='count' name='qty' value='$quantity' disabled>
-                                                    <a class='plus'>+</a>
-                                                </div>
+                                ?> 
+                                    </p>
+                                </li>
+                                <li>
+                                    <div class='row d-flex justify-content-center space'>
+                                        <div class='col-4 d-flex justify-content-center mt-3'>
+                                            <h6><?php echo $price; ?>€</h6>
+                                        </div>
+                                        <div class='col-8 space'>
+                                            <div class='qty d-flex justify-content-center mt-2'>
+                                                <a class='minus' <?php if($quantity > 1) echo "href='./php/cart.php?qty=minus&&count=$count'"; ?> id="minus">-</a>
+                                                <input type='number' class='count' name='qty' value="<?php echo $quantity; ?>" disabled>
+                                                <a class='plus' href="./php/cart.php?qty=plus&&count=<?php echo $count; ?>" id="plus">+</a>
                                             </div>
                                         </div>
-                                    </li>";
+                                    </div>
+                                </li>
+                                <?php
                                 $j++;
                             }
                         }
@@ -283,3 +272,4 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     <?php echo file_get_contents("./html/sale.html"); ?>
     <!-------------------- Site footer --------------------------->
     <?php echo file_get_contents("./html/footer.html"); ?>
+<script src="./js/cart.js"></script>

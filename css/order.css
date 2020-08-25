@@ -106,6 +106,7 @@ input[type="radio"]{
     font: 30px/1 Arial,sans-serif;
     text-align: center;
     border-radius: 50%;
+    text-decoration: none !important;
 }
 .qty .minus {
     background-color: #202d3c;
@@ -119,6 +120,7 @@ input[type="radio"]{
     text-align: center;
     border-radius: 50%;
     background-clip: padding-box;
+    text-decoration: none !important;
 }
 
 .qty div {
