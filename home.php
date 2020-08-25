@@ -235,9 +235,10 @@ if (!isset($_SESSION['email'])) {
             </div>
         </div>
     </div>
-    <!-- CARD -->
-    <?php echo file_get_contents("./html/card.html"); ?>
-    <!-- SALE SECTION -->
-    <?php echo file_get_contents("./html/sale.html"); ?>
-    <!-- Site footer -->
-    <?php echo file_get_contents("./html/footer.html"); ?>
+<!-- CARD -->
+<?php echo file_get_contents("./html/card.html"); ?>
+<!-- SALE SECTION -->
+<?php echo file_get_contents("./html/sale.html"); ?>
+<!-- Site footer -->
+<?php echo file_get_contents("./html/footer.html"); ?>
+<script src="./js/cart.js"></script>

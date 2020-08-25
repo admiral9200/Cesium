@@ -11,7 +11,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         $resID = mysqli_query($con, $sql_id);
         $rowID = mysqli_fetch_assoc($resID);
         $id = "cc".$rowID['id'];
-        $_SESSION['id'] = $id;
         $doorname = $_POST['doorname'];
         $floor = $_POST['floor'];
         $phone = $_POST['phone'];
@@ -41,9 +40,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $sqlinsertToUser = "INSERT INTO orders (id, email, date, time, coffee, price, qty) VALUES ('$id', '$email', '$date', '$time', '$coffee', '$price', '$qty')";
             mysqli_query($con, $sqlinsertToUser);
         }
+        //Update/Increase ID order number in id table
         $idNumber = $rowID['id'];
         $idNumber++;
-        echo $idNumber;
         $sqlIncID = "UPDATE id SET id = '$idNumber'";
         mysqli_query($con, $sqlIncID);
         $sqlClearCart = "DELETE FROM cart WHERE email = '$email'";

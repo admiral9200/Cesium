@@ -57,7 +57,7 @@ if (!isset($_SESSION['email'])) {
                             $row = mysqli_fetch_assoc($resultFinal);
                             echo $row['address'];
                             echo " - ";
-                            $getFloorQuery = "SELECT floor, time FROM checkout WHERE email = '$email'";
+                            $getFloorQuery = "SELECT floor, time FROM checkout WHERE email = '$email' AND id IN (SELECT max(id) FROM checkout WHERE email = '$email')";
                             $resultGetFloorTime = mysqli_query($con, $getFloorQuery);
                             $rowGetFloorTime = mysqli_fetch_assoc($resultGetFloorTime);
                             echo $rowGetFloorTime['floor'];
@@ -67,11 +67,7 @@ if (!isset($_SESSION['email'])) {
                     </div>
                     <div class="col-6 text-center">
                         <h5>Ώρα Παραγγελίας</h5>
-                        <p>
-                            <?php
-                            echo $rowGetFloorTime['time'];
-                            ?>
-                        </p>
+                        <p><?php echo $rowGetFloorTime['time']; ?></p>
                     </div>
                 </div>
             </div>

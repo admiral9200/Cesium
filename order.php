@@ -4,11 +4,6 @@ $email = $_SESSION['email'];
 if (!isset($_SESSION['email'])) {
     header('location: index.php');
 }
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
-    if(isset($_POST['continue'])){
-        header("location: checkout.php");
-    }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -261,7 +256,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                                 €</strong></span>
                         </li>
                     </ul>
-                    <form action="" method="POST">
+                    <form action="checkout.php" method="POST">
                         <button type="submit" name="continue" class="btn btn-primary btn-block btn-lg" <?php if($count == 0) echo "style='cursor: not-allowed' disabled"; ?>>Συνέχεια</button>
                     </form>
                 </div>

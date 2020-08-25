@@ -3,6 +3,9 @@ session_start();
 if (!isset($_SESSION['email'])) {
     header('location: index.php');
 }
+if(!isset($_POST['continue'])){
+    header("location: order.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

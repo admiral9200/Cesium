@@ -116,3 +116,4 @@ if (!isset($_SESSION['email'])) {
     </div>
     <!-- Site footer -->
     <?php echo file_get_contents("./html/footer.html"); ?>
+    <script src="./js/cart.js"></script>

@@ -19,7 +19,7 @@
 <body>
     <div class="background">
         <nav class="navbar navbar-light container">
-            <a class="navbar-brand" href="/">
+            <a class="navbar-brand" href="/www/">
                 <img src="./images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
         </nav>
@@ -56,4 +56,44 @@
         </div>
     </div>
     <!-------------------- Site footer --------------------------->
-    <?php echo file_get_contents("./html/footer.html"); ?>
+    <footer class="site-footer fixed-bottom">
+    <div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-5">
+        <h6>Επικοινωνια</h6>
+        <ul class="footer-links">
+            <li><a class="phone" href="/"><i class="fa fa-phone"></i></a> 210-xxxxxxx</li>
+            <li><a class="email" href="/"><i class="fa fa-envelope"></i></a> support@chipcoffee.gr</li>
+            <li>Η ομάδα μας είναι στη διάθεσή σου, κάθε μέρα, 07:00 - 03:00, για να σε βοηθήσει με οποιαδήποτε ερώτηση έχεις.</li>
+        </ul>
+        </div>
+        <div class="col-xs-6 col-md-4">
+        <h6>Χρησιμα</h6>
+        <ul class="footer-links">
+            <li><a href="#">Ρυθμίσεις Cookies</a></li>
+            <li><a href="#">Όροι Χρήσης</a></li>
+            <li><a href="#">Πολιτική Προστασίας Δεδομένων</a></li>
+            <li><a href="#">Συχνές Ερωτήσεις</a></li>
+        </ul>
+        </div>
+        <div class="col-xs-6 col-md-3">
+            <h6>Ακολουθησε το ChipCoffee στα social media!</h6>
+            <ul class="social-icons float-left">
+                <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+                <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+                <li><a class="instagram" href="#"><i class="fa fa-instagram"></i></a></li>   
+            </ul>
+        </div>
+    </div>
+    <hr>
+    </div>
+    <div class="container">
+    <div class="row">
+        <div class="col-md-8 col-sm-6 col-xs-12">
+        <p class="copyright-text">Copyright &copy; 2020 All Rights Reserved by <a href="#">Chip Coffee</a>.</p>
+        </div>
+    </div>
+    </div>
+</footer>
+</body>
+</html>
