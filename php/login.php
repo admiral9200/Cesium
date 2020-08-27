@@ -7,20 +7,14 @@ if (isset($_POST['login'])){
     $pass = mysqli_real_escape_string($con, $_POST['pass']);
     if (count($errors) == 0){
         $pass = md5($pass);
-        $query = "SELECT * FROM users WHERE email='$email' AND password='$pass'";
+        $query = "SELECT * FROM cc_users WHERE email='$email' AND password='$pass'";
         $result = mysqli_query($con, $query);
-        $row = mysqli_fetch_row($result);
-        $firstName = $row[2];
-        $lastName = $row[3];
         if (mysqli_num_rows($result) == 1){
-            $_SESSION['email'] = $email;
-            $_SESSION['firstName'] = $firstName;
-            $_SESSION['lastName'] = $lastName;
             if (!empty($_POST['rememberme'])){
                 setcookie("user_login" , $email, time() + (1 * 365 * 24 * 60 * 60));
                 setcookie("pass_login" , $pass, time() + (1 * 365 * 24 * 60 * 60));
-                $_SESSION['email'] = $email;
             }
+            $_SESSION['email'] = $email;
             header('location: ../home.php');
         }
         else{

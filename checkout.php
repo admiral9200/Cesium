@@ -112,7 +112,7 @@ if(!isset($_POST['continue'])){
                         <?php
                         include("./php/db_connect.php");
                         $email = $_SESSION['email'];
-                        $cart_query = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cart WHERE email = '$email'";
+                        $cart_query = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_cart WHERE email = '$email'";
                         $result_cart = mysqli_query($con, $cart_query);
                         $totalCost = 0;
                         while($rowCart = mysqli_fetch_array($result_cart, MYSQLI_ASSOC)){

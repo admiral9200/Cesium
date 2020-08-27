@@ -1,8 +1,15 @@
 <?php
 session_start();
+include_once("./php/db_connect.php");
 if (!isset($_SESSION['email'])) {
     header('location: index.php');
 }
+$email = $_SESSION['email'];
+$sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = '$email'";
+$resultUser = mysqli_query($con, $sqlLoggedInUser);
+$rowUser = $resultUser -> fetch_array(MYSQLI_ASSOC);
+$firstName = $rowUser['firstName'];
+$lastName = $rowUser['lastName'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,7 +33,7 @@ if (!isset($_SESSION['email'])) {
                 <img src="./images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
             <div class="dropdown">
-                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php if (isset($_SESSION['email'])) { echo $_SESSION['firstName']; } ?></button>
+                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php if (isset($_SESSION['email'])) { echo $firstName; } ?></button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a class="dropdown-item" href="profile.php">Ο λογαριασμός μου</a>
                   <div class="dropdown-divider"></div>
@@ -45,7 +52,7 @@ if (!isset($_SESSION['email'])) {
             <div class="col-3 text-center space">
                 <div class="sticky-top pt-4 pb-4">
                     <img src="//api.adorable.io/avatars/120/trickst3r.png" class="mx-auto img-fluid rounded-circle" alt="avatar" />
-                    <h4 class="my-4"><?php if (isset($_SESSION['email'])) { echo $_SESSION['firstName']; echo ' '; echo $_SESSION['lastName'];} ?></h4>
+                    <h4 class="my-4"><?php echo $firstName; echo ' '; echo $lastName; ?></h4>
                 </div>
             </div>
             <div class="col-9 personal-info">
@@ -57,10 +64,10 @@ if (!isset($_SESSION['email'])) {
                     </div>
                     <div class="form-group row">
                         <div class="col-5">
-                            <input class="form-control" type="text" value="<?php if (isset($_SESSION['email'])) { echo $_SESSION['firstName']; } ?>" />
+                            <input class="form-control" type="text" value="<?php  echo $firstName; ?>" />
                         </div>
                         <div class="col-5">
-                            <input class="form-control" type="text" value="<?php if (isset($_SESSION['email'])) { echo $_SESSION['lastName']; } ?>"/>
+                            <input class="form-control" type="text" value="<?php echo $lastName; ?>"/>
                         </div>
                     </div>
                     <div class="form-group row mt-4 mb-0">
@@ -68,7 +75,7 @@ if (!isset($_SESSION['email'])) {
                     </div>
                     <div class="form-group row">
                         <div class="col-5 mb-0">
-                            <input class="form-control" type="text" value="<?php if (isset($_SESSION['email'])) { echo $_SESSION['email']; } ?>"/>
+                            <input class="form-control" type="text" value="<?php echo $_SESSION['email']; ?>"/>
                         </div>
                     </div>
                     <!-- <div class="form-group row mt-4 mb-0">
@@ -89,13 +96,9 @@ if (!isset($_SESSION['email'])) {
                 <form action="./php/changeCreds.php" method="POST">
                     <h4 class="mb-4">Αλλαγή κωδικού</h4>
                     <?php
-                    if (isset($_SESSION['chngpass'])){
-                        $delete_message = $_SESSION['chngpass'];
-                        echo "<div class='alert alert-success alert-dismissible fade show'>
-                                <button type='button' class='close' data-dismiss='alert'>&times;</button>
-                                $delete_message
-                            </div>";
-                        unset($_SESSION['chngpass']);
+                    if (isset($_SESSION['msg'])){
+                        echo $_SESSION['msg'];
+                        unset($_SESSION['msg']);
                     }
                     ?>
                     <div class="form-group row mt-4 mb-0">

@@ -4,6 +4,11 @@ session_start();
 if (!isset($_SESSION['email'])) {
     header('location: index.php');
 }
+$email = $_SESSION['email'];
+$sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = '$email'";
+$resultUser = mysqli_query($con, $sqlLoggedInUser);
+$rowUser = $resultUser -> fetch_array(MYSQLI_ASSOC);
+$firstName = $rowUser['firstName'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,7 +52,7 @@ if (!isset($_SESSION['email'])) {
                 <img src="./images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
             <div class="dropdown">
-                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php if (isset($_SESSION['email'])) { echo $_SESSION['firstName']; } ?></button>
+                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php if (isset($_SESSION['email'])) { echo $firstName; } ?></button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a class="dropdown-item" href="profile.php">Ο λογαριασμός μου</a>
                   <div class="dropdown-divider"></div>
@@ -57,7 +62,7 @@ if (!isset($_SESSION['email'])) {
         </nav>
         <?php
         $email = $_SESSION['email'];
-        $addresses_query = "SELECT * FROM address WHERE email='$email'";
+        $addresses_query = "SELECT * FROM cc_address WHERE email='$email'";
         $result = mysqli_query($con, $addresses_query);
         ?>
         <div class="jumbotron jumbotron-fluid">
@@ -171,7 +176,7 @@ if (!isset($_SESSION['email'])) {
                         </div>
                     </li>
                     <?php
-                    $orders_query = "SELECT id, date, time FROM orders WHERE email='$email'";
+                    $orders_query = "SELECT id, date, time FROM cc_orders WHERE email='$email'";
                     $orders_result = mysqli_query($con , $orders_query);
                     if (mysqli_num_rows($orders_result) > 0){
                         $row_orders = $orders_result -> fetch_all(MYSQLI_ASSOC);
@@ -195,7 +200,7 @@ if (!isset($_SESSION['email'])) {
                                     </div>
                                     <div class='col-3'>
                                         <?php
-                                        $sqlCPQ = "SELECT coffee, price, qty FROM orders WHERE id = '$ids[$key]'";
+                                        $sqlCPQ = "SELECT coffee, price, qty FROM cc_orders WHERE id = '$ids[$key]'";
                                         $resultCPQ = mysqli_query($con, $sqlCPQ);
                                         $rowCPQ = $resultCPQ -> fetch_all(MYSQLI_ASSOC);
                                         foreach($rowCPQ as $rowCPQ_){

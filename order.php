@@ -62,7 +62,7 @@ if (!isset($_SESSION['email'])) {
                 <div class="accordion" id="accordionExample">
                     <?php
                     include("./php/db_connect.php");
-                    $coffees_query = "SELECT * FROM coffees";
+                    $coffees_query = "SELECT * FROM cc_coffees";
                     $result_coffees = mysqli_query($con , $coffees_query);
                     $bootstrap_count = array("One" , "Two" , "Three" , "Four" , "Five" , "Six" , "Seven" , "Eight" , "Nine" , "Ten");
                     $i = 0;
@@ -185,7 +185,7 @@ if (!isset($_SESSION['email'])) {
                     <h4 class="mt-3 mb-3">Το καλάθι σου</h4>
                     <ul class="list-group list-group-flush">
                         <?php
-                        $cart_query = "SELECT count, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cart WHERE email = '$email'";
+                        $cart_query = "SELECT count, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_cart WHERE email = '$email'";
                         $result_cart = mysqli_query($con, $cart_query);
                         $j = 0;
                         $totalCost = 0;

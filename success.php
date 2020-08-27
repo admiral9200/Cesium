@@ -52,12 +52,12 @@ if (!isset($_SESSION['email'])) {
                             <?php
                             include("./php/db_connect.php");
                             $email = $_SESSION['email'];
-                            $finalQuery = "SELECT address FROM address WHERE email = '$email'";
+                            $finalQuery = "SELECT address FROM cc_address WHERE email = '$email'";
                             $resultFinal = mysqli_query($con, $finalQuery);
                             $row = mysqli_fetch_assoc($resultFinal);
                             echo $row['address'];
                             echo " - ";
-                            $getFloorQuery = "SELECT floor, time FROM checkout WHERE email = '$email' AND id IN (SELECT max(id) FROM checkout WHERE email = '$email')";
+                            $getFloorQuery = "SELECT floor, time FROM cc_checkout WHERE email = '$email' AND id IN (SELECT max(id) FROM checkout WHERE email = '$email')";
                             $resultGetFloorTime = mysqli_query($con, $getFloorQuery);
                             $rowGetFloorTime = mysqli_fetch_assoc($resultGetFloorTime);
                             echo $rowGetFloorTime['floor'];
