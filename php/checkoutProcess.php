@@ -43,7 +43,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         //Update/Increase ID order number in id table
         $idNumber = $rowID['id'];
         $idNumber++;
-        $sqlIncID = "UPDATE id SET cc_id = '$idNumber'";
+        $sqlIncID = "UPDATE cc_id SET id = '$idNumber'";
         mysqli_query($con, $sqlIncID);
         //Clear Cart after order placed
         $sqlClearCart = "DELETE FROM cc_cart WHERE email = '$email'";

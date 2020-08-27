@@ -1,8 +1,14 @@
 <?php
 session_start();
+$email = $_SESSION['email'];
 if (!isset($_SESSION['email'])) {
     header('location: index.php');
 }
+include("./php/db_connect.php");
+$sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = '$email'";
+$resultUser = mysqli_query($con, $sqlLoggedInUser);
+$rowUser = $resultUser -> fetch_array(MYSQLI_ASSOC);
+$firstName = $rowUser['firstName'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,7 +33,7 @@ if (!isset($_SESSION['email'])) {
                 <img src="./images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
             <div class="dropdown">
-                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php if (isset($_SESSION['email'])) { echo $_SESSION['firstName']; } ?></button>
+                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $firstName; ?></button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" href="profile.php">Ο λογαριασμός μου</a>
                     <div class="dropdown-divider"></div>
@@ -50,16 +56,14 @@ if (!isset($_SESSION['email'])) {
                         <h5>Διεύθυνση Παράδοσης</h5>
                         <p>
                             <?php
-                            include("./php/db_connect.php");
-                            $email = $_SESSION['email'];
                             $finalQuery = "SELECT address FROM cc_address WHERE email = '$email'";
                             $resultFinal = mysqli_query($con, $finalQuery);
                             $row = mysqli_fetch_assoc($resultFinal);
                             echo $row['address'];
                             echo " - ";
-                            $getFloorQuery = "SELECT floor, time FROM cc_checkout WHERE email = '$email' AND id IN (SELECT max(id) FROM checkout WHERE email = '$email')";
+                            $getFloorQuery = "SELECT floor, time FROM cc_checkout WHERE email = '$email' AND id IN (SELECT max(id) FROM cc_checkout WHERE email = '$email')";
                             $resultGetFloorTime = mysqli_query($con, $getFloorQuery);
-                            $rowGetFloorTime = mysqli_fetch_assoc($resultGetFloorTime);
+                            $rowGetFloorTime = $resultGetFloorTime -> fetch_array(MYSQLI_ASSOC);
                             echo $rowGetFloorTime['floor'];
                             echo "ος όροφος";
                             ?>

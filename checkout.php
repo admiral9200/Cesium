@@ -1,11 +1,17 @@
 <?php
 session_start();
+include("./php/db_connect.php");
+$email = $_SESSION['email'];
 if (!isset($_SESSION['email'])) {
     header('location: index.php');
 }
 if(!isset($_POST['continue'])){
     header("location: order.php");
 }
+$sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = '$email'";
+$resultUser = mysqli_query($con, $sqlLoggedInUser);
+$rowUser = $resultUser -> fetch_array(MYSQLI_ASSOC);
+$firstName = $rowUser['firstName'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,7 +54,7 @@ if(!isset($_POST['continue'])){
                 <img src="./images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
             <div class="dropdown">
-                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php if (isset($_SESSION['email'])) { echo $_SESSION['firstName']; } ?></button>
+                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $firstName; ?></button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" href="profile.php">Ο λογαριασμός μου</a>
                     <div class="dropdown-divider"></div>
@@ -110,8 +116,6 @@ if(!isset($_POST['continue'])){
                     <h4 class="d-flex justify-content-between align-items-center mb-4">3. Ολοκλήρωση</h4>
                     <ul class="list-group mb-1">
                         <?php
-                        include("./php/db_connect.php");
-                        $email = $_SESSION['email'];
                         $cart_query = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_cart WHERE email = '$email'";
                         $result_cart = mysqli_query($con, $cart_query);
                         $totalCost = 0;

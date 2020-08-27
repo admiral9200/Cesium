@@ -58,16 +58,22 @@ $lastName = $rowUser['lastName'];
             <div class="col-9 personal-info">
                 <form role="form" method="POST" action="./php/changeCreds.php">
                     <h4 class="mb-4">Τα στοιχεία μου</h4>
+                    <?php
+                    if (isset($_SESSION['msg'])){
+                        echo $_SESSION['msg'];
+                        unset($_SESSION['msg']);
+                    }
+                    ?>
                     <div class="form-group row mb-0">
                         <label class="col-5 col-form-label form-control-label pl-3">Όνομα</label>
                         <label class="col-5 col-form-label form-control-label">Επώνυμο</label>
                     </div>
                     <div class="form-group row">
                         <div class="col-5">
-                            <input class="form-control" type="text" value="<?php  echo $firstName; ?>" />
+                            <input class="form-control" type="text" name="firstName" value="<?php echo $firstName; ?>"/>
                         </div>
                         <div class="col-5">
-                            <input class="form-control" type="text" value="<?php echo $lastName; ?>"/>
+                            <input class="form-control" type="text" name="lastName" value="<?php echo $lastName; ?>"/>
                         </div>
                     </div>
                     <div class="form-group row mt-4 mb-0">
@@ -75,7 +81,7 @@ $lastName = $rowUser['lastName'];
                     </div>
                     <div class="form-group row">
                         <div class="col-5 mb-0">
-                            <input class="form-control" type="text" value="<?php echo $_SESSION['email']; ?>"/>
+                            <input class="form-control" type="text" value="<?php echo $_SESSION['email']; ?>" disabled/>
                         </div>
                     </div>
                     <!-- <div class="form-group row mt-4 mb-0">
@@ -83,12 +89,12 @@ $lastName = $rowUser['lastName'];
                     </div>
                     <div class="form-group row">
                         <div class="col-5 mb-0">
-                            <input class="form-control" type="text" value="6980490531"/>
+                            <input class="form-control" type="text" value="phone"/>
                         </div>
                     </div> -->
                     <div class="form-group row">
                         <div class="col-12 mt-4 text-left">
-                            <input type="submit" name="changecreds" class="btn btn-primary btn-lg btn-block" value="Αποθήκευση Αλλαγών"/>
+                            <input type="submit" name="changeName" class="btn btn-primary btn-lg btn-block" value="Αποθήκευση Αλλαγών"/>
                         </div>
                     </div>
                     <hr class="space">

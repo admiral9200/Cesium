@@ -1,9 +1,14 @@
 <?php
 session_start();
+include("./php/db_connect.php");
 $email = $_SESSION['email'];
 if (!isset($_SESSION['email'])) {
     header('location: index.php');
 }
+$sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = '$email'";
+$resultUser = mysqli_query($con, $sqlLoggedInUser);
+$rowUser = $resultUser -> fetch_array(MYSQLI_ASSOC);
+$firstName = $rowUser['firstName'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,7 +49,7 @@ if (!isset($_SESSION['email'])) {
                 <img src="./images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
             <div class="dropdown">
-                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php if (isset($_SESSION['email'])) { echo $_SESSION['firstName']; } ?></button>
+                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $firstName; ?></button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a class="dropdown-item" href="profile.php">Ο λογαριασμός μου</a>
                   <div class="dropdown-divider"></div>
@@ -61,7 +66,6 @@ if (!isset($_SESSION['email'])) {
             <div class="col-9">
                 <div class="accordion" id="accordionExample">
                     <?php
-                    include("./php/db_connect.php");
                     $coffees_query = "SELECT * FROM cc_coffees";
                     $result_coffees = mysqli_query($con , $coffees_query);
                     $bootstrap_count = array("One" , "Two" , "Three" , "Four" , "Five" , "Six" , "Seven" , "Eight" , "Nine" , "Ten");
