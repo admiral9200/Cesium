@@ -29,7 +29,6 @@ if (!isset($_SESSION['email'])) {
                 <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php if (isset($_SESSION['email'])) { echo $_SESSION['firstName']; } ?></button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                   <a class="dropdown-item" href="profile.php">Ο λογαριασμός μου</a>
-                  <a class="dropdown-item" href="home.php">Οι παραγγελίες μου</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="./php/logout.php">Αποσύνδεση</a>
                 </div>
@@ -41,7 +40,6 @@ if (!isset($_SESSION['email'])) {
             </div>
         </div>
     </div>
-
     <div class="container space py-4">
         <div class="row my-2">
             <div class="col-3 text-center space">
@@ -50,9 +48,8 @@ if (!isset($_SESSION['email'])) {
                     <h4 class="my-4"><?php if (isset($_SESSION['email'])) { echo $_SESSION['firstName']; echo ' '; echo $_SESSION['lastName'];} ?></h4>
                 </div>
             </div>
-            <!-- edit form column -->
             <div class="col-9 personal-info">
-                <form role="form" method="POST" action="./php/change_creds.php">
+                <form role="form" method="POST" action="./php/changeCreds.php">
                     <h4 class="mb-4">Τα στοιχεία μου</h4>
                     <div class="form-group row mb-0">
                         <label class="col-5 col-form-label form-control-label pl-3">Όνομα</label>
@@ -60,10 +57,10 @@ if (!isset($_SESSION['email'])) {
                     </div>
                     <div class="form-group row">
                         <div class="col-5">
-                            <input class="form-control" type="text" value="<?php if (isset($_SESSION['email'])) { echo $_SESSION['firstName']; } ?>" /><!-- USER PROFILE -->
+                            <input class="form-control" type="text" value="<?php if (isset($_SESSION['email'])) { echo $_SESSION['firstName']; } ?>" />
                         </div>
                         <div class="col-5">
-                            <input class="form-control" type="text" value="<?php if (isset($_SESSION['email'])) { echo $_SESSION['lastName']; } ?>"/><!-- USER PROFILE -->
+                            <input class="form-control" type="text" value="<?php if (isset($_SESSION['email'])) { echo $_SESSION['lastName']; } ?>"/>
                         </div>
                     </div>
                     <div class="form-group row mt-4 mb-0">
@@ -71,30 +68,42 @@ if (!isset($_SESSION['email'])) {
                     </div>
                     <div class="form-group row">
                         <div class="col-5 mb-0">
-                            <input class="form-control" type="text" value="<?php if (isset($_SESSION['email'])) { echo $_SESSION['email']; } ?>"/><!-- USER PROFILE -->
+                            <input class="form-control" type="text" value="<?php if (isset($_SESSION['email'])) { echo $_SESSION['email']; } ?>"/>
                         </div>
                     </div>
-                    <div class="form-group row mt-4 mb-0">
+                    <!-- <div class="form-group row mt-4 mb-0">
                         <label class="col-5 col-form-label form-control-label pl-3">Κινητό</label>
                     </div>
                     <div class="form-group row">
                         <div class="col-5 mb-0">
                             <input class="form-control" type="text" value="6980490531"/>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group row">
                         <div class="col-12 mt-4 text-left">
-                            <input type="button" class="btn btn-primary btn-lg btn-block" value="Αποθήκευση Αλλαγών"/>
+                            <input type="submit" name="changecreds" class="btn btn-primary btn-lg btn-block" value="Αποθήκευση Αλλαγών"/>
                         </div>
                     </div>
                     <hr class="space">
+                </form>
+                <form action="./php/changeCreds.php" method="POST">
                     <h4 class="mb-4">Αλλαγή κωδικού</h4>
+                    <?php
+                    if (isset($_SESSION['chngpass'])){
+                        $delete_message = $_SESSION['chngpass'];
+                        echo "<div class='alert alert-success alert-dismissible fade show'>
+                                <button type='button' class='close' data-dismiss='alert'>&times;</button>
+                                $delete_message
+                            </div>";
+                        unset($_SESSION['chngpass']);
+                    }
+                    ?>
                     <div class="form-group row mt-4 mb-0">
                         <label class="col-5 col-form-label form-control-label pl-3">Τρέχων κωδικός</label>
                     </div>
                     <div class="form-group row">
                         <div class="col-5">
-                            <input class="form-control" type="password"/>
+                            <input class="form-control" type="password" name="oldpass"/>
                         </div>
                     </div>
                     <div class="form-group row mt-4 mb-0">
@@ -102,12 +111,12 @@ if (!isset($_SESSION['email'])) {
                     </div>
                     <div class="form-group row">
                         <div class="col-5">
-                            <input class="form-control" type="password"/>
+                            <input class="form-control" type="password" name="newpass"/>
                         </div>
                     </div>
                     <div class="form-group row mt-5">
                         <div class="col-12 ml-auto text-right">
-                            <input type="button" class="btn btn-primary btn-lg btn-block" value="Αποθήκευση Αλλαγών"/>
+                            <input type="submit" name="changepass" class="btn btn-primary btn-lg btn-block" value="Αποθήκευση Αλλαγών"/>
                         </div>
                     </div>
                 </form>

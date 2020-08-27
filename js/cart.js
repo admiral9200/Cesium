@@ -1,8 +1,8 @@
-$(window).on('beforeunload', function() {
+/* $(window).on('beforeunload', function() {
     $.ajax({
         url: './php/clearCart.php'
     });
-}); 
+});  */
 
 function minus(){
     var xhr = new XMLHttpRequest();
