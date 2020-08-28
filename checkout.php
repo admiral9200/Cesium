@@ -159,7 +159,7 @@ $firstName = $rowUser['firstName'];
                         </li> -->
                         <li class="list-group-item d-flex justify-content-between">
                             <h5>Κόστος</h5>
-                            <h5><?php $costString = sprintf("%0.2f", $totalCost); echo $costString; ?>€</h5>
+                            <h5><?php $costString = sprintf("%0.2f", $totalCost); $_SESSION['itemAmount'] = $costString; echo $costString; ?>€</h5>
                         </li>
                     </ul>
                     <div class="card p-2">

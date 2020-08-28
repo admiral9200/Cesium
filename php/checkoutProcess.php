@@ -2,6 +2,10 @@
 session_start();
 date_default_timezone_set('Europe/Athens');
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    /* if(isset($_POST['payment']) == "paypal"){
+        header("location: payment.php");
+        die();
+    } */
     include("db_connect.php");
     $email = $_SESSION['email'];
     if(isset($_POST['checkout'])){
