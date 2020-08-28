@@ -1,9 +1,9 @@
 <?php
-$url = 'localhost';
-$username = 'root';
-$password = '';
-$con = mysqli_connect($url, $username, $password, "chip_coffee");
-if(!$con){
-    die('Could not connect to ChipCoffee DB...');
-}
+$host = "localhost";
+$username = "root";
+$password = "";
+$dbname = "chip_coffee";
+$dsn = 'mysql:host='. $host. ';dbname=' .$dbname;
+$pdo = new PDO($dsn, $username, $password);
+$pdo -> setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 ?>

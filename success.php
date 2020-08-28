@@ -5,10 +5,11 @@ if (!isset($_SESSION['email'])) {
     header('location: index.php');
 }
 include("./php/db_connect.php");
-$sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = '$email'";
-$resultUser = mysqli_query($con, $sqlLoggedInUser);
-$rowUser = $resultUser -> fetch_array(MYSQLI_ASSOC);
-$firstName = $rowUser['firstName'];
+$sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = ?";
+$resultUser = $pdo -> prepare($sqlLoggedInUser);
+$resultUser -> execute([$email]);
+$user = $resultUser -> fetch();
+$firstName = $user['firstName'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,14 +57,16 @@ $firstName = $rowUser['firstName'];
                         <h5>Διεύθυνση Παράδοσης</h5>
                         <p>
                             <?php
-                            $finalQuery = "SELECT address FROM cc_address WHERE email = '$email'";
-                            $resultFinal = mysqli_query($con, $finalQuery);
-                            $row = mysqli_fetch_assoc($resultFinal);
+                            $finalQuery = "SELECT address FROM cc_address WHERE email = ?";
+                            $stmtFinal = $pdo -> prepare($finalQuery);
+                            $stmtFinal -> execute([$email]);
+                            $row = $stmtFinal -> fetch();
                             echo $row['address'];
                             echo " - ";
-                            $getFloorQuery = "SELECT floor, time FROM cc_checkout WHERE email = '$email' AND id IN (SELECT max(id) FROM cc_checkout WHERE email = '$email')";
-                            $resultGetFloorTime = mysqli_query($con, $getFloorQuery);
-                            $rowGetFloorTime = $resultGetFloorTime -> fetch_array(MYSQLI_ASSOC);
+                            $getFloorQuery = "SELECT floor, time FROM cc_checkout WHERE email = ? AND id IN (SELECT max(id) FROM cc_checkout WHERE email = ?)";
+                            $resultGetFloorTime = $pdo -> prepare($getFloorQuery);
+                            $resultGetFloorTime -> execute([$email, $email]);
+                            $rowGetFloorTime = $resultGetFloorTime -> fetch();
                             echo $rowGetFloorTime['floor'];
                             echo "ος όροφος";
                             ?>

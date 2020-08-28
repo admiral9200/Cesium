@@ -5,11 +5,12 @@ if (!isset($_SESSION['email'])) {
     header('location: index.php');
 }
 $email = $_SESSION['email'];
-$sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = '$email'";
-$resultUser = mysqli_query($con, $sqlLoggedInUser);
-$rowUser = $resultUser -> fetch_array(MYSQLI_ASSOC);
-$firstName = $rowUser['firstName'];
-$lastName = $rowUser['lastName'];
+$sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = ?";
+$resultUser = $pdo -> prepare($sqlLoggedInUser);
+$resultUser -> execute([$email]);
+$user = $resultUser -> fetch();
+$firstName = $user['firstName'];
+$lastName = $user['lastName'];
 ?>
 <!DOCTYPE html>
 <html lang="en">

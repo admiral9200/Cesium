@@ -8,10 +8,11 @@ if (!isset($_SESSION['email'])) {
 if(!isset($_POST['continue'])){
     header("location: order.php");
 }
-$sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = '$email'";
-$resultUser = mysqli_query($con, $sqlLoggedInUser);
-$rowUser = $resultUser -> fetch_array(MYSQLI_ASSOC);
-$firstName = $rowUser['firstName'];
+$sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = ?";
+$resultUser = $pdo -> prepare($sqlLoggedInUser);
+$resultUser -> execute([$email]);
+$user = $resultUser -> fetch();
+$firstName = $user['firstName'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -116,10 +117,11 @@ $firstName = $rowUser['firstName'];
                     <h4 class="d-flex justify-content-between align-items-center mb-4">3. Ολοκλήρωση</h4>
                     <ul class="list-group mb-1">
                         <?php
-                        $cart_query = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_cart WHERE email = '$email'";
-                        $result_cart = mysqli_query($con, $cart_query);
+                        $cart_query = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_cart WHERE email = ?";
+                        $stmtCart = $pdo -> prepare($cart_query);
+                        $stmtCart -> execute([$email]);
                         $totalCost = 0;
-                        while($rowCart = mysqli_fetch_array($result_cart, MYSQLI_ASSOC)){
+                        while($rowCart = $stmtCart -> fetch()){
                             $coffee = $rowCart['coffee'];
                             $sugar = $rowCart['sugar'];
                             $sugarType = $rowCart['sugarType'];

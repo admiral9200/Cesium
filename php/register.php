@@ -1,29 +1,24 @@
 <?php
 session_start();
 include("db_connect.php");
-$email = '';
-$pass = '';
-$firstName = '';
-$lastName = '';
-$errors = array();
 if (isset($_POST['signup'])){
-    $email = mysqli_real_escape_string($con, $_POST['email']);
-    $pass = mysqli_real_escape_string($con, $_POST['pass']);
-    $firstName = mysqli_real_escape_string($con, $_POST['firstName']);
-    $lastName = mysqli_real_escape_string($con, $_POST['lastName']);
-    $email_check_query = "SELECT * FROM cc_users WHERE email='$email' LIMIT 1";
-    $result = mysqli_query($con, $email_check_query);
-    $email_exists = mysqli_fetch_assoc($result);
-    if ($email_exists){
-        if ($email_exists['email'] === $email) {
-            array_push($errors, "Το email αυτό υπάρχει ήδη!");
-            header('location: ../index.php');
-        }
+    $email = $_POST['email'];
+    $pass = $_POST['pass'];
+    $firstName = $_POST['firstName'];
+    $lastName = $_POST['lastName'];
+    $sqlCheckEmail = "SELECT * FROM cc_users WHERE email = ? LIMIT 1";
+    $stmtCheckEmail = $pdo -> prepare($sqlCheckEmail);
+    $stmtCheckEmail -> execute([$email]);
+    $emailToCheck = $stmtCheckEmail -> fetch();
+    if ($emailToCheck && ($emailToCheck['email'] === $email)){
+        $_SESSION['msg'] = "Το email αυτό υπάρχει ήδη";
+        header('location: ../index.php');
     }
-    if (count($errors) == 0){
+    else{
         $pass = md5($pass);
-        $query = "INSERT INTO cc_users (email, password, firstName, lastName) VALUES('$email', '$pass', '$firstName', '$lastName')";
-        mysqli_query($con, $query);
+        $sqlNewUser = "INSERT INTO cc_users (email, password, firstName, lastName) VALUES(? , ? , ? , ?)";
+        $stmtNewUser = $pdo -> prepare($sqlNewUser);
+        $stmtNewUser -> execute([$email, $pass, $firstName, $lastName]);
         header('location: ../success_register.php');
     }
 }

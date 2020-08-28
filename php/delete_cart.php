@@ -3,9 +3,10 @@ include("db_connect.php");
 session_start();
 $email = $_SESSION['email'];
 if(isset($_GET['count'])){
-    $countToDelete = mysqli_real_escape_string($con, $_GET['count']);
-    $deleteQuery = "DELETE FROM cc_cart WHERE email = '$email' AND count = '$countToDelete'";
-    mysqli_query($con, $deleteQuery);
+    $countToDelete = $_GET['count'];
+    $deleteQuery = "DELETE FROM cc_cart WHERE email = ? AND count = ?";
+    $stmtDeleteCoffee = $pdo -> prepare($deleteQuery);
+    $stmtDeleteCoffee -> execute([$email, $countToDelete]);
     header("location: ../order.php");
 }
 else{

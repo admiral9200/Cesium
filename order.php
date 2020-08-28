@@ -5,10 +5,11 @@ $email = $_SESSION['email'];
 if (!isset($_SESSION['email'])) {
     header('location: index.php');
 }
-$sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = '$email'";
-$resultUser = mysqli_query($con, $sqlLoggedInUser);
-$rowUser = $resultUser -> fetch_array(MYSQLI_ASSOC);
-$firstName = $rowUser['firstName'];
+$sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = ?";
+$resultUser = $pdo -> prepare($sqlLoggedInUser);
+$resultUser -> execute([$email]);
+$user = $resultUser -> fetch();
+$firstName = $user['firstName'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -66,11 +67,10 @@ $firstName = $rowUser['firstName'];
             <div class="col-9">
                 <div class="accordion" id="accordionExample">
                     <?php
-                    $coffees_query = "SELECT * FROM cc_coffees";
-                    $result_coffees = mysqli_query($con , $coffees_query);
+                    $result_coffees = $pdo -> query('SELECT * FROM cc_coffees');
                     $bootstrap_count = array("One" , "Two" , "Three" , "Four" , "Five" , "Six" , "Seven" , "Eight" , "Nine" , "Ten");
                     $i = 0;
-                    while($row = mysqli_fetch_array($result_coffees, MYSQLI_ASSOC)){
+                    while($row = $result_coffees -> fetch()){
                         $code = $row['code'];
                         $name = $row['name'];
                         $price = $row['price'];
@@ -189,13 +189,14 @@ $firstName = $rowUser['firstName'];
                     <h4 class="mt-3 mb-3">Το καλάθι σου</h4>
                     <ul class="list-group list-group-flush">
                         <?php
-                        $cart_query = "SELECT count, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_cart WHERE email = '$email'";
-                        $result_cart = mysqli_query($con, $cart_query);
+                        $cart_query = "SELECT count, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_cart WHERE email = ?";
+                        $stmtCart = $pdo -> prepare($cart_query);
+                        $stmtCart -> execute([$email]);
                         $j = 0;
                         $totalCost = 0;
                         $count = 0;
-                        if(mysqli_num_rows($result_cart) >= 1){
-                            while($rowCart = mysqli_fetch_array($result_cart, MYSQLI_ASSOC)){
+                        if($stmtCart -> rowCount() >= 1){
+                            while($rowCart = $stmtCart -> fetch()){
                                 $count = $rowCart['count'];
                                 $coffee = $rowCart['coffee'];
                                 $sugar = $rowCart['sugar'];

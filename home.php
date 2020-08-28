@@ -5,10 +5,11 @@ if (!isset($_SESSION['email'])) {
     header('location: index.php');
 }
 $email = $_SESSION['email'];
-$sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = '$email'";
-$resultUser = mysqli_query($con, $sqlLoggedInUser);
-$rowUser = $resultUser -> fetch_array(MYSQLI_ASSOC);
-$firstName = $rowUser['firstName'];
+$sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = ?";
+$resultUser = $pdo -> prepare($sqlLoggedInUser);
+$resultUser -> execute([$email]);
+$user = $resultUser -> fetch();
+$firstName = $user['firstName'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -61,14 +62,14 @@ $firstName = $rowUser['firstName'];
             </div>
         </nav>
         <?php
-        $email = $_SESSION['email'];
-        $addresses_query = "SELECT * FROM cc_address WHERE email='$email'";
-        $result = mysqli_query($con, $addresses_query);
+        $sqlAddresses = "SELECT * FROM cc_address WHERE email = ?";
+        $stmtAddress = $pdo -> prepare($sqlAddresses);
+        $stmtAddress -> execute([$email]);
         ?>
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <h1>Έχεις όρεξη για καφέ; Πρόσθεσε τη διεύθυνση σου και παράγγειλε!</h1>
-                <button class="btn btn-primary btn-lg btn-block" role="button" onclick="location.href='order.php'" <?php if(mysqli_num_rows($result) == 0){ echo "style='cursor: not-allowed' disabled"; } ?>>Παράγγειλε τώρα</button>        
+                <button class="btn btn-primary btn-lg btn-block" role="button" onclick="location.href='order.php'" <?php if($stmtAddress -> rowCount() == 0){ echo "style='cursor: not-allowed' disabled"; } ?>>Παράγγειλε τώρα</button>        
             </div>
         </div>
     </div>
@@ -123,10 +124,10 @@ $firstName = $rowUser['firstName'];
                             </div>";
                         unset($_SESSION['delete_message']);
                     }
-                    if (mysqli_num_rows($result) > 0){
+                    if ($stmtAddress -> rowCount() > 0){
                         $i = 0;
-                        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)){
-                            $address = $_SESSION['address'] = $row['address'];
+                        while ($row = $stmtAddress -> fetch()){
+                            $address = $row['address'];
                             $state = $row['state'];
                             echo "<li class='list-group-item mt-2 mb-3'>
                                     <div class='row '>
@@ -137,7 +138,7 @@ $firstName = $rowUser['firstName'];
                                             <h6>$state</h6>
                                         </div>
                                         <div class='col-3'>
-                                            <a class='btn btn-primary btn-danger' href='./php/delete.php?address=".$_SESSION['address']."' role='button'>Διαγραφή</a>
+                                            <a class='btn btn-primary btn-danger' href='./php/delete.php?address=".$address."' role='button'>Διαγραφή</a>
                                         </div>
                                     </div>
                                 </li>";
@@ -176,12 +177,12 @@ $firstName = $rowUser['firstName'];
                         </div>
                     </li>
                     <?php
-                    $orders_query = "SELECT id, date, time FROM cc_orders WHERE email='$email'";
-                    $orders_result = mysqli_query($con , $orders_query);
-                    if (mysqli_num_rows($orders_result) > 0){
-                        $row_orders = $orders_result -> fetch_all(MYSQLI_ASSOC);
+                    $sqlOrders = "SELECT id, date, time FROM cc_orders WHERE email = ?";
+                    $stmtOrders = $pdo -> prepare($sqlOrders);
+                    $stmtOrders -> execute([$email]);
+                    if ($stmtOrders -> rowCount() > 0){
                         $id = $date = $time = $qty = $coffee = array();
-                        foreach ($row_orders as $rowOrders) {
+                        while($rowOrders = $stmtOrders -> fetch()) {
                             $id[] = $rowOrders['id'];
                             $date[] = $rowOrders['date'];
                             $time[] = $rowOrders['time'];
@@ -200,12 +201,15 @@ $firstName = $rowUser['firstName'];
                                     </div>
                                     <div class='col-3'>
                                         <?php
-                                        $sqlCPQ = "SELECT coffee, price, qty FROM cc_orders WHERE id = '$ids[$key]'";
-                                        $resultCPQ = mysqli_query($con, $sqlCPQ);
-                                        $rowCPQ = $resultCPQ -> fetch_all(MYSQLI_ASSOC);
-                                        foreach($rowCPQ as $rowCPQ_){
-                                            $coffee = $rowCPQ_['coffee'];
-                                            $qty = $rowCPQ_['qty'];
+                                        $sqlCPQ = "SELECT coffee, price, qty FROM cc_orders WHERE id = ?";
+                                        $stmtCPQ = $pdo -> prepare($sqlCPQ);
+                                        $stmtCPQ -> execute([$ids[$key]]);
+                                        $totalCost = 0;
+                                        while($rowCPQ = $stmtCPQ -> fetch()){
+                                            $coffee = $rowCPQ['coffee'];
+                                            $qty = $rowCPQ['qty'];
+                                            $price = $rowCPQ['price'];
+                                            $totalCost += $price;
                                             echo "<h6>".$qty."x ".$coffee."</h6>";
                                         }
                                         ?>
@@ -213,11 +217,6 @@ $firstName = $rowUser['firstName'];
                                     <div class='col-3'>
                                         <h6>
                                             <?php
-                                            $totalCost = 0;
-                                            foreach($rowCPQ as $rowCPQ_){
-                                                $price = $rowCPQ_['price'];
-                                                $totalCost += $price;
-                                            }
                                             $costString = sprintf("%0.2f", $totalCost);
                                             echo $costString;
                                             ?>

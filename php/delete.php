@@ -2,9 +2,10 @@
 include("db_connect.php");
 session_start();
 if (isset($_GET['address'])){
-    $address_to_delete = mysqli_real_escape_string($con, $_GET['address']);
-    $delete_query = "DELETE FROM cc_address WHERE address = '$address_to_delete'";
-    mysqli_query($con, $delete_query);
+    $address_to_delete = $_GET['address'];
+    $sqlDeleteAddress = "DELETE FROM cc_address WHERE address = ?";
+    $stmtDeleteAddress = $pdo -> prepare($sqlDeleteAddress);
+    $stmtDeleteAddress -> execute([$address_to_delete]);
     $_SESSION['delete_message'] = "Η διεύθυνση διαγράφηκε.";
     header("location: ../home.php");
 }

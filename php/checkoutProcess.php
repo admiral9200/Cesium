@@ -2,6 +2,7 @@
 session_start();
 date_default_timezone_set('Europe/Athens');
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    //Paypal Integration not working on localhost
     /* if(isset($_POST['payment']) == "paypal"){
         header("location: payment.php");
         die();
@@ -11,24 +12,24 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if(isset($_POST['checkout'])){
         $date = date("d.m.y");
         $time = date("H:i:s");
-        $sql_id = "SELECT id FROM cc_id";
-        $resID = mysqli_query($con, $sql_id);
-        $rowID = mysqli_fetch_assoc($resID);
-        $id = "cc".$rowID['id'];
+        $stmtID = $pdo -> query("SELECT id FROM cc_id");
+        $stmtID -> fetch();
+        $id = "cc".$stmtID['id'];
         $doorname = $_POST['doorname'];
         $floor = $_POST['floor'];
         $phone = $_POST['phone'];
         $comment = $_POST['comment'];
         $payment = $_POST['payment'];
-        $checkoutInfo = "INSERT INTO cc_checkout (id, email, doorname, floor, phone, comment, date, time) VALUES('$id', '$email', '$doorname', '$floor', '$phone', '$comment', '$date', '$time')";
-        mysqli_query($con, $checkoutInfo);
+        $checkoutInfo = "INSERT INTO cc_checkout (id, email, doorname, floor, phone, comment, date, time) VALUES(? , ? , ? , ? , ? , ? , ? , ?)";
+        $stmtChekoutInfo = $pdo -> prepare($checkoutInfo);
+        $stmtChekoutInfo -> execute([$id, $email, $doorname, $floor, $phone, $comment, $date, $time]);
         //UPDATE ORDERS OF USERS IN HOME PAGE... send cart values to orderBackendPanel with id from checkout and keep checkout as it is. get order together with same id (checkout, order)
         //cart fetch
         $totalCost = $i = 0;
-        $fetchCart_sql = "SELECT email, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_cart WHERE email = '$email'";
-        $resultFetchCart = mysqli_query($con, $fetchCart_sql);
-        $fetchCart = $resultFetchCart -> fetch_all(MYSQLI_ASSOC);
-        foreach($fetchCart as $rowInsertToBackend){
+        $sqlFetchCart = "SELECT email, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_cart WHERE email = ?";
+        $stmtFetchCart = $pdo -> prepare($sqlFetchCart);
+        $stmtFetchCart -> execute([$email]);
+        while($rowInsertToBackend = $stmtFetchCart -> fetch()){
             $coffee = $rowInsertToBackend['coffee'];
             $sugar = $rowInsertToBackend['sugar'];
             $sugarType = $rowInsertToBackend['sugarType'];
@@ -38,20 +39,24 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $price = $rowInsertToBackend['price'];
             $qty = $rowInsertToBackend['qty'];
             //Insert to Backend Panel for process order
-            $sqlInsert = "INSERT INTO cc_ordersBackendPanel (id, email, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty) VALUES ('$id', '$email', '$coffee', '$sugar', '$sugarType', '$milk', '$cinnamon', '$choco', '$price', '$qty')";
-            mysqli_query($con, $sqlInsert);
+            $sqlInsert = "INSERT INTO cc_ordersBackendPanel (id, email, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty) VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)";
+            $stmtInsertToBackend = $pdo -> prepare($sqlInsert);
+            $stmtInsertToBackend -> execute([$id, $email, $coffee, $sugar, $sugarType, $milk, $cinnamon, $choco, $price, $qty]);
             //Insert to Users home.php
-            $sqlinsertToUser = "INSERT INTO cc_orders (id, email, date, time, coffee, price, qty) VALUES ('$id', '$email', '$date', '$time', '$coffee', '$price', '$qty')";
-            mysqli_query($con, $sqlinsertToUser);
+            $sqlInsertToUser = "INSERT INTO cc_orders (id, email, date, time, coffee, price, qty) VALUES ( ? , ? , ? , ? , ? , ? , ?)";
+            $stmtInsertToUser = $pdo -> prepare($sqlInsertToUser);
+            $stmtInsertToUser -> execute([$id, $email, $date, $time, $coffee, $price, $qty]);
         }
         //Update/Increase ID order number in id table
-        $idNumber = $rowID['id'];
+        $idNumber = $stmtID['id'];
         $idNumber++;
-        $sqlIncID = "UPDATE cc_id SET id = '$idNumber'";
-        mysqli_query($con, $sqlIncID);
+        $sqlIncID = "UPDATE cc_id SET id = ?";
+        $stmtIncID = $pdo -> prepare($sqlIncID);
+        $stmtIncID -> execute([$idNumber]);
         //Clear Cart after order placed
-        $sqlClearCart = "DELETE FROM cc_cart WHERE email = '$email'";
-        mysqli_query($con, $sqlClearCart);
+        $sqlClearCart = "DELETE FROM cc_cart WHERE email = ?";
+        $stmtClearCart = $pdo -> prepare($sqlClearCart);
+        $stmtClearCart -> execute([$email]);
         header("location: ../success.php");
     }
 }
