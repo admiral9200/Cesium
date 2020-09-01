@@ -10,6 +10,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['logout'])){
   session_unset();
   header("location: index.php");
 }
+include_once("./php/db.php");
 ?>
 <!DOCTYPE html>
     <head>
@@ -56,11 +57,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['logout'])){
         <!-- Main Panel-->
         <div class="sidebar p-3">
           <h1>Stats</h1>
-          <h6>User registered: 12049</h6>
+          <?php
+          $sqlNumberOfUsers = "SELECT COUNT(email) AS NumberOfUsers FROM cc_users";
+          $stmtNumberOfUsers = $pdo -> prepare($sqlNumberOfUsers);
+          $stmtNumberOfUsers -> execute();
+          $NumberOfUsers = $stmtNumberOfUsers -> fetch();
+          ?>
+          <h6>Users registered: <?php echo $NumberOfUsers['NumberOfUsers']; ?></h6>
           <h6>Order Made: 7043</h6>
           <h6>Order Made: 7043</h6>
           <h6>Order Made: 7043</h6> 
-          <form method="POST" class="logout">
+          <form method="POST" class="logout fixed-bottom">
             <button class="btn btn-danger btn-block" value="logout" name="logout"><i class="fas fa-sign-out-alt"></i></button>
           </form>
         </div>
