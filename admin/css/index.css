@@ -1,0 +1,23 @@
+html, body{
+    background-color: #15181a;
+    background-image: url("../../images/subtle-carbon.jpg") !important;
+    font-family: 'Manrope', sans-serif !important;
+    color: white !important;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.logo{
+    height: 380px !important;
+    width: 380px !important;
+}
+
+#particles-js{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+h1{
+    font-size: 70px;
+}

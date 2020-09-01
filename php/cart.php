@@ -90,6 +90,7 @@ if(isset($_POST['addToCart'])){
         //INSERT TO CART COFFEESSS :D
         $cart_query = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco FROM cc_cart WHERE email = ?";
         $stmtCart = $pdo -> prepare($cart_query);
+        $stmtCart -> execute([$email]);
         $count = $stmtCart -> rowCount();
         foreach($coffees as $row){
             $code = $row['code'];

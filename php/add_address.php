@@ -11,8 +11,8 @@ if (isset($_POST['add'])){
         header("location: ../home.php");
     }
     else{
-        $address = mysqli_real_escape_string($con, $_POST['address']);
-        $state = mysqli_real_escape_string($con, $_POST['state']);
+        $address = $_POST['address'];
+        $state = $_POST['state'];
         $add_address_query = "INSERT INTO cc_address (email, address, state) VALUES (? , ? , ?)";
         $stmtAddAddresses = $pdo -> prepare($add_address_query);
         $stmtAddAddresses -> execute([$email, $address, $state]);

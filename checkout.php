@@ -55,8 +55,8 @@ $firstName = $user['firstName'];
                 <img src="./images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
             <div class="dropdown">
-                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $firstName; ?></button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $firstName; ?> <i class="far fa-user"></i></a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" href="profile.php">Ο λογαριασμός μου</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="./php/logout.php">Αποσύνδεση</a>
@@ -181,3 +181,6 @@ $firstName = $user['firstName'];
     <?php echo file_get_contents("./html/sale.html"); ?>
     <!-------------------- Site footer ---------------------->
     <?php echo file_get_contents("./html/footer.html"); ?>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"
+        integrity="sha512-YSdqvJoZr83hj76AIVdOcvLWYMWzy6sJyIMic2aQz5kh2bPTd9dzY3NtdeEAzPp/PhgZqr4aJObB3ym/vsItMg=="
+        crossorigin="anonymous"></script>

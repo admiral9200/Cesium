@@ -12,9 +12,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if(isset($_POST['checkout'])){
         $date = date("d.m.y");
         $time = date("H:i:s");
-        $stmtID = $pdo -> query("SELECT id FROM cc_id");
-        $stmtID -> fetch();
-        $id = "cc".$stmtID['id'];
+        $stmtID = $pdo -> prepare("SELECT id FROM cc_id");
+        $stmtID -> execute();
+        $rowID = $stmtID -> fetch();
+        $id = "cc".$rowID['id'];
         $doorname = $_POST['doorname'];
         $floor = $_POST['floor'];
         $phone = $_POST['phone'];
@@ -48,7 +49,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $stmtInsertToUser -> execute([$id, $email, $date, $time, $coffee, $price, $qty]);
         }
         //Update/Increase ID order number in id table
-        $idNumber = $stmtID['id'];
+        $idNumber = $rowID['id'];
         $idNumber++;
         $sqlIncID = "UPDATE cc_id SET id = ?";
         $stmtIncID = $pdo -> prepare($sqlIncID);

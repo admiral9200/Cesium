@@ -15,7 +15,7 @@ if (isset($_POST['signup'])){
         header('location: ../index.php');
     }
     else{
-        $pass = md5($pass);
+        $pass = password_hash($pass, PASSWORD_DEFAULT);
         $sqlNewUser = "INSERT INTO cc_users (email, password, firstName, lastName) VALUES(? , ? , ? , ?)";
         $stmtNewUser = $pdo -> prepare($sqlNewUser);
         $stmtNewUser -> execute([$email, $pass, $firstName, $lastName]);

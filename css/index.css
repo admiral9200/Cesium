@@ -40,6 +40,17 @@ html , body{
     font-family: 'Manrope', sans-serif !important;
 }
 
+#dropdownMenuLink{
+    color: white !important;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+#dropdownMenuLink:hover{
+    color: #c59613 !important;
+    text-decoration: none !important;
+}
+
 .background {
     background-image: url("../images/coffee-beans.jpg");
     background-size: inherit;
