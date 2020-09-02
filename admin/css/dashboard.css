@@ -8,6 +8,10 @@ body {
   user-select: none;
 }
 
+.sz{
+  font-size: 15px !important;
+}
+
 .logout {
   position: absolute;
   bottom: 12%;

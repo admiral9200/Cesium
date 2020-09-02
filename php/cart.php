@@ -102,7 +102,7 @@ if(isset($_POST['addToCart'])){
             $milk = "milk_".$row['code'];
             $cinnamon = "cinnamon_".$row['code'];
             $choco = "choco_".$row['code'];
-            if (isset($_POST[$sugar])){
+            if (isset($_POST[$sugar])){// Fix SugarType when is empty in query
                 $count++;
                 $cart_query = "INSERT INTO cc_cart (email, count, code, coffee, sugar, sugarType, price, qty) VALUES( ? , ? , ? , ? , ? , ? , ? , 1)";
                 $stmtCartInsert = $pdo -> prepare($cart_query);

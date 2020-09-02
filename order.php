@@ -212,16 +212,10 @@ $firstName = $user['firstName'];
                                     </li>
                                     <li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0 pt-0 mt-0'>
                                         <p class='attr'>".$sugar.", ".$sugarType."";
-                                if($milk == 1){
-                                    echo ", Γάλα";
-                                }
-                                if($cinnamon == 1){
-                                    echo ", Κανέλα";
-                                }
-                                if($choco == 1){
-                                    echo ", Σκόνη Σοκολάτας";
-                                }
-                                ?> 
+                                            if($milk == 1) echo ", Γάλα";
+                                            if($cinnamon == 1) echo ", Κανέλα";
+                                            if($choco == 1) echo ", Σκόνη Σοκολάτας";
+                                            ?> 
                                     </p>
                                 </li>
                                 <li>

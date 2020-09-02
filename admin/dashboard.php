@@ -1,6 +1,5 @@
 <?php
 session_start();
-include("./php/db.php");
 if (!isset($_SESSION['email'])) {
     session_destroy();
     header('location: index.php');
@@ -62,11 +61,18 @@ include_once("./php/db.php");
           $stmtNumberOfUsers = $pdo -> prepare($sqlNumberOfUsers);
           $stmtNumberOfUsers -> execute();
           $NumberOfUsers = $stmtNumberOfUsers -> fetch();
+          $sqlOrdersMade = "SELECT COUNT(id) AS NumberOfOrders FROM cc_checkout";
+          $stmtOrdersMade = $pdo -> prepare($sqlOrdersMade);
+          $stmtOrdersMade -> execute();
+          $Ordersmade = $stmtOrdersMade -> fetch();
+          $sqlAllOrders = "SELECT COUNT(DISTINCT id) AS NumberOfAllOrders FROM cc_orders";
+          $stmtAllOrders = $pdo -> prepare($sqlAllOrders);
+          $stmtAllOrders -> execute();
+          $NumberOfAllOrders = $stmtAllOrders -> fetch();
           ?>
           <h6>Users registered: <?php echo $NumberOfUsers['NumberOfUsers']; ?></h6>
-          <h6>Order Made: 7043</h6>
-          <h6>Order Made: 7043</h6>
-          <h6>Order Made: 7043</h6> 
+          <h6>Order Made: <?php echo $Ordersmade['NumberOfOrders']; ?></h6>
+          <h6>All Orders Made in Platform: <?php echo $NumberOfAllOrders['NumberOfAllOrders']; ?></h6>
           <form method="POST" class="logout fixed-bottom">
             <button class="btn btn-danger btn-block" value="logout" name="logout"><i class="fas fa-sign-out-alt"></i></button>
           </form>
@@ -75,40 +81,99 @@ include_once("./php/db.php");
           <div class="row">
             <div class="col">
             <?php
-                for ($i=0; $i < 5; $i++) { 
+            $sqlCheckout = "SELECT * FROM cc_checkout";
+            $stmtCheckout = $pdo -> prepare($sqlCheckout);
+            $stmtCheckout -> execute();
+            $sqlOrdersExists = "SELECT COUNT(id) AS OrdersExists FROM cc_ordersBackendPanel";
+            $stmtOrdersExists = $pdo -> prepare($sqlOrdersExists);
+            $stmtOrdersExists -> execute();
+            if(($stmtCheckout -> rowCount() > 0) && ($stmtOrdersExists -> rowCount() > 0)){
+              while($rowCheckout = $stmtCheckout -> fetch()){
+                $id = $rowCheckout['id'];
+                $email = $rowCheckout['email'];
+                $sqlUserName = "SELECT firstName, lastName FROM cc_users WHERE email = ?";
+                $stmtUserName = $pdo -> prepare($sqlUserName);
+                $stmtUserName -> execute([$email]);
+                $rowUserName = $stmtUserName -> fetch();
+                $firstName = $rowUserName['firstName'];
+                $lastName = $rowUserName['lastName'];
+                $doorname = $rowCheckout['doorname'];
+                $floor = $rowCheckout['floor'];
+                $phone = $rowCheckout['phone'];
+                $comment = $rowCheckout['comment'];
+                $date = $rowCheckout['date'];
+                $time = $rowCheckout['time'];
                 ?>
                 <div class="card mb-3">
                   <div class="card-body row">
                     <div class="col-1">
-                      <p>id</p>
+                      <p><?php echo $id; ?></p>
                     </div>
                     <div class="col-2">
-                      <h6>firstName lastName</h6>
-                      <p>email</p>
+                      <h6><?php echo $firstName." ".$lastName; ?></h6>
+                      <p><?php echo $email; ?></p>
                     </div>
                     <div class="col-2">
-                      <p>doorname floor - phone</p>
-                      <p>comments</p>
+                      <p><?php echo $doorname." ".$floor." - ".$phone; ?></p>
+                      <p><?php echo $comment; ?></p>
                     </div>
                     <div class="col-1">
-                      <p>date</p>
-                      <p>time</p>
+                      <p><?php echo $date; ?></p>
+                      <p><?php echo $time; ?></p>
                     </div>
                     <div class="col-3">
-                      <h6>1x Freddo Cappuccino</h6>
-                      <p>Glykos, Leuki Zaxari, kanela, sokolata</p>
+                      <?php
+                      $totalCost = 0;
+                      $sqlBackendOrders = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_ordersBackendPanel WHERE id = ?";
+                      $stmtOrdersPanel = $pdo -> prepare($sqlBackendOrders);
+                      $stmtOrdersPanel -> execute([$id]);
+                      while ($rowOrder = $stmtOrdersPanel -> fetch()) {
+                        $coffee = $rowOrder['coffee'];
+                        $sugar = $rowOrder['sugar'];
+                        $sugarType = $rowOrder['sugarType'];
+                        $milk = $rowOrder['milk'];
+                        $cinnamon = $rowOrder['cinnamon'];
+                        $choco = $rowOrder['choco'];
+                        $price = $rowOrder['price'];
+                        $totalCost += $price;
+                        $qty = $rowOrder['qty'];
+                        ?>
+                          <h5 class="mb-0"><?php echo $qty."x ".$coffee ?></h5>
+                          <p class="sz">
+                            <?php echo $sugar.", ".$sugarType; 
+                            if($milk == 1) echo ", Γάλα";
+                            if($cinnamon == 1) echo ", Κάνελα";
+                            if($choco == 1) echo ", Σκόνη Σοκολάτας";
+                            ?>
+                          </p>
+                        <?php
+                      }
+                      ?>
                     </div>
                     <div class="col-1">
-                      <h6>Cost</h6>
+                      <h6>
+                        <?php
+                        $costString = sprintf("%0.2f", $totalCost);
+                        echo $costString;
+                        ?>
+                      </h6>
                     </div>
                     <div class="col-2">
-                      <button class="btn btn-primary btn-lg btn-block">Execute</button>
+                      <form action="./php/deleteOrder.php" method="POST">
+                        <button value="<?php echo $id; ?>" name="deleteOrder" class="btn btn-primary btn-lg btn-block">Execute</button>
+                      </form>
                     </div>
                   </div>
                 </div>
-                <?php
-                }
-                ?>
+              <?php
+              }
+            }
+            else{
+              ?>
+              <h1>Δεν υπάρχουν νέες παραγγελίες!</h1>
+              <?php
+            }
+            ?>
             </div>
           </div>
         </div>
