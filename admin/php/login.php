@@ -9,7 +9,7 @@ if (isset($_POST['login'])){
     $stmtUser = $pdo -> prepare($sqlUser);
     $stmtUser -> execute([$email, $pass]);
     if ($stmtUser -> rowCount() == 1){
-        $_SESSION['email'] = $email;
+        $_SESSION['admin'] = $email;
         header('location: ../dashboard.php');
     }
     else{

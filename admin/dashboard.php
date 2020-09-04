@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['email'])) {
+if (!isset($_SESSION['admin'])) {
     session_destroy();
     header('location: index.php');
 }
@@ -10,6 +10,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['logout'])){
   header("location: index.php");
 }
 include_once("./php/db.php");
+$email = $_SESSION['admin'];
+$sqlAdmin = "SELECT firstName, lastName FROM cc_admins WHERE email = ?";
+$stmtAdmin = $pdo -> prepare($sqlAdmin);
+$stmtAdmin -> execute([$email]);
+$admin = $stmtAdmin -> fetch();
+$firstName = $admin['firstName'];
+$lastName = $admin['lastName'];
 ?>
 <!DOCTYPE html>
     <head>
@@ -20,7 +27,7 @@ include_once("./php/db.php");
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="./css/dashboard.css">
         <link rel="icon" type="image/png" href="../images/chip_coffee.png">
-        <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
         <link rel="stylesheet" href="../bootstrap-4.5.0/css/bootstrap.min.css">
     </head>
@@ -34,17 +41,17 @@ include_once("./php/db.php");
           <div class="col-4">
             <ul class="nav justify-content-center">
               <li class="nav-item">
-                <a class="nav-link active" href="#">Orders</a>
+                <a class="nav-link active" href="dashboard.php">Orders</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">System</a>
+                <a class="nav-link" href="system.php">System</a>
               </li>
             </ul> 
           </div>
           <div class="row col-4 justify-content-end">
             <ul class="nav">
               <li class="dropdown">
-                  <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin <i class="far fa-user"></i></a>
+                  <a href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $firstName." ".$lastName; ?> <i class="far fa-user"></i></a>
                   <div class="dropdown-menu dropdown-menu-right">
                     <a class="dropdown-item menu" href="#">Profile</a>
                     <a class="dropdown-item menu" href="#">Settings</a>
@@ -170,7 +177,7 @@ include_once("./php/db.php");
             }
             else{
               ?>
-              <h1>Δεν υπάρχουν νέες παραγγελίες!</h1>
+              <h1>All good! No new orders</h1>
               <?php
             }
             ?>
