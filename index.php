@@ -43,7 +43,7 @@ if (isset($_SESSION['email'])){
 <body>
     <div class="background">
         <nav class="navbar navbar-light container">
-            <a class="navbar-brand" href="index.php">
+            <a class="navbar-brand" href="/www/">
                 <img src="./images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
         </nav>

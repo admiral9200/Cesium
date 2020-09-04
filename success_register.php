@@ -7,12 +7,8 @@
     <link rel="stylesheet" type="text/css" href="./css/index.css">
     <link rel="stylesheet" type="text/css" href="./css/success.css">
     <link rel="icon" type="image/png" href="./images/chip_coffee.png" size="20x20">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css">
-    <script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
     <div class="background">
@@ -29,10 +25,12 @@
             </div>
             <h1 class="alert-heading space">Καλωσήρθες στο Chip Coffee!</h1>
             <p class="text-center chk-p">Η εγγραφή σου έγινε με επιτυχία. Θα λάβεις ένα email για την επιβεβαίωση του λογαριασμού σου.</p>
-            <a href="index.php">Πίσω στην αρχική</a>
+            <div class="row justify-content-center">
+                <button class="btn btn-info btn-lg " href="/www/">Πίσω στην αρχική</button>
+            </div>
         </div>
     </div>
-    <footer class="site-footer fixed-bottom">
+    <footer class="site-footer fixed-bottom nobot">
     <div class="container">
     <div class="row">
         <div class="col-sm-12 col-md-5">
@@ -55,9 +53,9 @@
         <div class="col-xs-6 col-md-3">
             <h6>Ακολουθησε το ChipCoffee στα social media!</h6>
             <ul class="social-icons float-left">
-                <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
-                <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
-                <li><a class="instagram" href="#"><i class="fa fa-instagram"></i></a></li>   
+                <li><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
+                <li><a class="twitter" href="#"><i class="fab fa-twitter"></i></a></li>
+                <li><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>   
             </ul>
         </div>
     </div>
@@ -71,5 +69,10 @@
     </div>
     </div>
 </footer>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"
+        integrity="sha512-YSdqvJoZr83hj76AIVdOcvLWYMWzy6sJyIMic2aQz5kh2bPTd9dzY3NtdeEAzPp/PhgZqr4aJObB3ym/vsItMg=="
+        crossorigin="anonymous"></script>
 </body>
 </html>

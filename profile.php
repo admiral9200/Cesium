@@ -18,7 +18,6 @@ $lastName = $user['lastName'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
     <title>Chip Coffee | Online Coffee Delivery</title>
-    <link rel="stylesheet" type="text/css" href="./css/index.css">
     <link rel="stylesheet" type="text/css" href="./css/home.css">
     <link rel="icon" type="image/png" href="./images/chip_coffee.png">
     <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css">
@@ -35,7 +34,7 @@ $lastName = $user['lastName'];
             </a>
             <div class="dropdown">
                 <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $firstName; ?> <i class="far fa-user"></i></a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                   <a class="dropdown-item" href="profile.php">Ο λογαριασμός μου</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="./php/logout.php">Αποσύνδεση</a>
@@ -48,15 +47,15 @@ $lastName = $user['lastName'];
             </div>
         </div>
     </div>
-    <div class="container space py-4">
+    <div class="container py-4">
         <div class="row my-2">
-            <div class="col-3 text-center space">
+            <div class="col-xl-3 col-12 text-center space">
                 <div class="sticky-top pt-4 pb-4">
                     <img src="//api.adorable.io/avatars/120/trickst3r.png" class="mx-auto img-fluid rounded-circle" alt="avatar" />
                     <h4 class="my-4"><?php echo $firstName; echo ' '; echo $lastName; ?></h4>
                 </div>
             </div>
-            <div class="col-9 personal-info">
+            <div class="col-xl-9 col-12 personal-info">
                 <form role="form" method="POST" action="./php/changeCreds.php">
                     <h4 class="mb-4">Τα στοιχεία μου</h4>
                     <?php
@@ -66,22 +65,20 @@ $lastName = $user['lastName'];
                     }
                     ?>
                     <div class="form-group row mb-0">
-                        <label class="col-5 col-form-label form-control-label pl-3">Όνομα</label>
-                        <label class="col-5 col-form-label form-control-label">Επώνυμο</label>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-5">
+                        <div class="col-xl-5 col-12">
+                            <label class="col-xl-5 col-form-label form-control-label pl-3">Όνομα</label>
                             <input class="form-control" type="text" name="firstName" value="<?php echo $firstName; ?>"/>
                         </div>
-                        <div class="col-5">
+                        <div class="col-xl-5 col-12">
+                            <label class="col-xl-5 col-form-label form-control-label">Επώνυμο</label>
                             <input class="form-control" type="text" name="lastName" value="<?php echo $lastName; ?>"/>
                         </div>
                     </div>
                     <div class="form-group row mt-4 mb-0">
-                        <label class="col-5 col-form-label form-control-label pl-3">email</label>
+                        <label class="col-xl-5 col-form-label form-control-label pl-3">email</label>
                     </div>
                     <div class="form-group row">
-                        <div class="col-5 mb-0">
+                        <div class="col-xl-5 mb-0">
                             <input class="form-control" type="text" value="<?php echo $_SESSION['email']; ?>" disabled/>
                         </div>
                     </div>
@@ -98,7 +95,7 @@ $lastName = $user['lastName'];
                             <input type="submit" name="changeName" class="btn btn-primary btn-lg btn-block" value="Αποθήκευση Αλλαγών"/>
                         </div>
                     </div>
-                    <hr class="space">
+                    <hr class="mt-4 mb-4">
                 </form>
                 <form action="./php/changeCreds.php" method="POST">
                     <h4 class="mb-4">Αλλαγή κωδικού</h4>
@@ -109,23 +106,23 @@ $lastName = $user['lastName'];
                     }
                     ?>
                     <div class="form-group row mt-4 mb-0">
-                        <label class="col-5 col-form-label form-control-label pl-3">Τρέχων κωδικός</label>
+                        <label class="col-xl-5 col-12 col-form-label form-control-label pl-3">Τρέχων κωδικός</label>
                     </div>
                     <div class="form-group row">
-                        <div class="col-5">
+                        <div class="col-xl-5 col-12">
                             <input class="form-control" type="password" name="oldpass"/>
                         </div>
                     </div>
                     <div class="form-group row mt-4 mb-0">
-                        <label class="col-5 col-form-label form-control-label">Νέος κωδικός</label>
+                        <label class="col-xl-5 col-12 col-form-label form-control-label">Νέος κωδικός</label>
                     </div>
                     <div class="form-group row">
-                        <div class="col-5">
+                        <div class="col-xl-5 col-12">
                             <input class="form-control" type="password" name="newpass"/>
                         </div>
                     </div>
                     <div class="form-group row mt-5">
-                        <div class="col-12 ml-auto text-right">
+                        <div class="col-xl-5 col-12 ml-auto text-right">
                             <input type="submit" name="changepass" class="btn btn-primary btn-lg btn-block" value="Αποθήκευση Αλλαγών"/>
                         </div>
                     </div>
@@ -136,6 +133,3 @@ $lastName = $user['lastName'];
     <!-- Site footer -->
     <?php echo file_get_contents("./html/footer.html"); ?>
     <script src="./js/cart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"
-        integrity="sha512-YSdqvJoZr83hj76AIVdOcvLWYMWzy6sJyIMic2aQz5kh2bPTd9dzY3NtdeEAzPp/PhgZqr4aJObB3ym/vsItMg=="
-        crossorigin="anonymous"></script>

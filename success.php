@@ -17,7 +17,6 @@ $firstName = $user['firstName'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
     <title>Chip Coffee | Online Coffee Delivery</title>
-    <link rel="stylesheet" type="text/css" href="./css/index.css">
     <link rel="stylesheet" type="text/css" href="./css/success.css">
     <link rel="icon" type="image/png" href="./images/chip_coffee.png" size="20x20">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
@@ -35,7 +34,7 @@ $firstName = $user['firstName'];
             </a>
             <div class="dropdown">
                 <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $firstName; ?> <i class="far fa-user"></i></a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" href="profile.php">Ο λογαριασμός μου</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="./php/logout.php">Αποσύνδεση</a>
@@ -53,7 +52,7 @@ $firstName = $user['firstName'];
             <hr>
             <div class="container-fluid ">
                 <div class="row">
-                    <div class="col-6 text-center">
+                    <div class="col-xl-6 col-12 pl-xl-4 pr-xl-4 p-0 text-center">
                         <h5>Διεύθυνση Παράδοσης</h5>
                         <p>
                             <?php
@@ -72,7 +71,7 @@ $firstName = $user['firstName'];
                             ?>
                         </p>
                     </div>
-                    <div class="col-6 text-center">
+                    <div class="col-xl-6 col-12 pl-xl-4 pr-xl-4 p-0 text-center">
                         <h5>Ώρα Παραγγελίας</h5>
                         <p><?php echo $rowGetFloorTime['time']; ?></p>
                     </div>
@@ -80,8 +79,5 @@ $firstName = $user['firstName'];
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"
-        integrity="sha512-YSdqvJoZr83hj76AIVdOcvLWYMWzy6sJyIMic2aQz5kh2bPTd9dzY3NtdeEAzPp/PhgZqr4aJObB3ym/vsItMg=="
-        crossorigin="anonymous"></script>
     <!-------------------- Site footer --------------------------->
     <?php echo file_get_contents("./html/footer.html"); ?>

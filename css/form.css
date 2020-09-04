@@ -1,17 +1,9 @@
-@media (max-width:500px) { 
-    .card{
-        width: 385px !important;
-    }
-}
-
-@media (max-width:400px) { 
-    .card{
-        width: 330px !important;
-        font-size: 20px !important;
-    }
-
+@media (max-width:450px) { 
     .login-snip{
-        padding: 30px 40px 10px 40px !important;
+        padding: 20px 20px 20px 20px !important;
+    }
+    .card{
+        width: auto !important;
     }
 }
 

@@ -17,14 +17,12 @@ $firstName = $user['firstName'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
     <title>Chip Coffee | Online Coffee Delivery</title>
-    <link rel="stylesheet" type="text/css" href="./css/index.css">
     <link rel="stylesheet" type="text/css" href="./css/home.css">
     <link rel="icon" type="image/png" href="./images/chip_coffee.png">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css">
     <script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <script>
         // Example starter JavaScript for disabling form submissions if there are invalid fields
         (function() {
@@ -54,7 +52,7 @@ $firstName = $user['firstName'];
             </a>
             <div class="dropdown">
                 <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $firstName; ?> <i class="far fa-user"></i></a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                   <a class="dropdown-item" href="profile.php">Ο λογαριασμός μου</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="./php/logout.php">Αποσύνδεση</a>
@@ -69,27 +67,27 @@ $firstName = $user['firstName'];
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <h1>Έχεις όρεξη για καφέ; Πρόσθεσε τη διεύθυνση σου και παράγγειλε!</h1>
-                <button class="btn btn-primary btn-lg btn-block" role="button" onclick="location.href='order.php'" <?php if($stmtAddress -> rowCount() == 0){ echo "style='cursor: not-allowed' disabled"; } ?>>Παράγγειλε τώρα</button>        
+                <button class="btn btn-primary btn-lg btn-block" role="button" onclick="location.href='order.php'" <?php if($stmtAddress -> rowCount() == 0){ echo "style='cursor: not-allowed;' disabled"; } ?>>Παράγγειλε τώρα</button>       
             </div>
         </div>
     </div>
     <div class="container space">
-        <form action="./php/add_address.php" class="form-group needs-validation" method="POST" novalidate>
+        <form action="./php/add_address.php" class="form-group needs-validation pr-0" method="POST" novalidate>
             <div class="row">
-                <div class="group col-5">   
+                <div class="group col-xl-5 col-12 mt-1">   
                     <input name="address" type="text" class="input form-control form-control-lg w-100" placeholder="Πρόσθεσε εδώ την διεύθυνσή σου" required>
                     <div class="invalid-feedback">
                         Πρέπει να συμπληρώσεις την διεύθυνσή σου.
                     </div>
                 </div>
-                <div class="group col-5">
+                <div class="group col-xl-5 col-12 mt-1">
                     <input name="state" type="text" class="input form-control form-control-lg w-100" placeholder="Πρόσθεσε εδώ την περιοχή σου" required>
                     <div class="invalid-feedback">
                         Πρέπει να συμπληρώσεις την περιοχή σου.
                     </div>
                 </div>
-                <div class="group col-2 sticky-top">
-                    <button name="add" type="submit" class="btn btn-primary btn-lg">Προσθήκη</button>
+                <div class="group col-xl-2 col-12 mt-1">
+                    <button name="add" type="submit" class="btn btn-primary btn-lg btn-block">Προσθήκη</button>
                 </div>
             </div>
         </form>
@@ -100,17 +98,16 @@ $firstName = $user['firstName'];
             unset($_SESSION['addresses']);
         }
         ?>
-        <hr class="mt-5 mb-5">
-        <h2 style="color: black !important;" class="mb-5">Οι διευθύνσεις μου</h2>
+        <h2 style="color: black !important;" class="mb-2 mt-3">Οι διευθύνσεις μου</h2>
         <div class="row">
             <div class="col-12">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item mt-4 mb-4">
                         <div class="row">
-                            <div class="col-3">
+                            <div class="col-xl-3 col-6">
                                 <h6>Διεύθυνση</h6>
                             </div>
-                            <div class="col-3">
+                            <div class="col-xl-3 col-6">
                                 <h6>Περιοχή</h6>
                             </div>
                         </div>
@@ -131,14 +128,14 @@ $firstName = $user['firstName'];
                             $state = $row['state'];
                             echo "<li class='list-group-item mt-2 mb-3'>
                                     <div class='row '>
-                                        <div class='col-3 align-middle'>
+                                        <div class='col-xl-3 col-6 align-middle'>
                                             <h6>$address</h6>
                                         </div>
-                                        <div class='col-3 align-middle'>
+                                        <div class='col-xl-3 col-6 align-middle'>
                                             <h6>$state</h6>
                                         </div>
-                                        <div class='col-3'>
-                                            <a class='btn btn-primary btn-danger' href='./php/delete.php?address=".$address."' role='button'>Διαγραφή</a>
+                                        <div class='col-xl-2 col-12'>
+                                            <a class='btn btn-primary btn-block btn-danger' href='./php/delete.php?address=".$address."' role='button'>Διαγραφή</a>
                                         </div>
                                     </div>
                                 </li>";
@@ -160,7 +157,7 @@ $firstName = $user['firstName'];
         <div class="row">
             <div class="col-12">
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item mt-4 mb-4">
+                    <li class="list-group-item mt-4 mb-4 formobile">
                         <div class="row">
                             <div class="col-3">
                                 <h6>Κωδ. Παραγγελίας</h6>
@@ -192,14 +189,14 @@ $firstName = $user['firstName'];
                             ?>
                             <li class='list-group-item mt-2 mb-4'>
                                 <div class='row'>
-                                    <div class='col-3'>
+                                    <div class='col-xl-3 col-6 text-xl-left text-left'>
                                         <h6><?php echo $ids[$key]; ?></h6>
                                     </div>
-                                    <div class='col-3'>
+                                    <div class='col-xl-3 col-6 text-xl-left text-right'>
                                         <h6><?php echo $date[$key]; ?></h6>
                                         <p><?php echo $time[$key]; ?></p>
                                     </div>
-                                    <div class='col-3'>
+                                    <div class='col-xl-3 col-12'>
                                         <?php
                                         $sqlCPQ = "SELECT coffee, price, qty FROM cc_orders WHERE id = ?";
                                         $stmtCPQ = $pdo -> prepare($sqlCPQ);
@@ -214,7 +211,7 @@ $firstName = $user['firstName'];
                                         }
                                         ?>
                                     </div>
-                                    <div class='col-3'>
+                                    <div class='col-xl-3 col-12 cost'>
                                         <h6>
                                             <?php
                                             $costString = sprintf("%0.2f", $totalCost);
@@ -246,6 +243,3 @@ $firstName = $user['firstName'];
 <!-- Site footer -->
 <?php echo file_get_contents("./html/footer.html"); ?>
 <script src="./js/cart.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"
-        integrity="sha512-YSdqvJoZr83hj76AIVdOcvLWYMWzy6sJyIMic2aQz5kh2bPTd9dzY3NtdeEAzPp/PhgZqr4aJObB3ym/vsItMg=="
-        crossorigin="anonymous"></script>

@@ -17,7 +17,6 @@ $firstName = $user['firstName'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
     <title>Chip Coffee | Online Coffee Delivery</title>
-    <link rel="stylesheet" type="text/css" href="./css/index.css">
     <link rel="stylesheet" type="text/css" href="./css/order.css">
     <link rel="icon" type="image/png" href="./images/chip_coffee.png" size="20x20">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
@@ -51,7 +50,7 @@ $firstName = $user['firstName'];
             </a>
             <div class="dropdown">
                 <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $firstName; ?> <i class="far fa-user"></i></a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                   <a class="dropdown-item" href="profile.php">Ο λογαριασμός μου</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="./php/logout.php">Αποσύνδεση</a>
@@ -64,7 +63,7 @@ $firstName = $user['firstName'];
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-9">
+            <div class="col-12 col-xl-9 order-1 order-xl-0 coffees">
                 <div class="accordion" id="accordionExample">
                     <?php
                     $result_coffees = $pdo -> query('SELECT * FROM cc_coffees');
@@ -77,82 +76,87 @@ $firstName = $user['firstName'];
                         $milk = $row['milk'];
                         $cinnamon = $row['cinnamon'];
                         $choco = $row['choco'];
-                        echo "<div class='card'>
+                        ?><div class='card'>
                                 <div class='card-header' id='headingOne'>
                                     <h2 class='clearfix mb-0'>
-                                        <a class='btn btn-link' data-toggle='collapse' data-target='#collapse".$bootstrap_count[$i]."' aria-expanded='false' aria-controls='collapse".$bootstrap_count[$i]."'>$name ".$price."€<i class='material-icons'>add</i></a>
+                                        <a class='btn btn-link' data-toggle='collapse' data-target='#collapse<?php echo $bootstrap_count[$i];?>' aria-expanded='false' aria-controls='collapse<?php echo $bootstrap_count[$i];?>'><?php echo $name." ".$price;?>€<i class='material-icons'>add</i></a>
                                     </h2>
                                 </div>
-                                <div id='collapse".$bootstrap_count[$i]."' class='collapse' aria-labelledby='heading".$bootstrap_count[$i]."'>
+                                <div id='collapse<?php echo $bootstrap_count[$i];?>' class='collapse' aria-labelledby='heading<?php echo $bootstrap_count[$i];?>'>
                                     <div class='container space'>
                                         <form action='./php/cart.php' method='POST'>
                                             <div class='row'>
-                                                <div class='col-3'>
+                                                <div class='col-xl-3 col-12 mb-2'>
                                                     <h5>Επίλεξε ζάχαρη</h5>
                                                     <div class='custom-control custom-radio cursor'>
-                                                        <input type='radio' id='".$code."1' value='Γλυκός' name='sugar_$code' class='custom-control-input' onclick='uncheck".$i."()' required/>
-                                                        <label class='custom-control-label cursor' for='".$code."1'>Γλυκός</label>
+                                                        <input type='radio' id='<?php echo $code;?>1' value='Γλυκός' name='sugar_<?php echo $code;?>' class='custom-control-input' onclick='uncheck<?php echo $i;?>()' required/>
+                                                        <label class='custom-control-label cursor' for='<?php echo $code;?>1'>Γλυκός</label>
                                                     </div>
                                                     <div class='custom-control custom-radio cursor'>
-                                                        <input type='radio' id='".$code."2' value='Μέτριος' name='sugar_$code' class='custom-control-input' onclick='uncheck".$i."()' required/>
-                                                        <label class='custom-control-label cursor' for='".$code."2'>Μέτριος</label>
+                                                        <input type='radio' id='<?php echo $code;?>2' value='Μέτριος' name='sugar_<?php echo $code;?>' class='custom-control-input' onclick='uncheck<?php echo $i;?>()' required/>
+                                                        <label class='custom-control-label cursor' for='<?php echo $code;?>2'>Μέτριος</label>
                                                     </div>
                                                     <div class='custom-control custom-radio cursor'>
-                                                        <input type='radio' id='".$code."3' value='Σκέτος' name='sugar_$code' class='custom-control-input' onclick='noneSugar".$i."()' required/>
-                                                        <label class='custom-control-label cursor' for='".$code."3'>Σκέτος</label>
+                                                        <input type='radio' id='<?php echo $code;?>3' value='Σκέτος' name='sugar_<?php echo $code;?>' class='custom-control-input' onclick='noneSugar<?php echo $i;?>()' required/>
+                                                        <label class='custom-control-label cursor' for='<?php echo $code;?>3'>Σκέτος</label>
                                                     </div>
                                                 </div>
-                                                <div class='col-4'>
+                                                <div class='col-xl-4 col-12 mb-2'>
                                                     <h5>Επίλεξε είδος ζάχαρης</h5>  
                                                     <div class='custom-control custom-radio cursor'>
-                                                        <input type='radio' id='".$code."4' name='sugarType_$code' value='Λευκή ζάχαρη' class='custom-control-input cursor' required>
-                                                        <label class='custom-control-label cursor' for='".$code."4'>Λευκή ζάχαρη</label>
+                                                        <input type='radio' id='<?php echo $code;?>4' name='sugarType_<?php echo $code;?>' value='Λευκή ζάχαρη' class='custom-control-input cursor' required>
+                                                        <label class='custom-control-label cursor' for='<?php echo $code;?>4'>Λευκή ζάχαρη</label>
                                                     </div>
                                                     <div class='custom-control custom-radio cursor'>
-                                                        <input type='radio' id='".$code."5' name='sugarType_$code' value='Καστανή ζάχαρη' class='custom-control-input cursor' required>
-                                                        <label class='custom-control-label cursor' for='".$code."5'>Καστανή ζάχαρη</label>
+                                                        <input type='radio' id='<?php echo $code;?>5' name='sugarType_<?php echo $code;?>' value='Καστανή ζάχαρη' class='custom-control-input cursor' required>
+                                                        <label class='custom-control-label cursor' for='<?php echo $code;?>5'>Καστανή ζάχαρη</label>
                                                     </div>
                                                     <div class='custom-control custom-radio cursor'>
-                                                        <input type='radio' id='".$code."6' name='sugarType_$code' value='Μαύρη ζάχαρη' class='custom-control-input cursor' required>
-                                                        <label class='custom-control-label cursor' for='".$code."6'>Μαύρη ζάχαρη</label>
+                                                        <input type='radio' id='<?php echo $code;?>6' name='sugarType_<?php echo $code;?>' value='Μαύρη ζάχαρη' class='custom-control-input cursor' required>
+                                                        <label class='custom-control-label cursor' for='<?php echo $code;?>6'>Μαύρη ζάχαρη</label>
                                                     </div>
                                                     <div class='custom-control custom-radio cursor'>
-                                                        <input type='radio' id='".$code."7' name='sugarType_$code' value='Ζαχαρίνη' class='custom-control-input cursor' required>
-                                                        <label class='custom-control-label cursor' for='".$code."7'>Ζαχαρίνη</label>
+                                                        <input type='radio' id='<?php echo $code;?>7' name='sugarType_<?php echo $code;?>' value='Ζαχαρίνη' class='custom-control-input cursor' required>
+                                                        <label class='custom-control-label cursor' for='<?php echo $code;?>7'>Ζαχαρίνη</label>
                                                     </div>
                                                 </div>
-                                                <div class='col-3'>
-                                                    <h5>Πρόσθεσε</h5>";
+                                                <div class='col-xl-3 col-12 mb-2'>
+                                                    <h5>Πρόσθεσε</h5>
+                                                    <?php
                                                     if($row['milk'] == 1){
-                                                        echo "<div class='custom-control custom-checkbox cursor'>
-                                                                <input class='custom-control-input cursor' type='checkbox' value='milk' name='milk_$code' id='milk_$code'>
-                                                                <label class='custom-control-label cursor' for='milk_$code'>Γάλα</label>
-                                                            </div>";
+                                                        ?>
+                                                        <div class='custom-control custom-checkbox cursor'>
+                                                            <input class='custom-control-input cursor' type='checkbox' value='milk' name='milk_<?php echo $code;?>' id='milk_<?php echo $code;?>'>
+                                                            <label class='custom-control-label cursor' for='milk_<?php echo $code;?>'>Γάλα</label>
+                                                        </div>
+                                                        <?php
                                                     }
                                                     if($row['cinnamon'] == 1){
-                                                        echo "<div class='custom-control custom-checkbox cursor'>
-                                                                <input class='custom-control-input cursor' type='checkbox' value='cinnamon' name='cinnamon_$code' id='cinnamon_$code'>
-                                                                <label class='custom-control-label cursor' for='cinnamon_$code'>Κανέλα</label>
-                                                            </div>";
+                                                        ?>
+                                                        <div class='custom-control custom-checkbox cursor'>
+                                                            <input class='custom-control-input cursor' type='checkbox' value='cinnamon' name='cinnamon_<?php echo $code;?>' id='cinnamon_<?php echo $code;?>'>
+                                                            <label class='custom-control-label cursor' for='cinnamon_<?php echo $code;?>'>Κανέλα</label>
+                                                        </div>
+                                                        <?php
                                                     }
                                                     if($row['choco'] == 1){
-                                                        echo "<div class='custom-control custom-checkbox cursor'>
-                                                                <input class='custom-control-input cursor' type='checkbox' value='choco' name='choco_$code' id='choco_$code'>
-                                                                <label class='custom-control-label cursor' for='choco_$code'>Σκόνη Σοκολάτας</label>
-                                                            </div>";
+                                                        ?>
+                                                        <div class='custom-control custom-checkbox cursor'>
+                                                            <input class='custom-control-input cursor' type='checkbox' value='choco' name='choco_<?php echo $code;?>' id='choco_<?php echo $code;?>'>
+                                                            <label class='custom-control-label cursor' for='choco_<?php echo $code;?>'>Σκόνη Σοκολάτας</label>
+                                                        </div>
+                                                        <?php
                                                     }
-                                                
-                                                echo "
-                                            </div> 
+                                                    ?>
+                                                </div> 
                                             </div>
                                             <div class='row space justify-content-center mt-3'>
-                                                <button type='submit' name='addToCart' value='form$code' class='btn btn-primary btn-md'>Προσθήκη στο καλάθι</button>
+                                                <button type='submit' name='addToCart' value='form<?php echo $code;?>' class='btn btn-primary btn-md'>Προσθήκη στο καλάθι</button>
                                             </div>
                                         </form>
                                     </div>  
                                 </div>
-                            </div>";
-                            ?>
+                            </div>
                             <script type="text/javascript">
                                 function noneSugar<?php echo $i; ?>(){
                                     document.getElementById("<?php echo $code.'3'; ?>").onclick = function(){
@@ -184,7 +188,7 @@ $firstName = $user['firstName'];
                     ?>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-xl-3 col-12 order-0 order-xl-1">
                 <div class="card sticky-top cart">
                     <h4 class="mt-3 mb-3">Το καλάθι σου</h4>
                     <ul class="list-group list-group-flush">
@@ -265,6 +269,3 @@ $firstName = $user['firstName'];
     <!-------------------- Site footer --------------------------->
     <?php echo file_get_contents("./html/footer.html"); ?>
 <script src="./js/cart.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"
-        integrity="sha512-YSdqvJoZr83hj76AIVdOcvLWYMWzy6sJyIMic2aQz5kh2bPTd9dzY3NtdeEAzPp/PhgZqr4aJObB3ym/vsItMg=="
-        crossorigin="anonymous"></script>

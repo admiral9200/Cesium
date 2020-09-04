@@ -102,7 +102,7 @@ $lastName = $admin['lastName'];
 					?>
 					<div class="card mb-3">
 						<div class="card-body row">
-							<form class="row cat" action="./php/update.php" method="POST">
+							<form class="row cat" action="./php/updateCoffee.php" method="POST">
 								<div class="col-2">
 									<label for="code">Code</label>
 									<input id="code" name="code" class="form-control" type="text" value="<?php echo $code; ?>">
@@ -119,12 +119,12 @@ $lastName = $admin['lastName'];
 									<label for="milk">Milk</label>
 									<select name="milk" id="milk" class="form-control">
 										<?php if($milk == 1){ 
-											echo "<option selected>Yes</option>
-												<option>No</option>";
+											echo "<option value='1' selected>Yes</option>
+												<option value='0'>No</option>";
 										}
 										else{
-											echo "<option>Yes</option>
-												<option selected>No</option>";
+											echo "<option value='1'>Yes</option>
+												<option value='0' selected>No</option>";
 										}
 										?>
 									</select>
@@ -133,12 +133,12 @@ $lastName = $admin['lastName'];
 									<label for="cinnamon">Cinnamon</label>
 									<select name="cinnamon" id="cinnamon" class="form-control">
 										<?php if($cinnamon == 1){ 
-											echo "<option selected>Yes</option>
-												<option>No</option>";
+											echo "<option value='1' selected>Yes</option>
+												<option value='0'>No</option>";
 										}
 										else{
-											echo "<option>Yes</option>
-												<option selected>No</option>";
+											echo "<option value='1'>Yes</option>
+												<option value='0' selected>No</option>";
 										}
 										?>
 									</select>
@@ -147,12 +147,12 @@ $lastName = $admin['lastName'];
 									<label for="choco">Choco</label>
 									<select name="choco" id="choco" class="form-control">
 										<?php if($choco == 1){ 
-											echo "<option selected>Yes</option>
-												<option>No</option>";
+											echo "<option values='1' selected>Yes</option>
+												<option value='0'>No</option>";
 										}
 										else{
-											echo "<option>Yes</option>
-												<option selected>No</option>";
+											echo "<option value='1'>Yes</option>
+												<option value='0' selected>No</option>";
 										}
 										?>
 									</select>

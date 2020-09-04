@@ -1,11 +1,21 @@
-@media (max-width:400px) { 
+@media screen and (min-width: 400px) and (max-width: 600px){ 
     .container { 
         width: 100% !important;
-        margin-left: 2% !important;
-        margin-right: 2% !important;
     }
-    h1{
-        font-size: 50px !important;
+    .logo{
+        height: 80px !important;
+        width: auto;
+    }
+    .navbar{
+        justify-content: center !important;
+    }
+    .background h1{
+        font-size: 40px !important;
+        text-align: center !important;
+        padding-right: 0 !important;
+    }
+    .background h3{
+        text-align: center !important;
     }
     .col-md*{
         padding: 0 !important;
@@ -18,12 +28,12 @@
     }
 }
 
-@media (max-width:300px){
+@media screen and (min-width: 300px) and (max-width: 400px){
     .container { 
         width: 100% !important;
     }
     h1{
-        font-size: 40px !important;
+        font-size: 20px;
     }
     .col-md*{
         padding: 0 !important;
@@ -64,10 +74,10 @@ html , body{
     padding-left: 0;
     padding-bottom: 0;
     text-align: left;
-    font-size: 70px !important;
+    font-size: 70px;
 }
 
-h3 {
+.background h3 {
     color: white !important;
     padding: 3%;
     padding-left: 0;
@@ -130,7 +140,6 @@ a {
     float: left;
     width: auto;
     height: 100px;
-    left: calc(50% - 50px);
 }
 
 .site-footer {
