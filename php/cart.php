@@ -134,5 +134,5 @@ if(isset($_POST['addToCart'])){
             $i++;
         }
     }
-    //header("location: ../order.php");
+    header("location: ../order.php");
 }
