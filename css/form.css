@@ -1,9 +1,15 @@
-@media (max-width:450px) { 
+@media screen and (min-width:300px) and (max-width:400px) { 
     .login-snip{
         padding: 20px 20px 20px 20px !important;
     }
     .card{
         width: auto !important;
+    }
+}
+
+@media screen and (min-width:400px) and (max-width: 850px){
+    .login-snip{
+        padding: 30px 40px 10px 40px !important;
     }
 }
 
@@ -20,9 +26,10 @@
 .login-snip {
     width: 100%;
     height: 100%;
+    border-radius: 10px;
     position: absolute;
     padding: 50px 60px 20px 60px;
-    background: rgba(17, 17, 17, 0.897)
+    background: rgba(17, 17, 17, 0.897) 
 }
 
 .login-snip .login,

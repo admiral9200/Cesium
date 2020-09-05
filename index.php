@@ -48,11 +48,11 @@ if (isset($_SESSION['email'])){
         </nav>
         <div class="container">
             <div class="row space">
-                <div class="col-md-7 col-xs-6 col-sm-12">
+                <div class="col-xl-7 col-12">
                     <h1>Παράγγειλε καφέ σε ένα 1'</h1>
                     <h3>Φθηνά, γρήγορα και ηλεκτρονικά</h3>
                 </div>
-                <div class="col-md-5 col-xs-6 col-sm-12">
+                <div class="col-xl-5 col-12">
                     <div class="card">
                         <div class="login-box">
                             <div class="login-snip user-select-none"> 
