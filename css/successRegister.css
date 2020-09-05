@@ -23,6 +23,9 @@ h1 {
   .nobot{
     position: relative !important;
   }
+  .navbar{
+      justify-content: center !important;
+  }
   .logo {
       height: 70px !important;
       width: auto;

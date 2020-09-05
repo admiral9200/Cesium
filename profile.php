@@ -52,7 +52,7 @@ $lastName = $user['lastName'];
             <div class="col-xl-3 col-12 text-center space">
                 <div class="sticky-top pt-4 pb-4">
                     <img src="//api.adorable.io/avatars/120/trickst3r.png" class="mx-auto img-fluid rounded-circle" alt="avatar" />
-                    <h4 class="my-4"><?php echo $firstName; echo ' '; echo $lastName; ?></h4>
+                    <h4 class="my-4"><?php echo $firstName." ".$lastName; ?></h4>
                 </div>
             </div>
             <div class="col-xl-9 col-12 personal-info">
@@ -66,16 +66,16 @@ $lastName = $user['lastName'];
                     ?>
                     <div class="form-group row mb-0">
                         <div class="col-xl-5 col-12">
-                            <label class="col-xl-5 col-form-label form-control-label pl-3">Όνομα</label>
+                            <label class="col-xl-5 col-form-label form-control-label pl-0">Όνομα</label>
                             <input class="form-control" type="text" name="firstName" value="<?php echo $firstName; ?>"/>
                         </div>
                         <div class="col-xl-5 col-12">
-                            <label class="col-xl-5 col-form-label form-control-label">Επώνυμο</label>
+                            <label class="col-xl-5 col-form-label form-control-label pl-0">Επώνυμο</label>
                             <input class="form-control" type="text" name="lastName" value="<?php echo $lastName; ?>"/>
                         </div>
                     </div>
                     <div class="form-group row mt-4 mb-0">
-                        <label class="col-xl-5 col-form-label form-control-label pl-3">email</label>
+                        <label class="col-xl-5 col-form-label form-control-label pl-3">Email</label>
                     </div>
                     <div class="form-group row">
                         <div class="col-xl-5 mb-0">
@@ -121,7 +121,7 @@ $lastName = $user['lastName'];
                             <input class="form-control" type="password" name="newpass"/>
                         </div>
                     </div>
-                    <div class="form-group row mt-5">
+                    <div class="form-group row mt-3">
                         <div class="col-xl-5 col-12 ml-auto text-right">
                             <input type="submit" name="changepass" class="btn btn-primary btn-lg btn-block" value="Αποθήκευση Αλλαγών"/>
                         </div>

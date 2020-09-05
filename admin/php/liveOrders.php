@@ -19,6 +19,12 @@ if (($stmtCheckout->rowCount() > 0) && ($stmtOrdersExists->rowCount() > 0)) {
 		$stmtUserName = $pdo->prepare($sqlUserName);
 		$stmtUserName->execute([$email]);
 		$rowUserName = $stmtUserName->fetch();
+		$sqlAddress = "SELECT address, state FROM cc_address WHERE email = ?";
+		$stmtAddress = $pdo -> prepare($sqlAddress);
+		$stmtAddress -> execute([$email]);
+		$rowAddress = $stmtAddress -> fetch();
+		$address = $rowAddress['address'];
+		$state = $rowAddress['state'];
 		$firstName = $rowUserName['firstName'];
 		$lastName = $rowUserName['lastName'];
 		$doorname = $rowCheckout['doorname'];
@@ -30,22 +36,25 @@ if (($stmtCheckout->rowCount() > 0) && ($stmtOrdersExists->rowCount() > 0)) {
 		?>
 		<div class="card mb-3">
 			<div class="card-body row">
-				<div class="col-1">
+				<div class="col-xl-1">
 					<p><?php echo $id; ?></p>
 				</div>
-				<div class="col-2">
+				<div class="col-xl-2">
 					<h6><?php echo $firstName . " " . $lastName; ?></h6>
 					<p><?php echo $email; ?></p>
 				</div>
-				<div class="col-2">
+				<div class="col-xl-1">
+					<p><?php echo $address ." ". $state; ?></p>
+				</div>
+				<div class="col-xl-2">
 					<p><?php echo $doorname . " " . $floor . " - " . $phone; ?></p>
 					<p><?php echo $comment; ?></p>
 				</div>
-				<div class="col-1">
+				<div class="col-xl-1">
 					<p><?php echo $date; ?></p>
 					<p><?php echo $time; ?></p>
 				</div>
-				<div class="col-3">
+				<div class="col-xl-2">
 					<?php
 					$totalCost = 0;
 					$sqlBackendOrders = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_ordersBackendPanel WHERE id = ?";
@@ -74,7 +83,7 @@ if (($stmtCheckout->rowCount() > 0) && ($stmtOrdersExists->rowCount() > 0)) {
 					}
 					?>
 				</div>
-				<div class="col-1">
+				<div class="col-xl-1">
 					<h6>
 						<?php
 						$costString = sprintf("%0.2f", $totalCost);
@@ -82,7 +91,7 @@ if (($stmtCheckout->rowCount() > 0) && ($stmtOrdersExists->rowCount() > 0)) {
 						?>
 					</h6>
 				</div>
-				<div class="col-2">
+				<div class="col-xl-2">
 					<form action="./php/deleteOrder.php" method="POST">
 						<button value="<?php echo $id; ?>" name="deleteOrder" class="btn btn-primary btn-lg btn-block">Execute</button>
 					</form>
