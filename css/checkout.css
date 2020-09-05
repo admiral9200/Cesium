@@ -99,8 +99,9 @@ body {
   padding-top: 20px !important;
 }
 
-a {
-  color: inherit;
+#dropdownMenuLink, #dropdownMenuLink:hover {
+  color: white !important;
+  font-size: 20px;
   text-decoration: none;
 }
 
