@@ -22,10 +22,7 @@ $lastName = $user['lastName'];
     <link rel="icon" type="image/png" href="./images/chip_coffee.png">
     <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css">
-    <script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script></head>
+</head>
 <body>
     <div class="background">
         <nav class="navbar navbar-light container">
@@ -132,4 +129,3 @@ $lastName = $user['lastName'];
     </div>
     <!-- Site footer -->
     <?php echo file_get_contents("./html/footer.html"); ?>
-    <script src="./js/cart.js"></script>

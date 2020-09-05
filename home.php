@@ -20,9 +20,7 @@ $firstName = $user['firstName'];
     <link rel="stylesheet" type="text/css" href="./css/home.css">
     <link rel="icon" type="image/png" href="./images/chip_coffee.png">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css">
-    <script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
     <script>
         // Example starter JavaScript for disabling form submissions if there are invalid fields
         (function() {
@@ -242,4 +240,3 @@ $firstName = $user['firstName'];
 <?php echo file_get_contents("./html/sale.html"); ?>
 <!-- Site footer -->
 <?php echo file_get_contents("./html/footer.html"); ?>
-<script src="./js/cart.js"></script>

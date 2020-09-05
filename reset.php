@@ -5,16 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
     <title>Chip Coffee | Online Coffee Delivery</title>
     <link rel="stylesheet" type="text/css" href="./css/index.css">
-    <link rel="stylesheet" type="text/css" href="./css/order.css">
-    <link rel="stylesheet" type="text/css" href="./css/checkout.css">
     <link rel="icon" type="image/png" href="./images/chip_coffee.png" size="20x20">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css">
-    <script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
     <div class="background">
@@ -24,31 +17,27 @@
             </a>
         </nav>
     </div>
-    <div class="container space">
-        <div class="form-gap">
-            <div class="row d-flex justify-content-center">
-                <div class="col-md-4 col-md-offset-4">
-                    <div class="panel panel-default">
+    <div class="container h-100">
+        <div class="row align-items-center h-100">
+            <div class="col-6 mx-auto">
+                <div class="panel panel-default">
+                    <div class="panel-body text-center">
+                        <i class="fa fa-lock fa-4x"></i>
+                        <h2 class="text-center">Ξέχασες τον κωδικό σου?</h2>
+                        <p>Μπορείς να τον επαναφέρεις με το email σου.</p>
                         <div class="panel-body">
-                            <div class="text-center">
-                                <h3><i class="fa fa-lock fa-4x"></i></h3>
-                                <h2 class="text-center">Ξέχασες τον κωδικό σου?</h2>
-                                <p>Μπορείς να τον επαναφέρεις με το email σου.</p>
-                                <div class="panel-body">
-                                    <form id="register-form" role="form" autocomplete="off" class="form" action="newpass.html">
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope color-blue"></i></span>
-                                                <input id="email" name="email" placeholder="Διεύθυνση email" class="form-control"  type="email">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <input name="recover-submit" class="btn btn-lg btn-primary btn-block" value="Συνέχεια" type="submit">
-                                        </div>
-                                        <input type="hidden" class="hide" name="token" id="token" value=""> 
-                                    </form>
+                            <form id="register-form" role="form" autocomplete="off" class="form" action="newpass.php">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-envelope color-blue"></i></span>
+                                        <input id="email" name="email" placeholder="Διεύθυνση email" class="form-control"  type="email">
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="form-group">
+                                    <input name="recover-submit" class="btn btn-lg btn-primary btn-block" value="Συνέχεια" type="submit">
+                                </div>
+                                <input type="hidden" class="hide" name="token" id="token" value=""> 
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -95,6 +84,8 @@
     </div>
     </div>
 </footer>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"
         integrity="sha512-YSdqvJoZr83hj76AIVdOcvLWYMWzy6sJyIMic2aQz5kh2bPTd9dzY3NtdeEAzPp/PhgZqr4aJObB3ym/vsItMg=="
         crossorigin="anonymous"></script>

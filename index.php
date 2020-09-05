@@ -15,17 +15,11 @@ if (isset($_SESSION['email'])){
     <link rel="icon" type="image/png" href="./images/chip_coffee.png">
     <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css">
-    <script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
         (function() {
           'use strict';
           window.addEventListener('load', function() {
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
             var forms = document.getElementsByClassName('needs-validation');
-            // Loop over them and prevent submission
             var validation = Array.prototype.filter.call(forms, function(form) {
               form.addEventListener('submit', function(event) {
                 if (form.checkValidity() === false) {
@@ -90,7 +84,7 @@ if (isset($_SESSION['email'])){
                                                         }
                                                     ?>
                                                 </div>
-                                                <div class="hr"></div>
+                                                <div class="hr mt-4 mb-3"></div>
                                                 <div class="foot"> 
                                                     <a href="reset.php">Ξέχασες τον κωδικό σου?</a>
                                                 </div>

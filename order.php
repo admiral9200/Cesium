@@ -20,12 +20,7 @@ $firstName = $user['firstName'];
     <link rel="stylesheet" type="text/css" href="./css/order.css">
     <link rel="icon" type="image/png" href="./images/chip_coffee.png" size="20x20">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css">
-    <script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
-    <!-- <script src="./js/cart.js"></script> -->
     <script>
         $('form').each(function() { this.reset() });
         $(document).ready(function () {
@@ -274,4 +269,3 @@ $firstName = $user['firstName'];
     <?php echo file_get_contents("./html/sale.html"); ?>
     <!-------------------- Site footer --------------------------->
     <?php echo file_get_contents("./html/footer.html"); ?>
-<script src="./js/cart.js"></script>
