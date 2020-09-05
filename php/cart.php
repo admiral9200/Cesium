@@ -42,7 +42,7 @@ if(isset($_GET['qty']) && ($_GET['qty'] == "plus")){
     $stmtUpdate -> execute([$newPrice, $quantity, $email, $counter]);
     header("location: ../order.php");
 }
-//Add to cart coffees
+//Cart
 if(isset($_POST['addToCart'])){
     $stmtNames = $pdo -> query("SELECT code,name,price FROM cc_coffees");
     $coffees = $stmtNames -> fetchAll();
@@ -87,22 +87,26 @@ if(isset($_POST['addToCart'])){
         $stmtUpdateQty -> execute([$newPrice, $quantity, $email, $nameCheckDup, $_POST[$sugarCheckDup], $_POST[$sugarTypeCheckDup], $milkCheck, $cinnamonCheck, $chocoCheck]);
     }
     else{
-        //INSERT TO CART COFFEESSS :D
+        //For counting coffees in cart
         $cart_query = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco FROM cc_cart WHERE email = ?";
         $stmtCart = $pdo -> prepare($cart_query);
         $stmtCart -> execute([$email]);
         $count = $stmtCart -> rowCount();
+        //INSERT TO CART COFFEESSS :D
         foreach($coffees as $row){
-            $code = $row['code'];
-            $form = "form".$code;
             $name = $row['name'];
             $price = $row['price'];
+            $code = $row['code'];
+            $form = "form".$code;
             $sugar = "sugar_".$row['code'];
             $sugarType = "sugarType_".$row['code'];
             $milk = "milk_".$row['code'];
             $cinnamon = "cinnamon_".$row['code'];
             $choco = "choco_".$row['code'];
-            if (isset($_POST[$sugar])){// Fix SugarType when is empty in query
+            if(!isset($_POST[$sugarType])){
+                $_POST[$sugarType] = "";
+            }
+            if (isset($_POST[$sugar])){
                 $count++;
                 $cart_query = "INSERT INTO cc_cart (email, count, code, coffee, sugar, sugarType, price, qty) VALUES( ? , ? , ? , ? , ? , ? , ? , 1)";
                 $stmtCartInsert = $pdo -> prepare($cart_query);
@@ -130,5 +134,5 @@ if(isset($_POST['addToCart'])){
             $i++;
         }
     }
-    header("location: ../order.php");
+    //header("location: ../order.php");
 }

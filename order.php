@@ -88,16 +88,16 @@ $firstName = $user['firstName'];
                                             <div class='row'>
                                                 <div class='col-xl-3 col-12 mb-2'>
                                                     <h5>Επίλεξε ζάχαρη</h5>
-                                                    <div class='custom-control custom-radio cursor'>
-                                                        <input type='radio' id='<?php echo $code;?>1' value='Γλυκός' name='sugar_<?php echo $code;?>' class='custom-control-input' onclick='uncheck<?php echo $i;?>()' required/>
+                                                    <div class='custom-control custom-radio cursor' onclick='uncheck<?php echo $i;?>()'>
+                                                        <input type='radio' id='<?php echo $code;?>1' value='Γλυκός' name='sugar_<?php echo $code;?>' class='custom-control-input' required/>
                                                         <label class='custom-control-label cursor' for='<?php echo $code;?>1'>Γλυκός</label>
                                                     </div>
-                                                    <div class='custom-control custom-radio cursor'>
-                                                        <input type='radio' id='<?php echo $code;?>2' value='Μέτριος' name='sugar_<?php echo $code;?>' class='custom-control-input' onclick='uncheck<?php echo $i;?>()' required/>
+                                                    <div class='custom-control custom-radio cursor' onclick='uncheck<?php echo $i;?>()'>
+                                                        <input type='radio' id='<?php echo $code;?>2' value='Μέτριος' name='sugar_<?php echo $code;?>' class='custom-control-input' required/>
                                                         <label class='custom-control-label cursor' for='<?php echo $code;?>2'>Μέτριος</label>
                                                     </div>
-                                                    <div class='custom-control custom-radio cursor'>
-                                                        <input type='radio' id='<?php echo $code;?>3' value='Σκέτος' name='sugar_<?php echo $code;?>' class='custom-control-input' onclick='noneSugar<?php echo $i;?>()' required/>
+                                                    <div class='custom-control custom-radio cursor' onclick='noneSugar<?php echo $i;?>()'>
+                                                        <input type='radio' id='<?php echo $code;?>3' value='Σκέτος' name='sugar_<?php echo $code;?>' class='custom-control-input' required/>
                                                         <label class='custom-control-label cursor' for='<?php echo $code;?>3'>Σκέτος</label>
                                                     </div>
                                                 </div>
@@ -210,16 +210,20 @@ $firstName = $user['firstName'];
                                 $price = $rowCart['price'];
                                 $quantity = $rowCart['qty'];
                                 $totalCost += $price;
-                                echo "<li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-1'>
-                                        <h5>$coffee</h5>
-                                        <a href='./php/delete_cart.php?count=".$count."' type='button' class='btn btn-sm btn-outline-danger mr-2' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></a>
-                                    </li>
-                                    <li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0 pt-0 mt-0'>
-                                        <p class='attr'>".$sugar.", ".$sugarType."";
-                                            if($milk == 1) echo ", Γάλα";
-                                            if($cinnamon == 1) echo ", Κανέλα";
-                                            if($choco == 1) echo ", Σκόνη Σοκολάτας";
-                                            ?> 
+                                ?>
+                                <li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-1'>
+                                    <h5><?php echo $coffee; ?></h5>
+                                    <a href='./php/delete_cart.php?count="<?php echo $count; ?>" type='button' class='btn btn-sm btn-outline-danger mr-2' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></a>
+                                </li>
+                                <li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0 pt-0 mt-0'>
+                                    <p class='attr'>
+                                        <?php 
+                                        echo $sugar;
+                                        if(!empty($sugarType)) echo ", ".$sugarType;
+                                        if($milk == 1) echo ", Γάλα";
+                                        if($cinnamon == 1) echo ", Κανέλα";
+                                        if($choco == 1) echo ", Σκόνη Σοκολάτας";
+                                        ?> 
                                     </p>
                                 </li>
                                 <li>
@@ -240,9 +244,11 @@ $firstName = $user['firstName'];
                             }
                         }
                         else{
-                            echo "<li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-1'>
-                                    <h6>Το καλάθι σου είναι άδειο</h6>
-                                </li>";
+                            ?>
+                            <li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-1'>
+                                <h6>Το καλάθι σου είναι άδειο</h6>
+                            </li>";
+                            <?php
                         }
                         ?>
                         <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3 mt-5">
