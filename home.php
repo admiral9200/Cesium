@@ -98,7 +98,7 @@ $firstName = $user['firstName'];
             unset($_SESSION['addresses']);
         }
         ?>
-        <h2 style="color: black !important;" class="mb-2 mt-3">Οι διευθύνσεις μου</h2>
+        <h2 style="color: black !important;" class="mb-2 mt-5">Οι διευθύνσεις μου</h2>
         <div class="row">
             <div class="col-12">
                 <ul class="list-group list-group-flush">
@@ -153,7 +153,7 @@ $firstName = $user['firstName'];
         </div>
     </div>
     <div class="container space">
-        <h2 style="color: black !important;" class="mb-5">Οι παραγγελίες μου</h2>
+        <h2 style="color: black !important;" class="mb-3 mt-5">Οι παραγγελίες μου</h2>
         <div class="row">
             <div class="col-12">
                 <ul class="list-group list-group-flush">

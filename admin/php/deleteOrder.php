@@ -1,7 +1,7 @@
 <?php
 session_start();
 include("db.php");
-if (!isset($_SESSION['email'])) {
+if (!isset($_SESSION['admin'])) {
     session_destroy();
     header('location: index.php');
 }
@@ -14,5 +14,5 @@ if (isset($_POST['deleteOrder'])) {
 	$stmtDeleteOrderfromPanel = $pdo -> prepare($sqlDeleteOrderPanel);
 	$stmtDeleteOrderfromPanel -> execute([$id]);
 	header("location: ../dashboard.php");
-	die();
 }
+?>

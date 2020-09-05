@@ -112,14 +112,6 @@ body {
   font-size: 70px;
 }
 
-.background h3 {
-  color: white !important;
-  padding: 3%;
-  padding-left: 0;
-  text-align: left;
-  font-size: 20px !important;
-}
-
 .navbar {
   padding-top: 20px !important;
 }
@@ -161,11 +153,6 @@ a {
 
 .card-img {
   height: 330px;
-}
-
-.space {
-  padding-top: 2%;
-  padding-bottom: 2%;
 }
 
 .logo {
