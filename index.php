@@ -13,23 +13,6 @@ if (isset($_SESSION['email'])) header("location: home.php");
     <link rel="icon" type="image/png" href="./images/chip_coffee.png">
     <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
-    <script>
-        (function() {
-          'use strict';
-          window.addEventListener('load', function() {
-            var forms = document.getElementsByClassName('needs-validation');
-            var validation = Array.prototype.filter.call(forms, function(form) {
-              form.addEventListener('submit', function(event) {
-                if (form.checkValidity() === false) {
-                  event.preventDefault();
-                  event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-              }, false);
-            });
-          }, false);
-        })();
-    </script>
 </head>
 <body>
     <div class="background">
@@ -53,17 +36,17 @@ if (isset($_SESSION['email'])) header("location: home.php");
                                 <div class="login-space">
                                     <div class="form-group">
                                         <div class="login form-check pl-0">
-                                            <form action="./php/login.php" class="form-group needs-validation" method="POST" novalidate>
+                                            <form class="form-group needs-validation" novalidate>
                                                 <div class="group">
                                                     <label for="user" class="label">ΔΙΕΥΘΥΝΣΗ EMAIL</label>
-                                                    <input name="email" type="email" class="input form-control form-control-lg" placeholder="Γράψε τη Διέυθυνση Email" required>
+                                                    <input id="email" type="email" class="input form-control form-control-lg" placeholder="Γράψε τη Διέυθυνση Email" required>
                                                     <div class="invalid-feedback">
-                                                        Πρέπει να συμπληρώσεις το email σου. Ίσως δεν έχεις γράψει σωστά το email.
+                                                        Πρέπει να συμπληρώσεις το email σου. Πρέπει να είναι μία έγκυρη διεύθυνση email.
                                                     </div>
                                                 </div>
                                                 <div class="group">
                                                     <label for="pass" class="label">ΚΩΔΙΚΟΣ</label>
-                                                    <input name="pass" type="password" class="input form-control form-control-lg" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
+                                                    <input id="pass" type="password" class="input form-control form-control-lg" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
                                                     <div class="invalid-feedback">
                                                         Πρέπει να συμπληρώσεις τον κωδικό σου.
                                                     </div>
@@ -73,14 +56,8 @@ if (isset($_SESSION['email'])) header("location: home.php");
                                                     <label for="check" class="color"><span class="icon"></span> Να με θυμάσαι</label>
                                                 </div>
                                                 <div class="group"> 
-                                                    <input type="submit" class="button btn btn-lg" name="login" value="Συνδεση">
-                                                    <?php
-                                                        if (isset($_SESSION['error'])){
-                                                            $error = $_SESSION['error'];
-                                                            echo "<p class='mt-3' style='color: red !important'>$error</p>";
-                                                            unset($_SESSION['error']);
-                                                        }
-                                                    ?>
+                                                    <input type="submit" class="button btn btn-lg" id="login" value="Συνδεση">
+                                                    <div id="res"></div>
                                                 </div>
                                                 <div class="hr mt-4 mb-3"></div>
                                                 <div class="foot"> 
@@ -89,37 +66,38 @@ if (isset($_SESSION['email'])) header("location: home.php");
                                             </form>
                                         </div>
                                         <div class="sign-up-form form-check pl-0">
-                                            <form action="./php/register.php" class="form-group needs-validation" method="POST" novalidate>
+                                            <form class="form-group needs-validation" novalidate>
                                                 <div class="group">
-                                                    <label for="user" class="label">ΔΙΕΥΘΥΝΣΗ EMAIL</label>
-                                                    <input name="email" type="email" class="input form-control form-control-lg" placeholder="Γράψε τη Διέυθυνση Email" required>
+                                                    <label for="emailR" class="label">ΔΙΕΥΘΥΝΣΗ EMAIL</label>
+                                                    <input id="emailR" type="email" class="input form-control form-control-lg" placeholder="Γράψε τη Διέυθυνση Email" required>
                                                     <div class="invalid-feedback">
-                                                        Πρέπει να συμπληρώσεις μία έγκυρη διέυθυνση email.
+                                                        Πρέπει να συμπληρώσεις μία έγκυρη διεύθυνση email.
                                                     </div>
                                                 </div>
                                                 <div class="group">
-                                                    <label for="pass" class="label">ΟΝΟΜΑ</label> 
-                                                    <input name="firstName" type="text" class="input form-control form-control-lg" data-type="firstName" placeholder="Γράψε το Όνομα σου" required>
+                                                    <label for="firstName" class="label">ΟΝΟΜΑ</label> 
+                                                    <input id="firstName" type="text" class="input form-control form-control-lg" data-type="firstName" placeholder="Γράψε το Όνομα σου" required>
                                                     <div class="invalid-feedback">
                                                         Πρέπει να συμπληρώσεις το όνομα σου
                                                     </div>
                                                 </div>
                                                 <div class="group">
-                                                    <label for="pass" class="label">ΕΠΙΘΕΤΟ</label> 
-                                                    <input name="lastName" type="text" class="input form-control form-control-lg" data-type="lastName" placeholder="Γράψε το Επίθετο σου" required>
+                                                    <label for="lastName" class="label">ΕΠΙΘΕΤΟ</label> 
+                                                    <input id="lastName" type="text" class="input form-control form-control-lg" data-type="lastName" placeholder="Γράψε το Επίθετο σου" required>
                                                     <div class="invalid-feedback">
                                                         Πρέπει να συμπληρώσεις το επίθετο σου.
                                                     </div>
                                                 </div>
                                                 <div class="group">
-                                                    <label for="pass" class="label">ΚΩΔΙΚΟΣ</label> 
-                                                    <input name="pass" type="password" class="input form-control form-control-lg" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
+                                                    <label for="password" class="label">ΚΩΔΙΚΟΣ</label> 
+                                                    <input id="password" type="password" class="input form-control form-control-lg" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
                                                     <div class="invalid-feedback">
                                                         Πρέπει να συμπληρώσεις ένα κωδικό πρόσβασης.
                                                     </div>
                                                 </div>                                            
                                                 <div class="group mt-4">
-                                                    <input type="submit" class="button btn btn-lg" name="signup" value="Εγγραφη">
+                                                    <input type="submit" class="button btn btn-lg" id="signup" value="Εγγραφη">
+                                                    <div id="resReg"></div>
                                                 </div>
                                             </form>
                                         </div>
@@ -137,3 +115,4 @@ if (isset($_SESSION['email'])) header("location: home.php");
     <?php echo file_get_contents("./html/sale.html"); ?>
     <!-- Site footer -->
     <?php echo file_get_contents("./html/footer.html"); ?>
+    <script src="./js/index.js"></script>

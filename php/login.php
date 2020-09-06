@@ -1,31 +1,25 @@
 <?php
 session_start();
 include("db_connect.php");
-if (isset($_POST['login'])){
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['email']) && isset($_POST['pass'])){
     $email = $_POST['email'];
     $pass = $_POST['pass'];
     $sqlUser = "SELECT * FROM cc_users WHERE email = ?";
     $stmtUser = $pdo -> prepare($sqlUser);
     $stmtUser -> execute([$email]);
     $rowUser = $stmtUser -> fetch();
-    if ($stmtUser -> rowCount() == 1){
-        $validPassword = password_verify($pass, $rowUser['password']);
-        if ($validPassword){
-            if (!empty($_POST['rememberme'])){
-                setcookie("user_login" , $email, time() + (1 * 365 * 24 * 60 * 60));
-                setcookie("pass_login" , $pass, time() + (1 * 365 * 24 * 60 * 60));
-            }
-            $_SESSION['email'] = $email;
-            header('location: ../home.php');
+    if ($stmtUser -> rowCount() == 1 && password_verify($pass, $rowUser['password'])){
+        if (isset($_POST['rememberme'])){
+            setcookie("user" , $email, time() + (1 * 365 * 24 * 60 * 60));
+            setcookie("pass" , $pass, time() + (1 * 365 * 24 * 60 * 60));
         }
-        else{
-            $_SESSION['error'] = "Το email ή ο κωδικός που έχεις εισάγει είναι λάθος!";
-            header("location: ../index.php");
-        }
+        session_destroy();
+        session_start();
+        $_SESSION['email'] = $email;
+        echo "success";
     }
     else{
-        $_SESSION['error'] = "Δεν υπάρχει χρήστης με αυτό το email.";
-        header("location: ../index.php");
+        echo "<p class='text-center mt-3' style='color: red !important'>Το email ή ο κωδικός που έχεις εισάγει είναι λάθος!</p>";
     }
 }
 ?>
