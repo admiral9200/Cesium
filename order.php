@@ -20,22 +20,7 @@ $firstName = $user['firstName'];
     <link rel="stylesheet" type="text/css" href="./css/order.css">
     <link rel="icon" type="image/png" href="./images/chip_coffee.png" size="20x20">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css">
-    <script>
-        $('form').each(function() { this.reset() });
-        $(document).ready(function () {
-            // Add minus icon for collapse element which is open by default
-            $(".collapse.show").each(function () {
-                $(this).siblings(".card-header").find(".btn i").html("remove");
-            });
-            // Toggle plus minus icon on show hide of collapse element
-            $(".collapse").on('show.bs.collapse', function () {
-                $(this).parent().find(".card-header .btn i").html("remove");
-            }).on('hide.bs.collapse', function () {
-                $(this).parent().find(".card-header .btn i").html("add");
-            });
-        });
-    </script>
+    <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css"> 
 </head>
 <body>
     <div class="background">
@@ -73,8 +58,8 @@ $firstName = $user['firstName'];
                         $choco = $row['choco'];
                         ?><div class='card'>
                                 <div class='card-header' id='headingOne'>
-                                    <h2 class='clearfix mb-0'>
-                                        <a class='btn btn-link' data-toggle='collapse' data-target='#collapse<?php echo $bootstrap_count[$i];?>' aria-expanded='false' aria-controls='collapse<?php echo $bootstrap_count[$i];?>'><?php echo $name." ".$price;?>€<i class='material-icons'>add</i></a>
+                                    <h2 class='clearfix p-0'>
+                                        <a class='btn btn-link p-0' data-toggle='collapse' data-target='#collapse<?php echo $bootstrap_count[$i]; ?>' aria-expanded='false' aria-controls='collapse<?php echo $bootstrap_count[$i];?>'><?php echo $name." ".$price;?>€<i class="fas fa-plus float-right"></i></a>
                                     </h2>
                                 </div>
                                 <div id='collapse<?php echo $bootstrap_count[$i];?>' class='collapse' aria-labelledby='heading<?php echo $bootstrap_count[$i];?>'>
@@ -208,7 +193,7 @@ $firstName = $user['firstName'];
                                 ?>
                                 <li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-1'>
                                     <h5><?php echo $coffee; ?></h5>
-                                    <a href='./php/delete_cart.php?count="<?php echo $count; ?>" type='button' class='btn btn-sm btn-outline-danger mr-2' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></a>
+                                    <a href='./php/delete_cart.php?count=<?php echo $count; ?>' type='button' class='btn btn-sm btn-outline-danger mr-2' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></a>
                                 </li>
                                 <li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0 pt-0 mt-0'>
                                     <p class='attr'>
@@ -242,7 +227,7 @@ $firstName = $user['firstName'];
                             ?>
                             <li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-1'>
                                 <h6>Το καλάθι σου είναι άδειο</h6>
-                            </li>";
+                            </li>
                             <?php
                         }
                         ?>
@@ -269,3 +254,4 @@ $firstName = $user['firstName'];
     <?php echo file_get_contents("./html/sale.html"); ?>
     <!-------------------- Site footer --------------------------->
     <?php echo file_get_contents("./html/footer.html"); ?>
+    <script src="./js/order.js"></script>

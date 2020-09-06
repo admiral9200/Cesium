@@ -1,9 +1,3 @@
-/* $(window).on('beforeunload', function() {
-    $.ajax({
-        url: './php/clearCart.php'
-    });
-});  */
-
 function minus(){
     var xhr = new XMLHttpRequest();
     xhr.open('GET' , './php/cart.php?qty=minus' , true);

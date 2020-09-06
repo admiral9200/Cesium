@@ -118,8 +118,8 @@ $lastName = $user['lastName'];
                             <input class="form-control" type="password" name="newpass"/>
                         </div>
                     </div>
-                    <div class="form-group row mt-3">
-                        <div class="col-xl-5 col-12 ml-auto text-right">
+                    <div class="form-group row mt-4">
+                        <div class="col-xl-12 col-12">
                             <input type="submit" name="changepass" class="btn btn-primary btn-lg btn-block" value="Αποθήκευση Αλλαγών"/>
                         </div>
                     </div>

@@ -1,10 +1,8 @@
 <?php
-include("./php/db_connect.php");
 session_start();
-if (!isset($_SESSION['email'])) {
-    header('location: index.php');
-}
 $email = $_SESSION['email'];
+if (!isset($_SESSION['email'])) header('location: index.php');
+include("./php/db_connect.php");
 $sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = ?";
 $resultUser = $pdo -> prepare($sqlLoggedInUser);
 $resultUser -> execute([$email]);
@@ -22,13 +20,10 @@ $firstName = $user['firstName'];
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css">
     <script>
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
         (function() {
           'use strict';
           window.addEventListener('load', function() {
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
             var forms = document.getElementsByClassName('needs-validation');
-            // Loop over them and prevent submission
             var validation = Array.prototype.filter.call(forms, function(form) {
               form.addEventListener('submit', function(event) {
                 if (form.checkValidity() === false) {
@@ -157,16 +152,16 @@ $firstName = $user['firstName'];
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item mt-4 mb-4 formobile">
                         <div class="row">
-                            <div class="col-3">
+                            <div class="col-xl-3 col-lg-3">
                                 <h6>Κωδ. Παραγγελίας</h6>
                             </div>
-                            <div class="col-3">
+                            <div class="col-xl-3 col-lg-3">
                                 <h6>Ημερομηνία</h6>
                             </div>
-                            <div class="col-3">
+                            <div class="col-xl-3 col-lg-3">
                                 <h6>Περιεχόμενα</h6>
                             </div>
-                            <div class="col-3">
+                            <div class="col-xl-3 col-lg-3">
                                 <h6>Κόστος</h6>
                             </div>
                         </div>
@@ -187,14 +182,14 @@ $firstName = $user['firstName'];
                             ?>
                             <li class='list-group-item mt-2 mb-4'>
                                 <div class='row'>
-                                    <div class='col-xl-3 col-6 text-xl-left text-left'>
+                                    <div class='col-xl-3 col-lg-3 col-6 text-xl-left text-lg-left text-left'>
                                         <h6><?php echo $ids[$key]; ?></h6>
                                     </div>
-                                    <div class='col-xl-3 col-6 text-xl-left text-right'>
+                                    <div class='col-xl-3 col-lg-3 col-6 text-xl-left text-lg-left text-right'>
                                         <h6><?php echo $date[$key]; ?></h6>
                                         <p><?php echo $time[$key]; ?></p>
                                     </div>
-                                    <div class='col-xl-3 col-12'>
+                                    <div class='col-xl-3 col-lg-3 col-12'>
                                         <?php
                                         $sqlCPQ = "SELECT coffee, price, qty FROM cc_orders WHERE id = ?";
                                         $stmtCPQ = $pdo -> prepare($sqlCPQ);
@@ -209,7 +204,7 @@ $firstName = $user['firstName'];
                                         }
                                         ?>
                                     </div>
-                                    <div class='col-xl-3 col-12 cost'>
+                                    <div class='col-xl-3 col-lg-3 col-12 cost'>
                                         <h6>
                                             <?php
                                             $costString = sprintf("%0.2f", $totalCost);

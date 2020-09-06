@@ -7,7 +7,7 @@ h1 {
   color: white !important;
 }
 
-@media screen and (min-width: 300px) and (max-width: 400px){
+@media screen and (min-width: 280px) and (max-width: 400px){
   .container {
     width: 100% !important;
   }
