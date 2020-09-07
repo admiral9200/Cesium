@@ -21,7 +21,7 @@ if (isset($_SESSION['email'])) header("location: home.php");
                 <img src="./images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
         </nav>
-        <div class="container pb-">
+        <div class="container pb-xl-5 pt-xl-5">
             <div class="row">
                 <div class="col-xl-7 col-12">
                     <h1>Παράγγειλε καφέ σε ένα 1'</h1>
