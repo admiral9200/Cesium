@@ -1,189 +1,223 @@
-@media screen and (min-width:280px) and (max-width:400px) { 
-    .login-snip{
-        padding: 20px 20px 20px 20px !important;
-    }
-    .card{
-        width: auto !important;
-    }
+@media screen and (min-width: 280px) and (max-width: 400px) {
+  .login-snip {
+    padding: 20px 20px 20px 20px !important;
+  }
+  .card {
+    width: auto !important;
+  }
 }
 
-@media screen and (min-width:400px) and (max-width: 850px){
-    .login-snip{
-        padding: 30px 40px 10px 40px !important;
-    }
+@media screen and (min-width: 400px) and (max-width: 850px) {
+  .login-snip {
+    padding: 30px 40px 10px 40px !important;
+  }
 }
 
 .login-box {
-    width: 100%;
-    margin: auto;
-    max-width: 525px;
-    min-height: 670px;
-    position: relative;
-    background: transparent !important;
-    box-shadow: 0 12px 15px 0 rgba(0, 0, 0, .24), 0 17px 50px 0 rgba(0, 0, 0, 0.048)
+  width: 100%;
+  margin: auto;
+  max-width: 525px;
+  min-height: 670px;
+  position: relative;
+  background: transparent !important;
+  box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24),
+    0 17px 50px 0 rgba(0, 0, 0, 0.048);
+}
+
+.text-danger {
+  display: none;
+}
+
+.lds-dual-ring {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  border-radius: 50%;
+  border: 6px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.wrong:focus {
+  outline: none !important;
+  box-shadow: 0 0 0 3px #dc354665 !important;
 }
 
 .login-snip {
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-    position: absolute;
-    padding: 50px 60px 20px 60px;
-    background: rgba(17, 17, 17, 0.897) 
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  position: absolute;
+  padding: 50px 60px 20px 60px;
+  background: rgba(17, 17, 17, 0.897);
 }
 
 .login-snip .login,
 .login-snip .sign-up-form {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    position: absolute;
-    transform: rotateY(180deg);
-    backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    transition: all .4s linear
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transition: all 0.4s linear;
 }
 
 .login-snip .sign-in,
 .login-snip .sign-up,
 .login-space .group .check {
-    display: none
+  display: none;
 }
 
 .login-snip .tab,
 .login-space .group .label,
 .login-space .group .button {
-    text-transform: uppercase
+  text-transform: uppercase;
 }
 
 .login-snip .tab {
-	color: white;
-    font-size: 25px !important;
-    margin-right: 15px;
-    padding-bottom: 5px;
-    margin: 0 15px 10px 0;
-    display: inline-block;
-	border-bottom: 2px solid transparent;
-	cursor: pointer;
+  color: white;
+  font-size: 25px !important;
+  margin-right: 15px;
+  padding-bottom: 5px;
+  margin: 0 15px 10px 0;
+  display: inline-block;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
 }
 
-.login-snip .sign-in:checked+.tab,
-.login-snip .sign-up:checked+.tab {
-    color: #1161ee;
+.login-snip .sign-in:checked + .tab,
+.login-snip .sign-up:checked + .tab {
+  color: #1161ee;
 }
 
 .login-space {
-    min-height: 345px;
-    position: relative;
-    perspective: 1000px;
-    transform-style: preserve-3d
+  min-height: 345px;
+  position: relative;
+  perspective: 1000px;
+  transform-style: preserve-3d;
 }
 
 .login-space .group {
-    margin-bottom: 15px
+  margin-bottom: 15px;
 }
 
 .login-space .group .label,
 .login-space .group .input,
 .login-space .group .button {
-    width: 100%;
-    color: #fff !important;
-    display: block;
+  width: 100%;
+  color: #fff !important;
+  display: block;
 }
 
 .login-space .group .input,
 .login-space .group .button {
-    border: none !important;
-    padding: 15px 20px !important;
-    border-radius: 25px !important;
-    background: rgba(255, 255, 255, .1)
+  border: none !important;
+  padding: 15px 20px !important;
+  border-radius: 25px !important;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .login-space .group input[data-type="password"] {
-    text-security: circle !important;
-    -webkit-text-security: circle !important; 
+  text-security: circle !important;
+  -webkit-text-security: circle !important;
 }
 
 .login-space .group .label {
-    color: #aaa;
-    font-size: 12px
+  color: #aaa;
+  font-size: 12px;
 }
 
 .login-space .group .button {
-    background: #1161ee
+  background: #1161ee;
 }
 
 .login-space .group label .icon {
-    width: 15px;
-    height: 15px;
-    border-radius: 2px;
-    position: relative;
-    display: inline-block;
-    background: rgba(255, 255, 255, .1)
+  width: 15px;
+  height: 15px;
+  border-radius: 2px;
+  position: relative;
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .login-space .group label .icon:before,
 .login-space .group label .icon:after {
-    content: '';
-    width: 10px;
-    height: 2px;
-    background: #fff;
-    position: absolute;
-    transition: all .2s ease-in-out 0s
+  content: "";
+  width: 10px;
+  height: 2px;
+  background: #fff;
+  position: absolute;
+  transition: all 0.2s ease-in-out 0s;
 }
 
 .login-space .group label .icon:before {
-    left: 3px;
-    width: 5px;
-    bottom: 6px;
-    transform: scale(0) rotate(0)
+  left: 3px;
+  width: 5px;
+  bottom: 6px;
+  transform: scale(0) rotate(0);
 }
 
 .login-space .group label .icon:after {
-    top: 6px;
-    right: 0;
-    transform: scale(0) rotate(0)
+  top: 6px;
+  right: 0;
+  transform: scale(0) rotate(0);
 }
 
-.login-space .group .check:checked+label {
-    color: #fff
+.login-space .group .check:checked + label {
+  color: #fff;
 }
 
-.login-space .group .check:checked+label .icon {
-    background: #1161ee
+.login-space .group .check:checked + label .icon {
+  background: #1161ee;
 }
 
-.login-space .group .check:checked+label .icon:before {
-    transform: scale(1) rotate(45deg)
+.login-space .group .check:checked + label .icon:before {
+  transform: scale(1) rotate(45deg);
 }
 
-.login-space .group .check:checked+label .icon:after {
-    transform: scale(1) rotate(-45deg)
+.login-space .group .check:checked + label .icon:after {
+  transform: scale(1) rotate(-45deg);
 }
 
-.login-snip .sign-in:checked+.tab+.sign-up+.tab+.login-space .login {
-    transform: rotate(0)
+.login-snip .sign-in:checked + .tab + .sign-up + .tab + .login-space .login {
+  transform: rotate(0);
 }
 
-.login-snip .sign-up:checked+.tab+.login-space .sign-up-form {
-    transform: rotate(0)
+.login-snip .sign-up:checked + .tab + .login-space .sign-up-form {
+  transform: rotate(0);
 }
 
 *,
 :after,
 :before {
-    box-sizing: border-box
+  box-sizing: border-box;
 }
 
 .clearfix:after,
 .clearfix:before {
-    content: '';
-    display: table
+  content: "";
+  display: table;
 }
 
 .clearfix:after {
-    clear: both;
-    display: block
+  clear: both;
+  display: block;
 }

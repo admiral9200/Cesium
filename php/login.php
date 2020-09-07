@@ -1,7 +1,7 @@
 <?php
 session_start();
 include("db_connect.php");
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['email']) && isset($_POST['pass'])){
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['email']) && !empty($_POST['pass'])){
     $email = $_POST['email'];
     $pass = $_POST['pass'];
     $sqlUser = "SELECT * FROM cc_users WHERE email = ?";
@@ -16,10 +16,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['email']) && isset($_PO
         session_destroy();
         session_start();
         $_SESSION['email'] = $email;
-        echo "success";
+        echo true;
     }
     else{
-        echo "<p class='text-center mt-3' style='color: red !important'>Το email ή ο κωδικός που έχεις εισάγει είναι λάθος!</p>";
+        echo "<p class='text-center mt-3' style='color: #dc3545 !important'>Το email ή ο κωδικός που έχεις εισάγει είναι λάθος!</p>";
     }
 }
 ?>

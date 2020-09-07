@@ -1,7 +1,7 @@
 <?php
 session_start();
 include("db_connect.php");
-if (isset($_POST['signup'])){
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['email']) && !empty($_POST['pass'])){
     $email = $_POST['email'];
     $pass = $_POST['pass'];
     $firstName = $_POST['firstName'];
@@ -11,15 +11,15 @@ if (isset($_POST['signup'])){
     $stmtCheckEmail -> execute([$email]);
     $emailToCheck = $stmtCheckEmail -> fetch();
     if ($emailToCheck && ($emailToCheck['email'] === $email)){
-        $_SESSION['msg'] = "Το email αυτό υπάρχει ήδη";
-        header('location: ../index.php');
+        echo "<p class='text-center mt-3' style='color: #dc3545 !important'>Το email αυτό υπάρχει ήδη</p>";
     }
     else{
         $pass = password_hash($pass, PASSWORD_DEFAULT);
         $sqlNewUser = "INSERT INTO cc_users (email, password, firstName, lastName) VALUES(? , ? , ? , ?)";
         $stmtNewUser = $pdo -> prepare($sqlNewUser);
         $stmtNewUser -> execute([$email, $pass, $firstName, $lastName]);
-        header('location: ../success_register.php');
+        echo "success";
+        //header('location: ../success_register.php');
     }
 }
 ?>

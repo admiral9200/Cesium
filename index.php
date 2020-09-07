@@ -36,18 +36,18 @@ if (isset($_SESSION['email'])) header("location: home.php");
                                 <div class="login-space">
                                     <div class="form-group">
                                         <div class="login form-check pl-0">
-                                            <form class="form-group needs-validation" novalidate>
+                                            <form class="form-group">
                                                 <div class="group">
                                                     <label for="user" class="label">ΔΙΕΥΘΥΝΣΗ EMAIL</label>
                                                     <input id="email" type="email" class="input form-control form-control-lg" placeholder="Γράψε τη Διέυθυνση Email" required>
-                                                    <div class="invalid-feedback">
+                                                    <div id="eWarn" class="text-danger">
                                                         Πρέπει να συμπληρώσεις το email σου. Πρέπει να είναι μία έγκυρη διεύθυνση email.
                                                     </div>
                                                 </div>
                                                 <div class="group">
                                                     <label for="pass" class="label">ΚΩΔΙΚΟΣ</label>
                                                     <input id="pass" type="password" class="input form-control form-control-lg" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
-                                                    <div class="invalid-feedback">
+                                                    <div id="pWarn" class="text-danger">
                                                         Πρέπει να συμπληρώσεις τον κωδικό σου.
                                                     </div>
                                                 </div>
@@ -57,7 +57,7 @@ if (isset($_SESSION['email'])) header("location: home.php");
                                                 </div>
                                                 <div class="group"> 
                                                     <input type="submit" class="button btn btn-lg" id="login" value="Συνδεση">
-                                                    <div id="res"></div>
+                                                    <div id="res" class="d-flex justify-content-center pt-2"></div>
                                                 </div>
                                                 <div class="hr mt-4 mb-3"></div>
                                                 <div class="foot"> 
@@ -66,32 +66,32 @@ if (isset($_SESSION['email'])) header("location: home.php");
                                             </form>
                                         </div>
                                         <div class="sign-up-form form-check pl-0">
-                                            <form class="form-group needs-validation" novalidate>
+                                            <form class="form-group">
                                                 <div class="group">
                                                     <label for="emailR" class="label">ΔΙΕΥΘΥΝΣΗ EMAIL</label>
                                                     <input id="emailR" type="email" class="input form-control form-control-lg" placeholder="Γράψε τη Διέυθυνση Email" required>
-                                                    <div class="invalid-feedback">
+                                                    <div class="text-danger">
                                                         Πρέπει να συμπληρώσεις μία έγκυρη διεύθυνση email.
                                                     </div>
                                                 </div>
                                                 <div class="group">
                                                     <label for="firstName" class="label">ΟΝΟΜΑ</label> 
                                                     <input id="firstName" type="text" class="input form-control form-control-lg" data-type="firstName" placeholder="Γράψε το Όνομα σου" required>
-                                                    <div class="invalid-feedback">
+                                                    <div class="text-danger">
                                                         Πρέπει να συμπληρώσεις το όνομα σου
                                                     </div>
                                                 </div>
                                                 <div class="group">
                                                     <label for="lastName" class="label">ΕΠΙΘΕΤΟ</label> 
                                                     <input id="lastName" type="text" class="input form-control form-control-lg" data-type="lastName" placeholder="Γράψε το Επίθετο σου" required>
-                                                    <div class="invalid-feedback">
+                                                    <div class="text-danger">
                                                         Πρέπει να συμπληρώσεις το επίθετο σου.
                                                     </div>
                                                 </div>
                                                 <div class="group">
                                                     <label for="password" class="label">ΚΩΔΙΚΟΣ</label> 
                                                     <input id="password" type="password" class="input form-control form-control-lg" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
-                                                    <div class="invalid-feedback">
+                                                    <div class="text-danger">
                                                         Πρέπει να συμπληρώσεις ένα κωδικό πρόσβασης.
                                                     </div>
                                                 </div>                                            
