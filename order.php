@@ -68,17 +68,17 @@ $firstName = $user['firstName'];
                                             <div class='row'>
                                                 <div class='col-xl-3 col-12 mb-2'>
                                                     <h5>Επίλεξε ζάχαρη</h5>
-                                                    <div class='custom-control custom-radio cursor' onclick='uncheck<?php echo $i;?>()'>
-                                                        <input type='radio' id='<?php echo $code;?>1' value='Γλυκός' name='sugar_<?php echo $code;?>' class='custom-control-input' required/>
-                                                        <label class='custom-control-label cursor' for='<?php echo $code;?>1'>Γλυκός</label>
+                                                    <div class='custom-control custom-radio cursor' onclick='uncheck(<?php echo $code;?>)'>
+                                                        <input type='radio' id='s<?php echo $code;?>' value='Γλυκός' name='sugar_<?php echo $code;?>' class='custom-control-input' required/>
+                                                        <label class='custom-control-label cursor' for='s<?php echo $code;?>'>Γλυκός</label>
                                                     </div>
-                                                    <div class='custom-control custom-radio cursor' onclick='uncheck<?php echo $i;?>()'>
-                                                        <input type='radio' id='<?php echo $code;?>2' value='Μέτριος' name='sugar_<?php echo $code;?>' class='custom-control-input' required/>
-                                                        <label class='custom-control-label cursor' for='<?php echo $code;?>2'>Μέτριος</label>
+                                                    <div class='custom-control custom-radio cursor' onclick='uncheck(<?php echo $code;?>)'>
+                                                        <input type='radio' id='m<?php echo $code;?>' value='Μέτριος' name='sugar_<?php echo $code;?>' class='custom-control-input' required/>
+                                                        <label class='custom-control-label cursor' for='m<?php echo $code;?>'>Μέτριος</label>
                                                     </div>
-                                                    <div class='custom-control custom-radio cursor' onclick='noneSugar<?php echo $i;?>()'>
-                                                        <input type='radio' id='<?php echo $code;?>3' value='Σκέτος' name='sugar_<?php echo $code;?>' class='custom-control-input' required/>
-                                                        <label class='custom-control-label cursor' for='<?php echo $code;?>3'>Σκέτος</label>
+                                                    <div class='custom-control custom-radio cursor' onclick='noneSugar(<?php echo $code;?>)'>
+                                                        <input type='radio' id='no<?php echo $code;?>' value='Σκέτος' name='sugar_<?php echo $code;?>' class='custom-control-input' required/>
+                                                        <label class='custom-control-label cursor' for='no<?php echo $code;?>'>Σκέτος</label>
                                                     </div>
                                                 </div>
                                                 <div class='col-xl-4 col-12 mb-2'>
@@ -137,33 +137,8 @@ $firstName = $user['firstName'];
                                     </div>  
                                 </div>
                             </div>
-                            <script type="text/javascript">
-                                function noneSugar<?php echo $i; ?>(){
-                                    document.getElementById("<?php echo $code.'3'; ?>").onclick = function(){
-                                        var sugarTypes = document.getElementsByName("<?php echo "sugarType_$code"; ?>");
-                                        for (let index = 0; index < sugarTypes.length; index++) {
-                                            sugarTypes[index].disabled = true;
-                                            sugarTypes[index].checked = false;
-                                        }
-                                    }
-                                }
-                                function uncheck<?php echo $i; ?>(){
-                                    document.getElementById("<?php echo $code.'1'; ?>").onclick = function(){
-                                        var sugarTypes = document.getElementsByName("<?php echo "sugarType_$code"; ?>");
-                                        for (let index = 0; index < sugarTypes.length; index++) {
-                                            sugarTypes[index].disabled = false;
-                                        }
-                                    }
-                                    document.getElementById("<?php echo $code.'2'; ?>").onclick = function(){
-                                        var sugarTypes = document.getElementsByName("<?php echo "sugarType_$code"; ?>");
-                                        for (let index = 0; index < sugarTypes.length; index++) {
-                                            sugarTypes[index].disabled = false;
-                                        }
-                                    }
-                                }
-                            </script>
                             <?php
-                        $i += 1;
+                        $i++;
                     }
                     ?>
                 </div>
@@ -193,7 +168,7 @@ $firstName = $user['firstName'];
                                 ?>
                                 <li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-1'>
                                     <h5><?php echo $coffee; ?></h5>
-                                    <a href='./php/delete_cart.php?count=<?php echo $count; ?>' type='button' class='btn btn-sm btn-outline-danger mr-2' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></a>
+                                    <a href='./php/cart.php?count=<?php echo $count; ?>' type='button' class='btn btn-sm btn-outline-danger mr-2' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></a>
                                 </li>
                                 <li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0 pt-0 mt-0'>
                                     <p class='attr'>
@@ -213,9 +188,9 @@ $firstName = $user['firstName'];
                                         </div>
                                         <div class='col-8 space'>
                                             <div class='qty d-flex justify-content-center mt-2'>
-                                                <a class='minus' <?php if($quantity > 1) echo "href='./php/cart.php?qty=minus&&count=$count'"; ?> id="minus">-</a>
+                                                <a class='minus' <?php if($quantity > 1) echo "href='./php/cart.php?qty=minus&&counter=$count'"; ?> id="minus">-</a>
                                                 <input type='number' class='count' name='qty' value="<?php echo $quantity; ?>" disabled>
-                                                <a class='plus' href="./php/cart.php?qty=plus&&count=<?php echo $count; ?>" id="plus">+</a>
+                                                <a class='plus' href="./php/cart.php?qty=plus&&counter=<?php echo $count; ?>" id="plus">+</a>
                                             </div>
                                         </div>
                                     </div>
@@ -254,8 +229,8 @@ $firstName = $user['firstName'];
     <?php echo file_get_contents("./html/sale.html"); ?>
     <!-------------------- Site footer --------------------------->
     <?php echo file_get_contents("./html/footer.html"); ?>
-    <script src="./js/order.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="./js/order.js"></script>
     <script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
 </body>

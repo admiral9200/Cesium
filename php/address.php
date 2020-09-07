@@ -6,7 +6,7 @@ if (isset($_POST['add'])){
     $check_address_sum = "SELECT * FROM cc_address WHERE email = ?";
     $stmtCheckAddressesSum = $pdo -> prepare($check_address_sum);
     $stmtCheckAddressesSum -> execute([$email]);
-    if ($stmtCheckAddressesSum -> rowCount() >= 2){
+    if ($stmtCheckAddressesSum -> rowCount() > 1){
         $_SESSION['addresses'] = "Δεν μπορείτε να προσθέσετε άλλη διέυθυνση.";
         header("location: ../home.php");
     }
@@ -18,5 +18,16 @@ if (isset($_POST['add'])){
         $stmtAddAddresses -> execute([$email, $address, $state]);
         header("location: ../home.php");
     }
+}
+if (isset($_GET['address'])){
+    $address_to_delete = $_GET['address'];
+    $sqlDeleteAddress = "DELETE FROM cc_address WHERE address = ?";
+    $stmtDeleteAddress = $pdo -> prepare($sqlDeleteAddress);
+    $stmtDeleteAddress -> execute([$address_to_delete]);
+    $_SESSION['delete_message'] = true;
+    header("location: ../home.php");
+}
+else{
+    //handle error
 }
 ?>

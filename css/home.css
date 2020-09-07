@@ -3,11 +3,6 @@
   margin: 0 !important;
 }
 
-form {
-  padding-top: 3%;
-  padding-right: 10%;
-}
-
 @media screen and (min-width: 280px) and (max-width: 400px){
     .container {
         width: 100% !important;

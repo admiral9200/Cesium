@@ -3,8 +3,8 @@ session_start();
 $email = $_SESSION['email'];
 include("db_connect.php");
 //Minus function. Decrease quantity
-if(isset($_GET['qty']) && ($_GET['qty'] == "minus")){
-    $counter = $_GET['count'];
+if(isset($_GET['qty']) && ($_GET['qty'] === "minus")){
+    $counter = $_GET['counter'];
     $sqlMinus = "SELECT code, price, qty FROM cc_cart WHERE email = ? AND count = ? LIMIT 1";
     $stmtMinus = $pdo -> prepare($sqlMinus);
     $stmtMinus -> execute([$email, $counter]);
@@ -23,8 +23,8 @@ if(isset($_GET['qty']) && ($_GET['qty'] == "minus")){
     header("location: ../order.php");
 }
 //Plus function. Increase quantity
-if(isset($_GET['qty']) && ($_GET['qty'] == "plus")){
-    $counter = $_GET['count'];
+if(isset($_GET['qty']) && ($_GET['qty'] === "plus")){
+    $counter = $_GET['counter'];
     $sqlPlus = "SELECT code, price, qty FROM cc_cart WHERE email = ? AND count = ? LIMIT 1";
     $stmtPlus = $pdo -> prepare($sqlPlus);
     $stmtPlus -> execute([$email, $counter]);
@@ -136,3 +136,12 @@ if(isset($_POST['addToCart'])){
     }
     header("location: ../order.php");
 }
+//Delete one coffee from cart
+if(isset($_GET['count']) && is_numeric($_GET['count'])){
+    $countToDelete = $_GET['count'];
+    $deleteQuery = "DELETE FROM cc_cart WHERE email = ? AND count = ?";
+    $stmtDeleteCoffee = $pdo -> prepare($deleteQuery);
+    $stmtDeleteCoffee -> execute([$email, $countToDelete]);
+    header("location: ../order.php");
+}
+?>
