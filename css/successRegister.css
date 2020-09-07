@@ -68,6 +68,9 @@ h1 {
   .container {
     width: 100% !important;
   }
+  .nobot{
+    position: relative !important;
+  }
   .navbar{
     justify-content: center !important;
   }

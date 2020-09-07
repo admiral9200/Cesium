@@ -20,11 +20,7 @@ $firstName = $user['firstName'];
     <link rel="stylesheet" type="text/css" href="./css/success.css">
     <link rel="icon" type="image/png" href="./images/chip_coffee.png" size="20x20">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css">
-    <script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
     <div class="background">
@@ -35,9 +31,9 @@ $firstName = $user['firstName'];
             <div class="dropdown">
                 <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $firstName; ?> <i class="far fa-user"></i></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="profile.php">Ο λογαριασμός μου</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="./php/logout.php">Αποσύνδεση</a>
+                  <a class="dropdown-item" href="profile.php">Ο λογαριασμός μου</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="./php/logout.php">Αποσύνδεση</a>
                 </div>
             </div>
         </nav>
@@ -79,5 +75,10 @@ $firstName = $user['firstName'];
             </div>
         </div>
     </div>
-    <!-------------------- Site footer --------------------------->
+    <!---- Footer ----->
     <?php echo file_get_contents("./html/footer.html"); ?>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
+</body>
+</html>

@@ -255,3 +255,8 @@ $firstName = $user['firstName'];
     <!-------------------- Site footer --------------------------->
     <?php echo file_get_contents("./html/footer.html"); ?>
     <script src="./js/order.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
+</body>
+</html>

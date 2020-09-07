@@ -59,7 +59,8 @@ $firstName = $user['firstName'];
         ?>
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
-                <h1>Έχεις όρεξη για καφέ; Πρόσθεσε τη διεύθυνση σου και παράγγειλε!</h1>
+                <h1>Καλωσήρθες, <?php echo $firstName; ?></h1>
+                <h2>Έχεις όρεξη για καφέ; Πρόσθεσε τη διεύθυνση σου και παράγγειλε!</h2>
                 <button class="btn btn-primary btn-lg btn-block" role="button" onclick="location.href='order.php'" <?php if($stmtAddress -> rowCount() == 0){ echo "style='cursor: not-allowed;' disabled"; } ?>>Παράγγειλε τώρα</button>       
             </div>
         </div>
@@ -229,9 +230,14 @@ $firstName = $user['firstName'];
             </div>
         </div>
     </div>
-<!-- CARD -->
-<?php echo file_get_contents("./html/card.html"); ?>
-<!-- SALE SECTION -->
-<?php echo file_get_contents("./html/sale.html"); ?>
-<!-- Site footer -->
-<?php echo file_get_contents("./html/footer.html"); ?>
+    <!-- CARD -->
+    <?php echo file_get_contents("./html/card.html"); ?>
+    <!-- SALE SECTION -->
+    <?php echo file_get_contents("./html/sale.html"); ?>
+    <!-- Site footer -->
+    <?php echo file_get_contents("./html/footer.html"); ?>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
+</body>
+</html>

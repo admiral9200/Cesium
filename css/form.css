@@ -17,7 +17,8 @@
   width: 100%;
   margin: auto;
   max-width: 525px;
-  min-height: 670px;
+  height: 700px;
+  max-height: fit-content;
   position: relative;
   background: transparent !important;
   box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24),
@@ -141,7 +142,7 @@
 }
 
 .login-space .group .label {
-  color: #aaa;
+  color: rgb(197, 197, 197);
   font-size: 12px;
 }
 

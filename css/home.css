@@ -3,10 +3,6 @@
   margin: 0 !important;
 }
 
-h1 {
-  color: white !important;
-}
-
 form {
   padding-top: 3%;
   padding-right: 10%;
@@ -38,6 +34,9 @@ form {
     .background h1 {
         font-size: 40px !important;
         padding-right: 0 !important;
+    }
+    .background h2{
+      font-size: 25px !important;
     }
     .background h3 {
         text-align: center !important;
@@ -101,6 +100,10 @@ body {
   background-size: inherit;
   background-position: center;
   background-repeat: no-repeat;
+}
+
+.background h2{
+  color: white !important;
 }
 
 .background h1 {
