@@ -39,7 +39,7 @@ if (isset($_SESSION['email'])) header("location: home.php");
                                             <form class="form-group">
                                                 <div class="group">
                                                     <label for="user" class="label">ΔΙΕΥΘΥΝΣΗ EMAIL</label>
-                                                    <input id="email" type="email" class="input form-control form-control-lg" placeholder="Γράψε τη Διέυθυνση Email" required>
+                                                    <input id="email" type="email" class="input form-control form-control-lg" placeholder="Γράψε τη Διεύθυνση Email" required>
                                                     <div id="eWarn" class="text-danger"></div>
                                                 </div>
                                                 <div class="group">

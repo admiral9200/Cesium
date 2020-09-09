@@ -1,8 +1,8 @@
 <?php
 session_start();
-$email = $_SESSION['email'];
 if (!isset($_SESSION['email'])) header('location: index.php');
 include("./php/db_connect.php");
+$email = $_SESSION['email'];
 $sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = ?";
 $resultUser = $pdo -> prepare($sqlLoggedInUser);
 $resultUser -> execute([$email]);
@@ -12,15 +12,24 @@ $firstName = $user['firstName'];
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset=UTF-8>
+    <meta http-equiv="content-type" content="text/html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
     <title>Chip Coffee | Online Coffee Delivery</title>
     <link rel="icon" type="image/png" href="./images/chip_coffee.png">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./css/home.css">
-    <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="./bootstrap-4.5.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function(){    
+	        $('#addresses').load("./php/addresses.php");
+        });
+    </script>
 </head>
 <body>
+    <div id="blurred" class="blurred"></div>
+    <div id="loader" class="loader lds-dual-ring"></div>
     <div class="background">
         <nav class="navbar navbar-light container">
             <a class="navbar-brand" href="home.php">
@@ -47,22 +56,22 @@ $firstName = $user['firstName'];
                 if($stmtAddress -> rowCount() == 0){
                     ?>
                     <h2>Έχεις όρεξη για καφέ; Πρόσθεσε τη διεύθυνση σου και παράγγειλε!</h2>
-                    <form action="./php/address.php" class="form-group needs-validation pr-0" method="POST" novalidate>
+                    <form class="form-group needs-validation pr-0" novalidate>
                         <div class="row">
                             <div class="group col-xl-5 col-12 mt-2 m-xl-0">   
-                                <input name="address" type="text" class="input form-control form-control-lg w-100" placeholder="Πρόσθεσε εδώ την διεύθυνσή σου" required>
-                                <div class="invalid-feedback">
+                                <input id="address" type="text" class="input form-control form-control-lg w-100" placeholder="Πρόσθεσε εδώ την διεύθυνσή σου" required>
+                                <div class="text-danger">
                                     Πρέπει να συμπληρώσεις την διεύθυνσή σου.
                                 </div>
                             </div>
                             <div class="group col-xl-5 col-12 mt-2 m-xl-0">
-                                <input name="state" type="text" class="input form-control form-control-lg w-100" placeholder="Πρόσθεσε εδώ την περιοχή σου" required>
-                                <div class="invalid-feedback">
+                                <input id="state" type="text" class="input form-control form-control-lg w-100" placeholder="Πρόσθεσε εδώ την περιοχή σου" required>
+                                <div class="text-danger">
                                     Πρέπει να συμπληρώσεις την περιοχή σου.
                                 </div>
                             </div>
                             <div class="group col-xl-2 col-12 mt-2 m-xl-0">
-                                <button name="add" type="submit" class="btn btn-primary btn-lg btn-block">Προσθήκη</button>
+                                <button id="add" type="submit" class="btn btn-primary btn-lg btn-block">Προσθήκη</button>
                             </div>
                         </div>
                     </form>
@@ -78,62 +87,22 @@ $firstName = $user['firstName'];
         </div>
     </div>
     <div class="container">
+        <div id='false' class="m-3"></div>
         <h2 class="mb-2 mt-5">Οι διευθύνσεις μου</h2>
         <div class="row">
             <div class="col-12">
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item mt-4 mb-4">
-                        <div class="row">
-                            <div class="col-xl-3 col-6">
-                                <h6>Διεύθυνση</h6>
-                            </div>
-                            <div class="col-xl-3 col-6">
-                                <h6>Περιοχή</h6>
-                            </div>
-                        </div>
-                    </li>
-                    <?php
-                    if (isset($_SESSION['delete_message'])){
-                        ?>
-                        <div class='alert alert-danger alert-dismissible fade show'>
-                            <button type='button' class='close' data-dismiss='alert'>&times;</button>Η διεύθυνση διαγράφηκε.
-                        </div>
-                        <?php
-                        unset($_SESSION['delete_message']);
-                    }
-                    if ($stmtAddress -> rowCount() > 0){
-                        $i = 0;
-                        while ($row = $stmtAddress -> fetch()){
-                            $address = $row['address'];
-                            $state = $row['state'];
-                            ?>
-                            <li class='list-group-item mt-2 mb-3'>
-                                    <div class='row '>
-                                        <div class='col-xl-3 col-6 align-middle'>
-                                            <h6><?php echo $address; ?></h6>
-                                        </div>
-                                        <div class='col-xl-3 col-6 align-middle'>
-                                            <h6><?php echo $state; ?></h6>
-                                        </div>
-                                        <div class='col-xl-2 col-12'>
-                                            <a class='btn btn-primary btn-block btn-danger' href='./php/address.php?address=<?php echo $address;?>' role='button'>Διαγραφή</a>
-                                        </div>
-                                    </div>
-                                </li>
-                            <?php
-                            $i += 1;
-                        }
-                    }
-                    else{
-                        ?>
-                        <li class='list-group-item mt-2 mb-4'>
-                            <h6>Δεν υπάρχει ενεργή διεύθυνση</h6>
-                        </li>
-                        <?php
-                    }
-                    ?>
-                </ul>
+                <?php    
+                if (isset($_SESSION['delete_message'])){
+                ?>
+                <div class='alert alert-danger alert-dismissible fade show'>
+                    <button type='button' class='close' data-dismiss='alert'>&times;</button>Η διεύθυνση διαγράφηκε.
+                </div>
+                <?php
+                unset($_SESSION['delete_message']);
+                }
+                ?>
             </div>
+            <div id="addresses" class="col-12"></div>
         </div>
     </div>
     <div class="container">
@@ -228,7 +197,6 @@ $firstName = $user['firstName'];
     <!-- Site footer -->
     <?php echo file_get_contents("./html/footer.html"); ?>
     <script src="./js/home.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
 </body>

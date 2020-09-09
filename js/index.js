@@ -14,6 +14,14 @@ var firstName = document.getElementById('firstName');
 var lastName = document.getElementById('lastName');
 var password = document.getElementById('password');
 
+//Clear warnings on browser tab change
+let warnTexts = document.getElementsByClassName('text-danger');
+for (let i = 0; i < warnTexts.length; i++) {
+	document.addEventListener('visibilitychange', function(){
+		document.getElementsByClassName('text-danger')[i].style.display = 'none';
+	});	
+}
+
 email.addEventListener('keyup', function(){
 	if(validateEmail(email.value)){
 		emailWarn.style.display = 'none';

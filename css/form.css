@@ -27,8 +27,10 @@
 
 .text-danger {
   display: none;
+  font-size: 13px;
 }
 
+/* Animation Loaded */
 .lds-dual-ring {
   margin-bottom: 5px;
   margin-top: 5px;
