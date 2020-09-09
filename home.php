@@ -20,12 +20,6 @@ $firstName = $user['firstName'];
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./css/home.css">
     <link rel="stylesheet" type="text/css" href="./bootstrap-4.5.0/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script>
-        $(document).ready(function(){    
-	        $('#addresses').load("./php/addresses.php");
-        });
-    </script>
 </head>
 <body>
     <div id="blurred" class="blurred"></div>
@@ -44,19 +38,18 @@ $firstName = $user['firstName'];
                 </div>
             </div>
         </nav>
-        <?php
-        $sqlAddresses = "SELECT * FROM cc_address WHERE email = ?";
-        $stmtAddress = $pdo -> prepare($sqlAddresses);
-        $stmtAddress -> execute([$email]);
-        ?>
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <h1 class="mb-xl-5">Καλωσήρθες, <?php echo $firstName; ?></h1>
-                <?php 
+                <div id="home">
+                <?php
+                $sqlAddresses = "SELECT * FROM cc_address WHERE email = ?";
+                $stmtAddress = $pdo -> prepare($sqlAddresses);
+                $stmtAddress -> execute([$email]);
                 if($stmtAddress -> rowCount() == 0){
                     ?>
                     <h2>Έχεις όρεξη για καφέ; Πρόσθεσε τη διεύθυνση σου και παράγγειλε!</h2>
-                    <form class="form-group needs-validation pr-0" novalidate>
+                    <form class="form-group pr-0 m-0">
                         <div class="row">
                             <div class="group col-xl-5 col-12 mt-2 m-xl-0">   
                                 <input id="address" type="text" class="input form-control form-control-lg w-100" placeholder="Πρόσθεσε εδώ την διεύθυνσή σου" required>
@@ -71,7 +64,7 @@ $firstName = $user['firstName'];
                                 </div>
                             </div>
                             <div class="group col-xl-2 col-12 mt-2 m-xl-0">
-                                <button id="add" type="submit" class="btn btn-primary btn-lg btn-block">Προσθήκη</button>
+                                <button id="add" name="add" type="submit" class="btn btn-primary btn-lg btn-block">Προσθήκη</button>
                             </div>
                         </div>
                     </form>
@@ -83,6 +76,7 @@ $firstName = $user['firstName'];
                     <?php
                 }
                 ?>
+                </div>
             </div>
         </div>
     </div>
@@ -196,6 +190,7 @@ $firstName = $user['firstName'];
     <?php echo file_get_contents("./html/sale.html"); ?>
     <!-- Site footer -->
     <?php echo file_get_contents("./html/footer.html"); ?>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="./js/home.js"></script>
     <script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>

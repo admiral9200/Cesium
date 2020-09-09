@@ -1,9 +1,11 @@
+$(document).ready(function(){    
+	$('#addresses').load("./php/addresses.php");
+});
+
 var address = document.getElementById('address');
 var state = document.getElementById('state');
 var loader = document.getElementById("loader");
 var blurred = document.getElementById("blurred");
-
-document.getElementById('add').addEventListener('click', addAddress);
 
 address.addEventListener('keyup', function() {
 	address.closest(".group").querySelector('.text-danger').style.display = 'none';
@@ -23,7 +25,7 @@ state.addEventListener('keyup', function() {
 	}
 });
 
-function addAddress(e){
+document.getElementById('add').addEventListener('click', function addAddress(e){
 	e.preventDefault();
 	if(validateAddress()){
 		loader.style.display = "block";
@@ -37,6 +39,8 @@ function addAddress(e){
 			if(this.status == 200){
 				if(this.responseText == true){
 					$("#addresses").load("./php/addresses.php");
+					$("#cart_item").html("");
+					$("#home").load("./php/address_menu.php");
 					loader.style.display = "none";
 					blurred.style.display = "none";
 					$('body').removeClass('stop-scrolling');
@@ -52,7 +56,7 @@ function addAddress(e){
 		}
 		xhr.send(params);
 	}
-}
+});
 
 function validateAddress(){
 	var form = [address, state];

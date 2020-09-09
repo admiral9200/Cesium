@@ -1,6 +1,7 @@
 <?php
 include("db_connect.php");
 session_start();
+if (!isset($_SESSION['email'])) header('location: index.php');
 $email = $_SESSION['email'];
 $sqlAddresses = "SELECT * FROM cc_address WHERE email = ?";
 $stmtAddress = $pdo -> prepare($sqlAddresses);
@@ -33,7 +34,7 @@ $stmtAddress -> execute([$email]);
 							<h6><?php echo $state; ?></h6>
 						</div>
 						<div class='col-xl-2 col-12'>
-							<a class='btn btn-primary btn-block btn-danger' href='./php/address.php?address=<?php echo $address;?>' role='button'>Διαγραφή</a>
+							<a id="delete" class='btn btn-primary btn-block btn-danger' href='./php/address.php?address=<?php echo $address;?>' role='button'>Διαγραφή</a>
 						</div>
 					</div>
 				</li>
