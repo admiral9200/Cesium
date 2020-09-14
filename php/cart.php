@@ -20,7 +20,7 @@ if(isset($_GET['qty']) && ($_GET['qty'] === "minus")){
     $sqlUpdate = "UPDATE cc_cart SET price = ?, qty = ? WHERE email = ? AND count = ?";
     $stmtUpdate = $pdo -> prepare($sqlUpdate);
     $stmtUpdate -> execute([$newPrice, $quantity, $email, $counter]);
-    header("location: ../order.php");
+    header("location: ../order/");
 }
 //Plus function. Increase quantity
 if(isset($_GET['qty']) && ($_GET['qty'] === "plus")){
@@ -40,7 +40,7 @@ if(isset($_GET['qty']) && ($_GET['qty'] === "plus")){
     $sqlUpdate = "UPDATE cc_cart SET price = ?, qty = ? WHERE email = ? AND count = ?";
     $stmtUpdate = $pdo -> prepare($sqlUpdate);
     $stmtUpdate -> execute([$newPrice, $quantity, $email, $counter]);
-    header("location: ../order.php");
+    header("location: ../order/");
 }
 //Cart
 if(isset($_POST['addToCart'])){
@@ -103,9 +103,7 @@ if(isset($_POST['addToCart'])){
             $milk = "milk_".$row['code'];
             $cinnamon = "cinnamon_".$row['code'];
             $choco = "choco_".$row['code'];
-            if(!isset($_POST[$sugarType])){
-                $_POST[$sugarType] = "";
-            }
+            if(!isset($_POST[$sugarType])) $_POST[$sugarType] = "";
             if (isset($_POST[$sugar])){
                 $count++;
                 $cart_query = "INSERT INTO cc_cart (email, count, code, coffee, sugar, sugarType, price, qty) VALUES( ? , ? , ? , ? , ? , ? , ? , 1)";
@@ -134,7 +132,7 @@ if(isset($_POST['addToCart'])){
             $i++;
         }
     }
-    header("location: ../order.php");
+    header("location: ../order/");
 }
 //Delete one coffee from cart
 if(isset($_GET['count']) && is_numeric($_GET['count'])){
@@ -142,6 +140,6 @@ if(isset($_GET['count']) && is_numeric($_GET['count'])){
     $deleteQuery = "DELETE FROM cc_cart WHERE email = ? AND count = ?";
     $stmtDeleteCoffee = $pdo -> prepare($deleteQuery);
     $stmtDeleteCoffee -> execute([$email, $countToDelete]);
-    header("location: ../order.php");
+    header("location: ../order/");
 }
 ?>

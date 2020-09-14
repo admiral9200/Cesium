@@ -377,8 +377,8 @@ a {
   margin-top: 10px;
 }
 .accordion .card-header .btn {
-  font-size: 1.04rem;
-  font-weight: 500;
+  font-size: 1.06rem;
+  font-weight: 400;
   width: 100%;
   text-align: left;
   position: relative;
@@ -393,7 +393,7 @@ a {
   padding-top: 2px;
 }
 .accordion .card-header button:hover {
-  color: #23384e;
+  color: #1f3246;
 }
 .accordion .card-body {
   background: white;

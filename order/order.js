@@ -1,5 +1,7 @@
 //Clear forms on refresh or redirect back
-$('form').each(() => this.reset());
+$(document).ready(function () {
+	$('form').each(() => this.reset());
+});
 
 $(".collapse").on('show.bs.collapse', function(){
 	$(this).prev('.card-header').find('svg').toggleClass('fa-plus fa-minus'); 

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("./php/db_connect.php");
+include("../php/db_connect.php");
 $email = $_SESSION['email'];
 if (!isset($_SESSION['email'])) {
     header('location: index.php');
@@ -17,23 +17,23 @@ $firstName = $user['firstName'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
     <title>Chip Coffee | Online Coffee Delivery</title>
-    <link rel="stylesheet" type="text/css" href="./css/order.css">
-    <link rel="icon" type="image/png" href="./images/chip_coffee.png" size="20x20">
+    <link rel="stylesheet" type="text/css" href="../css/order.css">
+    <link rel="icon" type="image/png" href="../images/chip_coffee.png" size="20x20">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css"> 
+    <link rel="stylesheet" href="../bootstrap-4.5.0/css/bootstrap.min.css"> 
 </head>
 <body>
     <div class="background">
         <nav class="navbar navbar-light container">
-            <a class="navbar-brand" href="home.php">
-                <img src="./images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
+            <a class="navbar-brand" href="../home/">
+                <img src="../images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
             <div class="dropdown">
                 <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $firstName; ?> <i class="far fa-user"></i></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                  <a class="dropdown-item" href="profile.php">Ο λογαριασμός μου</a>
+                  <a class="dropdown-item" href="../profile.php">Ο λογαριασμός μου</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="./php/logout.php">Αποσύνδεση</a>
+                  <a class="dropdown-item" href="../php/logout.php">Αποσύνδεση</a>
                 </div>
             </div>
         </nav>
@@ -57,14 +57,12 @@ $firstName = $user['firstName'];
                         $cinnamon = $row['cinnamon'];
                         $choco = $row['choco'];
                         ?><div class='card'>
-                                <div class='card-header' id='headingOne'>
-                                    <h2 class='clearfix p-0'>
-                                        <a class='btn btn-link p-0' data-toggle='collapse' data-target='#collapse<?php echo $bootstrap_count[$i]; ?>' aria-expanded='false' aria-controls='collapse<?php echo $bootstrap_count[$i];?>'><?php echo $name." ".$price;?>€<i class="fas fa-plus float-right"></i></a>
-                                    </h2>
+                                <div class='card-header p-0 align-middle' id='headingOne'>
+                                    <a class='btn btn-link p-3' data-toggle='collapse' data-target='#collapse<?php echo $bootstrap_count[$i]; ?>' aria-expanded='false' aria-controls='collapse<?php echo $bootstrap_count[$i];?>'><?php echo $name." ".$price;?>€<i class="fas fa-plus float-right mt-1"></i></a>
                                 </div>
                                 <div id='collapse<?php echo $bootstrap_count[$i];?>' class='collapse' aria-labelledby='heading<?php echo $bootstrap_count[$i];?>'>
                                     <div class='container space'>
-                                        <form action='./php/cart.php' method='POST'>
+                                        <form action='../php/cart.php' method='POST'>
                                             <div class='row'>
                                                 <div class='col-xl-3 col-12 mb-2'>
                                                     <h5>Επίλεξε ζάχαρη</h5>
@@ -145,7 +143,7 @@ $firstName = $user['firstName'];
             </div>
             <div class="col-xl-3 col-12 order-0 order-xl-1">
                 <div class="card sticky-top cart">
-                    <h4 class="mt-3 mb-3">Το καλάθι σου</h4>
+                    <h3 class="mt-3 mb-3">Το καλάθι σου</h3>
                     <ul class="list-group list-group-flush">
                         <?php
                         $cart_query = "SELECT count, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_cart WHERE email = ?";
@@ -168,7 +166,7 @@ $firstName = $user['firstName'];
                                 ?>
                                 <li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-1'>
                                     <h5><?php echo $coffee; ?></h5>
-                                    <a href='./php/cart.php?count=<?php echo $count; ?>' type='button' class='btn btn-sm btn-outline-danger mr-2' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></a>
+                                    <a href='../php/cart.php?count=<?php echo $count; ?>' type='button' class='btn btn-sm btn-outline-danger mr-2' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></a>
                                 </li>
                                 <li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0 pt-0 mt-0'>
                                     <p class='attr'>
@@ -188,9 +186,9 @@ $firstName = $user['firstName'];
                                         </div>
                                         <div class='col-8 space'>
                                             <div class='qty d-flex justify-content-center mt-2'>
-                                                <a class='minus' <?php if($quantity > 1) echo "href='./php/cart.php?qty=minus&&counter=$count'"; ?> id="minus">-</a>
+                                                <a class='minus' <?php if($quantity > 1) echo "href='../php/cart.php?qty=minus&&counter=$count'"; ?> id="minus">-</a>
                                                 <input type='number' class='count' name='qty' value="<?php echo $quantity; ?>" disabled>
-                                                <a class='plus' href="./php/cart.php?qty=plus&&counter=<?php echo $count; ?>" id="plus">+</a>
+                                                <a class='plus' href="../php/cart.php?qty=plus&&counter=<?php echo $count; ?>" id="plus">+</a>
                                             </div>
                                         </div>
                                     </div>
@@ -226,12 +224,12 @@ $firstName = $user['firstName'];
         </div>
     </div>
     <!--------------------- SALE SECTION ---------------------->
-    <?php echo file_get_contents("./html/sale.html"); ?>
+    <?php echo file_get_contents("../html/sale.html"); ?>
     <!-------------------- Site footer --------------------------->
-    <?php echo file_get_contents("./html/footer.html"); ?>
+    <?php echo file_get_contents("../html/footer.html"); ?>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="./js/order.js"></script>
-    <script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script src="order.js"></script>
+    <script src="../bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
 </body>
 </html>

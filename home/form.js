@@ -1,53 +1,51 @@
-$(document).ready(function(){    
-	$('#addresses').load("./php/addresses.php");
-});
-
 var address = document.getElementById('address');
 var state = document.getElementById('state');
 var loader = document.getElementById("loader");
 var blurred = document.getElementById("blurred");
 
-address.addEventListener('keyup', function() {
+document.getElementById('add').addEventListener('click', addAddress);
+
+address.addEventListener('keyup', function(e){
 	address.closest(".group").querySelector('.text-danger').style.display = 'none';
 	address.classList.remove("wrong");
 	if(address.value == "") {
 		address.closest(".group").querySelector('.text-danger').style.display = 'block';
 		address.classList.add("wrong");
 	}
+	if (e.keyCode === 13 || e.key === 13) addAddress();
 });
 
-state.addEventListener('keyup', function() {
+state.addEventListener('keyup', function(e){
 	state.closest(".group").querySelector('.text-danger').style.display = 'none';
 	state.classList.remove("wrong");
 	if(state.value == "") {
 		state.closest(".group").querySelector('.text-danger').style.display = 'block';
 		state.classList.add("wrong");
 	}
+	if (e.keyCode === 13 || e.key === 13) addAddress();
 });
 
-document.getElementById('add').addEventListener('click', function addAddress(e){
-	e.preventDefault();
+function addAddress(){
 	if(validateAddress()){
 		loader.style.display = "block";
 		blurred.style.display = "block";
 		$('body').addClass('stop-scrolling');
 		var xhr = new XMLHttpRequest();
-		xhr.open('POST', './php/address.php', true);
+		xhr.open('POST', 'address.php', true);
 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		var params = "address=" + address.value + "&state=" + state.value;
 		xhr.onload = function(){
 			if(this.status == 200){
 				if(this.responseText == true){
-					$("#addresses").load("./php/addresses.php");
-					$("#cart_item").html("");
-					$("#home").load("./php/address_menu.php");
+					$("#addresses").load("addresses.php");
+					$("#home").load("address_menu.php");
 					loader.style.display = "none";
 					blurred.style.display = "none";
 					$('body').removeClass('stop-scrolling');
 				}
 				else{
 					document.getElementById('false').innerHTML = this.responseText;
-					$("#addresses").load("./php/addresses.php");
+					$("#addresses").load("addresses.php");
 					loader.style.display = "none";
 					blurred.style.display = "none";
 					$('body').removeClass('stop-scrolling');
@@ -56,7 +54,7 @@ document.getElementById('add').addEventListener('click', function addAddress(e){
 		}
 		xhr.send(params);
 	}
-});
+}
 
 function validateAddress(){
 	var form = [address, state];

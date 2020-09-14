@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['email'])) header('location: index.php');
-include("./php/db_connect.php");
+include("../php/db_connect.php");
 $email = $_SESSION['email'];
 $sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = ?";
 $resultUser = $pdo -> prepare($sqlLoggedInUser);
@@ -16,10 +16,10 @@ $firstName = $user['firstName'];
     <meta http-equiv="content-type" content="text/html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
     <title>Chip Coffee | Online Coffee Delivery</title>
-    <link rel="icon" type="image/png" href="./images/chip_coffee.png">
+    <link rel="icon" type="image/png" href="../images/chip_coffee.png">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="./css/home.css">
-    <link rel="stylesheet" type="text/css" href="./bootstrap-4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/home.css">
+    <link rel="stylesheet" type="text/css" href="../bootstrap-4.5.0/css/bootstrap.min.css">
 </head>
 <body>
     <div id="blurred" class="blurred"></div>
@@ -27,7 +27,7 @@ $firstName = $user['firstName'];
     <div class="background">
         <nav class="navbar navbar-light container">
             <a class="navbar-brand" href="home.php">
-                <img src="./images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
+                <img src="../images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
             <div class="dropdown">
                 <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $firstName; ?> <i class="far fa-user"></i></a>
@@ -41,63 +41,15 @@ $firstName = $user['firstName'];
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <h1 class="mb-xl-5">Καλωσήρθες, <?php echo $firstName; ?></h1>
-                <div id="home">
-                <?php
-                $sqlAddresses = "SELECT * FROM cc_address WHERE email = ?";
-                $stmtAddress = $pdo -> prepare($sqlAddresses);
-                $stmtAddress -> execute([$email]);
-                if($stmtAddress -> rowCount() == 0){
-                    ?>
-                    <h2>Έχεις όρεξη για καφέ; Πρόσθεσε τη διεύθυνση σου και παράγγειλε!</h2>
-                    <form class="form-group pr-0 m-0">
-                        <div class="row">
-                            <div class="group col-xl-5 col-12 mt-2 m-xl-0">   
-                                <input id="address" type="text" class="input form-control form-control-lg w-100" placeholder="Πρόσθεσε εδώ την διεύθυνσή σου" required>
-                                <div class="text-danger">
-                                    Πρέπει να συμπληρώσεις την διεύθυνσή σου.
-                                </div>
-                            </div>
-                            <div class="group col-xl-5 col-12 mt-2 m-xl-0">
-                                <input id="state" type="text" class="input form-control form-control-lg w-100" placeholder="Πρόσθεσε εδώ την περιοχή σου" required>
-                                <div class="text-danger">
-                                    Πρέπει να συμπληρώσεις την περιοχή σου.
-                                </div>
-                            </div>
-                            <div class="group col-xl-2 col-12 mt-2 m-xl-0">
-                                <button id="add" name="add" type="submit" class="btn btn-primary btn-lg btn-block">Προσθήκη</button>
-                            </div>
-                        </div>
-                    </form>
-                <?php
-                }
-                else{
-                    ?>
-                    <button class="btn btn-primary btn-lg btn-block" role="button" onclick="location.href='order.php'" >Παράγγειλε τώρα</button>       
-                    <?php
-                }
-                ?>
-                </div>
+                <div id="home"></div>
             </div>
         </div>
     </div>
     <div class="container">
         <div id='false' class="m-3"></div>
         <h2 class="mb-2 mt-5">Οι διευθύνσεις μου</h2>
-        <div class="row">
-            <div class="col-12">
-                <?php    
-                if (isset($_SESSION['delete_message'])){
-                ?>
-                <div class='alert alert-danger alert-dismissible fade show'>
-                    <button type='button' class='close' data-dismiss='alert'>&times;</button>Η διεύθυνση διαγράφηκε.
-                </div>
-                <?php
-                unset($_SESSION['delete_message']);
-                }
-                ?>
-            </div>
-            <div id="addresses" class="col-12"></div>
-        </div>
+        <div class="col-12" id="msg"></div>
+        <div id="addresses" class="row"></div>
     </div>
     <div class="container">
         <h2 class="mb-3 mt-5">Οι παραγγελίες μου</h2>
@@ -185,14 +137,14 @@ $firstName = $user['firstName'];
         </div>
     </div>
     <!-- CARD -->
-    <?php echo file_get_contents("./html/card.html"); ?>
+    <?php echo file_get_contents("../html/card.html"); ?>
     <!-- SALE SECTION -->
-    <?php echo file_get_contents("./html/sale.html"); ?>
+    <?php echo file_get_contents("../html/sale.html"); ?>
     <!-- Site footer -->
-    <?php echo file_get_contents("./html/footer.html"); ?>
+    <?php echo file_get_contents("../html/footer.html"); ?>  
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="./js/home.js"></script>
-    <script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script src="home.js"></script>
+    <script src="../bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
 </body>
 </html>

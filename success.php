@@ -25,7 +25,7 @@ $firstName = $user['firstName'];
 <body>
     <div class="background">
         <nav class="navbar navbar-light container">
-            <a class="navbar-brand" href="home.php">
+            <a class="navbar-brand" href="./home/">
                 <img src="./images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
             <div class="dropdown">
