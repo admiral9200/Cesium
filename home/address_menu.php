@@ -30,7 +30,7 @@ if($stmtAddress -> rowCount() == 0){
 }
 else{
 	?>
-	<button class="btn btn-primary btn-lg btn-block" role="button" onclick="location.href='../order.php'">Παράγγειλε τώρα</button>       
+	<button class="btn btn-primary btn-lg btn-block" role="button" onclick="location.href='../order/'">Παράγγειλε τώρα</button>       
 	<?php
 }
 ?>

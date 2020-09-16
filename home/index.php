@@ -48,7 +48,7 @@ $firstName = $user['firstName'];
     <div class="container">
         <div id='false' class="m-3"></div>
         <h2 class="mb-2 mt-5">Οι διευθύνσεις μου</h2>
-        <div class="col-12" id="msg"></div>
+        <div class="col-12 px-xl-2 px-0" id="msg"></div>
         <div id="addresses" class="row"></div>
     </div>
     <div class="container">

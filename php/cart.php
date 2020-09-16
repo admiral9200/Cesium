@@ -3,8 +3,8 @@ session_start();
 $email = $_SESSION['email'];
 include("db_connect.php");
 //Minus function. Decrease quantity
-if(isset($_GET['qty']) && ($_GET['qty'] === "minus")){
-    $counter = $_GET['counter'];
+if(isset($_POST['qty']) && ($_POST['qty'] === "minus")){
+    $counter = $_POST['counter'];
     $sqlMinus = "SELECT code, price, qty FROM cc_cart WHERE email = ? AND count = ? LIMIT 1";
     $stmtMinus = $pdo -> prepare($sqlMinus);
     $stmtMinus -> execute([$email, $counter]);
@@ -20,11 +20,11 @@ if(isset($_GET['qty']) && ($_GET['qty'] === "minus")){
     $sqlUpdate = "UPDATE cc_cart SET price = ?, qty = ? WHERE email = ? AND count = ?";
     $stmtUpdate = $pdo -> prepare($sqlUpdate);
     $stmtUpdate -> execute([$newPrice, $quantity, $email, $counter]);
-    header("location: ../order/");
+    echo true;
 }
 //Plus function. Increase quantity
-if(isset($_GET['qty']) && ($_GET['qty'] === "plus")){
-    $counter = $_GET['counter'];
+if(isset($_POST['qty']) && ($_POST['qty'] === "plus")){
+    $counter = $_POST['counter'];
     $sqlPlus = "SELECT code, price, qty FROM cc_cart WHERE email = ? AND count = ? LIMIT 1";
     $stmtPlus = $pdo -> prepare($sqlPlus);
     $stmtPlus -> execute([$email, $counter]);
@@ -40,106 +40,68 @@ if(isset($_GET['qty']) && ($_GET['qty'] === "plus")){
     $sqlUpdate = "UPDATE cc_cart SET price = ?, qty = ? WHERE email = ? AND count = ?";
     $stmtUpdate = $pdo -> prepare($sqlUpdate);
     $stmtUpdate -> execute([$newPrice, $quantity, $email, $counter]);
-    header("location: ../order/");
+    echo true;
 }
 //Cart
-if(isset($_POST['addToCart'])){
-    $stmtNames = $pdo -> query("SELECT code,name,price FROM cc_coffees");
+if(isset($_POST['sugar']) && isset($_POST['form'])){
+    $res = InsertCoffeeToCart($_POST['form'], $_POST['sugar'], $_POST['sugarType'], $_POST['milk'], $_POST['cinnamon'], $_POST['choco']);
+    echo $res;
+}
+//Delete one coffee from cart
+if(isset($_POST['count']) && is_numeric($_POST['count'])){
+    $countToDelete = $_POST['count'];
+    $deleteQuery = "DELETE FROM cc_cart WHERE email = ? AND count = ?";
+    $stmtDeleteCoffee = $pdo -> prepare($deleteQuery);
+    $stmtDeleteCoffee -> execute([$email, $countToDelete]);
+    echo true;
+}
+
+
+function InsertCoffeeToCart($code, $sugar, $sugarType, $milk, $cinnamon, $choco){
+    global $pdo, $email;
+    $sqlGetCoffee = "SELECT code,name,price FROM cc_coffees WHERE code = ?";
+    $stmtNames =  $pdo -> prepare($sqlGetCoffee);
+    $stmtNames -> execute([$code]);
     $coffees = $stmtNames -> fetchAll();
-    $i = 0;
-    $milkCheck = 0;
-    $cinnamonCheck = 0;
-    $chocoCheck = 0;
-    //set adds variables in coffees
     foreach($coffees as $rowCheck){
-        $codeCheckDup = $rowCheck['code'];
-        $formCheckDup = "form".$codeCheckDup;
-        $milkCheckDup = "milk_".$rowCheck['code'];
-        $cinnamonCheckDup = "cinnamon_".$rowCheck['code'];
-        $chocoCheckDup = "choco_".$rowCheck['code'];
-        if($formCheckDup == $_POST['addToCart']){
-            if(isset($_POST[$milkCheckDup])){
-                $milkCheck = 1;
-            }
-            if(isset($_POST[$cinnamonCheckDup])){
-                $cinnamonCheck = 1;
-            }
-            if(isset($_POST[$chocoCheckDup])){
-                $chocoCheck = 1;
-            }
-            $priceOne = $rowCheck['price'];
-            $nameCheckDup = $rowCheck['name'];
-            $sugarCheckDup = "sugar_".$rowCheck['code'];
-            $sugarTypeCheckDup = "sugarType_".$rowCheck['code'];
-            break;
-        }
+        $basePriceOfCoffee = $rowCheck['price'];
+        $nameCheckDup = $rowCheck['name'];
+        //Maybe validate milk, cinn, choco values
     }
-    //checking duplicates coffees exactly
+    //checking duplicates in cart, if there is one increase quantity and price
     $checkDupQuery = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco, qty FROM cc_cart WHERE email = ? AND coffee = ? AND sugar = ? AND sugarType = ? AND milk = ? AND cinnamon = ? AND choco = ?";
     $stmtCheckDup = $pdo -> prepare($checkDupQuery);
-    $stmtCheckDup -> execute([$email, $nameCheckDup, $_POST[$sugarCheckDup], $_POST[$sugarTypeCheckDup], $milkCheck, $cinnamonCheck, $chocoCheck]);
+    $stmtCheckDup -> execute([$email, $nameCheckDup, $sugar, $sugarType, $milk, $cinnamon, $choco]);
     if($stmtCheckDup -> rowCount() == 1){
+        //Increase quantity if coffee is same
         $rowOne = $stmtCheckDup -> fetch();
         $quantity = $rowOne['qty'] + 1;
-        $newPrice = $priceOne * $quantity;
+        $newPrice = $basePriceOfCoffee * $quantity;
         $updateQuantity = "UPDATE cc_cart SET price = ? , qty = ? WHERE email = ? AND coffee = ? AND sugar = ? AND sugarType = ? AND milk = ? AND cinnamon = ? AND choco = ?";
         $stmtUpdateQty = $pdo -> prepare($updateQuantity);
-        $stmtUpdateQty -> execute([$newPrice, $quantity, $email, $nameCheckDup, $_POST[$sugarCheckDup], $_POST[$sugarTypeCheckDup], $milkCheck, $cinnamonCheck, $chocoCheck]);
+        $stmtUpdateQty -> execute([$newPrice, $quantity, $email, $nameCheckDup, $sugar, $sugarType, $milk, $cinnamon, $choco]);
+        return true;
     }
     else{
-        //For counting coffees in cart
+        //Keep a counter in cart
         $cart_query = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco FROM cc_cart WHERE email = ?";
         $stmtCart = $pdo -> prepare($cart_query);
         $stmtCart -> execute([$email]);
         $count = $stmtCart -> rowCount();
-        //INSERT TO CART COFFEESSS :D
+        //Insert coffee to cart
         foreach($coffees as $row){
             $name = $row['name'];
             $price = $row['price'];
             $code = $row['code'];
-            $form = "form".$code;
-            $sugar = "sugar_".$row['code'];
-            $sugarType = "sugarType_".$row['code'];
-            $milk = "milk_".$row['code'];
-            $cinnamon = "cinnamon_".$row['code'];
-            $choco = "choco_".$row['code'];
-            if(!isset($_POST[$sugarType])) $_POST[$sugarType] = "";
-            if (isset($_POST[$sugar])){
+            if (isset($sugar)){
                 $count++;
-                $cart_query = "INSERT INTO cc_cart (email, count, code, coffee, sugar, sugarType, price, qty) VALUES( ? , ? , ? , ? , ? , ? , ? , 1)";
+                $cart_query = "INSERT INTO cc_cart (email, count, code, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty) VALUES( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , 1)";
                 $stmtCartInsert = $pdo -> prepare($cart_query);
-                $stmtCartInsert -> execute([$email, $count, $code, $name, $_POST[$sugar], $_POST[$sugarType], $price]);
-                if(isset($_POST[$milk])){
-                    $milkAdded = 1;
-                    $milkAdded_query = "UPDATE cc_cart SET milk = ? WHERE email = ? AND count = ? AND sugar = ? AND sugarType = ?";
-                    $stmtMilkAdd = $pdo -> prepare($milkAdded_query);
-                    $stmtMilkAdd -> execute([$milkAdded, $email, $count, $_POST[$sugar], $_POST[$sugarType]]);
-                }
-                if(isset($_POST[$cinnamon])){
-                    $cinnamonAdded = 1;
-                    $cinnamonAdded_query = "UPDATE cc_cart SET cinnamon= ? WHERE email = ? AND count = ? AND sugar = ? AND sugarType = ?";
-                    $stmtCinnamonAdd = $pdo -> prepare($cinnamonAdded_query);
-                    $stmtCinnamonAdd -> execute([$cinnamonAdded, $email, $count, $_POST[$sugar], $_POST[$sugarType]]);
-                }
-                if(isset($_POST[$choco])){
-                    $chocoAdded = 1;
-                    $chocoAdded_query = "UPDATE cc_cart SET choco = ? WHERE email = ? AND count = ? AND sugar = ? AND sugarType = ?";
-                    $stmtChocoAdd = $pdo -> prepare($chocoAdded_query);
-                    $stmtChocoAdd -> execute([$chocoAdded, $email, $count, $_POST[$sugar], $_POST[$sugarType]]);
-                }
-                break;
+                $stmtCartInsert -> execute([$email, $count, $code, $name, $sugar, $sugarType, $milk, $cinnamon, $choco, $price]);
             }
-            $i++;
         }
+        return true;
     }
-    header("location: ../order/");
-}
-//Delete one coffee from cart
-if(isset($_GET['count']) && is_numeric($_GET['count'])){
-    $countToDelete = $_GET['count'];
-    $deleteQuery = "DELETE FROM cc_cart WHERE email = ? AND count = ?";
-    $stmtDeleteCoffee = $pdo -> prepare($deleteQuery);
-    $stmtDeleteCoffee -> execute([$email, $countToDelete]);
-    header("location: ../order/");
+    return false;
 }
 ?>
