@@ -4,7 +4,7 @@ $(document).ready(function () {
 });
 
 $(function () {
-	$('[data-toggle="popover"]').popover()
+	$('[data-toggle="popover"]').popover();
 });
 
 $("#cart").load("view_cart.php");
@@ -45,16 +45,25 @@ var loader = document.getElementById("loader");
 var blurred = document.getElementById("blurred");
 
 function getValues(code){
-	var sugar = document.querySelector('input[name="sugar'+code+'"]:checked').value;
+	var sugar = document.querySelector('input[name="sugar'+code+'"]:checked');
 	var sugarType = document.querySelector('input[name="sugarType'+code+'"]:checked');
 	var milk = document.querySelector('input[name="milk'+code+'"]:checked');
 	var cinnamon = document.querySelector('input[name="cinnamon'+code+'"]:checked');
 	var choco = document.querySelector('input[name="choco'+code+'"]:checked');
-	var sugarType = sugarType === null ? sugarType = "" : sugarType = sugarType.value;
-	var milk = milk === null ? milk = 0 : milk = 1;
-	var cinnamon = cinnamon === null ? cinnamon = 0 : cinnamon = 1;
-	var choco = choco === null ? choco = 0 : choco = 1;
-	addCoffeeToCart(code ,sugar, sugarType, milk, cinnamon, choco);
+	if (sugar !== null && sugarType !== null) {
+		var milk = milk === null ? milk = 0 : milk = 1;
+		var cinnamon = cinnamon === null ? cinnamon = 0 : cinnamon = 1;
+		var choco = choco === null ? choco = 0 : choco = 1;
+		addCoffeeToCart(code ,sugar, sugarType, milk, cinnamon, choco);	
+	}
+	else{
+		$("#s"+code).popover({
+			content: 'Δεν έχεις επιλέξει ζάχαρη',
+			placement: 'right',
+			animation: true,
+			trigger: 'focus'
+		});
+	}
 }
 
 function addCoffeeToCart(form, sugar, sugarType, milk, cinnamon, choco){
