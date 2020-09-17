@@ -3,7 +3,7 @@ function quantity(count, qty){
 	blurred.style.display = "block";
 	$('body').addClass('stop-scrolling');
 	var xhr = new XMLHttpRequest();
-	xhr.open('POST', '../php/cart.php', true);
+	xhr.open('POST', 'cart.php', true);
 	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 	var params = "qty=" + qty + "&counter=" + count;
 	xhr.onload = function(){
@@ -27,7 +27,7 @@ function deleteCoffee(code){
 	blurred.style.display = "block";
 	$('body').addClass('stop-scrolling');
 	var xhr = new XMLHttpRequest();
-	xhr.open('POST', '../php/cart.php', true);
+	xhr.open('POST', 'cart.php', true);
 	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 	var params = "count=" + code;
 	xhr.onload = function(){

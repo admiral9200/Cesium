@@ -76,7 +76,7 @@ function addCoffeeToCart(code, sugar, sugarType, milk, cinnamon, choco){
 	blurred.style.display = "block";
 	$('body').addClass('stop-scrolling');
 	var xhr = new XMLHttpRequest();
-	xhr.open('POST', '../php/cart.php', true);
+	xhr.open('POST', 'cart.php', true);
 	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 	var params = "form=" + code + "&sugar=" + sugar + "&sugarType=" + sugarType + "&milk=" + milk + "&cinnamon=" + cinnamon + "&choco=" + choco;
 	xhr.onload = function(){

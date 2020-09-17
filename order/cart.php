@@ -1,7 +1,7 @@
 <?php
 session_start();
 $email = $_SESSION['email'];
-include("db_connect.php");
+include("../php/db_connect.php");
 //Manage quantity. Increase or Decrease
 if(isset($_POST['qty'])){
     $counter = $_POST['counter'];
@@ -12,7 +12,7 @@ else if(isset($_POST['sugar']) && isset($_POST['form'])){ //Cart
     $res = InsertCoffeeToCart($_POST['form'], $_POST['sugar'], $_POST['sugarType'], $_POST['milk'], $_POST['cinnamon'], $_POST['choco']);
     echo $res;
 }
-else if(isset($_POST['count']) && is_numeric($_POST['count'])){
+else if(isset($_POST['count']) && is_numeric($_POST['count'])){ //Remove One coffee from cart
     $countToDelete = $_POST['count'];
     $resRemove = removeCoffeeFromCart($countToDelete);
     echo $resRemove;
@@ -27,18 +27,15 @@ function InsertCoffeeToCart($code, $sugar, $sugarType, $milk, $cinnamon, $choco)
     $sqlGetCoffee = "SELECT code,name,price FROM cc_coffees WHERE code = ?";
     $stmtNames =  $pdo -> prepare($sqlGetCoffee);
     $stmtNames -> execute([$code]);
-    $coffees = $stmtNames -> fetchAll();
-    foreach($coffees as $rowCheck){
-        $basePriceOfCoffee = $rowCheck['price'];
-        $nameCheckDup = $rowCheck['name'];
-        //Maybe validate milk, cinn, choco values
-    }
-    //checking duplicates in cart, if there is one increase quantity and price
+    $coffees = $stmtNames -> fetch();
+    $basePriceOfCoffee = $coffees['price'];
+    $nameCheckDup = $coffees['name'];
+    //Checking duplicates in cart, if there is one increase quantity and price
     $checkDupQuery = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco, qty FROM cc_cart WHERE email = ? AND coffee = ? AND sugar = ? AND sugarType = ? AND milk = ? AND cinnamon = ? AND choco = ?";
     $stmtCheckDup = $pdo -> prepare($checkDupQuery);
     $stmtCheckDup -> execute([$email, $nameCheckDup, $sugar, $sugarType, $milk, $cinnamon, $choco]);
     if($stmtCheckDup -> rowCount() == 1){
-        //Increase quantity if coffee is same
+        //Increase quantity if there is a duplicate coffee
         $rowOne = $stmtCheckDup -> fetch();
         $quantity = $rowOne['qty'] + 1;
         $newPrice = $basePriceOfCoffee * $quantity;
@@ -54,18 +51,19 @@ function InsertCoffeeToCart($code, $sugar, $sugarType, $milk, $cinnamon, $choco)
         $stmtCart -> execute([$email]);
         $count = $stmtCart -> rowCount();
         //Insert coffee to cart
-        foreach($coffees as $row){
-            $name = $row['name'];
-            $price = $row['price'];
-            $code = $row['code'];
-            if (isset($sugar)){
-                $count++;
-                $cart_query = "INSERT INTO cc_cart (email, count, code, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty) VALUES( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , 1)";
-                $stmtCartInsert = $pdo -> prepare($cart_query);
-                $stmtCartInsert -> execute([$email, $count, $code, $name, $sugar, $sugarType, $milk, $cinnamon, $choco, $price]);
-            }
+        $name = $coffees['name'];
+        $price = $coffees['price'];
+        $code = $coffees['code'];
+        $count++;
+        $cart_query = "INSERT INTO cc_cart (email, count, code, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty) VALUES( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , 1)";
+        $stmtCartInsert = $pdo -> prepare($cart_query);
+        $stmtCartInsert -> execute([$email, $count, $code, $name, $sugar, $sugarType, $milk, $cinnamon, $choco, $price]);
+        if($stmtCartInsert){
+            return true;
         }
-        return true;
+        else{
+            return false;
+        }
     }
     return false;
 }
