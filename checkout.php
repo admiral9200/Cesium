@@ -5,9 +5,9 @@ $email = $_SESSION['email'];
 if (!isset($_SESSION['email'])) {
     header('location: index.php');
 }
-if(!isset($_POST['continue'])){
+/* if(!isset($_POST['continue'])){
     header("location: order.php");
-}
+} */
 $sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = ?";
 $resultUser = $pdo -> prepare($sqlLoggedInUser);
 $resultUser -> execute([$email]);

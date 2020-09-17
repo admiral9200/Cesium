@@ -44,9 +44,9 @@
 					</div>
 					<div class='col-8 space'>
 						<div class='qty d-flex justify-content-center mt-2'>
-							<a class='minus' <?php if ($quantity > 1) echo "onclick=minus($count)"; ?> id="minus">-</a>
+							<a class='minus' <?php if ($quantity > 1) {?> onclick="quantity(<?php echo $count; ?>, 'minus')" <?php } ?> id="minus">-</a>
 							<input type='number' class='count' name='qty' value="<?php echo $quantity; ?>" disabled>
-							<a class='plus' onclick="plus(<?php echo $count; ?>)" id="plus">+</a>
+							<a class='plus' onclick="quantity(<?php echo $count; ?>, 'plus')" id="plus">+</a>
 						</div>
 					</div>
 				</div>
@@ -73,5 +73,5 @@
 		</h6>
 	</li>
 </ul>
-<button type="button" name="continue" class="btn btn-primary btn-block btn-lg" <?php if ($count == 0) echo "style='cursor: not-allowed' disabled"; ?>>Συνέχεια</button>
+<button type="button" name="continue" class="btn btn-primary btn-block btn-lg" <?php if ($count == 0) echo "style='cursor: not-allowed' disabled"; else { ?> onclick="location.href='../checkout.php';" <?php } ?>>Συνέχεια</button>
 <script src="cart.js"></script>
