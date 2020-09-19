@@ -1,3 +1,69 @@
+.text-danger {
+  display: none;
+  font-size: 13px;
+}
+
+.wrong:focus {
+  outline: 1px #dc354665 !important;
+  box-shadow: 0 0 0 3px #dc354665 !important;
+}
+
+.wrong {
+  border: 1px solid #dc3545 !important;
+}
+
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+}
+
+.blurred {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  display: none;
+  backdrop-filter: blur(8px);
+  background-color: rgba(97, 97, 97, 0.603);
+  z-index: 9000;
+}
+
+.loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -50px;
+  margin-left: -50px;
+  width: 100px;
+  height: 100px;
+  display: none;
+  z-index: 9999;
+}
+
+/* Animation Loaded */
+.lds-dual-ring {
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 90px;
+  height: 90px;
+  margin: 0;
+  border-radius: 50%;
+  border: 9px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 @media screen and (min-width: 280px) and (max-width: 400px){
   .container {
     width: 100% !important;

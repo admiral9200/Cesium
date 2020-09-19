@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['email'])) header('location: index.php');
+if (!isset($_SESSION['email'])) header("location: /www/");
 include("../php/db_connect.php");
 $email = $_SESSION['email'];
 $sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = ?";
@@ -16,8 +16,8 @@ $firstName = $user['firstName'];
     <meta http-equiv="content-type" content="text/html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
     <title>Chip Coffee | Online Coffee Delivery</title>
-    <link rel="icon" type="image/png" href="../images/chip_coffee.png">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../images/chip_coffee.png">
     <link rel="stylesheet" type="text/css" href="../css/home.css">
     <link rel="stylesheet" type="text/css" href="../bootstrap-4.5.0/css/bootstrap.min.css">
 </head>
@@ -26,15 +26,15 @@ $firstName = $user['firstName'];
     <div id="loader" class="loader lds-dual-ring"></div>
     <div class="background">
         <nav class="navbar navbar-light container">
-            <a class="navbar-brand" href="home.php">
+            <a class="navbar-brand" href="./">
                 <img src="../images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
             <div class="dropdown">
                 <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $firstName; ?> <i class="far fa-user"></i></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                  <a class="dropdown-item" href="profile.php">Ο λογαριασμός μου</a>
+                  <a class="dropdown-item" href="../profile.php">Ο λογαριασμός μου</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="./php/logout.php">Αποσύνδεση</a>
+                  <a class="dropdown-item" href="../php/logout.php">Αποσύνδεση</a>
                 </div>
             </div>
         </nav>

@@ -3,16 +3,16 @@ session_start();
 $email = $_SESSION['email'];
 include("../php/db_connect.php");
 //Manage quantity. Increase or Decrease
-if(isset($_POST['qty'])){
+if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['qty'])){
     $counter = $_POST['counter'];
     $resQuantity = manageQuantity($counter);
     echo $resQuantity;
 }
-else if(isset($_POST['sugar']) && isset($_POST['form'])){ //Cart
+else if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sugar']) && isset($_POST['form'])){ //Cart
     $res = InsertCoffeeToCart($_POST['form'], $_POST['sugar'], $_POST['sugarType'], $_POST['milk'], $_POST['cinnamon'], $_POST['choco']);
     echo $res;
 }
-else if(isset($_POST['count']) && is_numeric($_POST['count'])){ //Remove One coffee from cart
+else if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['count']) && is_numeric($_POST['count'])){ //Remove One coffee from cart
     $countToDelete = $_POST['count'];
     $resRemove = removeCoffeeFromCart($countToDelete);
     echo $resRemove;

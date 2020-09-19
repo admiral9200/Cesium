@@ -1,6 +1,7 @@
 <?php
 include("../php/db_connect.php");
 session_start();
+if (!isset($_SESSION['email'])) header("location: ./home/");
 $email = $_SESSION['email'];
 $check_address_sum = "SELECT address FROM cc_address WHERE email = ?";
 $stmtCheckAddressesSum = $pdo -> prepare($check_address_sum);

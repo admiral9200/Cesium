@@ -71,7 +71,7 @@ function loginUser(e){
 			if(this.status == 200){
 				if(this.responseText == true){
 					document.getElementById('res').innerHTML = "";
-					window.location.href = "home.php";
+					window.location.href = "/home/";
 				}
 				else{
 					document.getElementById('res').classList.remove('lds-dual-ring');
