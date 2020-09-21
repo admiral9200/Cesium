@@ -4,7 +4,7 @@ $email = $_SESSION['email'];
 if (!isset($_SESSION['email'])) {
     header('location: index.php');
 }
-include("./php/db_connect.php");
+include("../php/db_connect.php");
 $sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = ?";
 $resultUser = $pdo -> prepare($sqlLoggedInUser);
 $resultUser -> execute([$email]);
@@ -17,23 +17,23 @@ $firstName = $user['firstName'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
     <title>Chip Coffee | Online Coffee Delivery</title>
-    <link rel="stylesheet" type="text/css" href="./css/success.css">
-    <link rel="icon" type="image/png" href="./images/chip_coffee.png" size="20x20">
+    <link rel="stylesheet" type="text/css" href="../css/success.css">
+    <link rel="icon" type="image/png" href="../images/chip_coffee.png" size="20x20">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap-4.5.0/css/bootstrap.min.css">
 </head>
 <body>
     <div class="background">
         <nav class="navbar navbar-light container">
-            <a class="navbar-brand" href="./home/">
-                <img src="./images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
+            <a class="navbar-brand" href="/www/home/">
+                <img src="../images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
             <div class="dropdown">
                 <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $firstName; ?> <i class="far fa-user"></i></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                  <a class="dropdown-item" href="profile.php">Ο λογαριασμός μου</a>
+                  <a class="dropdown-item" href="../profile.php">Ο λογαριασμός μου</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="./php/logout.php">Αποσύνδεση</a>
+                  <a class="dropdown-item" href="../php/logout.php">Αποσύνδεση</a>
                 </div>
             </div>
         </nav>
@@ -41,7 +41,7 @@ $firstName = $user['firstName'];
     <div class="container space">
         <div class="alert alert-success" role="alert">
             <div class="text-center">
-                <img src="./images/success.png" class="rounded chk" alt="Success">
+                <img src="../images/success.png" class="rounded chk" alt="Success">
             </div>
             <h1 class="alert-heading space">Η παραγγελία σου θα παραδοθεί σε 15'</h1>
             <p class="text-center chk-p">Στο email σου θα βρεις όλα τα στοιχεία της παραγγελίας σου. Σε περίπτωση που θέλεις να αλλάξεις κάτι, κάλεσε μας.</p>
@@ -76,9 +76,9 @@ $firstName = $user['firstName'];
         </div>
     </div>
     <!---- Footer ----->
-    <?php echo file_get_contents("./html/footer.html"); ?>
+    <?php echo file_get_contents("../html/footer.html"); ?>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script src="../bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
 </body>
 </html>
