@@ -6,7 +6,7 @@ if (!isset($_SESSION['email'])) header("location: /www/");
 $sqlCheckIfCartIsEmpty = "SELECT email FROM cc_cart WHERE email = ?";
 $isCartEmpty = $pdo -> prepare($sqlCheckIfCartIsEmpty);
 $isCartEmpty -> execute([$email]);
-if ($isCartEmpty -> rowCount() == 0) header("location: ../orders/");
+if ($isCartEmpty -> rowCount() == 0) header("location: ../order/");
 $sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = ?";
 $resultUser = $pdo -> prepare($sqlLoggedInUser);
 $resultUser -> execute([$email]);

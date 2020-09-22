@@ -50,7 +50,7 @@ if (isset($_SESSION['email'])) header("location: ./home/");
                                                     </div>
                                                 </div>
                                                 <div class="group">
-                                                    <input id="check" name="rememberme" type="checkbox" class="check chk-box">
+                                                    <input id="check" type="checkbox" class="check chk-box">
                                                     <label for="check" class="color"><span class="icon"></span> Να με θυμάσαι</label>
                                                 </div>
                                                 <div class="group"> 
@@ -108,11 +108,87 @@ if (isset($_SESSION['email'])) header("location: ./home/");
             </div>
         </div>
     </div>
-    <?php echo file_get_contents("./html/card.html"); ?>
+    <div class="container space">
+        <div class="card-deck">
+            <div class="card">
+            <img src="./images/coffee1.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Πολλές Ποικιλίες</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            </div>
+            </div>
+            <div class="card">
+            <img src="./images/coffee2.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Πολύ Προσιτές Τιμές</h5>
+                <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+            </div>
+            </div>
+            <div class="card">
+            <img src="./images/coffee3.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">Άμεση Εξυπηρέτηση</h5>
+                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
+            </div>
+            </div>
+        </div>
+    </div>
     <!-- SALE SECTION -->
-    <?php echo file_get_contents("./html/sale.html"); ?>
+    <div class="card bg-dark text-white w-100">
+        <img class="card-img" src="./images/light_salmon.jpg" alt="Card image">
+        <div class="container card-img-overlay">
+            <div class="row">
+                <div class="col-xl-8 col-lg-6 col-md-8 col-12">
+                    <h2 class="card-title">Chipαρε τον καφέ σου!</h2>
+                    <h5 class="card-text">Με κάθε εγγραφή για πρώτη φορά έχεις 1+1 καφέ δώρο της επιλογής σου.</h5>
+                    <p>Κατά το τέλος της παραγγελίας σου χρησιμοποιήσε τον κωδικό NEWCHIPCOFFEE για να ενεργοποιήσεις την προσφορά.</p>
+                </div>
+                <div class="col-xl-4 col-lg-6 col-md-4 col-12 user-select-none">
+                    <img src="./images/sale.png" alt="Sale">
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Footer -->
-    <?php echo file_get_contents("./html/footer.html"); ?>
+    <footer class="site-footer">
+        <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-5">
+            <h6>Επικοινωνια</h6>
+            <ul class="footer-links">
+                <li><a class="phone" href="/"><i class="fa fa-phone"></i></a> 210-xxxxxxx</li>
+                <li><a class="email" href="/"><i class="fa fa-envelope"></i></a> support@chipcoffee.gr</li>
+                <li>Η ομάδα μας είναι στη διάθεσή σου, κάθε μέρα, 07:00 - 03:00, για να σε βοηθήσει με οποιαδήποτε ερώτηση έχεις.</li>
+            </ul>
+            </div>
+            <div class="col-xs-6 col-md-4">
+            <h6>Χρησιμα</h6>
+            <ul class="footer-links">
+                <li><a href="#">Ρυθμίσεις Cookies</a></li>
+                <li><a href="#">Όροι Χρήσης</a></li>
+                <li><a href="#">Πολιτική Προστασίας Δεδομένων</a></li>
+                <li><a href="#">Συχνές Ερωτήσεις</a></li>
+            </ul>
+            </div>
+            <div class="col-xs-6 col-md-3">
+                <h6>Ακολουθησε το ChipCoffee στα social media!</h6>
+                <ul class="social-icons float-left">
+                    <li><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
+                    <li><a class="twitter" href="#"><i class="fab fa-twitter"></i></a></li>
+                    <li><a class="instagram" href="#"><i class="fab fa-instagram"></i></a></li>   
+                </ul>
+            </div>
+        </div>
+        <hr>
+        </div>
+        <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-sm-6 col-xs-12">
+            <p class="copyright-text">Copyright &copy; 2020 All Rights Reserved by <a href="#">Chip Coffee</a>.</p>
+            </div>
+        </div>
+        </div>
+    </footer>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>

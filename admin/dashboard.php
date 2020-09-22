@@ -2,14 +2,14 @@
 session_start();
 if (!isset($_SESSION['admin'])) {
     session_destroy();
-    header('location: index.php');
+        header('location: index.php');
 }
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['logout'])){
   session_destroy();
   session_unset();
   header("location: index.php");
 }
-include_once("./php/db.php");
+@include_once("./php/db.php");
 $email = $_SESSION['admin'];
 $sqlAdmin = "SELECT firstName, lastName FROM cc_admins WHERE email = ?";
 $stmtAdmin = $pdo -> prepare($sqlAdmin);

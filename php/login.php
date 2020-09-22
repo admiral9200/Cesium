@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['email']) && !empty($_
     $stmtUser -> execute([$email]);
     $rowUser = $stmtUser -> fetch();
     if ($stmtUser -> rowCount() == 1 && password_verify($pass, $rowUser['password'])){
-        if (isset($_POST['rememberme'])){
+        if (isset($_POST['checkrm'])){
             setcookie("user" , $email, time() + (1 * 365 * 24 * 60 * 60));
             setcookie("pass" , $pass, time() + (1 * 365 * 24 * 60 * 60));
         }

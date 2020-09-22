@@ -1,9 +1,9 @@
 <?php
 session_start();
 $email = $_SESSION['email'];
-if (!isset($_SESSION['email'])) {
-    header('location: index.php');
-}
+if (!isset($_SESSION['email'])) header('location: /www/');
+if (!isset($_SESSION['success'])) header('location: /www/home/');
+unset($_SESSION['success']);
 include("../php/db_connect.php");
 $sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = ?";
 $resultUser = $pdo -> prepare($sqlLoggedInUser);

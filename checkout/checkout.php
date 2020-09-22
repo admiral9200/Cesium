@@ -1,9 +1,9 @@
 <?php
 session_start();
+if (!isset($_SESSION['email'])) header("location: /www/");
 date_default_timezone_set('Europe/Athens');
 include("../php/db_connect.php");
 $email = $_SESSION['email'];
-if (!isset($_SESSION['email'])) header("location: ../home/");
 //Paypal Integration not working on localhost
 /* if(isset($_POST['payment']) == "paypal"){
     header("location: payment.php");
@@ -32,8 +32,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout'])){
             $stmtClearCart -> execute([$email]);
         }
 }
+else if(!isset($_POST['checkout'])){
+    header("location: /www/home");
+}
 else{
-    //handle error POST
+    echo false;
 }
 
 function checkout($id, $doorname, $floor, $phone, $comment){
@@ -67,6 +70,7 @@ function checkout($id, $doorname, $floor, $phone, $comment){
         $stmtInsertToUser -> execute([$id, $email, $date, $time, $coffee, $price, $qty]);
     }
     if ($stmtFetchCart && $stmtChekoutInfo && $stmtInsertToBackend && $stmtInsertToUser) {
+        $_SESSION['success'] = true;
         return true;
     }
     else{

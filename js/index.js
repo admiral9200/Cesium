@@ -4,6 +4,7 @@ document.getElementById('signup').addEventListener('click', registerUser);
 //Login
 var email = document.getElementById('email');
 var pass = document.getElementById('pass');
+var checkrm = document.getElementById('check').value;
 //Login warns
 var emailWarn = document.getElementById('eWarn');
 var passWarn = document.getElementById('pWarn');
@@ -66,12 +67,12 @@ function loginUser(e){
 		var xhr = new XMLHttpRequest();
 		xhr.open('POST', './php/login.php', true);
 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		var params = "email=" + email.value + "&pass=" + pass.value;
+		var params = "email=" + email.value + "&pass=" + pass.value + "&checkrm=" + checkrm;
 		xhr.onload = function(){
 			if(this.status == 200){
 				if(this.responseText == true){
 					document.getElementById('res').innerHTML = "";
-					window.location.href = "/home/";
+					window.location.href = "./home/";
 				}
 				else{
 					document.getElementById('res').classList.remove('lds-dual-ring');
