@@ -1,6 +1,7 @@
 <?php
 session_start();
 $email = $_SESSION['email'];
+if (!isset($_SESSION['email'])) header('location: /www/');
 require("../php/db_connect.php");
 $sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = ?";
 $resultUser = $pdo -> prepare($sqlLoggedInUser);
@@ -33,7 +34,7 @@ $lastName = $user['lastName'];
 	<div class="row my-2">
 		<div class="col-xl-3 col-12 text-center space">
 			<div class="sticky-top pt-4 pb-4">
-				<img src="//api.adorable.io/avatars/120/trickst3r.png" class="mx-auto img-fluid rounded-circle" alt="avatar" />
+				<img src="../images/trickst3r.png" class="mx-auto img-fluid rounded-circle" alt="avatar" />
 				<h4 class="my-4"><?php echo $firstName." ".$lastName; ?></h4>
 			</div>
 		</div>

@@ -1,3 +1,8 @@
+<?php
+session_start();
+$email = $_SESSION['email'];
+if (!isset($_SESSION['email'])) header('location: /www/');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

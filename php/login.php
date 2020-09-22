@@ -1,4 +1,5 @@
 <?php
+session_start();
 include("db_connect.php");
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['email']) && !empty($_POST['pass'])){
     $email = $_POST['email'];
@@ -8,11 +9,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['email']) && !empty($_
     $stmtUser -> execute([$email]);
     $rowUser = $stmtUser -> fetch();
     if ($stmtUser -> rowCount() == 1 && password_verify($pass, $rowUser['password'])){
-        if (isset($_POST['checkrm'])){
-            setcookie("user" , $email, time() + (1 * 365 * 24 * 60 * 60));
-            setcookie("pass" , $pass, time() + (1 * 365 * 24 * 60 * 60));
-        }
-        session_start();
         $_SESSION['email'] = $email;
         echo true;
     }
