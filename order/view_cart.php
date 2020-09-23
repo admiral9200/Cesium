@@ -74,4 +74,4 @@
 	</li>
 </ul>
 <button type="button" name="continue" class="btn btn-primary btn-block btn-lg" <?php if ($count == 0) echo "style='cursor: not-allowed' disabled"; else { ?> onclick="location.href='../checkout/';" <?php } ?>>Συνέχεια</button>
-<script src="cart.js"></script>
+<script src="cart.js" async defer></script>

@@ -5,7 +5,7 @@ if (!isset($_SESSION['email'])) header('location: ../');
 $email = $_SESSION['email'];
 
 if(isset($_POST['oldpass']) && isset($_POST['newpass'])){
-    $oldpass = $_POST['oldapass'];
+    $oldpass = $_POST['oldpass'];
     $newpass = $_POST['newpass'];
     $resPass = changePass($oldpass, $newpass);
     echo $resPass;

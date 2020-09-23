@@ -40,14 +40,12 @@ if (isset($_SESSION['email'])) header("location: ./home/");
                                                 <div class="group">
                                                     <label for="user" class="label">ΔΙΕΥΘΥΝΣΗ EMAIL</label>
                                                     <input id="email" type="email" class="input form-control form-control-lg" placeholder="Γράψε τη Διεύθυνση Email" required>
-                                                    <div id="eWarn" class="text-danger"></div>
+                                                    <div class="text-danger"></div>
                                                 </div>
                                                 <div class="group">
                                                     <label for="pass" class="label">ΚΩΔΙΚΟΣ</label>
                                                     <input id="pass" type="password" class="input form-control form-control-lg" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
-                                                    <div id="pWarn" class="text-danger">
-                                                        Πρέπει να συμπληρώσεις τον κωδικό σου.
-                                                    </div>
+                                                    <div class="text-danger">Πρέπει να συμπληρώσεις τον κωδικό σου.</div>
                                                 </div>
                                                 <div class="group">
                                                     <input id="check" type="checkbox" class="check chk-box">
@@ -68,30 +66,22 @@ if (isset($_SESSION['email'])) header("location: ./home/");
                                                 <div class="group">
                                                     <label for="emailR" class="label">ΔΙΕΥΘΥΝΣΗ EMAIL</label>
                                                     <input id="emailR" type="email" class="input form-control form-control-lg" placeholder="Γράψε τη Διέυθυνση Email" required>
-                                                    <div class="text-danger">
-                                                        Πρέπει να συμπληρώσεις μία έγκυρη διεύθυνση email.
-                                                    </div>
+                                                    <div class="text-danger">Πρέπει να συμπληρώσεις μία έγκυρη διεύθυνση email.</div>
                                                 </div>
                                                 <div class="group">
                                                     <label for="firstName" class="label">ΟΝΟΜΑ</label> 
                                                     <input id="firstName" type="text" class="input form-control form-control-lg" data-type="firstName" placeholder="Γράψε το Όνομα σου" required>
-                                                    <div class="text-danger">
-                                                        Πρέπει να συμπληρώσεις το όνομα σου
-                                                    </div>
+                                                    <div class="text-danger">Πρέπει να συμπληρώσεις το όνομα σου</div>
                                                 </div>
                                                 <div class="group">
                                                     <label for="lastName" class="label">ΕΠΙΘΕΤΟ</label> 
                                                     <input id="lastName" type="text" class="input form-control form-control-lg" data-type="lastName" placeholder="Γράψε το Επίθετο σου" required>
-                                                    <div class="text-danger">
-                                                        Πρέπει να συμπληρώσεις το επίθετο σου.
-                                                    </div>
+                                                    <div class="text-danger">Πρέπει να συμπληρώσεις το επίθετο σου.</div>
                                                 </div>
                                                 <div class="group">
                                                     <label for="password" class="label">ΚΩΔΙΚΟΣ</label> 
                                                     <input id="password" type="password" class="input form-control form-control-lg" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
-                                                    <div class="text-danger">
-                                                        Πρέπει να συμπληρώσεις ένα κωδικό πρόσβασης.
-                                                    </div>
+                                                    <div class="text-danger">Πρέπει να συμπληρώσεις ένα κωδικό πρόσβασης.</div>
                                                 </div>                                            
                                                 <div class="group mt-4">
                                                     <input type="submit" class="button btn btn-lg" id="signup" value="Εγγραφη">

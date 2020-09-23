@@ -9,13 +9,11 @@ function quantity(count, qty){
 	xhr.onload = function(){
 		if(this.status == 200){
 			if(this.responseText == true){
-				$("#cart").load("view_cart.php");
-				resetForms();
+				$("#cart").load("view_cart.php", () => resetForms());
 			}
 			else{
 				document.getElementById('false').innerHTML = this.responseText;
-				$("#cart").load("view_cart.php");
-				resetForms();
+				$("#cart").load("view_cart.php", () => resetForms());
 			}
 		}
 	}
@@ -33,13 +31,11 @@ function deleteCoffee(code){
 	xhr.onload = function(){
 		if(this.status == 200){
 			if(this.responseText == true){
-				$("#cart").load("view_cart.php");
-				resetForms();
+				$("#cart").load("view_cart.php", () => resetForms());
 			}
 			else{
 				document.getElementById('false').innerHTML = this.responseText;
-				$("#cart").load("view_cart.php");
-				resetForms();
+				$("#cart").load("view_cart.php", () => resetForms());
 			}
 		}
 	}

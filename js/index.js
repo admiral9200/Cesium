@@ -5,14 +5,11 @@ document.getElementById('signup').addEventListener('click', registerUser);
 var email = document.getElementById('email');
 var pass = document.getElementById('pass');
 var checkrm = document.getElementById('check').value;
-//Login warns
-var emailWarn = document.getElementById('eWarn');
-var passWarn = document.getElementById('pWarn');
 //Register
-var inputRegister = document.getElementById('signupForm').querySelectorAll('input');
 var emailR = document.getElementById('emailR');
 var firstName = document.getElementById('firstName');
 var lastName = document.getElementById('lastName');
+var inputRegister = [firstName, lastName];
 var password = document.getElementById('password');
 
 //Clear warnings on browser tab change
@@ -25,43 +22,67 @@ for (let i = 0; i < warnTexts.length; i++) {
 
 email.addEventListener('keyup', function(){
 	if(validateEmail(email.value)){
-		emailWarn.style.display = 'none';
+		$("#email").next().css({"display": "none"});
 		email.classList.remove("wrong");
 	}
 	else{
-		emailWarn.style.display = 'block';
+		$("#email").next().css({"display": "block"});
+		$("#email").next().html("Πρέπει να συμπληρώσεις μία έγκυρη διεύθυνση email.");
 		email.classList.add("wrong");
-		emailWarn.innerHTML = "Πρέπει να συμπληρώσεις μία έγκυρη διεύθυνση email.";
 	}
 });	
 
 pass.addEventListener('keyup', function() {
-	passWarn.style.display = 'none';
+	$("#pass").next().css({"display": "none"});
 	pass.classList.remove("wrong");
 	if(pass.value == "") {
-		passWarn.style.display = 'block';
+		$("#pass").next().css({"display": "block"});
 		pass.classList.add("wrong");
 	}
 });
 
-function loginUser(e){
-	e.preventDefault();
-	if(email.value == ""){
-		emailWarn.style.display = 'block';
-		email.classList.add("wrong");
-		emailWarn.innerHTML = "Πρέπει να συμπληρώσεις το email σου.";
-		if(pass.value == ""){
-			passWarn.style.display = 'block';
-			pass.classList.add("wrong");
-		}
-		document.getElementById('res').innerHTML = "";
-	}
-	else if(pass.value == ""){
-		passWarn.style.display = 'block';
-		pass.classList.add("wrong");
-		document.getElementById('res').innerHTML = "";
+//Email Register validate
+emailR.addEventListener('keyup', function() {
+	if(validateEmail(emailR.value)) {
+		emailR.closest(".group").querySelector('.text-danger').style.display = 'none';
+		emailR.classList.remove("wrong");
 	}
 	else{
+		emailR.closest(".group").querySelector('.text-danger').style.display = 'block';
+		emailR.classList.add("wrong");
+	}
+});
+
+//Password Register validate
+password.addEventListener('keyup', function() {
+	$("#password").next().css({"display": "none"});
+	password.classList.remove("wrong");
+	if(password.value.length === 0) {
+		$("#password").next().css({"display": "block"});
+		password.classList.add("wrong");
+	}
+	else if (password.value.length <= 8 && password.value.length > 0) {
+		password.classList.add('wrong');
+		$("#password").next().css({"display": "block"});
+		$("#password").next().html("Ο κωδικός πρέπει να είναι μεγαλύτερος από 8 χαρακτήρες");
+	}
+});
+
+for(var i = 0; i < inputRegister.length; i++){
+	inputRegister[i].addEventListener('keyup', function(){
+		this.closest(".group").querySelector('.text-danger').style.display = 'none';
+		this.classList.remove("wrong");
+		if (this.value == '') {
+			this.closest(".group").querySelector('.text-danger').style.display = 'block';
+			this.classList.add("wrong");
+			document.getElementById('resReg').innerHTML = "";
+		}
+	});
+}
+
+function loginUser(e){
+	e.preventDefault();
+	if(validateEmail(email.value) && pass.value.length > 0){
 		document.getElementById('res').innerHTML = "";
 		document.getElementById('res').classList.add('lds-dual-ring');
 		var xhr = new XMLHttpRequest();
@@ -84,33 +105,10 @@ function loginUser(e){
 	}
 }
 
-emailR.addEventListener('keyup', function() {
-	if(validateEmail(emailR.value)) {
-		emailR.closest(".group").querySelector('.text-danger').style.display = 'none';
-		emailR.classList.remove("wrong");
-	}
-	else{
-		emailR.closest(".group").querySelector('.text-danger').style.display = 'block';
-		emailR.classList.add("wrong");
-	}
-});
-
-for(var i = 1; i < inputRegister.length; i++){
-	inputRegister[i].addEventListener('keyup', function(){
-		this.closest(".group").querySelector('.text-danger').style.display = 'none';
-		this.classList.remove("wrong");
-		if (this.value == '') {
-			this.closest(".group").querySelector('.text-danger').style.display = 'block';
-			this.classList.add("wrong");
-			document.getElementById('resReg').innerHTML = "";
-		}
-	});
-}
-
 function registerUser(e){
 	e.preventDefault();
 	document.getElementById('resReg').innerHTML = "";
-	if(validateRegister()){
+	if(validateRegister() && validateEmail(emailR.value)){
 		document.getElementById('resReg').classList.add('lds-dual-ring');
 		var xhr = new XMLHttpRequest();
 		var params = "email=" + emailR.value + "&firstName=" + firstName.value + "&lastName=" + lastName.value + "&pass=" + password.value;
@@ -121,6 +119,10 @@ function registerUser(e){
 				if(this.responseText == true){
 					document.getElementById('resReg').innerHTML = "";
 					window.location.href = "success_register.php";
+				}
+				else if(this.responseText == false){
+					document.getElementById('resReg').classList.remove('lds-dual-ring');
+					document.getElementById('resReg').innerHTML = "<p class='text-center mt-3' style='color: #dc3545 !important'>Κάτι πήγε λάθος, δοκίμασε ξανά!</p>";
 				}
 				else{
 					document.getElementById('resReg').classList.remove('lds-dual-ring');
@@ -133,9 +135,8 @@ function registerUser(e){
 }
 
 function validateEmail(email) {
-	const re = /^.+@.+\..+$/;
 	//General Email Regex (RFC 5322 Official Standard)
-	//const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	return re.test(email);
 }
 
@@ -147,6 +148,12 @@ function validateRegister() {
 			inputRegister[i].classList.add('wrong');
 			val = false;
 		}
+	}
+	if (password.value.length < 8) {
+		password.classList.add('wrong');
+		$("#password").next().css({"display": "block"});
+		$("#password").next().html("Ο κωδικός πρέπει να είναι μεγαλύτερος από 8 χαρακτήρες");
+		val = false;
 	}
 	return val;
 }

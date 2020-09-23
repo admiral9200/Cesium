@@ -82,15 +82,13 @@ function addCoffeeToCart(code, sugar, sugarType, milk, cinnamon, choco){
 	xhr.onload = function(){
 		if(this.status == 200){
 			if(this.responseText == true){
-				$("#cart").load("view_cart.php");
-				resetForms();
+				$("#cart").load("view_cart.php", () => resetForms());
 			}
 			else if(this.responseText == false){
 				document.getElementById('false').innerHTML = "<div class='alert alert-danger alert-dismissible fade show'>" +
                 													"<button type='button' class='close' data-dismiss='alert'>&times;</button>Κάτι πήγε λάθος. Δοκίμασε ξανά." +
               													"</div>";
-				$("#cart").load("view_cart.php");
-				resetForms();
+				$("#cart").load("view_cart.php", () => resetForms());
 			}
 		}
 	}
