@@ -57,7 +57,7 @@ if (isset($_SESSION['email'])) header("location: ./home/");
                                                 </div>
                                                 <div class="hr mt-4 mb-3"></div>
                                                 <div class="foot"> 
-                                                    <a href="reset.php">Ξέχασες τον κωδικό σου?</a>
+                                                    <a href="./reset/">Ξέχασες τον κωδικό σου?</a>
                                                 </div>
                                             </form>
                                         </div>

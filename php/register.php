@@ -1,6 +1,6 @@
 <?php
 include("db_connect.php");
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['email']) && !empty($_POST['pass']) && !empty($_POST['firstName']) && !empty($_POST['lastName'])){
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && !is_null($_POST['email']) && !is_null($_POST['pass']) && !is_null($_POST['firstName']) && !is_null($_POST['lastName'])){
     $email = $_POST['email'];
     $pass = $_POST['pass'];
     $firstName = $_POST['firstName'];

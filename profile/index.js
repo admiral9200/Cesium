@@ -1,0 +1,1 @@
+$("#viewProfile").load("view_profile.php");

@@ -23,6 +23,7 @@ $firstName = $user['firstName'];
     <link rel="stylesheet" type="text/css" href="../css/order.css">
     <link rel="stylesheet" href="../bootstrap-4.5.0/css/bootstrap.min.css">
     <link rel="icon" type="image/png" href="../images/chip_coffee.png" size="20x20">
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
 </head>
 <body>
     <div id="blurred" class="blurred"></div>
@@ -155,9 +156,8 @@ $firstName = $user['firstName'];
     <?php echo file_get_contents("../html/sale.html"); ?>
     <!-------------------- Site footer --------------------------->
     <?php echo file_get_contents("../html/footer.html"); ?>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script async defer src="order.js"></script>
-    <script async defer src="../bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
-    <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
+    <script async src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script defer src="order.js"></script>
+    <script defer src="../bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

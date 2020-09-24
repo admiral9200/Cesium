@@ -112,5 +112,5 @@ $lastName = $user['lastName'];
 			</div>
 		</div>
 	</div>
-	<script src="profile.js"></script>
+	<script defer src="profile.js"></script>
 </div>
