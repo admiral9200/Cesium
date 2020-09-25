@@ -1,7 +1,7 @@
 <?php
 include("../php/db_connect.php");
 session_start();
-if (!isset($_SESSION['email'])) header("location: ./home/");
+if (!isset($_SESSION['email'])) header("location: ../");
 $email = $_SESSION['email'];
 $sqlAddresses = "SELECT * FROM cc_address WHERE email = ?";
 $stmtAddress = $pdo -> prepare($sqlAddresses);

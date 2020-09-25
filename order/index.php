@@ -2,7 +2,7 @@
 session_start();
 include("../php/db_connect.php");
 $email = $_SESSION['email'];
-if (!isset($_SESSION['email'])) header('location: /www/');
+if (!isset($_SESSION['email'])) header('location: ../');
 $sqlCheckIfAddressExists = "SELECT * FROM cc_address WHERE email = ?";
 $stmtAddress = $pdo -> prepare($sqlCheckIfAddressExists);
 $stmtAddress -> execute([$email]);

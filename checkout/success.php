@@ -1,8 +1,8 @@
 <?php
 session_start();
 $email = $_SESSION['email'];
-if (!isset($_SESSION['email'])) header('location: /www/');
-if (!isset($_SESSION['success'])) header('location: /www/home/');
+if (!isset($_SESSION['email'])) header('location: ../');
+if (!isset($_SESSION['success'])) header('location: ../home/');
 unset($_SESSION['success']);
 include("../php/db_connect.php");
 $sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = ?";
@@ -27,7 +27,7 @@ $firstName = $user['firstName'];
 <body>
     <div class="background">
         <nav class="navbar navbar-light container">
-            <a class="navbar-brand" href="/www/home/">
+            <a class="navbar-brand" href="../home/">
                 <img src="../images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
             <div class="dropdown">

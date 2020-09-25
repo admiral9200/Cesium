@@ -1,5 +1,6 @@
 <?php
 session_start();
+if (!isset($_SESSION['email'])) header('location: ../');
 $email = $_SESSION['email'];
 include("../php/db_connect.php");
 //Manage quantity. Increase or Decrease

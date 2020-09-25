@@ -7,5 +7,5 @@ $stmtClearCart = $pdo -> prepare($sqlClearCart);
 $stmtClearCart -> execute([$email]);
 session_unset();
 session_destroy();
-header("location: /www/");
+header("location: ../");
 ?>

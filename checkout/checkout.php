@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['email'])) header("location: /www/");
+if (!isset($_SESSION['email'])) header("location: ../");
 date_default_timezone_set('Europe/Athens');
 include("../php/db_connect.php");
 $email = $_SESSION['email'];
@@ -33,7 +33,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout'])){
         }
 }
 else if(!isset($_POST['checkout'])){
-    header("location: /www/home");
+    header("location: ../home/");
 }
 else{
     echo false;

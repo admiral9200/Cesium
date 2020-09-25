@@ -1,7 +1,7 @@
 <?php
 session_start();
 $email = $_SESSION['email'];
-if (!isset($_SESSION['email'])) header('location: /www/');
+if (!isset($_SESSION['email'])) header('location: ../');
 ?>
 <!DOCTYPE html>
 <html lang="en">

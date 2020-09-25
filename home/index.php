@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['email'])) header("location: /www/");
+if (!isset($_SESSION['email'])) header("location: ../");
 include("../php/db_connect.php");
 $email = $_SESSION['email'];
 $sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = ?";

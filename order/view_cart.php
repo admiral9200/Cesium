@@ -1,7 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['email'])) header('location: ../');
+?>
 <h3 class="mt-3 mb-3">Το καλάθι σου</h3>
 <ul class="list-group list-group-flush">
 	<?php
-	session_start();
 	include("../php/db_connect.php");
 	$email = $_SESSION['email'];
 	$cart_query = "SELECT count, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_cart WHERE email = ?";
