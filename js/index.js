@@ -121,7 +121,7 @@ function registerUser(e){
 			if(this.status == 200){
 				if(this.responseText == true){
 					document.getElementById('resReg').innerHTML = "";
-					window.location.href = "success_register.php";
+					window.location.href = "./php/success.php";
 				}
 				else if(this.responseText == false){
 					document.getElementById('resReg').classList.remove('lds-dual-ring');

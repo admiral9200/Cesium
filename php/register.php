@@ -18,6 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !is_null($_POST['email']) && !is_nul
         $stmtNewUser = $pdo -> prepare($sqlNewUser);
         $stmtNewUser -> execute([$email, $pass, $firstName, $lastName]);
         if($stmtNewUser){
+            session_start();
+            $_SESSION['msgsuccess'] = true;
             echo true;
         }
         else{
@@ -28,4 +30,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !is_null($_POST['email']) && !is_nul
         echo false;
     }
 }
-?>
