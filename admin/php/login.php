@@ -14,7 +14,7 @@ if (isset($_POST['login'])){
     }
     else{
         $_SESSION['error'] = "Το email ή ο κωδικός που έχεις εισάγει είναι λάθος!";
-        header("location: ../index.php");
+        header("location: ../");
     }
 }
 ?>

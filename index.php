@@ -23,7 +23,7 @@ if (isset($_SESSION['email'])) header("location: ./home/");
                 <img src="./images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
         </nav>
-        <div class="container pb-xl-5 pt-xl-5">
+        <div class="container py-xl-5 py-lg-5 py-md-5 py-3">
             <div class="row">
                 <div class="col-xl-7 col-12">
                     <h1>Παράγγειλε καφέ σε ένα 1'</h1>
@@ -42,7 +42,7 @@ if (isset($_SESSION['email'])) header("location: ./home/");
                                                 <div class="group">
                                                     <label for="user" class="label">ΔΙΕΥΘΥΝΣΗ EMAIL</label>
                                                     <input id="email" type="email" class="input form-control form-control-lg" placeholder="Γράψε τη Διεύθυνση Email" required>
-                                                    <div class="text-danger"></div>
+                                                    <div class="text-danger">Πρέπει να συμπληρώσεις το email σου.</div>
                                                 </div>
                                                 <div class="group">
                                                     <label for="pass" class="label">ΚΩΔΙΚΟΣ</label>
@@ -100,7 +100,7 @@ if (isset($_SESSION['email'])) header("location: ./home/");
             </div>
         </div>
     </div>
-    <div class="container my-xl-5 my-lg-5 my-md-5 py-xl-4 py-lg-4 py-md-4">
+    <div class="container my-5 py-4">
         <div class="card-deck">
             <div class="card">
             <img src="./images/coffee1.jpg" class="card-img-top" alt="...">

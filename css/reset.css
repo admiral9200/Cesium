@@ -65,6 +65,10 @@
   }
 }
 
+html,body{
+  height: 100%;
+}
+
 .wrong:focus {
   outline: none !important;
   box-shadow: 0 0 0 3px #dc3546c9 !important;

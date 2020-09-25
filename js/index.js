@@ -9,8 +9,8 @@ var checkrm = document.getElementById('check').value;
 var emailR = document.getElementById('emailR');
 var firstName = document.getElementById('firstName');
 var lastName = document.getElementById('lastName');
-var inputRegister = [firstName, lastName];
 var password = document.getElementById('password');
+
 
 //Clear warnings on browser tab change
 let warnTexts = document.getElementsByClassName('text-danger');
@@ -68,8 +68,9 @@ password.addEventListener('keyup', function() {
 	}
 });
 
-for(var i = 0; i < inputRegister.length; i++){
-	inputRegister[i].addEventListener('keyup', function(){
+var input = [firstName, lastName];
+for(var i = 0; i < input.length; i++){
+	input[i].addEventListener('keyup', function(){
 		this.closest(".group").querySelector('.text-danger').style.display = 'none';
 		this.classList.remove("wrong");
 		if (this.value == '') {
@@ -82,7 +83,8 @@ for(var i = 0; i < inputRegister.length; i++){
 
 function loginUser(e){
 	e.preventDefault();
-	if(validateEmail(email.value) && pass.value.length > 0){
+	var inputLogin = [email, pass];
+	if(isFormEmpty(inputLogin) && validateEmail(email.value)){
 		document.getElementById('res').innerHTML = "";
 		document.getElementById('res').classList.add('lds-dual-ring');
 		var xhr = new XMLHttpRequest();
@@ -108,7 +110,8 @@ function loginUser(e){
 function registerUser(e){
 	e.preventDefault();
 	document.getElementById('resReg').innerHTML = "";
-	if(validateRegister() && validateEmail(emailR.value)){
+	var inputRegister = [emailR, firstName, lastName, password];
+	if(isFormEmpty(inputRegister) && validateEmail(emailR.value)){
 		document.getElementById('resReg').classList.add('lds-dual-ring');
 		var xhr = new XMLHttpRequest();
 		var params = "email=" + emailR.value + "&firstName=" + firstName.value + "&lastName=" + lastName.value + "&pass=" + password.value;
@@ -140,16 +143,16 @@ function validateEmail(email) {
 	return re.test(email);
 }
 
-function validateRegister() {
-	var val = true;
-	for(var i = 0; i < inputRegister.length; i++){
-		if(inputRegister[i].value == ""){
-			inputRegister[i].closest(".group").querySelector('.text-danger').style.display = 'block';
-			inputRegister[i].classList.add('wrong');
+function isFormEmpty(input) {
+	let val = true;
+	for(let i = 0; i < input.length; i++){
+		if(input[i].value == ""){
+			input[i].closest(".group").querySelector('.text-danger').style.display = 'block';
+			input[i].classList.add('wrong');
 			val = false;
 		}
 	}
-	if (password.value.length < 8) {
+	if (password.value.length < 8 && password.value) {
 		password.classList.add('wrong');
 		$("#password").next().css({"display": "block"});
 		$("#password").next().html("Ο κωδικός πρέπει να είναι μεγαλύτερος από 8 χαρακτήρες");

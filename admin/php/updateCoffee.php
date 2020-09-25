@@ -2,7 +2,7 @@
 session_start();
 if (!isset($_SESSION['admin'])) {
 	session_destroy();
-	header('location: index.php');
+	header('location: ../');
 }
 include_once("db.php");
 $email = $_SESSION['admin'];

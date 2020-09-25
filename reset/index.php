@@ -51,9 +51,9 @@
                     <div class="col-sm-12 col-md-5">
                     <h6>Επικοινωνια</h6>
                     <ul class="footer-links">
-                        <li><a class="phone" href="/"><i class="fa fa-phone"></i></a> 210-xxxxxxx</li>
-                        <li><a class="email" href="/"><i class="fa fa-envelope"></i></a> support@chipcoffee.gr</li>
-                        <li>Η ομάδα μας είναι στη διάθεσή σου, κάθε μέρα, 07:00 - 03:00, για να σε βοηθήσει με οποιαδήποτε ερώτηση έχεις.</li>
+                        <li class="text-muted"><a class="phone" href="/"><i class="fa fa-phone"></i></a> 210-xxxxxxx</li>
+                        <li class="text-muted"><a class="email" href="/"><i class="fa fa-envelope"></i></a> support@chipcoffee.gr</li>
+                        <li class="text-muted">Η ομάδα μας είναι στη διάθεσή σου, κάθε μέρα, 07:00 - 03:00, για να σε βοηθήσει με οποιαδήποτε ερώτηση έχεις.</li>
                     </ul>
                     </div>
                     <div class="col-xs-6 col-md-4">
@@ -79,7 +79,7 @@
                 <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-sm-6 col-xs-12">
-                    <p class="copyright-text">Copyright &copy; 2020 All Rights Reserved by <a href="#">Chip Coffee</a>.</p>
+                    <p class="copyright-text text-muted">Copyright &copy; 2020 All Rights Reserved by <a href="#">Chip Coffee</a>.</p>
                     </div>
                 </div>
                 </div>

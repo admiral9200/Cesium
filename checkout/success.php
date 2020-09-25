@@ -40,7 +40,7 @@ $firstName = $user['firstName'];
             </div>
         </nav>
     </div>
-    <div class="container space">
+    <div class="container my-3">
         <div class="alert alert-success" role="alert">
             <div class="text-center">
                 <img src="../images/success.png" class="rounded chk" alt="Success">
