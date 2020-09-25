@@ -10,6 +10,8 @@ if (isset($_SESSION['email'])) header("location: ./home/");
     <title>Chip Coffee | Online Coffee Delivery</title>
     <link rel="icon" type="image/png" href="./images/chip_coffee.png">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./css/base.css">
+    <link rel="stylesheet" type="text/css" href="./css/footer.css">
     <link rel="stylesheet" type="text/css" href="./css/index.css">
     <link rel="stylesheet" type="text/css" href="./css/form.css">
     <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css">
@@ -56,7 +58,7 @@ if (isset($_SESSION['email'])) header("location: ./home/");
                                                     <div id="res" class="d-flex justify-content-center pt-2"></div>
                                                 </div>
                                                 <div class="hr mt-4 mb-3"></div>
-                                                <div class="foot"> 
+                                                <div class="text-center"> 
                                                     <a href="./reset/">Ξέχασες τον κωδικό σου?</a>
                                                 </div>
                                             </form>
@@ -98,7 +100,7 @@ if (isset($_SESSION['email'])) header("location: ./home/");
             </div>
         </div>
     </div>
-    <div class="container space">
+    <div class="container my-xl-5 my-lg-5 my-md-5 py-xl-4 py-lg-4 py-md-4">
         <div class="card-deck">
             <div class="card">
             <img src="./images/coffee1.jpg" class="card-img-top" alt="...">
@@ -124,14 +126,13 @@ if (isset($_SESSION['email'])) header("location: ./home/");
         </div>
     </div>
     <!-- SALE SECTION -->
-    <div class="card bg-dark text-white w-100">
-        <img class="card-img" src="./images/light_salmon.jpg" alt="Card image">
+    <div class="card sale w-100">
         <div class="container card-img-overlay">
             <div class="row">
                 <div class="col-xl-8 col-lg-6 col-md-8 col-12">
-                    <h2 class="card-title">Chipαρε τον καφέ σου!</h2>
-                    <h5 class="card-text">Με κάθε εγγραφή για πρώτη φορά έχεις 1+1 καφέ δώρο της επιλογής σου.</h5>
-                    <p>Κατά το τέλος της παραγγελίας σου χρησιμοποιήσε τον κωδικό NEWCHIPCOFFEE για να ενεργοποιήσεις την προσφορά.</p>
+                    <h2 class="card-title text-body">Chipαρε τον καφέ σου!</h2>
+                    <h5 class="card-text text-body">Με κάθε εγγραφή για πρώτη φορά έχεις 1+1 καφέ δώρο της επιλογής σου.</h5>
+                    <p class="text-body">Κατά το τέλος της παραγγελίας σου χρησιμοποιήσε τον κωδικό NEWCHIPCOFFEE για να ενεργοποιήσεις την προσφορά.</p>
                 </div>
                 <div class="col-xl-4 col-lg-6 col-md-4 col-12 user-select-none">
                     <img src="./images/sale.png" alt="Sale">
@@ -146,9 +147,9 @@ if (isset($_SESSION['email'])) header("location: ./home/");
             <div class="col-sm-12 col-md-5">
             <h6>Επικοινωνια</h6>
             <ul class="footer-links">
-                <li><a class="phone" href="/"><i class="fa fa-phone"></i></a> 210-xxxxxxx</li>
-                <li><a class="email" href="/"><i class="fa fa-envelope"></i></a> support@chipcoffee.gr</li>
-                <li>Η ομάδα μας είναι στη διάθεσή σου, κάθε μέρα, 07:00 - 03:00, για να σε βοηθήσει με οποιαδήποτε ερώτηση έχεις.</li>
+                <li class="text-muted"><a class="phone" href="/"><i class="fa fa-phone"></i></a> 210-xxxxxxx</li>
+                <li class="text-muted"><a class="email" href="/"><i class="fa fa-envelope"></i></a> support@chipcoffee.gr</li>
+                <li class="text-muted">Η ομάδα μας είναι στη διάθεσή σου, κάθε μέρα, 07:00 - 03:00, για να σε βοηθήσει με οποιαδήποτε ερώτηση έχεις.</li>
             </ul>
             </div>
             <div class="col-xs-6 col-md-4">
@@ -174,7 +175,7 @@ if (isset($_SESSION['email'])) header("location: ./home/");
         <div class="container">
         <div class="row">
             <div class="col-md-8 col-sm-6 col-xs-12">
-            <p class="copyright-text">Copyright &copy; 2020 All Rights Reserved by <a href="#">Chip Coffee</a>.</p>
+            <p class="copyright-text text-muted">Copyright &copy; 2020 All Rights Reserved by <a href="#">Chip Coffee</a>.</p>
             </div>
         </div>
         </div>

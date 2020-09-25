@@ -18,6 +18,8 @@ $firstName = $user['firstName'];
     <title>Chip Coffee | Online Coffee Delivery</title>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="../images/chip_coffee.png">
+    <link rel="stylesheet" type="text/css" href="../css/base.css">
+    <link rel="stylesheet" type="text/css" href="../css/footer.css">
     <link rel="stylesheet" type="text/css" href="../css/home.css">
     <link rel="stylesheet" type="text/css" href="../bootstrap-4.5.0/css/bootstrap.min.css">
 </head>

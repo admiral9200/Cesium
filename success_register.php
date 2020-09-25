@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
     <title>Chip Coffee | Online Coffee Delivery</title>
+    <link rel="stylesheet" type="text/css" href="./css/base.css">
     <link rel="stylesheet" type="text/css" href="./css/successRegister.css">
+    <link rel="stylesheet" type="text/css" href="./css/footer.css">
     <link rel="icon" type="image/png" href="./images/chip_coffee.png" size="20x20">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css">
