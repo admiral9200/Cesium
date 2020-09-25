@@ -156,7 +156,7 @@ $firstName = $user['firstName'];
     <?php echo file_get_contents("../html/sale.html"); ?>
     <!-------------------- Site footer --------------------------->
     <?php echo file_get_contents("../html/footer.html"); ?>
-    <script async src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script defer src="order.js"></script>
     <script defer src="../bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
 </body>

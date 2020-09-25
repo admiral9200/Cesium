@@ -1,8 +1,3 @@
-.jumbotron {
-  background-color: transparent !important;
-  margin: 0 !important;
-}
-
 .text-danger {
   display: none;
   font-size: 13px;
@@ -67,10 +62,6 @@
   100% {
     transform: rotate(360deg);
   }
-}
-
-h1 {
-  color: white !important;
 }
 
 @media screen and (min-width: 280px) and (max-width: 400px) {
@@ -173,6 +164,7 @@ body {
   padding-bottom: 0;
   text-align: left;
   font-size: 70px;
+  font-weight: 400;
 }
 
 .background h3 {

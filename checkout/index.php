@@ -42,7 +42,7 @@ $firstName = $user['firstName'];
             </div>
         </nav>
         <div class="container space">
-            <h1 class="p-0">Ολοκλήρωση Παραγγελίας</h1>
+            <h1>Ολοκλήρωση Παραγγελίας</h1>
         </div>
     </div>
     <div id="false" class="container m-3"></div>

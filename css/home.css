@@ -165,6 +165,7 @@ body {
 
 .background h2{
   color: white !important;
+  font-weight: 300;
 }
 
 .background h1 {
@@ -174,6 +175,7 @@ body {
   padding-bottom: 0;
   text-align: left;
   font-size: 70px;
+  font-weight: 400;
 }
 
 .navbar {
