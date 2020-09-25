@@ -11,11 +11,11 @@
     }
     .background h1{
         font-size: 40px !important;
-        text-align: center !important;
+        text-align: left !important;
         padding-right: 0 !important;
     }
     .background h3{
-        text-align: center !important;
+        text-align: left !important;
     }
     .col-md*{
         padding: 0 !important;
