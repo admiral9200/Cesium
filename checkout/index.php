@@ -43,12 +43,12 @@ $firstName = $user['firstName'];
                 </div>
             </div>
         </nav>
-        <div class="container space">
+        <div class="container py-3">
             <h1>Ολοκλήρωση Παραγγελίας</h1>
         </div>
     </div>
-    <div id="false" class="container m-3"></div>
-    <div class="container space">
+    <div class="container my-5">
+        <div id="false"></div>
         <div class="row d-flex justify-content-center">
             <div class="col-xl-4 col-md-12 col-12 box p-xl-5 p-md-5">
                 <h4 class="mb-2">1. Στοιχεία Παραγγελίας</h4>

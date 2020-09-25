@@ -12,6 +12,7 @@ function quantity(count, qty){
 				$("#cart").load("view_cart.php", () => resetForms());
 			}
 			else{
+				document.getElementById('false').classList.add("mt-3");
 				document.getElementById('false').innerHTML = this.responseText;
 				$("#cart").load("view_cart.php", () => resetForms());
 			}
@@ -34,6 +35,7 @@ function deleteCoffee(code){
 				$("#cart").load("view_cart.php", () => resetForms());
 			}
 			else{
+				document.getElementById('false').classList.add("mt-3");
 				document.getElementById('false').innerHTML = this.responseText;
 				$("#cart").load("view_cart.php", () => resetForms());
 			}

@@ -98,7 +98,7 @@
     width: 100% !important;
   }
   .logo {
-    height: 80px !important;
+    height: 70px !important;
     width: auto;
   }
   .box {
@@ -120,4 +120,63 @@
   .col-xs-* {
     padding: 0 !important;
   }
+}
+
+.box {
+  box-shadow: 0 5px 2px 0 rgba(0, 0, 0, 0.24),
+    0 17px 50px 0 rgba(0, 0, 0, 0.048) !important;
+  border: 0.5px solid rgba(0, 0, 0, 0.24);
+  border-radius: 1%;
+}
+
+.list-group-item {
+  user-select: none;
+}
+
+.list-group input[type="checkbox"] {
+  display: none;
+}
+
+.list-group input[type="checkbox"] + .list-group-item {
+  cursor: pointer;
+}
+
+.list-group input[type="checkbox"] + .list-group-item:before {
+  content: "\2713";
+  color: transparent;
+  font-weight: bold;
+  margin-right: 1em;
+}
+
+.list-group input[type="checkbox"]:checked + .list-group-item {
+  background-color: #0275d8;
+  color: #fff;
+}
+
+.list-group input[type="checkbox"]:checked + .list-group-item:before {
+  color: inherit;
+}
+
+.list-group input[type="radio"] {
+  display: none;
+}
+
+.list-group input[type="radio"] + .list-group-item {
+  cursor: pointer;
+}
+
+.list-group input[type="radio"] + .list-group-item:before {
+  content: "\2022";
+  color: transparent;
+  font-weight: bold;
+  margin-right: 1em;
+}
+
+.list-group input[type="radio"]:checked + .list-group-item {
+  background-color: #0275d8;
+  color: #fff;
+}
+
+.list-group input[type="radio"]:checked + .list-group-item:before {
+  color: inherit;
 }

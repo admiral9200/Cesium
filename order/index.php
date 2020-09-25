@@ -44,15 +44,15 @@ $firstName = $user['firstName'];
                 </div>
             </div>
         </nav>
-        <div class="container space">
+        <div class="container py-3">
             <h1>Διάλεξε τον καφέ που θες</h1>
         </div>
     </div>
     <div class="container">
-        <div id="false" class="mt-3"></div>
+        <div id="false"></div>
         <div class="row">
             <div class="col-12 col-xl-9 order-1 order-xl-0 coffees">
-                <div class="accordion" id="accordionExample">
+                <div class="accordion">
                     <?php
                     $result_coffees = $pdo -> query('SELECT * FROM cc_coffees');
                     $bootstrap_count = array("One" , "Two" , "Three" , "Four" , "Five" , "Six" , "Seven" , "Eight" , "Nine" , "Ten");
@@ -66,10 +66,10 @@ $firstName = $user['firstName'];
                         $choco = $row['choco'];
                         ?><div class='card'>
                                 <div class='card-header p-0 align-middle' id='headingOne'>
-                                    <a class='btn btn-link p-3' data-toggle='collapse' data-target='#collapse<?php echo $bootstrap_count[$i]; ?>' aria-expanded='false' aria-controls='collapse<?php echo $bootstrap_count[$i];?>'><?php echo $name." ".$price;?>€<i class="fas fa-plus float-right mt-1"></i></a>
+                                    <a class='btn btn-link p-3' data-toggle='collapse' data-target='#collapse<?php echo $bootstrap_count[$i]; ?>' aria-expanded='false' aria-controls='collapse<?php echo $bootstrap_count[$i];?>'><?php echo $name." ".$price;?>€<i class="fas fa-plus float-right"></i></a>
                                 </div>
                                 <div id='collapse<?php echo $bootstrap_count[$i];?>' class='collapse' aria-labelledby='heading<?php echo $bootstrap_count[$i];?>'>
-                                    <div class='container space'>
+                                    <div class='container my-3'>
                                         <form class="w-100">
                                             <div class='row'>
                                                 <div class='col-xl-3 col-12 mb-2'>
@@ -137,7 +137,7 @@ $firstName = $user['firstName'];
                                                 </div> 
                                             </div>
                                         </form>
-                                        <div class='row space justify-content-center mt-3'>
+                                        <div class='row justify-content-center mt-3'>
                                             <button type='button' class='btn btn-primary btn-md' onclick="getValues(<?php echo $code;?>)">Προσθήκη στο καλάθι</button>
                                         </div>
                                     </div>  
