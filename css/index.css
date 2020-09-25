@@ -69,7 +69,7 @@ html , body{
 
 .background {
     background-image: url("../images/coffee-beans.jpg");
-    background-size: inherit;
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
@@ -80,7 +80,8 @@ html , body{
     padding-left: 0;
     padding-bottom: 0;
     text-align: left;
-    font-size: 70px;
+    font-size: 72px;
+    font-weight: 400;
 }
 
 .background h3 {
@@ -89,6 +90,7 @@ html , body{
     padding-left: 0;
     text-align: left;
     font-size: 20px;
+    font-weight: 300;
 }
 
 .navbar{
