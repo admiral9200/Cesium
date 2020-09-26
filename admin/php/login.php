@@ -1,20 +1,23 @@
 <?php
-include("db.php");
+require("db.php");
 session_start();
-if (isset($_POST['login'])){
+if (!empty($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) && !empty($_POST['pass'])){
     $email = $_POST['email'];
     $pass = $_POST['pass'];
-    //$pass = password_hash($pass, PASSWORD_DEFAULT);
     $sqlUser = "SELECT * FROM cc_admins WHERE email = ? AND password = ?";
     $stmtUser = $pdo -> prepare($sqlUser);
     $stmtUser -> execute([$email, $pass]);
-    if ($stmtUser -> rowCount() == 1){
-        $_SESSION['admin'] = $email;
-        header('location: ../dashboard.php');
+    if($stmtUser) {
+        if($stmtUser -> rowCount() == 1){
+            $_SESSION['admin'] = $email;
+            echo true;
+        }
+        else{
+            echo "Το email ή ο κωδικός που έχεις εισάγει είναι λάθος!";
+        }
     }
     else{
-        $_SESSION['error'] = "Το email ή ο κωδικός που έχεις εισάγει είναι λάθος!";
-        header("location: ../");
+        echo false;
     }
 }
 ?>

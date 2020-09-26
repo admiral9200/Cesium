@@ -23,14 +23,12 @@ $lastName = $admin['lastName'];
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Chip Coffee Back Office</title>
-        <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="./css/dashboard.css">
         <link rel="icon" type="image/png" href="../images/chip_coffee.png">
         <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
         <link rel="stylesheet" href="../bootstrap-4.5.0/css/bootstrap.min.css">
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
     </head>
     <body>
         <nav class="navbar container-fluid fixed-top">
@@ -85,22 +83,14 @@ $lastName = $admin['lastName'];
             <button class="btn btn-danger btn-block" value="logout" name="logout"><i class="fas fa-sign-out-alt"></i></button>
           </form>
         </div>
-        <script>
-          $(document).ready(function(){    
-              loadstation();
-          });
-          function loadstation(){
-              $("#liveOrders").load("./php/liveOrders.php");
-              setTimeout(loadstation, 1000);
-          }
-        </script>
         <div class="container main">
           <div class="row">
             <div class="col" id="liveOrders">
             </div>
           </div>
         </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="./js/main.js"></script>
         <script src="../bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

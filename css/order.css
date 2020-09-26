@@ -179,6 +179,10 @@
   -ms-user-select: none;
 }
 
+.card-header{
+  background-color: transparent !important;
+}
+
 .accordion svg{
   margin-top: 2px;
   font-size: 1.2rem;
@@ -199,7 +203,7 @@
 }
 
 .accordion .card-header:hover {
-  background: #ebebeb;
+  background: #612d0618 !important;
 }
 
 .accordion .card-header .btn {
