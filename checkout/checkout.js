@@ -3,6 +3,31 @@ var floor = document.getElementById('floor');
 var loader = document.getElementById("loader");
 var blurred = document.getElementById("blurred");
 
+document.getElementById('checkout').addEventListener('click', function(){
+	if (isValidatedCheckout()){
+		var submit = this.value;
+		var payment = document.querySelector('input[name="payment"]:checked');
+		var phone = document.getElementById('phone').value;
+		var comment = document.getElementById('comment').value;
+		if (submit && doorname.value && floor.value && payment.value) {
+			sendOrder(submit, doorname.value, floor.value, phone, comment, payment.value);
+		}
+	}
+});
+
+var input = [doorname, floor];
+for(var i = 0; i < input.length; i++){
+	input[i].addEventListener('keyup', function(){
+		this.closest(".group").querySelector('.text-danger').style.display = 'none';
+		this.classList.remove("wrong");
+		if (this.value == '') {
+			this.closest(".group").querySelector('.text-danger').style.display = 'block';
+			this.classList.add("wrong");
+			document.getElementById('resReg').innerHTML = "";
+		}
+	});
+}
+
 function isValidatedCheckout(){
 	var val = true;
 	var orderAttr = [doorname, floor];
@@ -21,18 +46,6 @@ function isValidatedCheckout(){
 	}
 	return val;
 }
-
-document.getElementById('checkout').addEventListener('click', function(){
-	if (isValidatedCheckout()){
-		var submit = this.value;
-		var payment = document.querySelector('input[name="payment"]:checked');
-		var phone = document.getElementById('phone').value;
-		var comment = document.getElementById('comment').value;
-		if (submit && doorname.value && floor.value && payment.value) {
-			sendOrder(submit, doorname.value, floor.value, phone, comment, payment.value);
-		}
-	}
-});
 
 function sendOrder(submit, doorname, floor, phone, comment, payment){
 	loader.style.display = "block";

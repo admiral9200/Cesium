@@ -7,6 +7,10 @@ html, body{
     user-select: none;
 }
 
+.form-group{
+    max-width: 550px;
+}
+
 .logo{
     height: 380px;
     width: 380px;

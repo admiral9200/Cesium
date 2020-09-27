@@ -16,7 +16,7 @@
             <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-4 text-center">
                 <img src="../images/chip_coffee.png" class="logo" alt="Chip Coffee Logo">
                 <h1 class="mb-5">Chip Coffee</h1>
-                <form class="form-group pl-3 pr-3">
+                <form class="form-group mx-auto pl-3 pr-3">
                     <div class="form-group">
                         <input class="form-control form-control-lg" id="email" placeholder="Email" type="email">
                     </div>

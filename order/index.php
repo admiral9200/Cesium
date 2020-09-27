@@ -107,7 +107,13 @@ $firstName = $user['firstName'];
                                                     </div>
                                                 </div>
                                                 <div class='col-xl-3 col-12 mb-2'>
-                                                    <h5>Πρόσθεσε</h5>
+                                                    <?php
+                                                    if($row['milk'] || $row['cinnamon'] || $row['choco']){
+                                                        ?>
+                                                        <h5>Πρόσθεσε</h5>
+                                                        <?php
+                                                    }
+                                                    ?>
                                                     <?php
                                                     if($row['milk'] == 1){
                                                         ?>

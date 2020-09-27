@@ -82,10 +82,10 @@ $firstName = $user['firstName'];
                 <div class="form-group">
                     <div class="d-block mt-4">
                         <div class="list-group form-check">
-                            <input class="form-check-input" type="radio" name="payment" value="credit" id="card" required/>
-                            <label class="list-group-item form-check-label" for="card">Πιστωτική/Χρεωστική Κάρτα</label>
                             <input class="form-check-input" type="radio" name="payment" value="paypal" id="paypal" required/>
                             <label class="list-group-item form-check-label" for="paypal">PayPal</label>
+                            <input class="form-check-input" type="radio" name="payment" value="credit" id="card" required/>
+                            <label class="list-group-item form-check-label" for="card">Πιστωτική/Χρεωστική Κάρτα</label>
                             <div class="text-danger" id="payment">
                                 Πρέπει να διαλέξεις έναν τρόπο πληρωμής.
                             </div>
