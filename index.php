@@ -5,102 +5,92 @@ if (isset($_SESSION['email'])) header("location: ./home/");
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
     <title>Chip Coffee | Online Coffee Delivery</title>
     <link rel="icon" type="image/png" href="./images/chip_coffee.png">
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap">
+    <link rel="stylesheet" type="text/css" href="./css/index.css">
     <link rel="stylesheet" type="text/css" href="./css/base.css">
     <link rel="stylesheet" type="text/css" href="./css/footer.css">
-    <link rel="stylesheet" type="text/css" href="./css/index.css">
     <link rel="stylesheet" type="text/css" href="./css/form.css">
     <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="background">
-        <nav class="navbar navbar-light container">
-            <a class="navbar-brand" href="/www/">
-                <img src="./images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
-            </a>
-        </nav>
-        <div class="container py-xl-5 py-lg-5 py-md-5 py-3">
-            <div class="row">
-                <div class="col-xl-7 col-12">
+    <div class="row main m-0 p-0">
+        <div class="bg d-flex flex-column col-xl-7 col-lg-7 col-md-7 col-sm-12 col-12 p-0">
+            <div class="left">
+                <a class="logo_pos" href="./"><img src="./images/chip_coffee_page.png" class="logo" alt="Chip Coffee"></a>
+                <div class="content d-flex flex-column justify-content-center p-xl-0 p-lg-0 p-md-0 pt-5">
                     <h1>Παράγγειλε καφέ σε ένα 1'</h1>
-                    <h3>Φθηνά, γρήγορα και ηλεκτρονικά</h3>
+                    <h3 class="mt-2">Φθηνά, γρήγορα και ηλεκτρονικά</h3>
                 </div>
-                <div class="col-xl-5 col-12">
-                    <div class="card">
-                        <div class="login-box">
-                            <div class="login-snip user-select-none"> 
-                                <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Συνδεση</label>
-                                <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Εγγραφη</label>
-                                <div class="login-space">
-                                    <div class="form-group">
-                                        <div class="login form-check pl-0">
-                                            <form class="form-group">
-                                                <div class="group">
-                                                    <label for="user" class="label">ΔΙΕΥΘΥΝΣΗ EMAIL</label>
-                                                    <input id="email" type="email" class="input form-control form-control-lg" placeholder="Γράψε τη Διεύθυνση Email" required>
-                                                    <div class="text-danger">Πρέπει να συμπληρώσεις το email σου.</div>
-                                                </div>
-                                                <div class="group">
-                                                    <label for="pass" class="label">ΚΩΔΙΚΟΣ</label>
-                                                    <input id="pass" type="password" class="input form-control form-control-lg" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
-                                                    <div class="text-danger">Πρέπει να συμπληρώσεις τον κωδικό σου.</div>
-                                                </div>
-                                                <div class="group">
-                                                    <input id="check" type="checkbox" class="check chk-box">
-                                                    <label for="check" class="color"><span class="icon"></span> Να με θυμάσαι</label>
-                                                </div>
-                                                <div class="group"> 
-                                                    <input type="submit" class="button btn btn-lg" id="login" value="Συνδεση">
-                                                    <div id="res" class="d-flex justify-content-center pt-2"></div>
-                                                </div>
-                                                <div class="hr mt-4 mb-3"></div>
-                                                <div class="text-center"> 
-                                                    <a href="./reset/">Ξέχασες τον κωδικό σου?</a>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="sign-up-form form-check pl-0">
-                                            <form id="signupForm" class="form-group">
-                                                <div class="group">
-                                                    <label for="emailR" class="label">ΔΙΕΥΘΥΝΣΗ EMAIL</label>
-                                                    <input id="emailR" type="email" class="input form-control form-control-lg" placeholder="Γράψε τη Διέυθυνση Email" required>
-                                                    <div class="text-danger">Πρέπει να συμπληρώσεις μία έγκυρη διεύθυνση email.</div>
-                                                </div>
-                                                <div class="group">
-                                                    <label for="firstName" class="label">ΟΝΟΜΑ</label> 
-                                                    <input id="firstName" type="text" class="input form-control form-control-lg" data-type="firstName" placeholder="Γράψε το Όνομα σου" required>
-                                                    <div class="text-danger">Πρέπει να συμπληρώσεις το όνομα σου</div>
-                                                </div>
-                                                <div class="group">
-                                                    <label for="lastName" class="label">ΕΠΙΘΕΤΟ</label> 
-                                                    <input id="lastName" type="text" class="input form-control form-control-lg" data-type="lastName" placeholder="Γράψε το Επίθετο σου" required>
-                                                    <div class="text-danger">Πρέπει να συμπληρώσεις το επίθετο σου.</div>
-                                                </div>
-                                                <div class="group">
-                                                    <label for="password" class="label">ΚΩΔΙΚΟΣ</label> 
-                                                    <input id="password" type="password" class="input form-control form-control-lg" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
-                                                    <div class="text-danger">Πρέπει να συμπληρώσεις ένα κωδικό πρόσβασης.</div>
-                                                </div>                                            
-                                                <div class="group mt-4">
-                                                    <input type="submit" class="button btn btn-lg" id="signup" value="Εγγραφη">
-                                                    <div id="resReg" class="d-flex justify-content-center pt-2"></div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
+            </div>
+        </div>
+        <div class="right d-flex justify-content-center align-items-center col-xl-5 col-lg-5 col-md-5 col-sm-12 col-12 p-xl-5 p-lg-5 p-md-5 p-sm-5 p-0">
+            <div class="login-snip user-select-none"> 
+                <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab">Συνδεση</label>
+                <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Εγγραφη</label>
+                <div class="login-space">
+                    <div class="login form-check pl-0">
+                        <form class="form-group">
+                            <div class="group">
+                                <label for="user" class="label">ΔΙΕΥΘΥΝΣΗ EMAIL</label>
+                                <input id="email" type="email" class="input form-control form-control-lg" placeholder="Γράψε τη Διεύθυνση Email" required>
+                                <div class="text-danger">Πρέπει να συμπληρώσεις το email σου.</div>
                             </div>
-                        </div>
+                            <div class="group">
+                                <label for="pass" class="label">ΚΩΔΙΚΟΣ</label>
+                                <input id="pass" type="password" class="input form-control form-control-lg" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
+                                <div class="text-danger">Πρέπει να συμπληρώσεις τον κωδικό σου.</div>
+                            </div>
+                            <div class="group">
+                                <input id="check" type="checkbox" class="check chk-box">
+                                <label for="check" class="color"><span class="icon"></span> Να με θυμάσαι</label>
+                            </div>
+                            <div class="group"> 
+                                <input type="submit" class="button btn btn-lg" id="login" value="Συνδεση">
+                                <div id="res" class="d-flex justify-content-center pt-2"></div>
+                            </div>
+                            <div class="hr mt-4 mb-3"></div>
+                            <div class="text-center"> 
+                                <a href="./reset/">Ξέχασες τον κωδικό σου?</a>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="sign-up-form form-check pl-0">
+                        <form id="signupForm" class="form-group">
+                            <div class="group">
+                                <label for="emailR" class="label">ΔΙΕΥΘΥΝΣΗ EMAIL</label>
+                                <input id="emailR" type="email" class="input form-control form-control-lg" placeholder="Γράψε τη Διέυθυνση Email" required>
+                                <div class="text-danger">Πρέπει να συμπληρώσεις μία έγκυρη διεύθυνση email.</div>
+                            </div>
+                            <div class="group">
+                                <label for="firstName" class="label">ΟΝΟΜΑ</label> 
+                                <input id="firstName" type="text" class="input form-control form-control-lg" data-type="firstName" placeholder="Γράψε το Όνομα σου" required>
+                                <div class="text-danger">Πρέπει να συμπληρώσεις το όνομα σου</div>
+                            </div>
+                            <div class="group">
+                                <label for="lastName" class="label">ΕΠΙΘΕΤΟ</label> 
+                                <input id="lastName" type="text" class="input form-control form-control-lg" data-type="lastName" placeholder="Γράψε το Επίθετο σου" required>
+                                <div class="text-danger">Πρέπει να συμπληρώσεις το επίθετο σου.</div>
+                            </div>
+                            <div class="group">
+                                <label for="password" class="label">ΚΩΔΙΚΟΣ</label> 
+                                <input id="password" type="password" class="input form-control form-control-lg" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
+                                <div class="text-danger">Πρέπει να συμπληρώσεις ένα κωδικό πρόσβασης.</div>
+                            </div>                                            
+                            <div class="group mt-4">
+                                <input type="submit" class="button btn btn-lg" id="signup" value="Εγγραφη">
+                                <div id="resReg" class="d-flex justify-content-center pt-2"></div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container my-5 py-4">
+    <div class="container my-xl-5 my-lg-5 py-xl-4 py-lg-4 my-3">
         <div class="card-deck">
             <div class="card">
             <img src="./images/coffee1.jpg" class="card-img-top" alt="...">
