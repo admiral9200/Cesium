@@ -31,7 +31,7 @@ $firstName = $user['firstName'];
     <div id="blurred" class="blurred"></div>
     <div id="loader" class="loader lds-dual-ring"></div>
     <div class="background">
-        <nav class="navbar navbar-light container">
+        <nav class="navbar navbar-light container"> 
             <a class="navbar-brand" href="../home/">
                 <img src="../images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
@@ -144,7 +144,7 @@ $firstName = $user['firstName'];
                                             </div>
                                         </form>
                                         <div class='row justify-content-center mt-3'>
-                                            <button type='button' class='btn btn-primary btn-md' onclick="getValues(<?php echo $code;?>)">Προσθήκη στο καλάθι</button>
+                                            <button type='button' class='btn mainbtn btn-md text-white' onclick="getValues(<?php echo $code;?>)">Προσθήκη στο καλάθι</button>
                                         </div>
                                     </div>  
                                 </div>

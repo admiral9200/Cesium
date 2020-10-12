@@ -1,6 +1,5 @@
 <?php
 session_start();
-$email = $_SESSION['email'];
 if (!isset($_SESSION['email'])) header('location: ../');
 ?>
 <!DOCTYPE html>
@@ -20,7 +19,99 @@ if (!isset($_SESSION['email'])) header('location: ../');
 <body>
     <div id="blurred" class="blurred"></div>
     <div id="loader" class="loader lds-dual-ring"></div>
-    <div id="viewProfile"></div>
+    <div class="background">
+        <nav class="navbar navbar-light container">
+            <a class="navbar-brand" href="../home/">
+                <img src="../images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
+            </a>
+            <div class="dropdown">
+                <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="./">Ο λογαριασμός μου</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="../php/logout.php">Αποσύνδεση</a>
+                </div>
+            </div>
+        </nav>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1>Ο λογαριασμός μου</h1>
+            </div>
+        </div>
+    </div>
+    <div class="container py-4">
+        <div class="row my-2">
+            <div class="col-xl-3 col-12 text-center space">
+                <div class="sticky-top pt-4 pb-4">
+                    <img src="../images/trickst3r.png" class="mx-auto img-fluid rounded-circle" alt="avatar" />
+                    <h4 id="fullName" class="my-4"></h4>
+                </div>
+            </div>
+            <div class="col-xl-9 col-12 personal-info">
+                <h4 class="mb-4">Τα στοιχεία μου</h4>
+                <div id="res"></div>
+                <div class="form-group row mb-0">
+                    <div class="col-xl-5 col-12">
+                        <label class="col-xl-5 col-form-label form-control-label pl-0">Όνομα</label>
+                        <input class="form-control" type="text" id="firstName"/>
+                        <div class="text-danger">Πρέπει να συμπληρώσεις ένα όνομα</div>
+                    </div>
+                    <div class="col-xl-5 col-12">
+                        <label class="col-xl-5 col-form-label form-control-label pl-0">Επώνυμο</label>
+                        <input class="form-control" type="text" id="lastName"/>
+                        <div class="text-danger">Πρέπει να συμπληρώσεις ένα επίθετο</div>
+                    </div>
+                </div>
+                <div class="form-group row mt-4 mb-0">
+                    <label class="col-xl-5 col-form-label form-control-label pl-3">Email</label>
+                </div>
+                <div class="form-group row">
+                    <div class="col-xl-5 mb-0">
+                        <input class="form-control" type="text" id="email" value="" disabled/>
+                    </div>
+                </div>
+                <!-- <div class="form-group row mt-4 mb-0">
+				<label class="col-5 col-form-label form-control-label pl-3">Κινητό</label>
+			</div>
+			<div class="form-group row">
+				<div class="col-5 mb-0">
+					<input class="form-control" type="text" value="phone"/>
+				</div>
+			</div> -->
+                <div class="form-group row">
+                    <div class="col-12 mt-4 text-left">
+                        <button type="button" id="changeCreds" class="btn mainbtn text-white btn-lg btn-block" value="save">Αποθήκευση Αλλαγών</button>
+                    </div>
+                </div>
+                <hr class="mt-4 mb-4">
+                <h4 class="mb-4">Αλλαγή κωδικού</h4>
+                <div id="resPass"></div>
+                <div class="form-group row mt-4 mb-0">
+                    <label class="col-xl-5 col-12 col-form-label form-control-label pl-3">Τρέχων κωδικός</label>
+                </div>
+                <div class="form-group row">
+                    <div class="col-xl-5 col-12">
+                        <input class="form-control" type="password" id="oldpass" />
+                        <div class="text-danger">Πρέπει να συμπληρώσεις τον παλιό κωδικό</div>
+                    </div>
+                </div>
+                <div class="form-group row mt-4 mb-0">
+                    <label class="col-xl-5 col-12 col-form-label form-control-label">Νέος κωδικός</label>
+                </div>
+                <div class="form-group row">
+                    <div class="col-xl-5 col-12">
+                        <input class="form-control" type="password" id="newpass" />
+                        <div class="text-danger">Πρέπει να συμπληρώσεις έναν καινούριο κωδικό</div>
+                    </div>
+                </div>
+                <div class="form-group row mt-4">
+                    <div class="col-xl-12 col-12">
+                        <button type="submit" id="changepass" class="btn mainbtn text-white btn-lg btn-block" value="pass">Αποθήκευση Αλλαγών</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Site footer -->
     <?php echo file_get_contents("../html/footer.html"); ?>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

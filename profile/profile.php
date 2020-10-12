@@ -2,70 +2,59 @@
 session_start();
 include("../php/db_connect.php");
 if (!isset($_SESSION['email'])) header('location: ../');
-$email = $_SESSION['email'];
 
-if(isset($_POST['oldpass']) && isset($_POST['newpass'])){
+if(!empty($_POST['oldpass']) && !empty($_POST['newpass'])){
     $oldpass = $_POST['oldpass'];
     $newpass = $_POST['newpass'];
     $resPass = changePass($oldpass, $newpass);
     echo $resPass;
 }
-else if(isset($_POST['firstName']) && isset($_POST['lastName'])){
+else if(!empty($_POST['firstName']) && !empty($_POST['lastName'])){
     $firstName = $_POST['firstName'];
     $lastName = $_POST['lastName'];
     $resCreds = changeCreds($firstName, $lastName);
     echo $resCreds;
 }
+else if($_SERVER['REQUEST_METHOD'] === 'GET'){
+    $res = getProfile();
+    echo $res;
+}
 
 function changePass($oldpass, $newpass){
-    global $email, $pdo;
+    global $pdo;
     $sqlOldPass = "SELECT password FROM cc_users WHERE email = ?";
     $stmtOldPass = $pdo -> prepare($sqlOldPass);
-    $stmtOldPass -> execute([$email]);
+    $stmtOldPass -> execute([$_SESSION['email']]);
     $rowOldPassFromFB = $stmtOldPass -> fetch();
     if(password_verify($oldpass, $rowOldPassFromFB['password'])){
         $newpass = password_hash($newpass, PASSWORD_DEFAULT);
         $sqlChangePass = "UPDATE cc_users SET password = ? WHERE email = ?";
         $stmtChangePass = $pdo -> prepare($sqlChangePass);
-        $stmtChangePass -> execute([$newpass, $email]);
-        if ($stmtChangePass) {
-            $_SESSION['msgForPass'] = "<div class='alert alert-success alert-dismissible fade show'>
-                                <button type='button' class='close' data-dismiss='alert'>&times;</button>
-                                Ο κωδικός σας άλλαξε επιτυχώς
-                            </div>";
-            return true;   
-        }
+        $stmtChangePass -> execute([$newpass, $_SESSION['email']]);
+        if ($stmtChangePass) return true;   
+        else return "Κάτι πήγε λάθος. Προσπάθησε ξανά";
     }
-    else if(!password_verify($oldpass, $rowOldPassFromFB['password'])){
-        $_SESSION['msgForPass'] = "<div class='alert alert-danger alert-dismissible fade show'>
-                                <button type='button' class='close' data-dismiss='alert'>&times;</button>
-                                Ο παλαιός κωδικός δεν είναι σωστός
-                            </div>";
-        return false;
-    }
-    else{
-        $msg = "Κάτι πήγε λάθος. Προσπάθησε ξανά";
-        $_SESSION['msgForPass'] = "<div class='alert alert-danger alert-dismissible fade show'>
-                                <button type='button' class='close' data-dismiss='alert'>&times;</button>
-                                $msg
-                            </div>";
-        return false;
-    }
+    else if(!password_verify($oldpass, $rowOldPassFromFB['password'])) return "Ο παλιός κωδικός δεν είναι σωστός";
+    else return "Κάτι πήγε λάθος. Προσπάθησε ξανά";
 }
 
 function changeCreds($firstName, $lastName){
-    global $email, $pdo;
+    global $pdo;
     $sqlChangeName = "UPDATE cc_users SET firstName = ?, lastName = ? WHERE email = ?";
     $stmtChangeName = $pdo -> prepare($sqlChangeName);
-    $stmtChangeName -> execute([$firstName, $lastName, $email]);
-    if ($stmtChangeName) {
-        $_SESSION['msg'] = "<div class='alert alert-success alert-dismissible fade show'>
-                            <button type='button' class='close' data-dismiss='alert'>&times;</button>
-                            Τα στοιχεία σου άλλαξαν επιτυχώς
-                        </div>";
-        return true;   
+    $stmtChangeName -> execute([$firstName, $lastName, $_SESSION['email']]);
+    return $stmtChangeName ? true : "Κάτι πήγε λάθος. Δοκίμασε ξανά";
+}
+
+function getProfile(){
+    global $pdo;
+    $sqlLoggedInUser = "SELECT email, firstName, lastName FROM cc_users WHERE email = ?";
+    $resultUser = $pdo->prepare($sqlLoggedInUser);
+    $resultUser->execute([$_SESSION['email']]);
+    if ($resultUser){
+        $user = $resultUser->fetchAll();
+        $user = json_encode($user);
+        return $user;
     }
-    else{
-        return false;
-    }
+    else return "Κάτι πήγε λάθος. Δοκίμασε ξανά";
 }

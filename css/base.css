@@ -2,12 +2,64 @@
   .sale{
     height: 430px !important;
   }
+  .background{
+    background-position: center !important;
+  }
 }
 
 @media screen and (min-width: 400px) and (max-width: 600px){
   .sale{
     height: 470px !important;
   }
+  .background{
+    background-position: center !important;
+  }
+}
+
+::-moz-selection { /* Code for Firefox */
+  color: white;
+  background: #bb6b00;
+}
+
+::selection {
+  color: white;
+  background: #bb6b00;
+}
+
+.custom-control-input:checked~.custom-control-label::before {
+  border-color:  #bb6b00 !important;
+  background-color: #bb6b00 !important;
+}
+
+a:hover{
+  color: #bb6b00 !important;
+}
+
+.mainbtn {
+  background: #bb6b00 !important;
+  border-radius: 8px !important;
+}
+
+.mainbtn:hover{
+  background: #995700 !important;
+}
+
+.mainbtn:focus{
+  outline: none !important;
+  box-shadow: 0 0 0 2px #804800 !important;
+}
+
+input{
+  border-radius: 8px !important;
+}
+
+.index{
+  border: none !important;
+}
+
+input:focus{
+  outline: none !important;
+  box-shadow: 0 0 0 2px #bb6b00 !important;
 }
 
 html,
@@ -37,9 +89,9 @@ body {
 }
 
 .background {
-  background-image: url("../images/coffee-beans.jpg");
+  background-image: url("../images/main_coffee.jpg");
   background-size: cover;
-  background-position: center;
+  background-position: right bottom;
   background-repeat: no-repeat;
 }
 
@@ -78,14 +130,20 @@ body {
     text-decoration: none !important;
 }
 
+.site-footer a:hover{
+  color: #bb6b00 !important;
+}
+
 .card {
-  	border: none !important;
-  	background-color: transparent !important;
+  border: none;
+  -color: transparent !important;
 }
 
 .sale{
+  border: none;
 	height: 330px;
-	background-color: #FFA07A !important;
+  background-color: #dda15e;
+  overflow: hidden;
 }
 
 ::placeholder {
@@ -97,11 +155,6 @@ body {
   color: white;
 }
 
-.card{
-  overflow: hidden;
-  border-radius: 0 !important;
-}
-
 .sale-image {
-  overflow: hidden;
+  width: 500px;
 }

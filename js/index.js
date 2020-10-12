@@ -2,23 +2,30 @@ document.getElementById('login').addEventListener('click', loginUser);
 document.getElementById('signup').addEventListener('click', registerUser);
 
 //Login
-var email = document.getElementById('email');
-var pass = document.getElementById('pass');
-var checkrm = document.getElementById('check').value;
+const email = document.getElementById('email');
+const pass = document.getElementById('pass');
+const rmbrme = document.querySelector('#rmbrme');
 //Register
-var emailR = document.getElementById('emailR');
-var firstName = document.getElementById('firstName');
-var lastName = document.getElementById('lastName');
-var password = document.getElementById('password');
-
-
-//Clear warnings on browser tab change
+const emailR = document.getElementById('emailR');
+const firstName = document.getElementById('firstName');
+const lastName = document.getElementById('lastName');
+const password = document.getElementById('password');
+//Warn Texts
 let warnTexts = document.getElementsByClassName('text-danger');
-for (let i = 0; i < warnTexts.length; i++) {
-	document.addEventListener('visibilitychange', function(){
-		document.getElementsByClassName('text-danger')[i].style.display = 'none';
-	});	
-}
+
+$("#signup-tab").click(function(){
+	$(".login").fadeOut(150, () => {
+		clearWarns();
+		$(".sign-up-form").fadeIn(150);
+	});
+});
+
+$("#signin-tab").click(function(){ 
+	$(".sign-up-form").fadeOut(150, () => {
+		clearWarns();
+		$(".login").fadeIn(150);
+	});
+});
 
 email.addEventListener('keyup', function(){
 	if(validateEmail(email.value)){
@@ -90,7 +97,7 @@ function loginUser(e){
 		var xhr = new XMLHttpRequest();
 		xhr.open('POST', './php/login.php', true);
 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		var params = "email=" + email.value + "&pass=" + pass.value + "&checkrm=" + checkrm;
+		var params = "email=" + email.value + "&pass=" + pass.value + "&rmbrme=" + rmbrme.checked;
 		xhr.onload = function(){
 			if(this.status == 200){
 				if(this.responseText == true){
@@ -159,4 +166,16 @@ function isFormEmpty(input) {
 		val = false;
 	}
 	return val;
+}
+
+//Clear warnings on browser tab change
+function clearWarns(){
+	for (let i = 0; i < warnTexts.length; i++) {
+		document.addEventListener('visibilitychange', function(){
+			document.getElementsByClassName('text-danger')[i].style.display = 'none';
+		});	
+	}
+	for (let i = 0; i < warnTexts.length; i++) {
+		document.getElementsByClassName('text-danger')[i].style.display = 'none';
+	}
 }

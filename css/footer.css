@@ -1,5 +1,5 @@
 .site-footer {
-  background-color: #26272b;
+  background-color: #210f04;
   padding: 45px 0 20px;
   font-size: 15px;
   line-height: 24px;
@@ -111,7 +111,7 @@
 .social-icons a:focus,
 .social-icons a:hover {
   color: #fff;
-  background-color: #29aafe;
+  background-color: #bb6b00;
 }
 
 .social-icons.size-sm a {
@@ -122,11 +122,11 @@
 }
 
 .social-icons a.facebook:hover {
-  background-color: #3b5998;
+  background-color: #bb6b00;
 }
 
 .social-icons a.twitter:hover {
-  background-color: #00aced;
+  background-color: #bb6b00;
 }
 
 @media (max-width: 767px) {

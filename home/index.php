@@ -7,7 +7,6 @@ $sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = ?";
 $resultUser = $pdo -> prepare($sqlLoggedInUser);
 $resultUser -> execute([$email]);
 $user = $resultUser -> fetch();
-$firstName = $user['firstName'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +31,7 @@ $firstName = $user['firstName'];
                 <img src="../images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
             <div class="dropdown">
-                <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $firstName; ?> <i class="far fa-user"></i></a>
+                <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $user['firstName']; ?> <i class="far fa-user"></i></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                   <a class="dropdown-item" href="../profile/">Ο λογαριασμός μου</a>
                   <div class="dropdown-divider"></div>
@@ -42,7 +41,7 @@ $firstName = $user['firstName'];
         </nav>
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
-                <h1 class="mb-xl-5">Καλωσήρθες, <?php echo $firstName; ?></h1>
+                <h1 class="mb-xl-5">Καλωσήρθες, <?php echo $user['firstName']; ?></h1>
                 <div id="home"></div>
             </div>
         </div>
@@ -51,7 +50,23 @@ $firstName = $user['firstName'];
         <div id='false' class="m-3"></div>
         <h2 class="mb-2 mt-5">Οι διευθύνσεις μου</h2>
         <div class="col-12 px-xl-2 px-0" id="msg"></div>
-        <div id="addresses" class="row"></div>
+        <div class="row">
+            <div class="col-12">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item mt-4 mb-4">
+                        <div class="row">
+                            <div class="col-xl-3 col-6">
+                                <h6>Διεύθυνση</h6>
+                            </div>
+                            <div class="col-xl-3 col-6">
+                                <h6>Περιοχή</h6>
+                            </div>
+                        </div>
+                    </li>
+                    <div id="addresses"></div>
+                </ul>
+            </div>
+        </div>
     </div>
     <div class="container">
         <h2 class="mb-3 mt-5">Οι παραγγελίες μου</h2>
@@ -140,7 +155,6 @@ $firstName = $user['firstName'];
     </div>
     <!-- CARD -->
     <?php echo file_get_contents("../html/card.html"); ?>
-    <!-- SALE SECTION -->
     <?php echo file_get_contents("../html/sale.html"); ?>
     <!-- Site footer -->
     <?php echo file_get_contents("../html/footer.html"); ?>

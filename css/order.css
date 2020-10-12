@@ -179,6 +179,14 @@
   -ms-user-select: none;
 }
 
+.list{
+  list-style-type: none;
+}
+
+.card{
+  border: none !important;
+}
+
 .card-header{
   background-color: transparent !important;
 }
@@ -273,12 +281,12 @@ input[type="radio"] {
 }
 
 .minus:hover {
-  background-color: #007bff !important;
+  background-color: #bb6b00 !important;
   color: white !important;
 }
 
 .plus:hover {
-  background-color: #007bff !important;
+  background-color: #bb6b00 !important;
   color: white !important;
 }
 

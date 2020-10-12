@@ -3,7 +3,7 @@ session_start();
 if (!isset($_SESSION['email'])) header('location: ../');
 ?>
 <h3 class="mt-3 mb-3">Το καλάθι σου</h3>
-<ul class="list-group list-group-flush">
+<ul class="list-group list-group-flush list">
 	<?php
 	include("../php/db_connect.php");
 	$email = $_SESSION['email'];
@@ -41,11 +41,11 @@ if (!isset($_SESSION['email'])) header('location: ../');
 				</p>
 			</li>
 			<li>
-				<div class='row d-flex justify-content-center space'>
+				<div class='row d-flex justify-content-center'>
 					<div class='col-4 d-flex justify-content-center mt-3'>
 						<h6><?php echo $price; ?>€</h6>
 					</div>
-					<div class='col-8 space'>
+					<div class='col-8'>
 						<div class='qty d-flex justify-content-center mt-2'>
 							<a class='minus' <?php if ($quantity > 1) {?> onclick="quantity(<?php echo $count; ?>, 'minus')" <?php } ?> id="minus">-</a>
 							<input type='number' class='count' name='qty' value="<?php echo $quantity; ?>" disabled>
@@ -76,5 +76,5 @@ if (!isset($_SESSION['email'])) header('location: ../');
 		</h6>
 	</li>
 </ul>
-<button type="button" name="continue" class="btn btn-primary btn-block btn-lg" <?php if ($count == 0) echo "style='cursor: not-allowed' disabled"; else { ?> onclick="location.href='../checkout/';" <?php } ?>>Συνέχεια</button>
+<button type="button" name="continue" class="btn mainbtn text-white btn-block btn-lg" <?php if ($count == 0) echo "style='cursor: not-allowed' disabled"; else { ?> onclick="location.href='../checkout/';" <?php } ?>>Συνέχεια</button>
 <script src="cart.js" async defer></script>

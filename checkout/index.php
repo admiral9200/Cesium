@@ -152,7 +152,7 @@ $firstName = $user['firstName'];
                         </div>
                     </div>
                 </div> -->
-                <button class="btn btn-primary btn-lg btn-block my-2" type="button" id="checkout" value="order">Αποστολή Παραγγελίας</button>
+                <button class="btn mainbtn text-white btn-lg btn-block my-2" type="button" id="checkout" value="order">Αποστολή Παραγγελίας</button>
             </div>
         </div>
     </div>

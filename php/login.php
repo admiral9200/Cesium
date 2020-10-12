@@ -10,6 +10,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['email']) && !empty($_
     $rowUser = $stmtUser -> fetch();
     if ($stmtUser -> rowCount() == 1 && password_verify($pass, $rowUser['password'])){
         $_SESSION['email'] = $email;
+        if(!empty($_POST['rmbrme']) && $_POST['rmbrme'] === true){
+            //create cookies
+        }
+        //log login date and time for user
         echo true;
     }
     else{
