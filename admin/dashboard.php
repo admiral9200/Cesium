@@ -33,9 +33,7 @@ $lastName = $admin['lastName'];
     <body>
         <nav class="navbar container-fluid fixed-top">
           <div class="col-4">
-            <a class="navbar-brand" href="dashboard.php">
-              <img src="../images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
-            </a>
+            <img src="../images/chip_coffee_page.png" class="logo my-2" alt="Chip Coffee">
           </div>
           <div class="col-4">
             <ul class="nav justify-content-center">

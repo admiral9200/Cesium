@@ -3,7 +3,6 @@ session_start();
 if (!isset($_SESSION['email'])) header("location: ../");
 date_default_timezone_set('Europe/Athens');
 include("../php/db_connect.php");
-$email = $_SESSION['email'];
 //Paypal Integration not working on localhost
 /* if(isset($_POST['payment']) == "paypal"){
     header("location: payment.php");
@@ -29,28 +28,29 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout'])){
             //Clear Cart after order placed
             $sqlClearCart = "DELETE FROM cc_cart WHERE email = ?";
             $stmtClearCart = $pdo -> prepare($sqlClearCart);
-            $stmtClearCart -> execute([$email]);
+            $stmtClearCart -> execute([$_SESSION['email']]);
         }
 }
-else if(!isset($_POST['checkout'])){
-    header("location: ../home/");
+else if($_SERVER['REQUEST_METHOD'] === 'GET'){
+    $res = fetchOrderDetails();
+    echo $res;
 }
 else{
     echo false;
 }
 
 function checkout($id, $doorname, $floor, $phone, $comment){
-    global $email, $pdo;
+    global $pdo;
     $date = date("d.m.y");
     $time = date("H:i:s");
     $checkoutInfo = "INSERT INTO cc_checkout (id, email, doorname, floor, phone, comment, date, time) VALUES(? , ? , ? , ? , ? , ? , ? , ?)";
     $stmtChekoutInfo = $pdo -> prepare($checkoutInfo);
-    $stmtChekoutInfo -> execute([$id, $email, $doorname, $floor, $phone, $comment, $date, $time]);
+    $stmtChekoutInfo -> execute([$id, $_SESSION['email'], $doorname, $floor, $phone, $comment, $date, $time]);
     //UPDATE ORDERS OF USERS IN HOME PAGE... send cart values to orderBackendPanel with id from checkout and keep checkout as it is. get order together with same id (checkout, order)
     //cart fetch
     $sqlFetchCart = "SELECT email, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_cart WHERE email = ?";
     $stmtFetchCart = $pdo -> prepare($sqlFetchCart);
-    $stmtFetchCart -> execute([$email]);
+    $stmtFetchCart -> execute([$_SESSION['email']]);
     while($rowInsertToBackend = $stmtFetchCart -> fetch()){
         $coffee = $rowInsertToBackend['coffee'];
         $sugar = $rowInsertToBackend['sugar'];
@@ -63,11 +63,11 @@ function checkout($id, $doorname, $floor, $phone, $comment){
         //Insert to Backend Panel for process order
         $sqlInsert = "INSERT INTO cc_ordersBackendPanel (id, email, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty) VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)";
         $stmtInsertToBackend = $pdo -> prepare($sqlInsert);
-        $stmtInsertToBackend -> execute([$id, $email, $coffee, $sugar, $sugarType, $milk, $cinnamon, $choco, $price, $qty]);
+        $stmtInsertToBackend -> execute([$id, $_SESSION['email'], $coffee, $sugar, $sugarType, $milk, $cinnamon, $choco, $price, $qty]);
         //Insert to Users home.php
         $sqlInsertToUser = "INSERT INTO cc_orders (id, email, date, time, coffee, price, qty) VALUES ( ? , ? , ? , ? , ? , ? , ?)";
         $stmtInsertToUser = $pdo -> prepare($sqlInsertToUser);
-        $stmtInsertToUser -> execute([$id, $email, $date, $time, $coffee, $price, $qty]);
+        $stmtInsertToUser -> execute([$id, $_SESSION['email'], $date, $time, $coffee, $price, $qty]);
     }
     if ($stmtFetchCart && $stmtChekoutInfo && $stmtInsertToBackend && $stmtInsertToUser) {
         $_SESSION['success'] = true;
@@ -77,4 +77,18 @@ function checkout($id, $doorname, $floor, $phone, $comment){
         return false;
     }
 }
-?>
+
+function fetchOrderDetails(){
+    global $pdo;
+    $sqlOrderDetails = "SELECT cc_address.address, cc_checkout.floor, cc_checkout.time FROM cc_address INNER JOIN cc_checkout ON cc_address.email = cc_checkout.email WHERE cc_address.email = ? AND cc_checkout.email = ? AND cc_checkout.id IN (SELECT max(id) FROM cc_checkout WHERE email = ?)";
+    $stmtOrderDetails = $pdo -> prepare($sqlOrderDetails);
+    $stmtOrderDetails -> execute([$_SESSION['email'], $_SESSION['email'], $_SESSION['email']]);
+    if ($stmtOrderDetails) {
+        $orderDetails = $stmtOrderDetails -> fetchAll();
+        $orderDetails = json_encode($orderDetails);
+        return $orderDetails;
+    }
+    else{
+        return false;
+    }
+}

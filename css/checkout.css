@@ -161,7 +161,7 @@ input[type=number] {
 }
 
 .list-group input[type="checkbox"]:checked + .list-group-item {
-  background-color: #0275d8;
+  background-color: #bb6b00;
   color: #fff;
 }
 
@@ -185,7 +185,7 @@ input[type=number] {
 }
 
 .list-group input[type="radio"]:checked + .list-group-item {
-  background-color: #0275d8;
+  background-color: #bb6b00;
   color: #fff;
 }
 

@@ -21,6 +21,7 @@ $user = $resultUser -> fetch();
     <link rel="stylesheet" type="text/css" href="../css/footer.css">
     <link rel="stylesheet" type="text/css" href="../css/home.css">
     <link rel="stylesheet" type="text/css" href="../bootstrap-4.5.0/css/bootstrap.min.css">
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
 </head>
 <body>
     <div id="blurred" class="blurred"></div>
@@ -161,6 +162,5 @@ $user = $resultUser -> fetch();
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="home.js"></script>
     <script src="../bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
 </body>
 </html>

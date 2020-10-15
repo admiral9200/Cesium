@@ -60,7 +60,7 @@ let fetchAddress = () => {
 											`<h6 class='m-0'>${addresses[0].state}</h6>` +
 										"</div>" +
 										"<div class='col-xl-2 col-12'>" +
-											`<button id='delete' class='btn btn-block btn-danger' role='button' onclick='deleteAddress("${addresses[0].address}")'>Διαγραφή</button>` +
+											`<button id='delete' class='btn btn-block btn-danger mt-xl-0 mt-lg-0 mt-md-0 mt-sm-0 mt-3' role='button' onclick='deleteAddress("${addresses[0].address}")'>Διαγραφή</button>` +
 										"</div>" +
 									"</div>" +
 								"</li>";
