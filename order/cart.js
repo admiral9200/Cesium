@@ -43,12 +43,3 @@ function deleteCoffee(code){
 	}
 	xhr.send(params);
 }
-
-function resetForms(){
-	$('form').each(function() { this.reset() });
-	$('.collapse').collapse('hide');
-	$('input[name*="sugarType"]' ).prop('disabled', false);
-	loader.style.display = "none";
-	blurred.style.display = "none";
-	$('body').removeClass('stop-scrolling');
-}

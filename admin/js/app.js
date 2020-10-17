@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 particlesJS.load('particles-js', 'particles.json');
 
 document.getElementById('login').addEventListener('click', loginUser);
@@ -30,13 +31,13 @@ function loginUser(e){
     }
 }
 
-function validateEmail(email) {
+let validateEmail = (email) => {
 	//General Email Regex (RFC 5322 Official Standard)
 	const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	return re.test(email);
-}
+};
 
-function isFormEmpty(input) {
+let isFormEmpty = (input) => {
 	let val = true;
 	for(let i = 0; i < input.length; i++){
 		if(!input[i].value){
@@ -45,4 +46,4 @@ function isFormEmpty(input) {
 		}
 	}
 	return val;
-}
+};
