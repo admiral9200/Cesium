@@ -1,4 +1,18 @@
 /*jshint esversion: 6 */
+let getProfile = () => {
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', '../php/base.php?user', true);
+	xhr.onload = function(){
+		if (this.status == 200) {
+			prof = JSON.parse(this.responseText);
+			document.getElementById('dropdownMenuLink').innerHTML = `${prof[0].firstName} <i class='far fa-user'></i>`;
+		}
+	};
+	xhr.send();
+};
+
+(() => getProfile())();
+
 let getOrderDetails = () => {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', 'checkout.php', true);

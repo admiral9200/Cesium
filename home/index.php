@@ -2,11 +2,11 @@
 session_start();
 if (!isset($_SESSION['email'])) header("location: ../");
 include("../php/db_connect.php");
-$email = $_SESSION['email'];
-$sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = ?";
-$resultUser = $pdo -> prepare($sqlLoggedInUser);
-$resultUser -> execute([$email]);
-$user = $resultUser -> fetch();
+$sqlCheckIfAddressExists = "SELECT COUNT(*) FROM cc_address WHERE email = ?";
+$stmtAddress = $pdo -> prepare($sqlCheckIfAddressExists);
+$stmtAddress -> execute([$_SESSION['email']]);
+$checkAddress = $stmtAddress -> fetch();
+if($checkAddress > 0) $_SESSION['address'] = true;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +32,7 @@ $user = $resultUser -> fetch();
                 <img src="../images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
             <div class="dropdown">
-                <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $user['firstName']; ?> <i class="far fa-user"></i></a>
+                <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                   <a class="dropdown-item" href="../profile/">Ο λογαριασμός μου</a>
                   <div class="dropdown-divider"></div>
@@ -42,7 +42,7 @@ $user = $resultUser -> fetch();
         </nav>
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
-                <h1 class="mb-xl-5">Καλωσήρθες, <?php echo $user['firstName']; ?></h1>
+                <h1 id="wlcm" class="mb-xl-5">Καλωσήρθες, </h1>
                 <div id="home"></div>
             </div>
         </div>
@@ -93,7 +93,7 @@ $user = $resultUser -> fetch();
                     <?php
                     $sqlOrders = "SELECT id, date, time FROM cc_orders WHERE email = ?";
                     $stmtOrders = $pdo -> prepare($sqlOrders);
-                    $stmtOrders -> execute([$email]);
+                    $stmtOrders -> execute([$_SESSION['email']]);
                     if ($stmtOrders -> rowCount() > 0){
                         $id = $date = $time = $qty = $coffee = array();
                         while($rowOrders = $stmtOrders -> fetch()) {

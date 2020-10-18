@@ -2,19 +2,18 @@
 const loader = document.getElementById("loader");
 const blurred = document.getElementById("blurred");
 const inputs = document.getElementsByTagName("input");
-let prof;
 
 let getProfile = () => {
-	var xhr = new XMLHttpRequest();
-	xhr.open('GET', 'profile.php', true);
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', '../php/base.php?user', true);
 	xhr.onload = function(){
 		if (this.status == 200) {
 			prof = JSON.parse(this.responseText);
 			document.getElementById('email').value = prof[0].email;
 			document.getElementById('firstName').value = prof[0].firstName;
 			document.getElementById('lastName').value = prof[0].lastName;
-			document.getElementById('fullName').innerHTML = prof[0].firstName + " " + prof[0].lastName;
-			document.getElementById('dropdownMenuLink').innerHTML = prof[0].firstName + " <i class='far fa-user'></i>";
+			document.getElementById('fullName').innerHTML = `${prof[0].firstName} ${prof[0].lastName}`;
+			document.getElementById('dropdownMenuLink').innerHTML = `${prof[0].firstName} <i class='far fa-user'></i>`;
 		}
 	};
 	xhr.send();
@@ -24,7 +23,7 @@ let getProfile = () => {
 
 //check for empty forms
 for (let i = 0; i < inputs.length; i++) {
-	inputs[i].addEventListener('keyup', (e) => {
+	inputs[i].addEventListener('keyup', () => {
 		$(inputs[i]).next().css({"display": "none"});
 		inputs[i].classList.remove("wrong");
 		if(inputs[i].value == "") {
@@ -51,6 +50,7 @@ for (let j = 0; j > 2; j++) {
 
 document.getElementById('changeCreds').addEventListener('click', changeCreds);
 document.getElementById('changepass').addEventListener('click', changePass);
+document.getElementById('account_delete').addEventListener('click', deleteAccount);
 
 function changeCreds(){
 	const res = document.getElementById('res');
@@ -120,6 +120,24 @@ function changePass(){
 		};
 		xhr.send(params);
 	}
+}
+
+function deleteAccount(){
+	let xhr = new XMLHttpRequest();
+	xhr.open('POST', '../php/base.php', true);
+	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	let params = "delete=" + true;
+	xhr.onload = function(){
+		if(this.status == 200){
+			if(this.responseText == true){
+				location.href = "../";
+			}
+			else if(this.responseText == false){
+				//response on error
+			}
+		}
+	};
+	xhr.send(params);
 }
 
 let validateForm = (value1, value2) => {

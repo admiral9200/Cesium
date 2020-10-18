@@ -15,10 +15,6 @@ else if(!empty($_POST['firstName']) && !empty($_POST['lastName'])){
     $resCreds = changeCreds($firstName, $lastName);
     echo $resCreds;
 }
-else if($_SERVER['REQUEST_METHOD'] === 'GET'){
-    $res = getProfile();
-    echo $res;
-}
 
 function changePass($oldpass, $newpass){
     global $pdo;
@@ -44,17 +40,4 @@ function changeCreds($firstName, $lastName){
     $stmtChangeName = $pdo -> prepare($sqlChangeName);
     $stmtChangeName -> execute([$firstName, $lastName, $_SESSION['email']]);
     return $stmtChangeName ? true : "Κάτι πήγε λάθος. Δοκίμασε ξανά";
-}
-
-function getProfile(){
-    global $pdo;
-    $sqlLoggedInUser = "SELECT email, firstName, lastName FROM cc_users WHERE email = ?";
-    $resultUser = $pdo->prepare($sqlLoggedInUser);
-    $resultUser->execute([$_SESSION['email']]);
-    if ($resultUser){
-        $user = $resultUser->fetchAll();
-        $user = json_encode($user);
-        return $user;
-    }
-    else return "Κάτι πήγε λάθος. Δοκίμασε ξανά";
 }

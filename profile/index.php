@@ -71,13 +71,13 @@ if (!isset($_SESSION['email'])) header('location: ../');
                     </div>
                 </div>
                 <!-- <div class="form-group row mt-4 mb-0">
-				<label class="col-5 col-form-label form-control-label pl-3">Κινητό</label>
-			</div>
-			<div class="form-group row">
-				<div class="col-5 mb-0">
-					<input class="form-control" type="text" value="phone"/>
-				</div>
-			</div> -->
+				    <label class="col-5 col-form-label form-control-label pl-3">Κινητό</label>
+                </div>
+                <div class="form-group row">
+                    <div class="col-5 mb-0">
+                        <input class="form-control" type="text" value="phone"/>
+                    </div>
+                </div> -->
                 <div class="form-group row">
                     <div class="col-12 mt-4 text-left">
                         <button type="button" id="changeCreds" class="btn mainbtn text-white btn-lg btn-block" value="save">Αποθήκευση Αλλαγών</button>
@@ -107,6 +107,33 @@ if (!isset($_SESSION['email'])) header('location: ../');
                 <div class="form-group row mt-4">
                     <div class="col-xl-12 col-12">
                         <button type="submit" id="changepass" class="btn mainbtn text-white btn-lg btn-block" value="pass">Αποθήκευση Αλλαγών</button>
+                    </div>
+                </div>
+                <hr class="mt-4 mb-4">
+                <h4 class="mb-4">Διαγραφή Λογαριασμού</h4>
+                <div class="form-group row mt-4">
+                    <div class="col-xl-12 col-12">
+                        <button type="submit" class="btn text-white btn-lg btn-block btn-danger" data-toggle="modal" data-target="#exampleModalCenter">Οριστική Διαγραφή Λογαριασμού</button>
+                    </div>
+                </div>
+                <!-- form delete -->
+                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Οριστική Διαγραφή Λογαριασμού</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Η διαγραφή του λογαριασμού σου είναι οριστική και θα διαγραφούν όλα τα δεδομένα σου στο Chip Coffee. Είσαι σίγουρος ότι θες να συνεχίσεις;
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Ακύρωση</button>
+                                <button type="button" class="btn btn-danger" id="account_delete">Συνέχεια</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

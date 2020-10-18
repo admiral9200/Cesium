@@ -7,11 +7,6 @@ $sqlCheckIfCartIsEmpty = "SELECT email FROM cc_cart WHERE email = ?";
 $isCartEmpty = $pdo -> prepare($sqlCheckIfCartIsEmpty);
 $isCartEmpty -> execute([$email]);
 if ($isCartEmpty -> rowCount() == 0) header("location: ../order/");
-$sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = ?";
-$resultUser = $pdo -> prepare($sqlLoggedInUser);
-$resultUser -> execute([$email]);
-$user = $resultUser -> fetch();
-$firstName = $user['firstName'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,7 +30,7 @@ $firstName = $user['firstName'];
                 <img src="../images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
             <div class="dropdown">
-                <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $firstName; ?> <i class="far fa-user"></i></a>
+                <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" href="../profile/">Ο λογαριασμός μου</a>
                     <div class="dropdown-divider"></div>

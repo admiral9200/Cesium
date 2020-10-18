@@ -3,15 +3,7 @@ session_start();
 include("../php/db_connect.php");
 $email = $_SESSION['email'];
 if (!isset($_SESSION['email'])) header('location: ../');
-$sqlCheckIfAddressExists = "SELECT * FROM cc_address WHERE email = ?";
-$stmtAddress = $pdo -> prepare($sqlCheckIfAddressExists);
-$stmtAddress -> execute([$email]);
-if($stmtAddress -> rowCount() == 0) header("location: ../home/");
-$sqlLoggedInUser = "SELECT * FROM cc_users WHERE email = ?";
-$resultUser = $pdo -> prepare($sqlLoggedInUser);
-$resultUser -> execute([$email]);
-$user = $resultUser -> fetch();
-$firstName = $user['firstName'];
+if (!isset($_SESSION['address'])) header('location: ../home/');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,7 +28,7 @@ $firstName = $user['firstName'];
                 <img src="../images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
             <div class="dropdown">
-                <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $firstName; ?> <i class="far fa-user"></i></a>
+                <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                   <a class="dropdown-item" href="../profile/">Ο λογαριασμός μου</a>
                   <div class="dropdown-divider"></div>

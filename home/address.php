@@ -47,6 +47,7 @@ function deleteAddress(){
     $stmtDeleteAddress = $pdo -> prepare($sqlDeleteAddress);
     $stmtDeleteAddress -> execute([$_GET['address'], $_SESSION['email']]);
     if ($stmtDeleteAddress) {
+        unset($_SESSION['address']);
         return "<div class='alert alert-success alert-dismissible fade show'>
                     <button type='button' class='close' data-dismiss='alert'>&times;</button>Η διεύθυνση διαγράφηκε.
                 </div>";
@@ -73,7 +74,10 @@ function insertAddress(){
         $sqlInsertAddress = "INSERT INTO cc_address (email, address, state) VALUES (? , ? , ?)";
         $stmtInsertAddress = $pdo -> prepare($sqlInsertAddress);
         $stmtInsertAddress -> execute([$_SESSION['email'], $_POST['address'], $_POST['state']]);
-        if ($stmtInsertAddress) return true;
+        if ($stmtInsertAddress) {
+            $_SESSION['address'] = true;
+            return true;
+        }
         else return false;
     }
 }

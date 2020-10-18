@@ -2,6 +2,21 @@
 let loader = document.getElementById("loader");
 let blurred = document.getElementById("blurred");
 
+let getProfile = () => {
+	let xhr = new XMLHttpRequest();
+	xhr.open('GET', '../php/base.php?user', true);
+	xhr.onload = function(){
+		if (this.status == 200) {
+			prof = JSON.parse(this.responseText);
+			document.getElementById('wlcm').innerHTML += prof[0].firstName;
+			document.getElementById('dropdownMenuLink').innerHTML = `${prof[0].firstName} <i class='far fa-user'></i>`;
+		}
+	};
+	xhr.send();
+};
+
+(() => getProfile())();
+
 let addressHandler = () => {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', 'address.php?check=1', true);
