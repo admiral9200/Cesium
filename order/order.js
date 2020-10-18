@@ -80,12 +80,7 @@ function getValues(code){
 		addCoffeeToCart (code ,sugar, sugarType, milk, cinnamon, choco);
 	}
 	else{
-		$("#s"+code).popover("show",{
-			content: 'Δεν έχεις επιλέξει ζάχαρη',
-			placement: 'right',
-			animation: true,
-			trigger: 'focus'
-		});
+		//$("#s"+code).
 	}
 }
 
