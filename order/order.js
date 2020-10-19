@@ -20,11 +20,11 @@ $(document).ready(function () {
 	});
 });
 
-$(".collapse").on('show.bs.collapse', () => {
+$(".collapse").on('show.bs.collapse', function(){
 	$(this).prev('.card-header').find('svg').toggleClass('fa-plus fa-minus'); 
 });
 
-$(".collapse").on('hide.bs.collapse', () => {
+$(".collapse").on('hide.bs.collapse', function(){
 	$(this).prev('.card-header').find('svg').toggleClass('fa-minus fa-plus'); 
 });
 

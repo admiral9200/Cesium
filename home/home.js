@@ -19,7 +19,7 @@ let getProfile = () => {
 
 let addressHandler = () => {
 	let xhr = new XMLHttpRequest();
-	xhr.open('GET', 'address.php?check=1', true);
+	xhr.open('GET', 'address.php?check', true);
 	xhr.onload = function(){
 		if (this.status == 200) {
 			if (this.responseText == 0) {
@@ -60,7 +60,7 @@ let addressHandler = () => {
 
 let fetchAddress = () => {
 	let xhr = new XMLHttpRequest();
-	xhr.open('GET', 'address.php?fetch=1', true);
+	xhr.open('GET', 'address.php?fetch', true);
 	xhr.onload = function(){
 		if (this.status == 200) {
 			let addresses = JSON.parse(this.responseText);

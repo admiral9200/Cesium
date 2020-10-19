@@ -11,11 +11,11 @@ else if ($_SERVER['REQUEST_METHOD'] === 'GET' && @!empty($_GET['address'])){
     $res = deleteAddress();
     echo $res;
 }
-else if($_SERVER['REQUEST_METHOD'] === 'GET' && @$_GET['check'] == 1){
+else if($_SERVER['REQUEST_METHOD'] === 'GET' && @isset($_GET['check'])){
     $res = checkAddress();
     echo $res;
 }
-else if($_SERVER['REQUEST_METHOD'] === 'GET' && @$_GET['fetch'] == 1){
+else if($_SERVER['REQUEST_METHOD'] === 'GET' && @isset($_GET['fetch'])){
     $res = fetchAddress();
     echo $res;
 }
@@ -64,7 +64,6 @@ function insertAddress(){
     $check_address_sum = "SELECT address FROM cc_address WHERE email = ?";
     $stmtCheckAddressesSum = $pdo -> prepare($check_address_sum);
     $stmtCheckAddressesSum -> execute([$_SESSION['email']]);
-    $address = $stmtCheckAddressesSum -> fetch();
     if ($stmtCheckAddressesSum -> rowCount() >= 1){
         return "<div class='alert alert-danger alert-dismissible fade show'>
                     <button type='button' class='close' data-dismiss='alert'>&times;</button>Δε μπορείτε να προσθέσετε άλλη διεύθυνση.
