@@ -85,13 +85,13 @@ if($checkAddress > 0) $_SESSION['address'] = true;
                             <div class="col-xl-3 col-lg-3">
                                 <h6>Περιεχόμενα</h6>
                             </div>
-                            <div class="col-xl-3 col-lg-3">
+                            <div class="col-xl-2 col-lg-3">
                                 <h6>Κόστος</h6>
                             </div>
                         </div>
                     </li>
                     <?php
-                    $sqlOrders = "SELECT id, date, time FROM cc_orders WHERE email = ?";
+                    $sqlOrders = "SELECT id, date, time FROM cc_orders WHERE email = ? ORDER BY id DESC";
                     $stmtOrders = $pdo -> prepare($sqlOrders);
                     $stmtOrders -> execute([$_SESSION['email']]);
                     if ($stmtOrders -> rowCount() > 0){
@@ -104,42 +104,40 @@ if($checkAddress > 0) $_SESSION['address'] = true;
                         $ids = array_unique($id);
                         foreach($ids as $key => $val){
                             ?>
-                            <li class='list-group-item mt-2 mb-4'>
+                            <li class='list-group-item mt-2 mb-4 '>
                                 <div class='row'>
-                                    <div class='col-xl-3 col-lg-3 col-6 text-xl-left text-lg-left text-left'>
+                                    <div class='col-xl-3 col-lg-3 col-md-3 col-6 text-xl-left text-lg-left text-left'>
                                         <h6><?php echo $ids[$key]; ?></h6>
                                     </div>
-                                    <div class='col-xl-3 col-lg-3 col-6 text-xl-left text-lg-left text-right'>
+                                    <div class='col-xl-3 col-lg-3 col-md-3 col-6 text-xl-left text-lg-left text-right'>
                                         <h6><?php echo $date[$key]; ?></h6>
                                         <p><?php echo $time[$key]; ?></p>
                                     </div>
-                                    <div class='col-xl-3 col-lg-3 col-12'>
+                                    <div class='col-xl-3 col-lg-3 col-md-3 col-12'>
                                         <?php
-                                        $sqlCPQ = "SELECT coffee, price, qty FROM cc_orders WHERE id = ?";
-                                        $stmtCPQ = $pdo -> prepare($sqlCPQ);
-                                        $stmtCPQ -> execute([$ids[$key]]);
+                                        $sqlProducts = "SELECT coffee, price, qty FROM cc_orders WHERE id = ?";
+                                        $stmtProducts = $pdo -> prepare($sqlProducts);
+                                        $stmtProducts -> execute([$ids[$key]]);
                                         $totalCost = 0;
-                                        while($rowCPQ = $stmtCPQ -> fetch()){
-                                            $coffee = $rowCPQ['coffee'];
-                                            $qty = $rowCPQ['qty'];
-                                            $price = $rowCPQ['price'];
-                                            $totalCost += $price;
-                                            echo "<h6>".$qty."x ".$coffee."</h6>";
+                                        while($products = $stmtProducts -> fetch()){
+                                            $totalCost += $products['price'];
+                                            echo "<h6>".$products['qty']."x ".$products['coffee']."</h6>";
                                         }
                                         ?>
                                     </div>
-                                    <div class='col-xl-3 col-lg-3 col-12 cost'>
+                                    <div class='col-xl-1 col-lg-1 col-md-1 col-12 cost'>
                                         <h6>
                                             <?php
                                             $costString = sprintf("%0.2f", $totalCost);
-                                            echo $costString;
-                                            ?>
-                                            €
+                                            echo $costString;?>€
                                         </h6>
+                                    </div>
+                                    <div class="col-xl-2 col-lg-2 col-md-2 col-12 my-auto">
+                                        <button type="button" class="btn mainbtn btn-block text-white orderAgain">Παράγγειλε ξανά</button>
                                     </div>
                                 </div>
                             </li>
-                        <?php
+                            <?php
                         }
                     }
                     else{

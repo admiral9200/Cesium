@@ -5,7 +5,7 @@ const inputs = document.getElementsByTagName("input");
 
 let getProfile = () => {
 	let xhr = new XMLHttpRequest();
-	xhr.open('GET', '../php/base.php?user', true);
+	xhr.open('GET', '../php/functions.php?user', true);
 	xhr.onload = function(){
 		if (this.status == 200) {
 			prof = JSON.parse(this.responseText);

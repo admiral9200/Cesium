@@ -4,7 +4,7 @@ let blurred = document.getElementById("blurred");
 
 let getProfile = () => {
 	let xhr = new XMLHttpRequest();
-	xhr.open('GET', '../php/base.php?user', true);
+	xhr.open('GET', '../php/functions.php?user', true);
 	xhr.onload = function(){
 		if (this.status == 200) {
 			prof = JSON.parse(this.responseText);
@@ -14,8 +14,6 @@ let getProfile = () => {
 	};
 	xhr.send();
 };
-
-(() => getProfile())();
 
 let addressHandler = () => {
 	let xhr = new XMLHttpRequest();
@@ -75,7 +73,7 @@ let fetchAddress = () => {
 											`<h6 class='m-0'>${addresses[0].state}</h6>` +
 										"</div>" +
 										"<div class='col-xl-2 col-12'>" +
-											`<button id='delete' class='btn btn-block btn-danger mt-xl-0 mt-lg-0 mt-md-0 mt-sm-0 mt-3' role='button' onclick='deleteAddress("${addresses[0].address}")'>Διαγραφή</button>` +
+											`<button id='delete' class='btn btn-block btn-danger mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button' onclick='deleteAddress("${addresses[0].address}")'>Διαγραφή</button>` +
 										"</div>" +
 									"</div>" +
 								"</li>";
@@ -87,6 +85,11 @@ let fetchAddress = () => {
 							"<h6>Δεν υπάρχει ενεργή διεύθυνση</h6>" +
 						"</li>";
 				document.getElementById('addresses').innerHTML = li;
+				let orderAgainBtn = document.getElementsByClassName('orderAgain');
+				for (let k in orderAgainBtn){
+					orderAgainBtn[k].title = "Πρέπει να προσθέσεις μία διεύθυνση πρώτα.";
+					orderAgainBtn[k].disabled = true;
+				}
 			}
 		}
 	};
@@ -94,6 +97,7 @@ let fetchAddress = () => {
 };
 
 (() => {
+	getProfile();
 	addressHandler();
 	fetchAddress();
 })();

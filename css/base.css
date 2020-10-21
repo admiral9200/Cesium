@@ -65,6 +65,8 @@ input:focus{
 html,
 body {
   font-family: "Manrope", sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .logo {
