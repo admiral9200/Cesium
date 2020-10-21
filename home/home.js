@@ -1,6 +1,6 @@
-/*jshint esversion: 6 */
 let loader = document.getElementById("loader");
 let blurred = document.getElementById("blurred");
+let orderAgainBtn = document.getElementsByClassName('orderAgain');
 
 let getProfile = () => {
 	let xhr = new XMLHttpRequest();
@@ -78,6 +78,10 @@ let fetchAddress = () => {
 									"</div>" +
 								"</li>";
 					document.getElementById('addresses').innerHTML = li;
+					for (let k in orderAgainBtn){
+						orderAgainBtn[k].disabled = false;
+						orderAgainBtn[k].removeAttribute('title');
+					}
 				}	
 			}
 			else{
@@ -85,10 +89,10 @@ let fetchAddress = () => {
 							"<h6>Δεν υπάρχει ενεργή διεύθυνση</h6>" +
 						"</li>";
 				document.getElementById('addresses').innerHTML = li;
-				let orderAgainBtn = document.getElementsByClassName('orderAgain');
 				for (let k in orderAgainBtn){
 					orderAgainBtn[k].title = "Πρέπει να προσθέσεις μία διεύθυνση πρώτα.";
 					orderAgainBtn[k].disabled = true;
+					$(orderAgainBtn[k]).css({"cursor": "not-allowed"});
 				}
 			}
 		}

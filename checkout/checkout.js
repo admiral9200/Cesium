@@ -1,4 +1,3 @@
-/*jshint esversion: 6 */
 let getProfile = () => {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', '../php/functions.php?user', true);

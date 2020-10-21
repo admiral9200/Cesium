@@ -1,4 +1,3 @@
-/*jshint esversion: 6 */
 const loader = document.getElementById("loader");
 const blurred = document.getElementById("blurred");
 const inputs = document.getElementsByTagName("input");
