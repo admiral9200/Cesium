@@ -5,6 +5,13 @@
   .background{
     background-position: center !important;
   }
+  .newsletter hr{
+    display: none;
+  }
+  .newsletter{
+      margin: 0 !important;
+      border-radius: 0 !important;
+  }
 }
 
 @media screen and (min-width: 400px) and (max-width: 600px){
@@ -159,4 +166,35 @@ body {
 
 .sale-image {
   width: 500px;
+}
+
+.newsletter{
+  min-height: 350px;
+  background-color: #690500;
+  padding: 2%;
+}
+
+.newsletter hr{
+  height: 1px;
+  width: 30%;
+  background-color: white;
+}
+
+.subEmail{
+  width: 40% !important;
+}
+
+.subEmail:focus{
+  outline: none !important;
+  border-color: #bb6b00 !important;
+  box-shadow: 0 0 0 2px #bb6b00 !important;
+}
+
+.subButton{
+  color: white !important;
+  background-color: #BB6B00 !important;
+}
+
+.subButton:focus{
+  background-color: #BB6B00 !important;
 }

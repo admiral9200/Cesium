@@ -12,6 +12,9 @@ const lastName = document.getElementById('lastName');
 const password = document.getElementById('password');
 //Warn Texts
 let warnTexts = document.getElementsByClassName('text-danger');
+//Newsletter
+const emailNewsletter = document.getElementById('emailNewsletter');
+const subscribeBtn = document.getElementById('subscribe');
 
 $("#signup-tab").click(function(){
 	$(".login").fadeOut(150, () => {
@@ -75,8 +78,8 @@ password.addEventListener('keyup', function() {
 	}
 });
 
-var input = [firstName, lastName];
-for(var i = 0; i < input.length; i++){
+let input = [firstName, lastName];
+for(let i = 0; i < input.length; i++){
 	input[i].addEventListener('keyup', function(){
 		this.closest(".group").querySelector('.text-danger').style.display = 'none';
 		this.classList.remove("wrong");
@@ -90,14 +93,14 @@ for(var i = 0; i < input.length; i++){
 
 function loginUser(e){
 	e.preventDefault();
-	var inputLogin = [email, pass];
+	let inputLogin = [email, pass];
 	if(isFormEmpty(inputLogin) && validateEmail(email.value)){
 		document.getElementById('res').innerHTML = "";
 		document.getElementById('res').classList.add('lds-dual-ring');
-		var xhr = new XMLHttpRequest();
-		xhr.open('POST', './php/login.php', true);
+		let xhr = new XMLHttpRequest();
+		xhr.open('POST', './php/userHandler.php', true);
 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		var params = "email=" + email.value + "&pass=" + pass.value + "&rmbrme=" + rmbrme.checked;
+		let params = "email=" + email.value + "&pass=" + pass.value + "&rmbrme=" + rmbrme.checked;
 		xhr.onload = function(){
 			if(this.status == 200){
 				if(this.responseText == true){
@@ -109,7 +112,7 @@ function loginUser(e){
 					document.getElementById('res').innerHTML = this.responseText;
 				}
 			}
-		}
+		};
 		xhr.send(params);
 	}
 }
@@ -117,12 +120,12 @@ function loginUser(e){
 function registerUser(e){
 	e.preventDefault();
 	document.getElementById('resReg').innerHTML = "";
-	var inputRegister = [emailR, firstName, lastName, password];
+	let inputRegister = [emailR, firstName, lastName, password];
 	if(isFormEmpty(inputRegister) && validateEmail(emailR.value)){
 		document.getElementById('resReg').classList.add('lds-dual-ring');
-		var xhr = new XMLHttpRequest();
-		var params = "email=" + emailR.value + "&firstName=" + firstName.value + "&lastName=" + lastName.value + "&pass=" + password.value;
-		xhr.open('POST', './php/register.php', true);
+		let xhr = new XMLHttpRequest();
+		let params = "email=" + emailR.value + "&firstName=" + firstName.value + "&lastName=" + lastName.value + "&pass=" + password.value;
+		xhr.open('POST', './php/userHandler.php', true);
 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		xhr.onload = function(){
 			if(this.status == 200){
@@ -139,18 +142,18 @@ function registerUser(e){
 					document.getElementById('resReg').innerHTML = this.responseText;
 				}
 			}
-		}
+		};
 		xhr.send(params);
 	}
 }
 
-function validateEmail(email) {
+let validateEmail = (email) => {
 	//General Email Regex (RFC 5322 Official Standard)
 	const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	return re.test(email);
-}
+};
 
-function isFormEmpty(input) {
+let isFormEmpty = (input) => {
 	let val = true;
 	for(let i = 0; i < input.length; i++){
 		if(input[i].value == ""){
@@ -166,16 +169,14 @@ function isFormEmpty(input) {
 		val = false;
 	}
 	return val;
-}
+};
 
 //Clear warnings on browser tab change
-function clearWarns(){
+let clearWarns = () => {
 	for (let i = 0; i < warnTexts.length; i++) {
 		document.addEventListener('visibilitychange', function(){
 			document.getElementsByClassName('text-danger')[i].style.display = 'none';
-		});	
-	}
-	for (let i = 0; i < warnTexts.length; i++) {
+		});
 		document.getElementsByClassName('text-danger')[i].style.display = 'none';
 	}
-}
+};

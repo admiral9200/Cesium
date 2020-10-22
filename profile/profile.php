@@ -6,14 +6,12 @@ if (!isset($_SESSION['email'])) header('location: ../');
 if(!empty($_POST['oldpass']) && !empty($_POST['newpass'])){
     $oldpass = $_POST['oldpass'];
     $newpass = $_POST['newpass'];
-    $resPass = changePass($oldpass, $newpass);
-    echo $resPass;
+    echo changePass($oldpass, $newpass);
 }
 else if(!empty($_POST['firstName']) && !empty($_POST['lastName'])){
     $firstName = $_POST['firstName'];
     $lastName = $_POST['lastName'];
-    $resCreds = changeCreds($firstName, $lastName);
-    echo $resCreds;
+    echo changeCreds($firstName, $lastName);
 }
 
 function changePass($oldpass, $newpass){

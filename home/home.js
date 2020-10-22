@@ -2,6 +2,7 @@ let loader = document.getElementById("loader");
 let blurred = document.getElementById("blurred");
 let orderAgainBtn = document.getElementsByClassName('orderAgain');
 
+//fetch user profile name
 let getProfile = () => {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', '../php/functions.php?user', true);
@@ -15,6 +16,7 @@ let getProfile = () => {
 	xhr.send();
 };
 
+//Check if there is address stored
 let addressHandler = () => {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', 'address.php?check', true);
@@ -56,6 +58,7 @@ let addressHandler = () => {
 	xhr.send();
 };
 
+//fetch address in address menu
 let fetchAddress = () => {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', 'address.php?fetch', true);
@@ -101,6 +104,7 @@ let fetchAddress = () => {
 	xhr.send();
 };
 
+//Invoke functions at load
 (() => {
 	getProfile();
 	addressHandler();
@@ -169,7 +173,7 @@ let validateAddress = () => {
 			form[i].classList.add('wrong');
 			val = false;
 		}
-		else if(/[^a-zA-Z0-9\-\s]/.test(form[i].value)) { //validate special chars
+		else if(/[^α-ωίϊΐόάέύϋΰήώΑ-Ωa-zA-Z0-9\-\s]/.test(form[i].value)) { //validate special chars
 			form[i].closest(".group").querySelector('.text-danger').style.display = 'block';
 			form[i].closest(".group").querySelector('.text-danger').innerHTML = "Δεν είναι έγκυρο αυτό που συμπλήρωσες";
 			form[i].classList.add('wrong');

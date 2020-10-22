@@ -154,6 +154,8 @@ if (!isset($_SESSION['address'])) header('location: ../home/');
     </div>
     <!--------------------- SALE SECTION ---------------------->
     <?php echo file_get_contents("../html/sale.html"); ?>
+    <!-- Newsletter -->
+    <?php echo file_get_contents("../html/newsletter.html"); ?>
     <!-------------------- Site footer --------------------------->
     <?php echo file_get_contents("../html/footer.html"); ?>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

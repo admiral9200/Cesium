@@ -53,9 +53,9 @@ if (isset($_SESSION['email'])) header("location: ./home/");
                                 <div class="text-danger">Πρέπει να συμπληρώσεις τον κωδικό σου.</div>
                             </div>
                             <div class="group">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="rmbrme">
-                                    <label class="custom-control-label text-white" for="rmbrme">Να με θυμάσαι</label>
+                                <div class="custom-control custom-checkbox w-50" style="cursor: pointer;">
+                                    <input type="checkbox" class="custom-control-input" id="rmbrme" style="cursor: pointer;">
+                                    <label class="custom-control-label text-white" for="rmbrme" style="cursor: pointer;">Να με θυμάσαι</label>
                                 </div>
                             </div>
                             <div class="group"> 
@@ -151,7 +151,7 @@ if (isset($_SESSION['email'])) header("location: ./home/");
             </div>
             <div class="h-100 d-flex justify-content-center align-items-center row p-4">
                 <h5 class="mx-xl-0 mx-lg-0 mx-5 w-25 text-white text-left col-xl-5 col-12">Κάνε εγγραφή τώρα για να λαμβάνεις νέες προσφορές μέσω email.</h5>
-                <input type="email" class="subEmail form-control form-control-lg mx-3 mt-xl-0 mt-lg-0 mt-md-0 mt-3 col-xl-4 col-12" placeholder="Email" required>
+                <input type="email" class="subEmail form-control form-control-lg mx-3 mt-xl-0 mt-lg-0 mt-md-0 mt-3 col-xl-4 col-12" id="emailNewsletter" placeholder="Email" required>
                 <button type="click" class="subButton btn mainbtn btn-lg index mt-xl-0 mt-lg-0 mt-md-0 mt-2 col-xl-2 col-12" id="subscribe">Εγγραφή</button>
             </div>
         </div>

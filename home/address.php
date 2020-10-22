@@ -4,20 +4,16 @@ session_start();
 if (!isset($_SESSION['email'])) header("location: ../");
 
 if (@!empty($_POST['address']) && @!empty($_POST['state'])){
-    $res = insertAddress();
-    echo $res;
+    echo insertAddress();
 }
 else if ($_SERVER['REQUEST_METHOD'] === 'GET' && @!empty($_GET['address'])){
-    $res = deleteAddress();
-    echo $res;
+    echo deleteAddress();
 }
 else if($_SERVER['REQUEST_METHOD'] === 'GET' && @isset($_GET['check'])){
-    $res = checkAddress();
-    echo $res;
+    echo checkAddress();
 }
 else if($_SERVER['REQUEST_METHOD'] === 'GET' && @isset($_GET['fetch'])){
-    $res = fetchAddress();
-    echo $res;
+    echo fetchAddress();
 }
 else{
     echo    "<div class='alert alert-danger alert-dismissible fade show'>
@@ -61,10 +57,7 @@ function deleteAddress(){
 
 function insertAddress(){
     global $pdo;
-    if (preg_match('/[^a-zA-Z0-9\-\s]+/i', $_POST['address']) || preg_match('/[^a-zA-Z0-9\-\s]+/i', $_POST['state'])) {
-        return false;
-    }
-    else{
+    if (preg_match('/[^α-ωίϊΐόάέύϋΰήώΑ-Ωa-zA-Z0-9\-\s]+/i', $_POST['address']) || preg_match('/[^α-ωίϊΐόάέύϋΰήώΑ-Ωa-zA-Z0-9\-\s]+/i', $_POST['state'])) {
         $check_address_sum = "SELECT address FROM cc_address WHERE email = ?";
         $stmtCheckAddressesSum = $pdo -> prepare($check_address_sum);
         $stmtCheckAddressesSum -> execute([$_SESSION['email']]);
@@ -83,6 +76,9 @@ function insertAddress(){
             }
             else return false;
         }
+    }
+    else{
+        return false;
     }
 }
 

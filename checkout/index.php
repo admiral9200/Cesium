@@ -153,6 +153,8 @@ if ($isCartEmpty -> rowCount() == 0) header("location: ../order/");
     </div>
     <!---------------------SALE SEcTi0N---------------------->
     <?php echo file_get_contents("../html/sale.html"); ?>
+    <!-- Newsletter -->
+    <?php echo file_get_contents("../html/newsletter.html"); ?>
     <!-------------------- Site footer ---------------------->
     <?php echo file_get_contents("../html/footer.html"); ?>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
