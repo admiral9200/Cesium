@@ -78,7 +78,7 @@ function sendOrder(submit, doorname, floor, phone, comment, payment){
 				document.getElementById('false').classList.add("my-2");
 				document.getElementById('false').innerHTML = "<div class='alert alert-danger alert-dismissible fade show'>" +
                 													"<button type='button' class='close' data-dismiss='alert'>&times;</button>Κάτι πήγε λάθος. Δοκίμασε ξανά." +
-																  "</div>";
+																"</div>";
 				loader.style.display = "none";
 				blurred.style.display = "none";
 				$('body').removeClass('stop-scrolling');

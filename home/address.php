@@ -61,23 +61,28 @@ function deleteAddress(){
 
 function insertAddress(){
     global $pdo;
-    $check_address_sum = "SELECT address FROM cc_address WHERE email = ?";
-    $stmtCheckAddressesSum = $pdo -> prepare($check_address_sum);
-    $stmtCheckAddressesSum -> execute([$_SESSION['email']]);
-    if ($stmtCheckAddressesSum -> rowCount() >= 1){
-        return "<div class='alert alert-danger alert-dismissible fade show'>
-                    <button type='button' class='close' data-dismiss='alert'>&times;</button>Δε μπορείτε να προσθέσετε άλλη διεύθυνση.
-                </div>";
+    if (preg_match('/[^a-zA-Z0-9\-\s]+/i', $_POST['address']) || preg_match('/[^a-zA-Z0-9\-\s]+/i', $_POST['state'])) {
+        return false;
     }
     else{
-        $sqlInsertAddress = "INSERT INTO cc_address (email, address, state) VALUES (? , ? , ?)";
-        $stmtInsertAddress = $pdo -> prepare($sqlInsertAddress);
-        $stmtInsertAddress -> execute([$_SESSION['email'], $_POST['address'], $_POST['state']]);
-        if ($stmtInsertAddress) {
-            $_SESSION['address'] = true;
-            return true;
+        $check_address_sum = "SELECT address FROM cc_address WHERE email = ?";
+        $stmtCheckAddressesSum = $pdo -> prepare($check_address_sum);
+        $stmtCheckAddressesSum -> execute([$_SESSION['email']]);
+        if ($stmtCheckAddressesSum -> rowCount() >= 1){
+            return "<div class='alert alert-danger alert-dismissible fade show'>
+                        <button type='button' class='close' data-dismiss='alert'>&times;</button>Δε μπορείτε να προσθέσετε άλλη διεύθυνση.
+                    </div>";
         }
-        else return false;
+        else{
+            $sqlInsertAddress = "INSERT INTO cc_address (email, address, state) VALUES (? , ? , ?)";
+            $stmtInsertAddress = $pdo -> prepare($sqlInsertAddress);
+            $stmtInsertAddress -> execute([$_SESSION['email'], $_POST['address'], $_POST['state']]);
+            if ($stmtInsertAddress) {
+                $_SESSION['address'] = true;
+                return true;
+            }
+            else return false;
+        }
     }
 }
 

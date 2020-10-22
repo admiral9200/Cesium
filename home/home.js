@@ -78,9 +78,10 @@ let fetchAddress = () => {
 									"</div>" +
 								"</li>";
 					document.getElementById('addresses').innerHTML = li;
-					for (let k in orderAgainBtn){
+					for (let k = 0; k <= orderAgainBtn.length; k++){
 						orderAgainBtn[k].disabled = false;
-						orderAgainBtn[k].removeAttribute('title');
+						orderAgainBtn[k].removeAttribute("title");
+						orderAgainBtn[k].classList.remove("disableOrderAgainBtn");
 					}
 				}	
 			}
@@ -92,7 +93,7 @@ let fetchAddress = () => {
 				for (let k in orderAgainBtn){
 					orderAgainBtn[k].title = "Πρέπει να προσθέσεις μία διεύθυνση πρώτα.";
 					orderAgainBtn[k].disabled = true;
-					$(orderAgainBtn[k]).css({"cursor": "not-allowed"});
+					orderAgainBtn[k].classList.add("disableOrderAgainBtn");
 				}
 			}
 		}
@@ -165,6 +166,12 @@ let validateAddress = () => {
 	for(let i = 0; i < form.length; i++){
 		if(form[i].value == ""){
 			form[i].closest(".group").querySelector('.text-danger').style.display = 'block';
+			form[i].classList.add('wrong');
+			val = false;
+		}
+		else if(/[^a-zA-Z0-9\-\s]/.test(form[i].value)) { //validate special chars
+			form[i].closest(".group").querySelector('.text-danger').style.display = 'block';
+			form[i].closest(".group").querySelector('.text-danger').innerHTML = "Δεν είναι έγκυρο αυτό που συμπλήρωσες";
 			form[i].classList.add('wrong');
 			val = false;
 		}

@@ -12,6 +12,14 @@
   border: 1px solid #dc3545 !important;
 }
 
+.disableOrderAgainBtn{
+  cursor: not-allowed;
+}
+
+.disableOrderAgainBtn:hover{
+  color: #bb6b00;
+}
+
 .stop-scrolling {
   height: 100%;
   overflow: hidden;
