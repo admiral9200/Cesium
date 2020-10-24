@@ -57,7 +57,13 @@ function deleteAddress(){
 
 function insertAddress(){
     global $pdo;
-    if (preg_match('/[^α-ωίϊΐόάέύϋΰήώΑ-Ωa-zA-Z0-9\-\s]+/i', $_POST['address']) || preg_match('/[^α-ωίϊΐόάέύϋΰήώΑ-Ωa-zA-Z0-9\-\s]+/i', $_POST['state'])) {
+    $pattern = '/[\'\/~`\!@#\$%\^&\*\(\)_\-\+=\{\}\[\]\|;:"\<\>,\.\?\\\]/';
+    if (preg_match($pattern, $_POST['address']) && preg_match($pattern, $_POST['state'])) {
+        return "<div class='alert alert-danger alert-dismissible fade show'>
+                    <button type='button' class='close' data-dismiss='alert'>&times;</button>Δεν είναι έγκυρο αυτό που συμπλήρωσες.
+                </div>";   
+    }
+    else{
         $check_address_sum = "SELECT address FROM cc_address WHERE email = ?";
         $stmtCheckAddressesSum = $pdo -> prepare($check_address_sum);
         $stmtCheckAddressesSum -> execute([$_SESSION['email']]);
@@ -74,11 +80,10 @@ function insertAddress(){
                 $_SESSION['address'] = true;
                 return true;
             }
-            else return false;
+            else return "<div class='alert alert-danger alert-dismissible fade show'>
+                            <button type='button' class='close' data-dismiss='alert'>&times;</button>Δεν προσθέθηκε η διεύθυνση. Προσπάθησε ξανά.
+                        </div>";
         }
-    }
-    else{
-        return false;
     }
 }
 

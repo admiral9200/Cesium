@@ -96,7 +96,7 @@ let fetchAddress = () => {
 				for (let k in orderAgainBtn){
 					orderAgainBtn[k].title = "Πρέπει να προσθέσεις μία διεύθυνση πρώτα.";
 					orderAgainBtn[k].disabled = true;
-					orderAgainBtn[k].classList.add("disableOrderAgainBtn");
+					//orderAgainBtn[k].classList.add("disableOrderAgainBtn");
 				}
 			}
 		}

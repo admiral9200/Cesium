@@ -23,8 +23,8 @@ if($checkAddress > 0) $_SESSION['address'] = true;
     <link rel="stylesheet" type="text/css" href="../bootstrap-4.5.0/css/bootstrap.min.css">
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script async src="home.js"></script>
     <script async src="../bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script async src="home.js"></script>
 </head>
 <body>
     <div id="blurred" class="blurred"></div>
@@ -107,16 +107,16 @@ if($checkAddress > 0) $_SESSION['address'] = true;
                         $ids = array_unique($id);
                         foreach($ids as $key => $val){
                             ?>
-                            <li class='list-group-item mt-2 mb-4 '>
+                            <li class='list-group-item mt-2 mb-4'>
                                 <div class='row'>
-                                    <div class='col-xl-3 col-lg-3 col-md-3 col-6 text-xl-left text-lg-left text-left'>
+                                    <div class='col-xl-3 col-lg-3 col-md-3 col-6 text-xl-left text-lg-left text-left my-auto'>
                                         <h6><?php echo $ids[$key]; ?></h6>
                                     </div>
-                                    <div class='col-xl-3 col-lg-3 col-md-3 col-6 text-xl-left text-lg-left text-right'>
+                                    <div class='col-xl-3 col-lg-3 col-md-3 col-6 text-xl-left text-lg-left text-right my-auto'>
                                         <h6><?php echo $date[$key]; ?></h6>
                                         <p><?php echo $time[$key]; ?></p>
                                     </div>
-                                    <div class='col-xl-3 col-lg-3 col-md-3 col-12'>
+                                    <div class='col-xl-3 col-lg-3 col-md-3 col-12 my-auto'>
                                         <?php
                                         $sqlProducts = "SELECT coffee, price, qty FROM cc_orders WHERE id = ?";
                                         $stmtProducts = $pdo -> prepare($sqlProducts);
@@ -128,7 +128,7 @@ if($checkAddress > 0) $_SESSION['address'] = true;
                                         }
                                         ?>
                                     </div>
-                                    <div class='col-xl-1 col-lg-1 col-md-1 col-12 cost'>
+                                    <div class='col-xl-1 col-lg-1 col-md-1 col-12 cost my-auto'>
                                         <h6>
                                             <?php
                                             $costString = sprintf("%0.2f", $totalCost);
