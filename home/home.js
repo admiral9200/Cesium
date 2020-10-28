@@ -96,7 +96,7 @@ let fetchAddress = () => {
 				for (let k in orderAgainBtn){
 					orderAgainBtn[k].title = "Πρέπει να προσθέσεις μία διεύθυνση πρώτα.";
 					orderAgainBtn[k].disabled = true;
-					//orderAgainBtn[k].classList.add("disableOrderAgainBtn");
+					orderAgainBtn[k].classList.add("disableOrderAgainBtn");
 				}
 			}
 		}
@@ -111,8 +111,10 @@ let fetchAddress = () => {
 	fetchAddress();
 })();
 
+//go to order page
 let order = () => location.href = "../order/";
 
+//add address to db
 function addAddress(){
 	if(validateAddress()){
 		loader.style.display = "block";
@@ -141,6 +143,7 @@ function addAddress(){
 	}
 }
 
+//remove address from db
 let deleteAddress = (address) => {
 	loader.style.display = "block";
 	blurred.style.display = "block";
@@ -164,6 +167,7 @@ let deleteAddress = (address) => {
 	xhr.send();
 };
 
+//validate inputs with regex
 let validateAddress = () => {
 	let form = [address, state];
 	let val = true;
@@ -183,6 +187,7 @@ let validateAddress = () => {
 	return val;
 };
 
+//reset the loader
 let reset = () => {
 	loader.style.display = "none";
 	blurred.style.display = "none";
