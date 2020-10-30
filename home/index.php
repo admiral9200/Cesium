@@ -13,7 +13,7 @@ if($checkAddress > 0) $_SESSION['address'] = true;
 <head>
     <meta charset=UTF-8>
     <meta http-equiv="content-type" content="text/html">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chip Coffee | Online Coffee Delivery</title>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="../images/chip_coffee.png">
@@ -136,7 +136,7 @@ if($checkAddress > 0) $_SESSION['address'] = true;
                                         </h6>
                                     </div>
                                     <div class="col-xl-2 col-lg-2 col-md-2 col-12 my-auto">
-                                        <button type="button" class="btn mainbtn btn-block text-white orderAgain">Παράγγειλε ξανά</button>
+                                        <button type="button" class="btn mainbtn btn-block text-white orderAgain" onclick="orderAgain('<?php echo $ids[$key]; ?>')">Παράγγειλε ξανά</button>
                                     </div>
                                 </div>
                             </li>

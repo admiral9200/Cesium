@@ -18,6 +18,9 @@ else if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['count']) && is_nu
     $resRemove = removeCoffeeFromCart($countToDelete);
     echo $resRemove;
 }
+else if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['code'])){
+    echo orderAgain();
+}
 else{
     echo false;
 }
@@ -111,4 +114,8 @@ function removeCoffeeFromCart($countToDelete){
         return false;
     }
 }
-?>
+
+function orderAgain(){
+    global $pdo;
+    
+}

@@ -167,6 +167,30 @@ let deleteAddress = (address) => {
 	xhr.send();
 };
 
+let orderAgain = (code) => {
+	loader.style.display = "block";
+	blurred.style.display = "block";
+	$('body').addClass('stop-scrolling');
+	let xhr = new XMLHttpRequest();
+	xhr.open('POST', 'address.php', true);
+	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	let params = "code=" + code;
+	xhr.onload = function(){
+		if(this.status == 200){
+			if(this.responseText == true){
+				location.href = "../checkout/";
+			}
+			else{
+				document.getElementById('false').innerHTML = this.responseText;
+				addressHandler();
+				fetchAddress();
+				reset();
+			}
+		}
+	};
+	xhr.send(params);
+};
+
 //validate inputs with regex
 let validateAddress = () => {
 	let form = [address, state];

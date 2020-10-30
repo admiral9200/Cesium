@@ -139,10 +139,10 @@ if (!isset($_SESSION['email'])) header('location: ../');
             </div>
         </div>
     </div>
-    <!-- Site footer -->
-    <?php echo file_get_contents("../html/footer.html"); ?>
     <!-- Newsletter -->
     <?php echo file_get_contents("../html/newsletter.html"); ?>
+    <!-- Site footer -->
+    <?php echo file_get_contents("../html/footer.html"); ?>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="index.js"></script>
     <script defer src="../bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
