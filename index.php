@@ -103,7 +103,7 @@ if (isset($_SESSION['email'])) header("location: ./home/");
     <div class="container m-xl-auto m-lg-auto m-md-auto my-4 features h-25">
         <div class="row h-100 align-items-center">
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 m-xl-0 m-lg-0 m-md-0 my-4">
-                <img class="icons mx-auto d-block mb-4" src="./images/delivery-bike.svg" alt="">
+            <i class="fas fa-truck mx-auto d-block mb-4" style="height: 60px; width: auto;"></i>
                 <h2 class="text-center">Delivery only</h2>
             </div>
             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 m-xl-0 m-lg-0 m-md-0 my-4">

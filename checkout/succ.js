@@ -18,7 +18,6 @@ let getOrderDetails = () => {
 	xhr.onload = function(){
 		if (this.status == 200) {
 			let orderDetails = JSON.parse(this.responseText);
-			console.log(orderDetails);
 			document.getElementById('details').innerHTML = `${orderDetails[0].address} - ${orderDetails[0].floor}ος όροφος`;
 			document.getElementById('time').innerHTML = `${orderDetails[0].time}`;
 		}

@@ -4,12 +4,10 @@ include("../php/db_connect.php");
 if (!isset($_SESSION['email'])) header('location: ../');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['delete'] == true) {
-    $res = deleteAccount();
-    echo $res;
+    echo deleteAccount();
 }
 if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['user'])){
-    $res = getProfile();
-    echo $res;
+    echo getProfile();
 }
 
 function getProfile(){

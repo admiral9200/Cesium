@@ -172,9 +172,9 @@ let orderAgain = (code) => {
 	blurred.style.display = "block";
 	$('body').addClass('stop-scrolling');
 	let xhr = new XMLHttpRequest();
-	xhr.open('POST', 'address.php', true);
+	xhr.open('POST', 'cart.php', true);
 	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-	let params = "code=" + code;
+	let params = "orderagain=" + code;
 	xhr.onload = function(){
 		if(this.status == 200){
 			if(this.responseText == true){

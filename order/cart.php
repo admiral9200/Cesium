@@ -18,7 +18,7 @@ else if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['count']) && is_nu
     $resRemove = removeCoffeeFromCart($countToDelete);
     echo $resRemove;
 }
-else if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['code'])){
+else if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['orderagain'])){
     echo orderAgain();
 }
 else{
@@ -117,5 +117,9 @@ function removeCoffeeFromCart($countToDelete){
 
 function orderAgain(){
     global $pdo;
-    
+    //Get products of order selected
+    $sqlOrderAgain = "SELECT coffee, price, qty FROM cc_orders WHERE id = ?";
+    $stmtOrderAgain = $pdo -> prepare($sqlOrderAgain);
+    $stmtOrderAgain -> execute([$_POST['orderagain']]);
+    //clear the cart if it has coffees
 }
