@@ -155,13 +155,11 @@ if($checkAddress > 0) $_SESSION['address'] = true;
             </div>
         </div>
     </div>
-    <!-- CARD -->
-    <?php echo file_get_contents("../html/card.html"); ?>
     <!-- SALE SECTION -->
-    <?php echo file_get_contents("../html/sale.html"); ?>
+    <?php echo file_get_contents("../views/sale.html"); ?>
     <!-- Newsletter -->
-    <?php echo file_get_contents("../html/newsletter.html"); ?>
+    <?php echo file_get_contents("../views/newsletter.html"); ?>
     <!-- Site footer -->
-    <?php echo file_get_contents("../html/footer.html"); ?>
+    <?php echo file_get_contents("../views/footer.html"); ?>
 </body>
 </html>

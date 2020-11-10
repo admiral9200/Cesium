@@ -74,22 +74,22 @@ function InsertCoffeeToCart($code, $sugar, $sugarType, $milk, $cinnamon, $choco)
 
 function manageQuantity($counter){
     global $pdo, $email;
+    //get one certain coffee
     $sqlPlus = "SELECT code, price, qty FROM cc_cart WHERE email = ? AND count = ? LIMIT 1";
     $stmtPlus = $pdo -> prepare($sqlPlus);
     $stmtPlus -> execute([$email, $counter]);
     $row = $stmtPlus -> fetch();
     $codeCoffee = $row['code'];
+    //fetch the base price of one coffee
     $sqlCode = "SELECT price FROM cc_coffees WHERE code = ?";
     $stmtGetPrice = $pdo -> prepare($sqlCode);
     $stmtGetPrice -> execute([$codeCoffee]);
     $rowGetPrice = $stmtGetPrice -> fetch();
     $price = $rowGetPrice['price'];
-    if($_POST['qty'] === "minus") {
-        $quantity = $row['qty'] - 1;
-    }
-    else if($_POST['qty'] === "plus"){
-        $quantity = $row['qty'] + 1;
-    }
+    //depend on post value adjust the quantity
+    if($_POST['qty'] === "minus") $quantity = $row['qty'] - 1;
+    else if($_POST['qty'] === "plus") $quantity = $row['qty'] + 1;
+    //update price, quantity for duplicate coffee in cart
     $newPrice = $price * $quantity;
     $sqlUpdate = "UPDATE cc_cart SET price = ?, qty = ? WHERE email = ? AND count = ?";
     $stmtUpdate = $pdo -> prepare($sqlUpdate);
@@ -97,13 +97,12 @@ function manageQuantity($counter){
     if($stmtUpdate){
         return true;
     }
-    else{
-        return false;
-    }
+    return false;
 }
 
 function removeCoffeeFromCart($countToDelete){
     global $pdo, $email;
+    //delete coffee that user clicked
     $deleteQuery = "DELETE FROM cc_cart WHERE email = ? AND count = ?";
     $stmtDeleteCoffee = $pdo -> prepare($deleteQuery);
     $stmtDeleteCoffee -> execute([$email, $countToDelete]);
@@ -117,9 +116,43 @@ function removeCoffeeFromCart($countToDelete){
 
 function orderAgain(){
     global $pdo;
+    //clear the cart if it has coffees
+    clearCart();
     //Get products of order selected
-    $sqlOrderAgain = "SELECT coffee, price, qty FROM cc_orders WHERE id = ?";
+    $sqlOrderAgain = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_orders WHERE id = ?";
     $stmtOrderAgain = $pdo -> prepare($sqlOrderAgain);
     $stmtOrderAgain -> execute([$_POST['orderagain']]);
-    //clear the cart if it has coffees
+    if ($stmtOrderAgain) {
+        while ($order = $stmtOrderAgain -> fetch()) {
+            //Keep a counter in cart
+            $cart_query = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco FROM cc_cart WHERE email = ?";
+            $stmtCart = $pdo -> prepare($cart_query);
+            $stmtCart -> execute([$_SESSION['email']]);
+            $count = $stmtCart -> rowCount();
+            //Insert coffee to cart
+            $count++;
+            $cart_query = "INSERT INTO cc_cart (email, count, code, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty) VALUES( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , 1)";
+            $stmtCartInsert = $pdo -> prepare($cart_query);
+            $stmtCartInsert -> execute([$_SESSION['email'], $count, $order['code'], $order['coffee'], $sugar, $sugarType, $milk, $cinnamon, $choco, $price]);
+            if($stmtCartInsert){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+    }
+}
+
+function clearCart(){
+    global $pdo;
+    $sqlClearCart = "DELETE FROM cc_cart WHERE email = ?";
+    $stmtClearCart = $pdo -> prepare($sqlClearCart);
+    $stmtClearCart -> execute([$_SESSION['email']]);
+    if ($stmtClearCart) return true;
+    else return false;
+}
+
+function insertCoffeesToDB(){
+    //To be used
 }

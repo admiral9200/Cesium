@@ -16,7 +16,7 @@ let getProfile = () => {
 	xhr.send();
 };
 
-//Check if there is address stored
+//Check if there is address stored in db
 let addressHandler = () => {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', 'address.php?check', true);
@@ -70,13 +70,13 @@ let fetchAddress = () => {
 					let li = "<li class='list-group-item m-0 border-0'>" +
 									"<div class='row d-flex justify-content-start align-items-center'>" +
 										"<div class='col-xl-3 col-6'>" +
-											`<h6 class='m-0'>${addresses[0].address}</h6>` +
+											`<h6 class='m-0'>${addresses[i].address}</h6>` +
 										"</div>" +
 										"<div class='col-xl-3 col-6'>" +
-											`<h6 class='m-0'>${addresses[0].state}</h6>` +
+											`<h6 class='m-0'>${addresses[i].state}</h6>` +
 										"</div>" +
 										"<div class='col-xl-2 col-12'>" +
-											`<button id='delete' class='btn btn-block btn-danger mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button' onclick='deleteAddress("${addresses[0].address}")'>Διαγραφή</button>` +
+											`<button id='delete' class='btn btn-block btn-danger mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button' onclick='deleteAddress("${addresses[i].address}")'>Διαγραφή</button>` +
 										"</div>" +
 									"</div>" +
 								"</li>";
