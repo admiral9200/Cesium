@@ -172,7 +172,7 @@ let orderAgain = (code) => {
 	blurred.style.display = "block";
 	$('body').addClass('stop-scrolling');
 	let xhr = new XMLHttpRequest();
-	xhr.open('POST', 'cart.php', true);
+	xhr.open('POST', '../order/cart.php', true);
 	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 	let params = "orderagain=" + code;
 	xhr.onload = function(){
@@ -180,7 +180,7 @@ let orderAgain = (code) => {
 			if(this.responseText == true){
 				location.href = "../checkout/";
 			}
-			else{
+			else if(this.responseText == false){
 				document.getElementById('false').innerHTML = this.responseText;
 				addressHandler();
 				fetchAddress();

@@ -116,13 +116,11 @@ function removeCoffeeFromCart($countToDelete){
 
 function orderAgain(){
     global $pdo;
-    //clear the cart if it has coffees
-    clearCart();
     //Get products of order selected
     $sqlOrderAgain = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_orders WHERE id = ?";
     $stmtOrderAgain = $pdo -> prepare($sqlOrderAgain);
     $stmtOrderAgain -> execute([$_POST['orderagain']]);
-    if ($stmtOrderAgain) {
+    if ($stmtOrderAgain && clearCart()) { //clear the cart and check the query ran
         while ($order = $stmtOrderAgain -> fetch()) {
             //Keep a counter in cart
             $cart_query = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco FROM cc_cart WHERE email = ?";
@@ -131,17 +129,13 @@ function orderAgain(){
             $count = $stmtCart -> rowCount();
             //Insert coffee to cart
             $count++;
-            $cart_query = "INSERT INTO cc_cart (email, count, code, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty) VALUES( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , 1)";
+            $cart_query = "INSERT INTO cc_cart (email, count, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty) VALUES( ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)";
             $stmtCartInsert = $pdo -> prepare($cart_query);
-            $stmtCartInsert -> execute([$_SESSION['email'], $count, $order['code'], $order['coffee'], $sugar, $sugarType, $milk, $cinnamon, $choco, $price]);
-            if($stmtCartInsert){
-                return true;
-            }
-            else{
-                return false;
-            }
+            $stmtCartInsert -> execute([$_SESSION['email'], $count, $order['coffee'], $order['sugar'], $order['sugarType'], $order['milk'], $order['cinnamon'], $order['choco'], $order['price'], $order['qty']]);
         }
+        if ($stmtCartInsert) return true;
     }
+    return false;
 }
 
 function clearCart(){

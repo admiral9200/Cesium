@@ -63,11 +63,11 @@ function checkout($id, $doorname, $floor, $phone, $comment){
         //Insert to Backend Panel for process order
         $sqlInsert = "INSERT INTO cc_ordersBackendPanel (id, email, date, time, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)";
         $stmtInsertToBackend = $pdo -> prepare($sqlInsert);
-        $stmtInsertToBackend -> execute([$id, $_SESSION['email'], $coffee, $sugar, $sugarType, $milk, $cinnamon, $choco, $price, $qty]);
+        $stmtInsertToBackend -> execute([$id, $_SESSION['email'], $date, $time, $coffee, $sugar, $sugarType, $milk, $cinnamon, $choco, $price, $qty]);
         //Insert to Users home.php
         $sqlInsertToUser = "INSERT INTO cc_orders (id, email, date, time, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)";
         $stmtInsertToUser = $pdo -> prepare($sqlInsertToUser);
-        $stmtInsertToUser -> execute([$id, $_SESSION['email'], $date, $time, $coffee, $price, $qty]);
+        $stmtInsertToUser -> execute([$id, $_SESSION['email'], $date, $time, $coffee, $sugar, $sugarType, $milk, $cinnamon, $choco, $price, $qty]);
     }
     if ($stmtFetchCart && $stmtChekoutInfo && $stmtInsertToBackend && $stmtInsertToUser) {
         $_SESSION['success'] = true;
