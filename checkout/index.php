@@ -156,7 +156,7 @@ if ($isCartEmpty -> rowCount() == 0) header("location: ../order/");
     <!-- Newsletter -->
     <?php echo file_get_contents("../views/newsletter.html"); ?>
     <!-------------------- Site footer ---------------------->
-    <?php echo file_get_contents("../html/footer.html"); ?>
+    <?php echo file_get_contents("../views/footer.html"); ?>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="../bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
     <script src="checkout.js"></script>

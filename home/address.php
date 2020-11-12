@@ -3,16 +3,16 @@ include("../php/db_connect.php");
 session_start();
 if (!isset($_SESSION['email'])) header("location: ../");
 
-if (@!empty($_POST['address']) && @!empty($_POST['state'])){
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && @!empty($_POST['address']) && @!empty($_POST['state'])){
     echo insertAddress();
 }
 else if ($_SERVER['REQUEST_METHOD'] === 'GET' && @!empty($_GET['address'])){
     echo deleteAddress();
 }
-else if($_SERVER['REQUEST_METHOD'] === 'GET' && @isset($_GET['check'])){
+else if($_SERVER['REQUEST_METHOD'] === 'GET' && @!empty($_GET['check'])){
     echo checkAddress();
 }
-else if($_SERVER['REQUEST_METHOD'] === 'GET' && @isset($_GET['fetch'])){
+else if($_SERVER['REQUEST_METHOD'] === 'GET' && @!empty($_GET['fetch'])){
     echo fetchAddress();
 }
 else{
@@ -67,7 +67,7 @@ function insertAddress(){
         $check_address_sum = "SELECT address FROM cc_address WHERE email = ?";
         $stmtCheckAddressesSum = $pdo -> prepare($check_address_sum);
         $stmtCheckAddressesSum -> execute([$_SESSION['email']]);
-        if ($stmtCheckAddressesSum -> rowCount() >= 1){
+        if ($stmtCheckAddressesSum -> rowCount() >= 3){
             return "<div class='alert alert-danger alert-dismissible fade show'>
                         <button type='button' class='close' data-dismiss='alert'>&times;</button>Δε μπορείτε να προσθέσετε άλλη διεύθυνση.
                     </div>";

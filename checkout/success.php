@@ -4,7 +4,6 @@ $email = $_SESSION['email'];
 if (!isset($_SESSION['email'])) header('location: ../');
 if (!isset($_SESSION['success'])) header('location: ../home/');
 unset($_SESSION['success']);
-include("../php/db_connect.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -92,15 +91,15 @@ include("../php/db_connect.php");
             <hr>
             </div>
             <div class="container">
-            <div class="row">
-                <div class="col-md-8 col-sm-6 col-xs-12">
-                <p class="copyright-text text-muted">Copyright &copy; 2020 All Rights Reserved by <a href="#">Chip Coffee</a>.</p>
+                <div class="row">
+                    <div class="col-md-8 col-sm-6 col-xs-12">
+                        <p class="copyright-text text-muted text-center">&copy;2020 Chip Coffee. Handcrafted by z3r0Luck.</p>
+                    </div>
                 </div>
-            </div>
             </div>
         </footer>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="../bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
     <script src="succ.js"></script>
 </body>
