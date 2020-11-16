@@ -19,7 +19,7 @@ let getProfile = () => {
 //Check if there is address stored in db
 let addressHandler = () => {
 	let xhr = new XMLHttpRequest();
-	xhr.open('GET', 'address.php?check', true);
+	xhr.open('GET', 'address.php?q', true);
 	xhr.onload = function(){
 		if (this.status == 200) {
 			if (this.responseText == 0) {
@@ -61,7 +61,7 @@ let addressHandler = () => {
 //fetch address in address menu
 let fetchAddress = () => {
 	let xhr = new XMLHttpRequest();
-	xhr.open('GET', 'address.php?fetch', true);
+	xhr.open('GET', 'address.php?f', true);
 	xhr.onload = function(){
 		if (this.status == 200) {
 			let addresses = JSON.parse(this.responseText);
@@ -149,7 +149,7 @@ let deleteAddress = (address) => {
 	blurred.style.display = "block";
 	$('body').addClass('stop-scrolling');
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', 'address.php?address=' + address, true);
+	xhr.open('GET', 'address.php?d=' + address, true);
 	xhr.onreadystatechange = function(){
 		if(this.status == 200){
 			addressHandler();

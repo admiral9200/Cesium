@@ -3,33 +3,40 @@ include("../php/db_connect.php");
 session_start();
 if (!isset($_SESSION['email'])) header("location: ../");
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && @!empty($_POST['address']) && @!empty($_POST['state'])){
-    echo insertAddress();
-}
-else if ($_SERVER['REQUEST_METHOD'] === 'GET' && @!empty($_GET['address'])){
-    echo deleteAddress();
-}
-else if($_SERVER['REQUEST_METHOD'] === 'GET' && @!empty($_GET['check'])){
-    echo checkAddress();
-}
-else if($_SERVER['REQUEST_METHOD'] === 'GET' && @!empty($_GET['fetch'])){
-    echo fetchAddress();
-}
-else{
-    echo    "<div class='alert alert-danger alert-dismissible fade show'>
-                <button type='button' class='close' data-dismiss='alert'>&times;</button>Κάτι πήγε λάθος.
-            </div>";
+switch ($_SERVER['REQUEST_METHOD']) {
+    case 'POST':
+        if (@!empty($_POST['address']) && @!empty($_POST['state'])) echo insertAddress();
+        else{
+            echo    "<div class='alert alert-danger alert-dismissible fade show'>
+                        <button type='button' class='close' data-dismiss='alert'>&times;</button>Κάτι πήγε λάθος.
+                    </div>";
+        }
+        break;
+    case 'GET':
+        if (@!empty($_GET['d'])) { //delete address
+            echo deleteAddress();
+        }
+        else if (@isset($_GET['q'])) { //check address
+            echo checkAddress();
+        }
+        else if (@isset($_GET['f'])) { //fetch address
+            echo fetchAddress();
+        }
+        else{
+            echo    "<div class='alert alert-danger alert-dismissible fade show'>
+                        <button type='button' class='close' data-dismiss='alert'>&times;</button>Κάτι πήγε λάθος.
+                    </div>";
+        }
+        break;
+    default:
+        echo    "<div class='alert alert-danger alert-dismissible fade show'>
+                    <button type='button' class='close' data-dismiss='alert'>&times;</button>Κάτι πήγε λάθος.
+                </div>";
+        break;
 }
 
 function checkAddress(){
-    global $pdo;
-    $sqlFetchAddress = "SELECT * FROM cc_address WHERE email = ?";
-    $stmtAddress = $pdo -> prepare($sqlFetchAddress);
-    $stmtAddress -> execute([$_SESSION['email']]);
-    if ($stmtAddress) {
-        $numAddress = $stmtAddress -> rowCount();
-        return $numAddress;
-    }
+    if (countAddresses()) return countAddresses();
     else{
         return "<div class='alert alert-danger alert-dismissible fade show'>
                     <button type='button' class='close' data-dismiss='alert'>&times;</button>Κάτι πήγε λάθος.
@@ -64,10 +71,7 @@ function insertAddress(){
                 </div>";   
     }
     else{
-        $check_address_sum = "SELECT address FROM cc_address WHERE email = ?";
-        $stmtCheckAddressesSum = $pdo -> prepare($check_address_sum);
-        $stmtCheckAddressesSum -> execute([$_SESSION['email']]);
-        if ($stmtCheckAddressesSum -> rowCount() >= 3){
+        if (countAddresses() >= 3){
             return "<div class='alert alert-danger alert-dismissible fade show'>
                         <button type='button' class='close' data-dismiss='alert'>&times;</button>Δε μπορείτε να προσθέσετε άλλη διεύθυνση.
                     </div>";
@@ -89,7 +93,7 @@ function insertAddress(){
 
 function fetchAddress(){
     global $pdo;
-    $sqlFetchAddress = "SELECT address, state FROM cc_address WHERE email = ?";
+    $sqlFetchAddress = "SELECT address, state FROM cc_address";
     $stmtAddress = $pdo -> prepare($sqlFetchAddress); 
     $stmtAddress -> execute([$_SESSION['email']]);
     if ($stmtAddress) {
@@ -101,5 +105,19 @@ function fetchAddress(){
         return "<div class='alert alert-danger alert-dismissible fade show'>
                     <button type='button' class='close' data-dismiss='alert'>&times;</button>Κάτι πήγε λάθος.
                 </div>";
+    }
+}
+
+function countAddresses(){
+    global $pdo;
+    try{
+        $sqlFetchAddress = "SELECT COUNT(*) as count FROM cc_address WHERE email = ?";
+        $stmtAddress = $pdo -> prepare($sqlFetchAddress);
+        $stmtAddress -> execute([$_SESSION['email']]);
+        $numAddress = $stmtAddress -> fetch();
+        return $numAddress['count'];
+    }
+    catch (PDOException $e){
+        return false;
     }
 }
