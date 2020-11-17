@@ -46,7 +46,7 @@ if($checkAddress > 0) $_SESSION['address'] = true;
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <h1 id="wlcm" class="mb-xl-5">Καλωσήρθες, </h1>
-                <div id="home"></div>
+                <div id="home" class="lds-dual-ring-sm d-flex justify-content-center"></div>
             </div>
         </div>
     </div>
@@ -67,7 +67,7 @@ if($checkAddress > 0) $_SESSION['address'] = true;
                             </div>
                         </div>
                     </li>
-                    <div id="addresses"></div>
+                    <div id="addresses" class="lds-dual-ring-sm-bl d-flex justify-content-center"></div>
                 </ul>
             </div>
         </div>

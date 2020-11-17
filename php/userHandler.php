@@ -1,5 +1,4 @@
 <?php
-session_start();
 include("db_connect.php");
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && @!empty($_POST['email']) && @!empty($_POST['pass'])){
     echo loginUser();
@@ -15,6 +14,7 @@ function loginUser(){
     $stmtUser -> execute([$_POST['email']]);
     $rowUser = $stmtUser -> fetch();
     if ($stmtUser -> rowCount() == 1 && password_verify($_POST['pass'], $rowUser['password'])){
+        session_start();
         $_SESSION['email'] = $_POST['email'];
         if(!empty($_POST['rmbrme']) && $_POST['rmbrme'] === true){
             //create cookies

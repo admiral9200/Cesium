@@ -1,6 +1,7 @@
 let loader = document.getElementById("loader");
 let blurred = document.getElementById("blurred");
 let orderAgainBtn = document.getElementsByClassName('orderAgain');
+let falseMsg = document.getElementById('false');
 
 //fetch user profile name
 let getProfile = () => {
@@ -22,37 +23,46 @@ let addressHandler = () => {
 	xhr.open('GET', 'address.php?q', true);
 	xhr.onload = function(){
 		if (this.status == 200) {
-			if (this.responseText == 0) {
-				$("#home").load("address_menu.html", () => {
-					let address = document.getElementById('address');
-					let state = document.getElementById('state');
+			$('#home').fadeOut(200, () => {
+				$('#home').removeClass('lds-dual-ring-sm');
+				$('#home').removeClass('d-flex');
+				$('#home').removeClass('justify-content-center');
+				if (this.responseText == 0) {
+					$("#home").load("address_menu.html", () => {
+						let address = document.getElementById('address');
+						let state = document.getElementById('state');
 
-					document.getElementById('add').addEventListener('click', addAddress);
+						document.getElementById('add').addEventListener('click', addAddress);
 
-					address.addEventListener('keyup', function(e){
-						address.closest(".group").querySelector('.text-danger').style.display = 'none';
-						address.classList.remove("wrong");
-						if(address.value == "") {
-							address.closest(".group").querySelector('.text-danger').style.display = 'block';
-							address.classList.add("wrong");
-						}
-						if (e.keyCode === 13 || e.key === 13) addAddress();
+						address.addEventListener('keyup', function(e){
+							address.closest(".group").querySelector('.text-danger').style.display = 'none';
+							address.classList.remove("wrong");
+							if(address.value == "") {
+								address.closest(".group").querySelector('.text-danger').style.display = 'block';
+								address.classList.add("wrong");
+							}
+							if (e.keyCode === 13 || e.key === 13) addAddress();
+						});
+
+						state.addEventListener('keyup', function(e){
+							state.closest(".group").querySelector('.text-danger').style.display = 'none';
+							state.classList.remove("wrong");
+							if(state.value == "") {
+								state.closest(".group").querySelector('.text-danger').style.display = 'block';
+								state.classList.add("wrong");
+							}
+							if (e.keyCode === 13 || e.key === 13) addAddress();
+						});
 					});
-
-					state.addEventListener('keyup', function(e){
-						state.closest(".group").querySelector('.text-danger').style.display = 'none';
-						state.classList.remove("wrong");
-						if(state.value == "") {
-							state.closest(".group").querySelector('.text-danger').style.display = 'block';
-							state.classList.add("wrong");
-						}
-						if (e.keyCode === 13 || e.key === 13) addAddress();
-					});
-				});
-			}
-			else if (this.responseText >= 1){
-				document.getElementById('home').innerHTML = "<button class='btn mainbtn btn-lg btn-block text-white' role='button' onclick='order()'>Παράγγειλε τώρα</button>";
-			}
+				}
+				else if (this.responseText >= 1){
+					document.getElementById('home').innerHTML = "<button class='btn mainbtn btn-lg btn-block text-white' role='button' onclick='order()'>Παράγγειλε τώρα</button>";
+				}
+				else{
+					falseMsg.innerHTML = this.responseText;
+				}
+				$('#home').fadeIn(200);
+			});
 		}
 	};
 	xhr.send();
@@ -64,41 +74,47 @@ let fetchAddress = () => {
 	xhr.open('GET', 'address.php?f', true);
 	xhr.onload = function(){
 		if (this.status == 200) {
-			let addresses = JSON.parse(this.responseText);
-			if (addresses.length > 0) {
-				for (let i = 0; i < addresses.length; i++) {
-					let li = "<li class='list-group-item m-0 border-0'>" +
-									"<div class='row d-flex justify-content-start align-items-center'>" +
-										"<div class='col-xl-3 col-6'>" +
-											`<h6 class='m-0'>${addresses[i].address}</h6>` +
+			$('#addresses').fadeOut(300, () => {
+				$('#addresses').removeClass('lds-dual-ring-sm-bl');
+				$('#addresses').removeClass('d-flex');
+				$('#addresses').removeClass('justify-content-center');
+				let addresses = JSON.parse(this.responseText);
+				if (addresses.length > 0) {
+					for (let i = 0; i < addresses.length; i++) {
+						let li = "<li class='list-group-item m-0 border-0'>" +
+										"<div class='row d-flex justify-content-start align-items-center'>" +
+											"<div class='col-xl-3 col-6'>" +
+												`<h6 class='m-0'>${addresses[i].address}</h6>` +
+											"</div>" +
+											"<div class='col-xl-3 col-6'>" +
+												`<h6 class='m-0'>${addresses[i].state}</h6>` +
+											"</div>" +
+											"<div class='col-xl-2 col-12'>" +
+												`<button id='delete' class='btn btn-block btn-danger mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button' onclick='deleteAddress("${addresses[i].address}")'>Διαγραφή</button>` +
+											"</div>" +
 										"</div>" +
-										"<div class='col-xl-3 col-6'>" +
-											`<h6 class='m-0'>${addresses[i].state}</h6>` +
-										"</div>" +
-										"<div class='col-xl-2 col-12'>" +
-											`<button id='delete' class='btn btn-block btn-danger mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button' onclick='deleteAddress("${addresses[i].address}")'>Διαγραφή</button>` +
-										"</div>" +
-									"</div>" +
-								"</li>";
-					document.getElementById('addresses').innerHTML = li;
-					for (let k = 0; k <= orderAgainBtn.length; k++){
-						orderAgainBtn[k].disabled = false;
-						orderAgainBtn[k].removeAttribute("title");
-						orderAgainBtn[k].classList.remove("disableOrderAgainBtn");
-					}
-				}	
-			}
-			else{
-				let li = "<li class='list-group-item m-0 border-0'>" +
-							"<h6>Δεν υπάρχει ενεργή διεύθυνση</h6>" +
-						"</li>";
-				document.getElementById('addresses').innerHTML = li;
-				for (let k in orderAgainBtn){
-					orderAgainBtn[k].title = "Πρέπει να προσθέσεις μία διεύθυνση πρώτα.";
-					orderAgainBtn[k].disabled = true;
-					orderAgainBtn[k].classList.add("disableOrderAgainBtn");
+									"</li>";
+						document.getElementById('addresses').innerHTML = li;
+						for (let k = 0; k <= orderAgainBtn.length; k++){
+							orderAgainBtn[k].disabled = false;
+							orderAgainBtn[k].removeAttribute("title");
+							orderAgainBtn[k].classList.remove("disableOrderAgainBtn");
+						}
+					}	
 				}
-			}
+				else{
+					let li = "<li class='list-group-item m-0 border-0'>" +
+								"<h6>Δεν υπάρχει ενεργή διεύθυνση</h6>" +
+							"</li>";
+					document.getElementById('addresses').innerHTML = li;
+					for (let k in orderAgainBtn){
+						orderAgainBtn[k].title = "Πρέπει να προσθέσεις μία διεύθυνση πρώτα.";
+						orderAgainBtn[k].disabled = true;
+						orderAgainBtn[k].classList.add("disableOrderAgainBtn");
+					}
+				}
+				$('#addresses').fadeIn(300);
+			});
 		}
 	};
 	xhr.send();
@@ -149,7 +165,9 @@ let deleteAddress = (address) => {
 	blurred.style.display = "block";
 	$('body').addClass('stop-scrolling');
 	var xhr = new XMLHttpRequest();
-	xhr.open('GET', 'address.php?d=' + address, true);
+	xhr.open('POST', 'address.php', true);
+	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	let param = "d=" + address;
 	xhr.onreadystatechange = function(){
 		if(this.status == 200){
 			addressHandler();
@@ -181,7 +199,7 @@ let orderAgain = (code) => {
 				location.href = "../checkout/";
 			}
 			else if(this.responseText == false){
-				document.getElementById('false').innerHTML = this.responseText;
+				falseMsg.innerHTML = this.responseText;
 				addressHandler();
 				fetchAddress();
 				reset();
