@@ -1,8 +1,8 @@
 <?php
 session_start();
-if (!isset($_SESSION['email'])) header("location: ../");
+if (!isset($_SESSION['email'])) header("location: /");
 date_default_timezone_set('Europe/Athens');
-include("../php/db_connect.php");
+include("/php/db_connect.php");
 //Paypal Integration not working on localhost
 /* if(isset($_POST['payment']) == "paypal"){
     header("location: payment.php");

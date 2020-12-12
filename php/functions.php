@@ -1,7 +1,7 @@
 <?php
 session_start();
 include("../php/db_connect.php");
-if (!isset($_SESSION['email'])) header('location: ../');
+if (!isset($_SESSION['email'])) header('location: /');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['delete'] == true) {
     echo deleteAccount();

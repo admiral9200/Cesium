@@ -1,14 +1,7 @@
-let getProfile = () => {
-	let xhr = new XMLHttpRequest();
-	xhr.open('GET', '../php/functions.php?user', true);
-	xhr.onload = function(){
-		if (this.status == 200) {
-			prof = JSON.parse(this.responseText);
-			document.getElementById('dropdownMenuLink').innerHTML = `${prof[0].firstName} <i class='far fa-user'></i>`;
-		}
-	};
-	xhr.send();
-};
+import { getProfile } from '../js/functions.js';
+
+let loader = document.getElementById("loader");
+let blurred = document.getElementById("blurred");
 
 (() => getProfile())();
 
@@ -51,9 +44,6 @@ let uncheck = (id) => {
 		}
 	};
 };
-
-var loader = document.getElementById("loader");
-var blurred = document.getElementById("blurred");
 
 function getValues(code){
 	let noSugar = document.getElementById('no'+code);

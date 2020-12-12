@@ -3,22 +3,8 @@ let blurred = document.getElementById("blurred");
 let orderAgainBtn = document.getElementsByClassName('orderAgain');
 let falseMsg = document.getElementById('false');
 
-//fetch user profile name
-let getProfile = () => {
-	let xhr = new XMLHttpRequest();
-	xhr.open('GET', '../php/functions.php?user', true);
-	xhr.onload = function(){
-		if (this.status == 200) {
-			prof = JSON.parse(this.responseText);
-			document.getElementById('wlcm').innerHTML += prof[0].firstName;
-			document.getElementById('dropdownMenuLink').innerHTML = `${prof[0].firstName} <i class='far fa-user'></i>`;
-		}
-	};
-	xhr.send();
-};
-
 //Check if there is address stored in db
-let addressHandler = () => {
+const addressHandler = () => {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', 'address.php?q', true);
 	xhr.onload = function(){
@@ -69,7 +55,7 @@ let addressHandler = () => {
 };
 
 //fetch address in address menu
-let fetchAddress = () => {
+const fetchAddress = () => {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', 'address.php?f', true);
 	xhr.onload = function(){
@@ -96,9 +82,14 @@ let fetchAddress = () => {
 									"</li>";
 						document.getElementById('addresses').innerHTML = li;
 						for (let k = 0; k <= orderAgainBtn.length; k++){
-							orderAgainBtn[k].disabled = false;
-							orderAgainBtn[k].removeAttribute("title");
-							orderAgainBtn[k].classList.remove("disableOrderAgainBtn");
+							try {
+								orderAgainBtn[k].disabled = false;
+								orderAgainBtn[k].removeAttribute("title");
+								orderAgainBtn[k].classList.remove("disableOrderAgainBtn");	
+							}
+							catch (error) {
+								
+							}
 						}
 					}	
 				}
@@ -108,9 +99,14 @@ let fetchAddress = () => {
 							"</li>";
 					document.getElementById('addresses').innerHTML = li;
 					for (let k in orderAgainBtn){
-						orderAgainBtn[k].title = "Πρέπει να προσθέσεις μία διεύθυνση πρώτα.";
-						orderAgainBtn[k].disabled = true;
-						orderAgainBtn[k].classList.add("disableOrderAgainBtn");
+						try {
+							orderAgainBtn[k].title = "Πρέπει να προσθέσεις μία διεύθυνση πρώτα.";
+							orderAgainBtn[k].disabled = true;
+							orderAgainBtn[k].classList.add("disableOrderAgainBtn");	
+						}
+						catch (error) {
+							
+						}
 					}
 				}
 				$('#addresses').fadeIn(300);
@@ -122,17 +118,16 @@ let fetchAddress = () => {
 
 //Invoke functions at load
 (() => {
-	getProfile();
 	addressHandler();
 	fetchAddress();
 })();
 
 //go to order page
-let order = () => location.href = "../order/";
+const order = () => location.href = "/order/";
 
 //add address to db
 function addAddress(){
-	if(validateAddress()){
+	if(isAddressValidated()){
 		loader.style.display = "block";
 		blurred.style.display = "block";
 		$('body').addClass('stop-scrolling');
@@ -160,7 +155,7 @@ function addAddress(){
 }
 
 //remove address from db
-let deleteAddress = (address) => {
+const deleteAddress = (address) => {
 	loader.style.display = "block";
 	blurred.style.display = "block";
 	$('body').addClass('stop-scrolling');
@@ -182,21 +177,21 @@ let deleteAddress = (address) => {
 			reset();
 		}
 	};
-	xhr.send();
+	xhr.send(param);
 };
 
-let orderAgain = (code) => {
+const orderAgain = (code) => {
 	loader.style.display = "block";
 	blurred.style.display = "block";
 	$('body').addClass('stop-scrolling');
 	let xhr = new XMLHttpRequest();
-	xhr.open('POST', '../order/cart.php', true);
+	xhr.open('POST', '/order/cart.php', true);
 	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 	let params = "orderagain=" + code;
 	xhr.onload = function(){
 		if(this.status == 200){
 			if(this.responseText == true){
-				location.href = "../checkout/";
+				location.href = "/checkout/";
 			}
 			else if(this.responseText == false){
 				falseMsg.innerHTML = this.responseText;
@@ -210,7 +205,7 @@ let orderAgain = (code) => {
 };
 
 //validate inputs with regex
-let validateAddress = () => {
+const isAddressValidated = () => {
 	let form = [address, state];
 	let val = true;
 	for(let i = 0; i < form.length; i++){
@@ -230,7 +225,7 @@ let validateAddress = () => {
 };
 
 //reset the loader
-let reset = () => {
+const reset = () => {
 	loader.style.display = "none";
 	blurred.style.display = "none";
 	$('body').removeClass('stop-scrolling');

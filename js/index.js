@@ -98,7 +98,7 @@ function loginUser(e){
 		document.getElementById('res').innerHTML = "";
 		document.getElementById('res').classList.add('lds-dual-ring');
 		let xhr = new XMLHttpRequest();
-		xhr.open('POST', './php/userHandler.php', true);
+		xhr.open('POST', '/php/userHandler.php', true);
 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		let params = "email=" + email.value + "&pass=" + pass.value + "&rmbrme=" + rmbrme.checked;
 		xhr.onload = function(){
@@ -125,7 +125,7 @@ function registerUser(e){
 		document.getElementById('resReg').classList.add('lds-dual-ring');
 		let xhr = new XMLHttpRequest();
 		let params = "email=" + emailR.value + "&firstName=" + firstName.value + "&lastName=" + lastName.value + "&pass=" + password.value;
-		xhr.open('POST', './php/userHandler.php', true);
+		xhr.open('POST', '/php/userHandler.php', true);
 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		xhr.onload = function(){
 			if(this.status == 200){

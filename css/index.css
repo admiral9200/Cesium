@@ -197,7 +197,7 @@
 }
 
 .bg {
-    background-image: url("../images/main_coffee.jpg");
+    background-image: url("/images/main_coffee.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -271,7 +271,7 @@ html, body{
 }
 
 .cc-left{
-    background-image: url("../images/coffee-beans.jpg");
+    background-image: url("/images/coffee-beans.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -281,7 +281,7 @@ html, body{
 }
 
 .cc-right{
-    background-image: url("../images/cup.jpg");
+    background-image: url("/images/cup.jpg");
     background-size: cover;
     background-position: bottom;
     background-repeat: no-repeat;

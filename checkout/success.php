@@ -1,8 +1,8 @@
 <?php
 session_start();
 $email = $_SESSION['email'];
-if (!isset($_SESSION['email'])) header('location: ../');
-if (!isset($_SESSION['success'])) header('location: ../home/');
+if (!isset($_SESSION['email'])) header('location: /');
+if (!isset($_SESSION['success'])) header('location: /home/');
 unset($_SESSION['success']);
 ?>
 <!DOCTYPE html>
@@ -11,27 +11,30 @@ unset($_SESSION['success']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
     <title>Chip Coffee | Online Coffee Delivery</title>
-    <link rel="stylesheet" type="text/css" href="../css/base.css">
-    <link rel="stylesheet" type="text/css" href="../css/success.css">
-    <link rel="stylesheet" type="text/css" href="../css/footer.css">
-    <link rel="icon" type="image/png" href="../images/chip_coffee.png" size="20x20">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../bootstrap-4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/success.css">
+    <link rel="stylesheet" type="text/css" href="/css/footer.css">
+    <link rel="icon" type="image/png" href="/images/chip_coffee.png" size="20x20">
+    <link rel="stylesheet" href="/bootstrap-4.5.0/css/bootstrap.min.css">
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
+    <script async src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script defer src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script defer src="succ.js"></script>
 </head>
 <body>
     <div class="main">
         <div class="background p-0 w-100">
             <nav class="navbar navbar-light container">
-                <a class="navbar-brand" href="../home/">
-                    <img src="../images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
+                <a class="navbar-brand" href="/home/">
+                    <img src="/images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
                 </a>
                 <div class="dropdown">
                     <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i></a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="../profile/">Ο λογαριασμός μου</a>
+                    <a class="dropdown-item" href="/profile/">Ο λογαριασμός μου</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="../php/logout.php">Αποσύνδεση</a>
+                    <a class="dropdown-item" href="/php/logout.php">Αποσύνδεση</a>
                     </div>
                 </div>
             </nav>
@@ -39,7 +42,7 @@ unset($_SESSION['success']);
         <div class="success p-xl-0 p-lg-0 p-md-0 p-sm-4 p-4">
             <div class="alert alert-success" role="alert">
                 <div class="text-center">
-                    <img src="../images/success.png" class="rounded chk" alt="Success">
+                    <img src="/images/success.png" class="rounded chk" alt="Success">
                 </div>
                 <h1 class="alert-heading space">Η παραγγελία σου θα παραδοθεί σε 15'</h1>
                 <p class="text-center chk-p">Στο email σου θα βρεις όλα τα στοιχεία της παραγγελίας σου. Σε περίπτωση που θέλεις να αλλάξεις κάτι, κάλεσε μας.</p>
@@ -99,8 +102,5 @@ unset($_SESSION['success']);
             </div>
         </footer>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="../bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
-    <script src="succ.js"></script>
 </body>
 </html>

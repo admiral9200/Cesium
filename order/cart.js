@@ -1,4 +1,4 @@
-function quantity(count, qty){
+let quantity = (count, qty) => {
 	loader.style.display = "block";
 	blurred.style.display = "block";
 	$('body').addClass('stop-scrolling');
@@ -19,9 +19,9 @@ function quantity(count, qty){
 		}
 	}
 	xhr.send(params);
-}
+};
 
-function deleteCoffee(code){
+let deleteCoffee = (code) => {
 	loader.style.display = "block";
 	blurred.style.display = "block";
 	$('body').addClass('stop-scrolling');
@@ -42,4 +42,4 @@ function deleteCoffee(code){
 		}
 	}
 	xhr.send(params);
-}
+};

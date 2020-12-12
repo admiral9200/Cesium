@@ -5,20 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
     <title>Chip Coffee | Online Coffee Delivery</title>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="../css/base.css">
-    <link rel="stylesheet" type="text/css" href="../css/reset.css">
-    <link rel="stylesheet" type="text/css" href="../css/footer.css">
-    <link rel="icon" type="image/png" href="../images/chip_coffee.png" size="20x20">
-    <link rel="stylesheet" href="../bootstrap-4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="/css/footer.css">
+    <link rel="icon" type="image/png" href="/images/chip_coffee.png" size="20x20">
+    <link rel="stylesheet" href="/bootstrap-4.5.0/css/bootstrap.min.css">
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
     <script defer src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script async src="index.js"></script>
+    <script defer src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
     <div class="main">
         <div class="background p-0 w-100">
             <nav class="navbar navbar-light container">
-                <a class="navbar-brand" href="../">
-                    <img src="../images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
+                <a class="navbar-brand" href="/">
+                    <img src="/images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
                 </a>
             </nav>
         </div>
@@ -86,7 +88,5 @@
             </footer>
         </div>
     </div>
-    <script async src="index.js"></script>
-    <script defer src="../bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

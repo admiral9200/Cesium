@@ -1,6 +1,6 @@
 let getProfile = () => {
 	let xhr = new XMLHttpRequest();
-	xhr.open('GET', '../php/functions.php?user', true);
+	xhr.open('GET', '/php/functions.php?user', true);
 	xhr.onload = function(){
 		if (this.status == 200) {
 			prof = JSON.parse(this.responseText);

@@ -98,7 +98,7 @@ body {
 }
 
 .background {
-  background-image: url("../images/main_coffee.jpg");
+  background-image: url("/images/main_coffee.jpg");
   background-size: cover;
   background-position: right bottom;
   background-repeat: no-repeat;

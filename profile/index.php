@@ -8,28 +8,31 @@ if (!isset($_SESSION['email'])) header('location: ../');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
     <title>Chip Coffee | Online Coffee Delivery</title>
-    <link rel="stylesheet" type="text/css" href="../css/base.css">
-    <link rel="stylesheet" type="text/css" href="../css/home.css">
-    <link rel="stylesheet" type="text/css" href="../css/footer.css">
-    <link rel="icon" type="image/png" href="../images/chip_coffee.png">
-    <link rel="stylesheet" href="../bootstrap-4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/home.css">
+    <link rel="stylesheet" type="text/css" href="/css/footer.css">
+    <link rel="icon" type="image/png" href="/images/chip_coffee.png">
+    <link rel="stylesheet" href="/bootstrap-4.5.0/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
+    <script async src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script defer src="index.js"></script>
+    <script defer src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
     <div id="blurred" class="blurred"></div>
     <div id="loader" class="loader lds-dual-ring"></div>
     <div class="background">
         <nav class="navbar navbar-light container">
-            <a class="navbar-brand" href="../home/">
-                <img src="../images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
+            <a class="navbar-brand" href="/home/">
+                <img src="/images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
             <div class="dropdown">
                 <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="./">Ο λογαριασμός μου</a>
+                    <a class="dropdown-item" href="/">Ο λογαριασμός μου</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="../php/logout.php">Αποσύνδεση</a>
+                    <a class="dropdown-item" href="/php/logout.php">Αποσύνδεση</a>
                 </div>
             </div>
         </nav>
@@ -43,7 +46,7 @@ if (!isset($_SESSION['email'])) header('location: ../');
         <div class="row my-2">
             <div class="col-xl-3 col-12 text-center space">
                 <div class="sticky-top pt-4 pb-4">
-                    <img src="../images/trickst3r.png" class="mx-auto img-fluid rounded-circle" alt="avatar" />
+                    <img src="/images/trickst3r.png" class="mx-auto img-fluid rounded-circle" alt="avatar" />
                     <h4 id="fullName" class="my-4"></h4>
                 </div>
             </div>
@@ -140,11 +143,8 @@ if (!isset($_SESSION['email'])) header('location: ../');
         </div>
     </div>
     <!-- Newsletter -->
-    <?php echo file_get_contents("../views/newsletter.html"); ?>
+    <?php echo file_get_contents("/views/newsletter.html"); ?>
     <!-- Site footer -->
-    <?php echo file_get_contents("../views/footer.html"); ?>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="index.js"></script>
-    <script defer src="../bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
+    <?php echo file_get_contents("/views/footer.html"); ?>
 </body>
 </html>

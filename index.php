@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION['email'])) header("location: ./home/");
+if (isset($_SESSION['email'])) header("location: /home/");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,22 +8,25 @@ if (isset($_SESSION['email'])) header("location: ./home/");
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>Chip Coffee | Online Coffee Delivery</title>
-    <link rel="icon" type="image/png" href="./images/chip_coffee.png">
+    <link rel="icon" type="image/png" href="/images/chip_coffee.png">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bangers&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Righteous&display=swap">
-    <link rel="stylesheet" type="text/css" href="./css/base.css">
-    <link rel="stylesheet" type="text/css" href="./css/index.css">
-    <link rel="stylesheet" type="text/css" href="./css/footer.css">
-    <link rel="stylesheet" type="text/css" href="./css/form.css">
-    <link rel="stylesheet" href="./bootstrap-4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/css/index.css">
+    <link rel="stylesheet" type="text/css" href="/css/footer.css">
+    <link rel="stylesheet" type="text/css" href="/css/form.css">
+    <link rel="stylesheet" href="/bootstrap-4.5.0/css/bootstrap.min.css">
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
+    <script defer src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script defer src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script defer src="/js/index.js"></script>
 </head>
 <body>
     <div class="row main m-0 p-0">
         <div class="bg d-flex flex-column col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 p-0 pb-md-5">
             <div class="left">
-                <a class="logo_pos" href="./"><img src="./images/chip_coffee_page.png" class="logo" alt="Chip Coffee"></a>
+                <a class="logo_pos" href="/"><img src="/images/chip_coffee_page.png" class="logo" alt="Chip Coffee"></a>
                 <div class="content d-flex flex-column justify-content-center p-xl-0 p-lg-0 p-md-0 pt-5">
                     <h1>Παράγγειλε καφέ σε ένα 1'</h1>
                     <h2 class="mt-2">Φθηνά, γρήγορα και ηλεκτρονικά</h2>
@@ -32,7 +35,7 @@ if (isset($_SESSION['email'])) header("location: ./home/");
         </div>
         <div class="right d-flex justify-content-center align-items-center col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 p-xl-5 p-lg-5 p-md-5 p-sm-5 p-0">
             <div class="overlayLogo">
-                <img class="logoStyle" src="./images/chip_coffee.png">
+                <img class="logoStyle" src="/images/chip_coffee.png">
             </div>
             <div class="login-snip user-select-none">
                 <div class="d-flex justify-content-center">
@@ -64,7 +67,7 @@ if (isset($_SESSION['email'])) header("location: ./home/");
                             </div>
                             <div class="hr mt-4 mb-4"></div>
                             <div class="text-center"> 
-                                <a href="./reset/">Ξέχασες τον κωδικό σου?</a>
+                                <a href="/reset/">Ξέχασες τον κωδικό σου?</a>
                             </div>
                         </form>
                     </div>
@@ -136,7 +139,7 @@ if (isset($_SESSION['email'])) header("location: ./home/");
                     <p class="text-body">Κατά το τέλος της παραγγελίας σου χρησιμοποιήσε τον κωδικό NEWCHIPCOFFEE για να ενεργοποιήσεις την προσφορά.</p>
                 </div>
                 <div class="col-xl-4 col-lg-6 col-md-4 col-12 user-select-none">
-                    <img src="./images/sale.png" class="sale-image">
+                    <img src="/images/sale.png" class="sale-image">
                 </div>
             </div>
         </div>
@@ -196,8 +199,5 @@ if (isset($_SESSION['email'])) header("location: ./home/");
         </div>
         </div>
     </footer>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="./bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
-    <script src="./js/index.js"></script>
 </body>
 </html>

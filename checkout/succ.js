@@ -1,14 +1,4 @@
-let getProfile = () => {
-	let xhr = new XMLHttpRequest();
-	xhr.open('GET', '../php/functions.php?user', true);
-	xhr.onload = function(){
-		if (this.status == 200) {
-			prof = JSON.parse(this.responseText);
-			document.getElementById('dropdownMenuLink').innerHTML = `${prof[0].firstName} <i class='far fa-user'></i>`;
-		}
-	};
-	xhr.send();
-};
+import { getProfile } from '../js/functions';
 
 let getOrderDetails = () => {
 	let xhr = new XMLHttpRequest();

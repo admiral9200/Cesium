@@ -1,6 +1,6 @@
 <?php
 session_start();
-if(!isset($_SESSION['reset'])) header("location: ./"); 
+if(!isset($_SESSION['reset'])) header("location: /"); 
 ?>
 <i class="fa fa-lock fa-4x"></i>
 <h1 class="text-center">Ξέχασες τον κωδικό σου?</h1>

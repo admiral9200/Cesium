@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['email'])) header('location: ../');
+if (!isset($_SESSION['email'])) header('location: /');
 ?>
 <h3 class="mt-3 mb-3">Το καλάθι σου</h3>
 <ul class="list-group list-group-flush list">
@@ -76,5 +76,5 @@ if (!isset($_SESSION['email'])) header('location: ../');
 		</h6>
 	</li>
 </ul>
-<button type="button" name="continue" class="btn mainbtn text-white btn-block btn-lg" <?php if ($count == 0) echo "style='cursor: not-allowed' disabled"; else { ?> onclick="location.href='../checkout/';" <?php } ?>>Συνέχεια</button>
-<script src="cart.js" async defer></script>
+<button type="button" name="continue" class="btn mainbtn text-white btn-block btn-lg" <?php if ($count == 0) echo "style='cursor: not-allowed' disabled"; else { ?> onclick="location.href='/checkout/';" <?php } ?>>Συνέχεια</button>
+<script src="cart.js"></script>
