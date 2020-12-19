@@ -1,18 +1,28 @@
 const loader = document.getElementById("loader");
 const blurred = document.getElementById("blurred");
+//forms
 const inputs = document.getElementsByTagName("input");
+const resPass = document.getElementById('resPass');
+const oldpass = document.getElementById("oldpass");
+const newpass = document.getElementById("newpass");
 
-let getProfile = () => {
+const getProfile = () => {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', '/php/functions.php?user', true);
 	xhr.onload = function(){
 		if (this.status == 200) {
-			prof = JSON.parse(this.responseText);
-			document.getElementById('email').value = prof[0].email;
-			document.getElementById('firstName').value = prof[0].firstName;
-			document.getElementById('lastName').value = prof[0].lastName;
-			document.getElementById('fullName').innerHTML = `${prof[0].firstName} ${prof[0].lastName}`;
+			let prof = JSON.parse(this.responseText);
 			document.getElementById('dropdownMenuLink').innerHTML = `${prof[0].firstName} <i class='far fa-user'></i>`;
+			try {
+				document.getElementById('email').value = prof[0].email;
+				document.getElementById('firstName').value = prof[0].firstName;
+				document.getElementById('lastName').value = prof[0].lastName;
+				document.getElementById('fullName').innerHTML = `${prof[0].firstName} ${prof[0].lastName}`;
+				document.getElementById('dropdownMenuLink').innerHTML = `${prof[0].firstName} <i class='far fa-user'></i>`;
+			} 
+			catch (error) {
+				
+			}
 		}
 	};
 	xhr.send();
@@ -39,6 +49,7 @@ for (let j = 0; j < 2; j++) {
 		}
 	});
 }
+
 for (let j = 0; j > 2; j++) {
 	inputs[j].addEventListener('keyup', (e) => {
 		if (e.keyCode === 13 || e.key === 13){
@@ -88,9 +99,6 @@ function changeCreds(){
 }
 
 function changePass(){
-	const resPass = document.getElementById('resPass');
-	const oldpass = document.getElementById("oldpass");
-	const newpass = document.getElementById("newpass");
 	if(validateForm(oldpass, newpass)){
 		loader.style.display = "block";
 		blurred.style.display = "block";
@@ -123,7 +131,7 @@ function changePass(){
 
 function deleteAccount(){
 	let xhr = new XMLHttpRequest();
-	xhr.open('POST', '../php/base.php', true);
+	xhr.open('POST', '../php/functions.php', true);
 	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 	let params = "delete=" + true;
 	xhr.onload = function(){
@@ -139,7 +147,7 @@ function deleteAccount(){
 	xhr.send(params);
 }
 
-let validateForm = (value1, value2) => {
+const validateForm = (value1, value2) => {
 	let form = [value1, value2];
 	let val = true;
 	for(let i = 0; i < form.length; i++){
@@ -152,7 +160,7 @@ let validateForm = (value1, value2) => {
 	return val;
 };
 
-let removeLoader = () => {
+const removeLoader = () => {
 	loader.style.display = "none";
 	blurred.style.display = "none";
 	$('body').removeClass('stop-scrolling');

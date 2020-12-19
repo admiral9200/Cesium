@@ -15,9 +15,13 @@ if (!isset($_SESSION['email'])) header('location: ../');
     <link rel="stylesheet" href="/bootstrap-4.5.0/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
-    <script async src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script defer src="index.js"></script>
-    <script defer src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script async src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script async src="index.js"></script>
+    <script async type="module">
+        import { getProfile } from '../js/modules.js';
+        (() => getProfile())();
+    </script>
 </head>
 <body>
     <div id="blurred" class="blurred"></div>
@@ -46,7 +50,7 @@ if (!isset($_SESSION['email'])) header('location: ../');
         <div class="row my-2">
             <div class="col-xl-3 col-12 text-center space">
                 <div class="sticky-top pt-4 pb-4">
-                    <img src="/images/trickst3r.png" class="mx-auto img-fluid rounded-circle" alt="avatar" />
+                    <img src="/images/trickst3r.png" class="mx-auto img-fluid rounded-circle" alt="avatar"/>
                     <h4 id="fullName" class="my-4"></h4>
                 </div>
             </div>
@@ -143,8 +147,8 @@ if (!isset($_SESSION['email'])) header('location: ../');
         </div>
     </div>
     <!-- Newsletter -->
-    <?php echo file_get_contents("/views/newsletter.html"); ?>
+    <?php echo file_get_contents("../views/newsletter.html"); ?>
     <!-- Site footer -->
-    <?php echo file_get_contents("/views/footer.html"); ?>
+    <?php echo file_get_contents("../views/footer.html"); ?>
 </body>
 </html>

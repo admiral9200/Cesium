@@ -1,12 +1,12 @@
-let loader = document.getElementById("loader");
-let blurred = document.getElementById("blurred");
-let orderAgainBtn = document.getElementsByClassName('orderAgain');
-let falseMsg = document.getElementById('false');
+const loader = document.getElementById("loader");
+const blurred = document.getElementById("blurred");
+const orderAgainBtn = document.getElementsByClassName('orderAgain');
+const falseMsg = document.getElementById('false');
 
 //Check if there is address stored in db
 const addressHandler = () => {
 	let xhr = new XMLHttpRequest();
-	xhr.open('GET', 'address.php?q', true);
+	xhr.open('GET', 'addressHandler.php?q', true);
 	xhr.onload = function(){
 		if (this.status == 200) {
 			$('#home').fadeOut(200, () => {
@@ -57,7 +57,7 @@ const addressHandler = () => {
 //fetch address in address menu
 const fetchAddress = () => {
 	let xhr = new XMLHttpRequest();
-	xhr.open('GET', 'address.php?f', true);
+	xhr.open('GET', 'addressHandler.php?f', true);
 	xhr.onload = function(){
 		if (this.status == 200) {
 			$('#addresses').fadeOut(300, () => {
@@ -132,7 +132,7 @@ function addAddress(){
 		blurred.style.display = "block";
 		$('body').addClass('stop-scrolling');
 		let xhr = new XMLHttpRequest();
-		xhr.open('POST', 'address.php', true);
+		xhr.open('POST', 'addressHandler.php', true);
 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		let params = "address=" + address.value + "&state=" + state.value;
 		xhr.onload = function(){
@@ -160,7 +160,7 @@ const deleteAddress = (address) => {
 	blurred.style.display = "block";
 	$('body').addClass('stop-scrolling');
 	var xhr = new XMLHttpRequest();
-	xhr.open('POST', 'address.php', true);
+	xhr.open('POST', 'addressHandler.php', true);
 	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 	let param = "d=" + address;
 	xhr.onreadystatechange = function(){

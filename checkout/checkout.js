@@ -1,21 +1,7 @@
-let getProfile = () => {
-	let xhr = new XMLHttpRequest();
-	xhr.open('GET', '/php/functions.php?user', true);
-	xhr.onload = function(){
-		if (this.status == 200) {
-			prof = JSON.parse(this.responseText);
-			document.getElementById('dropdownMenuLink').innerHTML = `${prof[0].firstName} <i class='far fa-user'></i>`;
-		}
-	};
-	xhr.send();
-};
-
-(() => getProfile())();
-
-let doorname = document.getElementById('doorname');
-let floor = document.getElementById('floor');
-let loader = document.getElementById("loader");
-let blurred = document.getElementById("blurred");
+const doorname = document.getElementById('doorname');
+const floor = document.getElementById('floor');
+const loader = document.getElementById("loader");
+const blurred = document.getElementById("blurred");
 
 document.getElementById('checkout').addEventListener('click', function(){
 	if (isValidatedCheckout()){
@@ -32,17 +18,16 @@ document.getElementById('checkout').addEventListener('click', function(){
 let input = [doorname, floor];
 for(let i = 0; i < input.length; i++){
 	input[i].addEventListener('keyup', function(){
-		this.closest(".group").querySelector('.text-danger').style.display = 'none';
+		this.closest("#input").querySelector('.text-danger').style.display = 'none';
 		this.classList.remove("wrong");
 		if (this.value == '') {
-			this.closest(".group").querySelector('.text-danger').style.display = 'block';
+			this.closest("#input").querySelector('.text-danger').style.display = 'block';
 			this.classList.add("wrong");
-			document.getElementById('resReg').innerHTML = "";
 		}
 	});
 }
 
-let isValidatedCheckout = () => {
+const isValidatedCheckout = () => {
 	let val = true;
 	let orderAttr = [doorname, floor];
 	let payment = document.querySelectorAll('input[name="payment"]:checked');
@@ -61,7 +46,7 @@ let isValidatedCheckout = () => {
 	return val;
 };
 
-function sendOrder(submit, doorname, floor, phone, comment, payment){
+let sendOrder = (submit, doorname, floor, phone, comment, payment) => {
 	loader.style.display = "block";
 	blurred.style.display = "block";
 	$('body').addClass('stop-scrolling');
@@ -71,10 +56,10 @@ function sendOrder(submit, doorname, floor, phone, comment, payment){
 	let params = "checkout=" + submit + "&doorname=" + doorname + "&floor=" + floor + "&phone=" + phone + "&comment=" + comment + "&payment=" + payment;
 	xhr.onload = function(){
 		if(this.status == 200){
-			if(this.responseText == true){
+			if(this.responseText == 1){
 				location.href = "success.php";
 			}
-			else if(this.responseText == false || this.responseText == ""){
+			else if(this.responseText == 0 || this.responseText == ""){
 				document.getElementById('false').classList.add("my-2");
 				document.getElementById('false').innerHTML = "<div class='alert alert-danger alert-dismissible fade show'>" +
                 													"<button type='button' class='close' data-dismiss='alert'>&times;</button>Κάτι πήγε λάθος. Δοκίμασε ξανά." +
@@ -86,4 +71,4 @@ function sendOrder(submit, doorname, floor, phone, comment, payment){
 		}
 	}
 	xhr.send(params);
-}
+};

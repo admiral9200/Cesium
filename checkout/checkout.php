@@ -2,7 +2,7 @@
 session_start();
 if (!isset($_SESSION['email'])) header("location: /");
 date_default_timezone_set('Europe/Athens');
-include("/php/db_connect.php");
+include("../php/db_connect.php");
 //Paypal Integration not working on localhost
 /* if(isset($_POST['payment']) == "paypal"){
     header("location: payment.php");
@@ -29,11 +29,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['checkout'])){
             $sqlClearCart = "DELETE FROM cc_cart WHERE email = ?";
             $stmtClearCart = $pdo -> prepare($sqlClearCart);
             $stmtClearCart -> execute([$_SESSION['email']]);
+            $_SESSION['isCartEmpty'] == 0;
         }
 }
 else if($_SERVER['REQUEST_METHOD'] === 'GET'){
-    $res = fetchOrderDetails();
-    echo $res;
+    echo fetchOrderDetails();
 }
 else{
     echo false;
@@ -48,26 +48,46 @@ function checkout($id, $doorname, $floor, $phone, $comment){
     $stmtChekoutInfo -> execute([$id, $_SESSION['email'], $doorname, $floor, $phone, $comment, $date, $time]);
     //UPDATE ORDERS OF USERS IN HOME PAGE... send cart values to orderBackendPanel with id from checkout and keep checkout as it is. get order together with same id (checkout, order)
     //cart fetch
-    $sqlFetchCart = "SELECT email, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_cart WHERE email = ?";
+    $sqlFetchCart = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_cart WHERE email = ?";
     $stmtFetchCart = $pdo -> prepare($sqlFetchCart);
     $stmtFetchCart -> execute([$_SESSION['email']]);
     while($rowInsertToBackend = $stmtFetchCart -> fetch()){
-        $coffee = $rowInsertToBackend['coffee'];
-        $sugar = $rowInsertToBackend['sugar'];
-        $sugarType = $rowInsertToBackend['sugarType'];
-        $milk = $rowInsertToBackend['milk'];
-        $cinnamon = $rowInsertToBackend['cinnamon'];
-        $choco = $rowInsertToBackend['choco'];
-        $price = $rowInsertToBackend['price'];
-        $qty = $rowInsertToBackend['qty'];
         //Insert to Backend Panel for process order
-        $sqlInsert = "INSERT INTO cc_ordersBackendPanel (id, email, date, time, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)";
+        $sqlInsert = "INSERT INTO cc_ordersBackendPanel (id, email, date, time, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty) 
+                        VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)";
         $stmtInsertToBackend = $pdo -> prepare($sqlInsert);
-        $stmtInsertToBackend -> execute([$id, $_SESSION['email'], $date, $time, $coffee, $sugar, $sugarType, $milk, $cinnamon, $choco, $price, $qty]);
+        $stmtInsertToBackend -> execute([
+                                            $id, 
+                                            $_SESSION['email'], 
+                                            $date, 
+                                            $time, 
+                                            $rowInsertToBackend['coffee'], 
+                                            $rowInsertToBackend['sugar'], 
+                                            $rowInsertToBackend['sugarType'], 
+                                            $rowInsertToBackend['milk'], 
+                                            $rowInsertToBackend['cinnamon'], 
+                                            $rowInsertToBackend['choco'], 
+                                            $rowInsertToBackend['price'], 
+                                            $rowInsertToBackend['qty']
+                                        ]);
         //Insert to Users home.php
-        $sqlInsertToUser = "INSERT INTO cc_orders (id, email, date, time, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty) VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)";
+        $sqlInsertToUser = "INSERT INTO cc_orders (id, email, date, time, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty)
+                             VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)";
         $stmtInsertToUser = $pdo -> prepare($sqlInsertToUser);
-        $stmtInsertToUser -> execute([$id, $_SESSION['email'], $date, $time, $coffee, $sugar, $sugarType, $milk, $cinnamon, $choco, $price, $qty]);
+        $stmtInsertToUser -> execute([  
+                                        $id, 
+                                        $_SESSION['email'], 
+                                        $date, 
+                                        $time, 
+                                        $rowInsertToBackend['coffee'], 
+                                        $rowInsertToBackend['sugar'], 
+                                        $rowInsertToBackend['sugarType'], 
+                                        $rowInsertToBackend['milk'], 
+                                        $rowInsertToBackend['cinnamon'], 
+                                        $rowInsertToBackend['choco'], 
+                                        $rowInsertToBackend['price'], 
+                                        $rowInsertToBackend['qty']
+                                    ]);
     }
     if ($stmtFetchCart && $stmtChekoutInfo && $stmtInsertToBackend && $stmtInsertToUser) {
         $_SESSION['success'] = true;

@@ -1,9 +1,5 @@
-import { getProfile } from '../js/functions.js';
-
 let loader = document.getElementById("loader");
 let blurred = document.getElementById("blurred");
-
-(() => getProfile())();
 
 $(document).ready(function () {
 	$("#cart").load("view_cart.php");
@@ -73,7 +69,7 @@ function getValues(code){
 	}
 }
 
-let addCoffeeToCart = (code, sugar, sugarType, milk, cinnamon, choco) => {
+const addCoffeeToCart = (code, sugar, sugarType, milk, cinnamon, choco) => {
 	loader.style.display = "block";
 	blurred.style.display = "block";
 	$('body').addClass('stop-scrolling');
@@ -98,7 +94,7 @@ let addCoffeeToCart = (code, sugar, sugarType, milk, cinnamon, choco) => {
 	xhr.send(params);
 };
 
-let resetForms = () => {
+const resetForms = () => {
 	$('form').each(function(){ 
 		this.reset();
 	});

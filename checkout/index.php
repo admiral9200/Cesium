@@ -1,12 +1,9 @@
 <?php
 session_start();
 include("../php/db_connect.php");
-$email = $_SESSION['email'];
 if (!isset($_SESSION['email'])) header("location: /");
-$sqlCheckIfCartIsEmpty = "SELECT email FROM cc_cart WHERE email = ?";
-$isCartEmpty = $pdo -> prepare($sqlCheckIfCartIsEmpty);
-$isCartEmpty -> execute([$email]);
-if ($isCartEmpty -> rowCount() == 0) header("location: ../order/");
+if ($_SESSION['addressExists'] == 0) header("location: ../home/");
+if ($_SESSION['isCartEmpty'] == 0) header("location: ../order/");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,9 +18,13 @@ if ($isCartEmpty -> rowCount() == 0) header("location: ../order/");
     <link rel="stylesheet" href="/bootstrap-4.5.0/css/bootstrap.min.css">
     <link rel="icon" type="image/png" href="/images/chip_coffee.png" size="20x20">
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
-    <script async src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script defer src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
-    <script defer src="checkout.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script async src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script async src="checkout.js"></script>
+    <script async type="module">
+        import { getProfile } from '../js/modules.js';
+        (() => getProfile())();
+    </script>
 </head>
 <body>
     <div id="blurred" class="blurred"></div>
@@ -52,14 +53,14 @@ if ($isCartEmpty -> rowCount() == 0) header("location: ../order/");
             <div class="col-xl-4 col-md-12 col-12 box p-xl-5 p-md-5">
                 <h4 class="mb-2">1. Στοιχεία Παραγγελίας</h4>
                 <div class="row">
-                    <div class="col-xl-8 col-12">
+                    <div class="col-xl-8 col-12" id="input">
                         <label for="doorbell">Όνομα στο κουδούνι *</label>
                         <input type="text" class="form-control" id="doorname" required>
                         <div class="text-danger">
                                 Πρέπει να συμπληρώσεις όνομα στο κουδούνι.
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-4" id="input">
                         <label for="floor">Όροφος *</label>
                         <input type="number" class="form-control" id="floor" required>
                         <div class="text-danger">
@@ -98,7 +99,7 @@ if ($isCartEmpty -> rowCount() == 0) header("location: ../order/");
                     <?php
                     $cart_query = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_cart WHERE email = ?";
                     $stmtCart = $pdo -> prepare($cart_query);
-                    $stmtCart -> execute([$email]);
+                    $stmtCart -> execute([$_SESSION['email']]);
                     $totalCost = 0;
                     while($rowCart = $stmtCart -> fetch()){
                         $coffee = $rowCart['coffee'];

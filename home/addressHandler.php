@@ -49,7 +49,7 @@ function deleteAddress(){
     $stmtDeleteAddress = $pdo -> prepare($sqlDeleteAddress);
     $stmtDeleteAddress -> execute([$_POST['d'], $_SESSION['email']]);
     if ($stmtDeleteAddress) {
-        unset($_SESSION['address']);
+        unset($_SESSION['addressExists']);
         return "<div class='alert alert-success alert-dismissible fade show'>
                     <button type='button' class='close' data-dismiss='alert'>&times;</button>Η διεύθυνση διαγράφηκε.
                 </div>";
@@ -80,7 +80,6 @@ function insertAddress(){
             $stmtInsertAddress = $pdo -> prepare($sqlInsertAddress);
             $stmtInsertAddress -> execute([$_SESSION['email'], $_POST['address'], $_POST['state']]);
             if ($stmtInsertAddress) {
-                $_SESSION['address'] = true;
                 return true;
             }
             else return "<div class='alert alert-danger alert-dismissible fade show'>
@@ -92,13 +91,12 @@ function insertAddress(){
 
 function fetchAddress(){
     global $pdo;
-    $sqlFetchAddress = "SELECT address, state FROM cc_address";
+    $sqlFetchAddress = "SELECT address, state FROM cc_address WHERE email = ?";
     $stmtAddress = $pdo -> prepare($sqlFetchAddress); 
     $stmtAddress -> execute([$_SESSION['email']]);
     if ($stmtAddress) {
         $addresses = $stmtAddress -> fetchAll();
-        $addresses = json_encode($addresses);
-        return $addresses;
+        return json_encode($addresses);
     }
     else{
         return "<div class='alert alert-danger alert-dismissible fade show'>
@@ -113,8 +111,15 @@ function countAddresses(){
         $sqlFetchAddress = "SELECT COUNT(*) as count FROM cc_address WHERE email = ?";
         $stmtAddress = $pdo -> prepare($sqlFetchAddress);
         $stmtAddress -> execute([$_SESSION['email']]);
-        $numAddress = $stmtAddress -> fetch();
-        return (int)$numAddress['count'];
+        if ($stmtAddress){
+            $numAddress = $stmtAddress -> fetch();
+            $_SESSION['addressExists'] = (int)$numAddress['count'];
+            return (int)$numAddress['count'];
+        }
+        else {
+            $_SESSION['addressExists'] = 0;
+            return false;
+        }
     }
     catch (PDOException $e){
         return false;

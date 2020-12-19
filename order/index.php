@@ -3,7 +3,7 @@ session_start();
 include("../php/db_connect.php");
 $email = $_SESSION['email'];
 if (!isset($_SESSION['email'])) header('location: /');
-if (!isset($_SESSION['address'])) header('location: /home/');
+if ($_SESSION['addressExists'] == 0) header("location: ../home/");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +20,11 @@ if (!isset($_SESSION['address'])) header('location: /home/');
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script async src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
-    <script async type="module" src="order.js"></script>
+    <script async src="order.js"></script>
+    <script async type="module">
+        import { getProfile } from '../js/modules.js';
+        (() => getProfile())();
+    </script>
 </head>
 <body>
     <div id="blurred" class="blurred"></div>

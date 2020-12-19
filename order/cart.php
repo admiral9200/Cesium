@@ -3,28 +3,31 @@ session_start();
 if (!isset($_SESSION['email'])) header('location: /');
 $email = $_SESSION['email'];
 include("../php/db_connect.php");
-//Manage quantity. Increase or Decrease
-if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['qty'])){
-    $counter = $_POST['counter'];
-    $resQuantity = manageQuantity($counter);
-    echo $resQuantity;
-}
-else if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['sugar']) && isset($_POST['form'])){ //Cart
-    $res = InsertCoffeeToCart($_POST['form'], $_POST['sugar'], $_POST['sugarType'], $_POST['milk'], $_POST['cinnamon'], $_POST['choco']);
-    echo $res;
-}
-else if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['count']) && is_numeric($_POST['count'])){ //Remove One coffee from cart
-    $countToDelete = $_POST['count'];
-    $resRemove = removeCoffeeFromCart($countToDelete);
-    echo $resRemove;
-}
-else if($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['orderagain'])){
-    echo orderAgain();
-}
-else{
-    echo false;
-}
 
+
+switch ($_SERVER['REQUEST_METHOD']) {
+    case 'POST':
+        if(isset($_POST['qty'])){ //Manage quantity. Increase or Decrease
+            $counter = $_POST['counter'];
+            echo manageQuantity($counter);
+        }
+        else if(isset($_POST['sugar']) && isset($_POST['form'])){ //Insert to Cart
+            echo InsertCoffeeToCart($_POST['form'], $_POST['sugar'], $_POST['sugarType'], $_POST['milk'], $_POST['cinnamon'], $_POST['choco']);
+        }
+        else if(isset($_POST['count']) && is_numeric($_POST['count'])){ //Remove One coffee from cart
+            $countToDelete = $_POST['count'];
+            echo removeCoffeeFromCart($countToDelete);
+        }
+        else if(!empty($_POST['orderagain'])){
+            echo orderAgain();
+        }
+        break;
+    case 'GET':
+        break;
+    default:
+        echo false;
+        break;
+}
 
 function InsertCoffeeToCart($code, $sugar, $sugarType, $milk, $cinnamon, $choco){
     global $pdo, $email;
@@ -63,6 +66,7 @@ function InsertCoffeeToCart($code, $sugar, $sugarType, $milk, $cinnamon, $choco)
         $stmtCartInsert = $pdo -> prepare($cart_query);
         $stmtCartInsert -> execute([$email, $count, $code, $name, $sugar, $sugarType, $milk, $cinnamon, $choco, $price]);
         if($stmtCartInsert){
+            $_SESSION['isCartEmpty'] = true;
             return true;
         }
         else{
@@ -107,6 +111,7 @@ function removeCoffeeFromCart($countToDelete){
     $stmtDeleteCoffee = $pdo -> prepare($deleteQuery);
     $stmtDeleteCoffee -> execute([$email, $countToDelete]);
     if ($stmtDeleteCoffee) {
+        isCartEmpty();
         return true;
     }
     else{
@@ -133,7 +138,10 @@ function orderAgain(){
             $stmtCartInsert = $pdo -> prepare($cart_query);
             $stmtCartInsert -> execute([$_SESSION['email'], $count, $order['coffee'], $order['sugar'], $order['sugarType'], $order['milk'], $order['cinnamon'], $order['choco'], $order['price'], $order['qty']]);
         }
-        if ($stmtCartInsert) return true;
+        if ($stmtCartInsert) {
+            $_SESSION['isCartEmpty'] = true;
+            return true;
+        }
     }
     return false;
 }
@@ -143,10 +151,37 @@ function clearCart(){
     $sqlClearCart = "DELETE FROM cc_cart WHERE email = ?";
     $stmtClearCart = $pdo -> prepare($sqlClearCart);
     $stmtClearCart -> execute([$_SESSION['email']]);
-    if ($stmtClearCart) return true;
+    if ($stmtClearCart) {
+        $_SESSION['isCartEmpty'] = false;
+        return true;
+    }
     else return false;
 }
 
 function insertCoffeesToDB(){
     //To be used
+}
+
+function isCartEmpty(){
+    global $pdo;
+    try{
+        $sqlIsCartEmpty = "SELECT COUNT(*) as count FROM cc_cart WHERE email = ?";
+        $stmtIsCartEmpty = $pdo -> prepare($sqlIsCartEmpty);
+        $stmtIsCartEmpty -> execute([$_SESSION['email']]);
+        $numCart = $stmtIsCartEmpty -> fetch();
+        if ($stmtIsCartEmpty && $numCart > 0){
+            $_SESSION['isCartEmpty'] = true;
+            return true;
+        }
+        else if ($numCart == 0){
+            $_SESSION['isCartEmpty'] = false;
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    catch (PDOException $e){
+        return false;
+    }
 }

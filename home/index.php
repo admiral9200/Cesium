@@ -1,12 +1,6 @@
 <?php
 session_start();
 if (!isset($_SESSION['email'])) header("location: /");
-include("../php/db_connect.php");
-$sqlCheckIfAddressExists = "SELECT COUNT(*) FROM cc_address WHERE email = ?";
-$stmtAddress = $pdo -> prepare($sqlCheckIfAddressExists);
-$stmtAddress -> execute([$_SESSION['email']]);
-$checkAddress = $stmtAddress -> fetch();
-if($checkAddress > 0) $_SESSION['address'] = true;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -98,6 +92,7 @@ if($checkAddress > 0) $_SESSION['address'] = true;
                         </div>
                     </li>
                     <?php
+                    include("../php/db_connect.php");
                     $sqlOrders = "SELECT id, date, time FROM cc_orders WHERE email = ? ORDER BY id DESC";
                     $stmtOrders = $pdo -> prepare($sqlOrders);
                     $stmtOrders -> execute([$_SESSION['email']]);

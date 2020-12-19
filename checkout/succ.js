@@ -1,5 +1,3 @@
-import { getProfile } from '../js/functions';
-
 let getOrderDetails = () => {
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', 'checkout.php', true);
@@ -16,7 +14,4 @@ let getOrderDetails = () => {
 	xhr.send();
 };
 
-(() => {
-	getOrderDetails();
-	getProfile();
-})();
+(() => getOrderDetails())();
