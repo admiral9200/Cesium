@@ -104,4 +104,3 @@ if (($stmtCheckout->rowCount() > 0) && ($stmtOrdersExists->rowCount() > 0)) {
 else {
 	echo "<h1>All good! No new orders</h1>";
 }
-?>

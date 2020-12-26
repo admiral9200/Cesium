@@ -28,8 +28,6 @@ const getProfile = () => {
 	xhr.send();
 };
 
-(() => getProfile())();
-
 //check for empty forms
 for (let i = 0; i < inputs.length; i++) {
 	inputs[i].addEventListener('keyup', () => {

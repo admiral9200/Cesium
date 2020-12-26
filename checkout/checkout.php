@@ -43,9 +43,6 @@ function checkout($id, $doorname, $floor, $phone, $comment){
     global $pdo;
     $date = date("d.m.y");
     $time = date("H:i:s");
-    $checkoutInfo = "INSERT INTO cc_checkout (id, email, doorname, floor, phone, comment, date, time) VALUES(? , ? , ? , ? , ? , ? , ? , ?)";
-    $stmtChekoutInfo = $pdo -> prepare($checkoutInfo);
-    $stmtChekoutInfo -> execute([$id, $_SESSION['email'], $doorname, $floor, $phone, $comment, $date, $time]);
     //UPDATE ORDERS OF USERS IN HOME PAGE... send cart values to orderBackendPanel with id from checkout and keep checkout as it is. get order together with same id (checkout, order)
     //cart fetch
     $sqlFetchCart = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_cart WHERE email = ?";
@@ -89,7 +86,7 @@ function checkout($id, $doorname, $floor, $phone, $comment){
                                         $rowInsertToBackend['qty']
                                     ]);
     }
-    if ($stmtFetchCart && $stmtChekoutInfo && $stmtInsertToBackend && $stmtInsertToUser) {
+    if ($stmtFetchCart && $stmtInsertToBackend && $stmtInsertToUser) {
         $_SESSION['success'] = true;
         return true;
     }

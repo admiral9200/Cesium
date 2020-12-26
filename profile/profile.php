@@ -12,6 +12,7 @@ else if(!empty($_POST['firstName']) && !empty($_POST['lastName'])){
     $firstName = $_POST['firstName'];
     $lastName = $_POST['lastName'];
     echo changeCreds($firstName, $lastName);
+    $_SESSION['firstName'] = $_POST['firstName'];
 }
 
 function changePass($oldpass, $newpass){

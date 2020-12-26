@@ -5,7 +5,7 @@ export const getProfile = () => {
 	xhr.onload = function(){
 		if (this.status == 200) {
 			let prof = JSON.parse(this.responseText);
-			document.getElementById('dropdownMenuLink').innerHTML = `${prof[0].firstName} <i class='far fa-user'></i>`;
+			document.getElementById('dropdownMenuLink').innerHTML = `${prof[0].firstName} `;
 			try {
 				document.getElementById('wlcm').innerHTML += prof[0].firstName;
 			} 

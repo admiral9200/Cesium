@@ -19,10 +19,6 @@ if (!isset($_SESSION['email'])) header("location: /");
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script async src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
     <script async src="home.js"></script>
-    <script async type="module">
-        import { getProfile } from '../js/modules.js';
-        (() => getProfile())();
-    </script>
 </head>
 <body>
     <div id="blurred" class="blurred"></div>
@@ -33,7 +29,7 @@ if (!isset($_SESSION['email'])) header("location: /");
                 <img src="/images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
             <div class="dropdown">
-                <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i></a>
+                <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['firstName']; ?> <i class='far fa-user'></i></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                   <a class="dropdown-item" href="/profile/">Ο λογαριασμός μου</a>
                   <div class="dropdown-divider"></div>
@@ -43,13 +39,30 @@ if (!isset($_SESSION['email'])) header("location: /");
         </nav>
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
-                <h1 id="wlcm" class="mb-xl-5">Καλωσήρθες, </h1>
+                <h1 id="wlcm" class="mb-xl-5">Καλωσήρθες, <?php echo $_SESSION['firstName']; ?></h1>
                 <div id="home" class="lds-dual-ring-sm d-flex justify-content-center"></div>
             </div>
         </div>
     </div>
     <div class="container">
         <div id='false' class="m-3"></div>
+        <div class="row">
+            <div class="group col-xl-5 col-12 mt-2 m-xl-0">   
+                <input id="address" type="text" class="input form-control form-control-lg w-100" placeholder="Πρόσθεσε εδώ την διεύθυνσή σου" required>
+                <div class="text-danger">
+                    Πρέπει να συμπληρώσεις την διεύθυνσή σου.
+                </div>
+            </div>
+            <div class="group col-xl-5 col-12 mt-2 m-xl-0">
+                <input id="state" type="text" class="input form-control form-control-lg w-100" placeholder="Πρόσθεσε εδώ την περιοχή σου" required>
+                <div class="text-danger">
+                    Πρέπει να συμπληρώσεις την περιοχή σου.
+                </div>
+            </div>
+            <div class="group col-xl-2 col-12 mt-2 m-xl-0">
+                <button onclick="addAddress()" type="button" class="btn mainbtn btn-lg btn-block text-white">Προσθήκη</button>
+            </div>
+        </div>
         <h2 class="mb-2 mt-5">Οι διευθύνσεις μου</h2>
         <div class="col-12 px-xl-2 px-0" id="msg"></div>
         <div class="row">

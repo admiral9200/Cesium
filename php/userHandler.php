@@ -16,6 +16,7 @@ function loginUser(){
     if ($stmtUser -> rowCount() == 1 && password_verify($_POST['pass'], $rowUser['password'])){
         session_start();
         $_SESSION['email'] = $_POST['email'];
+        $_SESSION['firstName'] = $rowUser['firstName'];
         if(!empty($_POST['rmbrme']) && $_POST['rmbrme'] === true){
             //create cookies
         }

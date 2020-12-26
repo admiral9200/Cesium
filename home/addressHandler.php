@@ -69,29 +69,27 @@ function insertAddress(){
                     <button type='button' class='close' data-dismiss='alert'>&times;</button>Δεν είναι έγκυρο αυτό που συμπλήρωσες.
                 </div>";   
     }
+    else if (countAddresses() >= 3){
+        return "<div class='alert alert-danger alert-dismissible fade show'>
+                    <button type='button' class='close' data-dismiss='alert'>&times;</button>Δε μπορείτε να προσθέσετε άλλη διεύθυνση.
+                </div>";
+    }
     else{
-        if (countAddresses() >= 3){
-            return "<div class='alert alert-danger alert-dismissible fade show'>
-                        <button type='button' class='close' data-dismiss='alert'>&times;</button>Δε μπορείτε να προσθέσετε άλλη διεύθυνση.
+        $sqlInsertAddress = "INSERT INTO cc_address (email, address, state) VALUES (? , ? , ?)";
+        $stmtInsertAddress = $pdo -> prepare($sqlInsertAddress);
+        $stmtInsertAddress -> execute([$_SESSION['email'], $_POST['address'], $_POST['state']]);
+        if ($stmtInsertAddress) {
+            return true;
+        }
+        else return "<div class='alert alert-danger alert-dismissible fade show'>
+                        <button type='button' class='close' data-dismiss='alert'>&times;</button>Δεν προσθέθηκε η διεύθυνση. Προσπάθησε ξανά.
                     </div>";
-        }
-        else{
-            $sqlInsertAddress = "INSERT INTO cc_address (email, address, state) VALUES (? , ? , ?)";
-            $stmtInsertAddress = $pdo -> prepare($sqlInsertAddress);
-            $stmtInsertAddress -> execute([$_SESSION['email'], $_POST['address'], $_POST['state']]);
-            if ($stmtInsertAddress) {
-                return true;
-            }
-            else return "<div class='alert alert-danger alert-dismissible fade show'>
-                            <button type='button' class='close' data-dismiss='alert'>&times;</button>Δεν προσθέθηκε η διεύθυνση. Προσπάθησε ξανά.
-                        </div>";
-        }
     }
 }
 
 function fetchAddress(){
     global $pdo;
-    $sqlFetchAddress = "SELECT address, state FROM cc_address WHERE email = ?";
+    $sqlFetchAddress = "SELECT address, state, active FROM cc_address WHERE email = ?";
     $stmtAddress = $pdo -> prepare($sqlFetchAddress); 
     $stmtAddress -> execute([$_SESSION['email']]);
     if ($stmtAddress) {

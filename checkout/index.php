@@ -21,10 +21,6 @@ if ($_SESSION['isCartEmpty'] == 0) header("location: ../order/");
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script async src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
     <script async src="checkout.js"></script>
-    <script async type="module">
-        import { getProfile } from '../js/modules.js';
-        (() => getProfile())();
-    </script>
 </head>
 <body>
     <div id="blurred" class="blurred"></div>
@@ -35,7 +31,7 @@ if ($_SESSION['isCartEmpty'] == 0) header("location: ../order/");
                 <img src="/images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
             </a>
             <div class="dropdown">
-                <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i></a>
+                <a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['firstName']; ?> <i class='far fa-user'></i></a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" href="/profile/">Ο λογαριασμός μου</a>
                     <div class="dropdown-divider"></div>
