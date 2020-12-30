@@ -18,9 +18,9 @@ unset($_SESSION['success']);
     <link rel="icon" type="image/png" href="/images/chip_coffee.png" size="20x20">
     <link rel="stylesheet" href="/bootstrap-4.5.0/css/bootstrap.min.css">
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
-    <script async src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script defer src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
-    <script defer src="succ.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script async src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script async src="succ.js"></script>
 </head>
 <body>
     <div class="main">
