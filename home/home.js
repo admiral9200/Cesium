@@ -28,6 +28,8 @@ state.addEventListener('keyup', function(e){
 
 //Check if there is address stored in db
 const addressHandler = () => {
+	$("#address").val('');
+	$("#state").val('');
 	let xhr = new XMLHttpRequest();
 	xhr.open('GET', 'addressHandler.php?q', true);
 	xhr.onload = function(){
@@ -49,6 +51,7 @@ const addressHandler = () => {
 		}
 	};
 	xhr.send();
+	
 };
 
 //fetch address in address menu
@@ -62,18 +65,18 @@ const fetchAddress = () => {
 			if (addresses.length > 0) {
 				for (let i = 0; i < addresses.length; i++) {
 					address_list += "<li class='list-group-item m-0 border-0'>" +
-									"<div class='row d-flex justify-content-start align-items-center'>" +
-										"<div class='col-xl-3 col-6'>" +
-											`<h6 class='m-0'>${addresses[i].address}</h6>` +
+										"<div class='row d-flex justify-content-start align-items-center'>" +
+											"<div class='col-xl-3 col-6'>" +
+												`<h6 class='m-0'>${addresses[i].address}</h6>` +
+											"</div>" +
+											"<div class='col-xl-3 col-6'>" +
+												`<h6 class='m-0'>${addresses[i].state}</h6>` +
+											"</div>" +
+											"<div class='col-xl-2 col-12'>" +
+												`<button id='delete' class='btn btn-block btn-danger mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button' onclick='deleteAddress("${addresses[i].address}")'>Διαγραφή</button>` +
+											"</div>" +
 										"</div>" +
-										"<div class='col-xl-3 col-6'>" +
-											`<h6 class='m-0'>${addresses[i].state}</h6>` +
-										"</div>" +
-										"<div class='col-xl-2 col-12'>" +
-											`<button id='delete' class='btn btn-block btn-danger mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button' onclick='deleteAddress("${addresses[i].address}")'>Διαγραφή</button>` +
-										"</div>" +
-									"</div>" +
-								"</li>";
+									"</li>";
 					for (let k = 0; k <= orderAgainBtn.length; k++){
 						try {
 							orderAgainBtn[k].disabled = false;
@@ -101,15 +104,13 @@ const fetchAddress = () => {
 					}
 				}
 			}
-			$('#addresses').fadeOut(200, () => {
-					$('#addresses').removeClass('lds-dual-ring-sm-bl d-flex justify-content-center');
-					$("#addresses").html(address_list);
-					$('#addresses').fadeIn(200);
-			});
+			$('#addresses').fadeOut(200).removeClass('lds-dual-ring-sm-bl d-flex justify-content-center').html(address_list).fadeIn(200);
 		}
 	};
 	xhr.send();
 };
+
+const fetchOreers = async () => {};
 
 //Invoke functions at load
 (() => {

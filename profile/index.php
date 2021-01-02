@@ -64,7 +64,7 @@ if (!isset($_SESSION['email'])) header('location: ../');
                         <div class="text-danger">Πρέπει να συμπληρώσεις ένα όνομα</div>
                     </div>
                     <div class="col-xl-5 col-12">
-                        <label class="col-xl-5 col-form-label form-control-label pl-0">Επώνυμο</label>
+                        <label class="col-xl-5 col-form-label form-control-label pl-0" autocomplete="off">Επώνυμο</label>
                         <input class="form-control" type="text" id="lastName"/>
                         <div class="text-danger">Πρέπει να συμπληρώσεις ένα επίθετο</div>
                     </div>
