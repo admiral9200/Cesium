@@ -18,10 +18,6 @@ if (!isset($_SESSION['email'])) header('location: ../');
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script async src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
     <script async src="index.js"></script>
-    <script async type="module">
-        import { getProfile } from '../js/modules.js';
-        (() => getProfile())();
-    </script>
 </head>
 <body>
     <div id="blurred" class="blurred"></div>
