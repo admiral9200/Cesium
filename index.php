@@ -18,9 +18,9 @@ if (isset($_SESSION['email'])) header("location: /home/");
     <link rel="stylesheet" type="text/css" href="/css/form.css">
     <link rel="stylesheet" href="/bootstrap-4.5.0/css/bootstrap.min.css">
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
-    <script defer src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script defer src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
-    <script defer src="/js/index.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script async src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script async src="/js/index.js"></script>
 </head>
 <body>
     <div class="row main m-0 p-0">

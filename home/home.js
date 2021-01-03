@@ -3,38 +3,31 @@ const blurred = document.getElementById("blurred");
 const orderAgainBtn = document.getElementsByClassName('orderAgain');
 const address = document.getElementById('address');
 const state = document.getElementById('state');
+const input = [address, state];
 let falseMsg = document.getElementById('false');
 let addresses;
 
-address.addEventListener('keyup', function(e){
-	address.closest(".group").querySelector('.text-danger').style.display = 'none';
-	address.classList.remove("wrong");
-	if(address.value == "") {
-		address.closest(".group").querySelector('.text-danger').style.display = 'block';
-		address.classList.add("wrong");
-	}
-	if (e.keyCode === 13 || e.key === 13) addAddress();
-});
-
-state.addEventListener('keyup', function(e){
-	state.closest(".group").querySelector('.text-danger').style.display = 'none';
-	state.classList.remove("wrong");
-	if(state.value == "") {
-		state.closest(".group").querySelector('.text-danger').style.display = 'block';
-		state.classList.add("wrong");
-	}
-	if (e.keyCode === 13 || e.key === 13) addAddress();
-});
+for (let i = 0; i < input.length; i++) {
+	input[i].addEventListener('keyup', function(e){
+		input[i].closest(".group").querySelector('.text-danger').style.display = 'none';
+		input[i].classList.remove("wrong");
+		if(input[i].value == "") {
+			input[i].closest(".group").querySelector('.text-danger').style.display = 'block';
+			input[i].classList.add("wrong");
+		}
+		if (e.keyCode === 13 || e.key === 13) addAddress();
+	});
+}
 
 //Check if there is address stored in db
 const addressHandler = () => {
 	$("#address").val('');
 	$("#state").val('');
-	let xhr = new XMLHttpRequest();
+	const xhr = new XMLHttpRequest();
 	xhr.open('GET', 'addressHandler.php?q', true);
 	xhr.onload = function(){
 		if (this.status == 200) {
-			$('#home').fadeOut(200, () => {
+			$('#home').fadeOut(300, () => {
 				$('#home').removeClass('lds-dual-ring-sm d-flex justify-content-center');
 				if (this.responseText == 0) {
 					$("#home").html("<h2>Έχεις όρεξη για καφέ; Πρόσθεσε τη διεύθυνση σου και παράγγειλε!</h2>\
@@ -46,7 +39,7 @@ const addressHandler = () => {
 				else{
 					falseMsg.innerHTML = this.responseText;
 				}
-				$('#home').fadeIn(200);
+				$('#home').fadeIn(300);
 			});
 		}
 	};
@@ -57,7 +50,7 @@ const addressHandler = () => {
 //fetch address in address menu
 const fetchAddress = () => {
 	let address_list = '';
-	let xhr = new XMLHttpRequest();
+	const xhr = new XMLHttpRequest();
 	xhr.open('GET', 'addressHandler.php?f', true);
 	xhr.onload = function(){
 		if (this.status == 200) {
@@ -104,7 +97,9 @@ const fetchAddress = () => {
 					}
 				}
 			}
-			$('#addresses').fadeOut(200).removeClass('lds-dual-ring-sm-bl d-flex justify-content-center').html(address_list).fadeIn(200);
+			$('#addresses').fadeOut(300, function(){
+				$(this).removeClass('lds-dual-ring-sm-bl d-flex justify-content-center').html(address_list).fadeIn(300);
+			});
 		}
 	};
 	xhr.send();
@@ -123,7 +118,7 @@ const order = () => location.href = "/order/";
 
 //add address to db
 const addAddress = () => {
-	if(isAddressValidated() && noDuplicateAddress()){
+	if(isAddressValidated(input) && noDuplicateAddress()){
 		loader.style.display = "block";
 		blurred.style.display = "block";
 		$('body').addClass('stop-scrolling');
@@ -161,13 +156,13 @@ const deleteAddress = (address) => {
 	let param = "d=" + address;
 	xhr.onreadystatechange = function(){
 		if(this.status == 200){
+			$("#msg").html(this.responseText);
 			addressHandler();
 			fetchAddress();
-			$("#msg").html(this.responseText);
 			reset();
 		}
 		else{
-			document.getElementById('false').innerHTML = this.responseText;
+			$("#false").html(this.responseText);
 			addressHandler();
 			fetchAddress();
 			reset();
@@ -201,8 +196,7 @@ const orderAgain = (code) => {
 };
 
 //validate inputs with regex
-const isAddressValidated = () => {
-	let form = [address, state];
+const isAddressValidated = (form) => {
 	let val = true;
 	for(let i = 0; i < form.length; i++){
 		if(form[i].value == ""){

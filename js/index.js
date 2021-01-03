@@ -10,6 +10,7 @@ const emailR = document.getElementById('emailR');
 const firstName = document.getElementById('firstName');
 const lastName = document.getElementById('lastName');
 const password = document.getElementById('password');
+const input = [firstName, lastName];
 //Warn Texts
 let warnTexts = document.getElementsByClassName('text-danger');
 //Newsletter
@@ -30,8 +31,8 @@ $("#signin-tab").click(function(){
 	});
 });
 
-email.addEventListener('keyup', function(){
-	if(validateEmail(email.value)){
+email.addEventListener('input', function(){
+	if(emailValidated(email.value)){
 		$("#email").next().css({"display": "none"});
 		email.classList.remove("wrong");
 	}
@@ -42,7 +43,7 @@ email.addEventListener('keyup', function(){
 	}
 });	
 
-pass.addEventListener('keyup', function() {
+pass.addEventListener('input', function() {
 	$("#pass").next().css({"display": "none"});
 	pass.classList.remove("wrong");
 	if(pass.value == "") {
@@ -52,8 +53,8 @@ pass.addEventListener('keyup', function() {
 });
 
 //Email Register validate
-emailR.addEventListener('keyup', function() {
-	if(validateEmail(emailR.value)) {
+emailR.addEventListener('input', function() {
+	if(emailValidated(emailR.value)) {
 		emailR.closest(".group").querySelector('.text-danger').style.display = 'none';
 		emailR.classList.remove("wrong");
 	}
@@ -64,7 +65,7 @@ emailR.addEventListener('keyup', function() {
 });
 
 //Password Register validate
-password.addEventListener('keyup', function() {
+password.addEventListener('input', function() {
 	$("#password").next().css({"display": "none"});
 	password.classList.remove("wrong");
 	if(password.value.length === 0) {
@@ -78,15 +79,14 @@ password.addEventListener('keyup', function() {
 	}
 });
 
-let input = [firstName, lastName];
 for(let i = 0; i < input.length; i++){
-	input[i].addEventListener('keyup', function(){
+	input[i].addEventListener('input', function(){
 		this.closest(".group").querySelector('.text-danger').style.display = 'none';
 		this.classList.remove("wrong");
 		if (this.value == '') {
 			this.closest(".group").querySelector('.text-danger').style.display = 'block';
 			this.classList.add("wrong");
-			document.getElementById('resReg').innerHTML = "";
+			$("#resReg").empty();
 		}
 	});
 }
@@ -94,7 +94,7 @@ for(let i = 0; i < input.length; i++){
 function loginUser(e){
 	e.preventDefault();
 	let inputLogin = [email, pass];
-	if(isFormEmpty(inputLogin) && validateEmail(email.value)){
+	if(formNotEmpty(inputLogin) && emailValidated(email.value)){
 		document.getElementById('res').innerHTML = "";
 		document.getElementById('res').classList.add('lds-dual-ring');
 		let xhr = new XMLHttpRequest();
@@ -108,8 +108,7 @@ function loginUser(e){
 					window.location.href = "./home/";
 				}
 				else{
-					document.getElementById('res').classList.remove('lds-dual-ring');
-					document.getElementById('res').innerHTML = this.responseText;
+					$("#res").removeClass('lds-dual-ring').html(this.responseText);
 				}
 			}
 		};
@@ -121,7 +120,7 @@ function registerUser(e){
 	e.preventDefault();
 	document.getElementById('resReg').innerHTML = "";
 	let inputRegister = [emailR, firstName, lastName, password];
-	if(isFormEmpty(inputRegister) && validateEmail(emailR.value)){
+	if(formNotEmpty(inputRegister) && emailValidated(emailR.value)){
 		document.getElementById('resReg').classList.add('lds-dual-ring');
 		let xhr = new XMLHttpRequest();
 		let params = "email=" + emailR.value + "&firstName=" + firstName.value + "&lastName=" + lastName.value + "&pass=" + password.value;
@@ -129,17 +128,15 @@ function registerUser(e){
 		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 		xhr.onload = function(){
 			if(this.status == 200){
-				if(this.responseText == true){
+				if(this.responseText == 1){
 					document.getElementById('resReg').innerHTML = "";
 					window.location.href = "./php/success.php";
 				}
-				else if(this.responseText == false){
-					document.getElementById('resReg').classList.remove('lds-dual-ring');
-					document.getElementById('resReg').innerHTML = "<p class='text-center mt-3' style='color: #dc3545 !important'>Κάτι πήγε λάθος, δοκίμασε ξανά!</p>";
+				else if(this.responseText == 0){
+					$("#resReg").removeClass("lds-dual-ring").html("<p class='text-center mt-3' style='color: #dc3545 !important'>Κάτι πήγε λάθος, δοκίμασε ξανά!</p>");
 				}
 				else{
-					document.getElementById('resReg').classList.remove('lds-dual-ring');
-					document.getElementById('resReg').innerHTML = this.responseText;
+					$("#resReg").removeClass('lds-dual-ring').html(this.responseText);
 				}
 			}
 		};
@@ -147,13 +144,13 @@ function registerUser(e){
 	}
 }
 
-let validateEmail = (email) => {
+let emailValidated = (email) => {
 	//General Email Regex (RFC 5322 Official Standard)
 	const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	return re.test(email);
 };
 
-let isFormEmpty = (input) => {
+let formNotEmpty = (input) => {
 	let val = true;
 	for(let i = 0; i < input.length; i++){
 		if(input[i].value == ""){
