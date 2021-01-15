@@ -49,7 +49,7 @@ function checkout($id, $doorname, $floor, $phone, $comment){
     $stmtFetchCart = $pdo -> prepare($sqlFetchCart);
     $stmtFetchCart -> execute([$_SESSION['email']]);
     while($rowInsertToBackend = $stmtFetchCart -> fetch()){
-        //Insert to Backend Panel for process order
+        //Insert to Backend Panel for order process
         $sqlInsert = "INSERT INTO cc_ordersBackendPanel (id, email, date, time, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty) 
                         VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)";
         $stmtInsertToBackend = $pdo -> prepare($sqlInsert);
@@ -67,24 +67,24 @@ function checkout($id, $doorname, $floor, $phone, $comment){
                                             $rowInsertToBackend['price'], 
                                             $rowInsertToBackend['qty']
                                         ]);
-        //Insert to Users home.php
-        $sqlInsertToUser = "INSERT INTO cc_orders (id, email, date, time, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty)
-                             VALUES (? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)";
+
+        $sqlInsertToUser = "INSERT INTO cc_orders (id, email, date, time) VALUES (? , ? , ? , ?)";
         $stmtInsertToUser = $pdo -> prepare($sqlInsertToUser);
-        $stmtInsertToUser -> execute([  
-                                        $id, 
-                                        $_SESSION['email'], 
-                                        $date, 
-                                        $time, 
-                                        $rowInsertToBackend['coffee'], 
-                                        $rowInsertToBackend['sugar'], 
-                                        $rowInsertToBackend['sugarType'], 
-                                        $rowInsertToBackend['milk'], 
-                                        $rowInsertToBackend['cinnamon'], 
-                                        $rowInsertToBackend['choco'], 
-                                        $rowInsertToBackend['price'], 
-                                        $rowInsertToBackend['qty']
-                                    ]);
+        $stmtInsertToUser -> execute([$id, $_SESSION['email'], $date, $time]);
+
+        $sqlInsertProductsDetails = "INSERT INTO cc_orders_products (id, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmtInsertProductsDetails = $pdo -> prepare($sqlInsertProductsDetails);
+        $stmtInsertProductsDetails -> execute([
+                                                $id,
+                                                $rowInsertToBackend['coffee'], 
+                                                $rowInsertToBackend['sugar'], 
+                                                $rowInsertToBackend['sugarType'], 
+                                                $rowInsertToBackend['milk'], 
+                                                $rowInsertToBackend['cinnamon'], 
+                                                $rowInsertToBackend['choco'], 
+                                                $rowInsertToBackend['price'], 
+                                                $rowInsertToBackend['qty']
+                                            ]);                                        
     }
     if ($stmtFetchCart && $stmtInsertToBackend && $stmtInsertToUser) {
         $_SESSION['success'] = true;

@@ -87,7 +87,7 @@ if (!isset($_SESSION['email'])) header("location: /");
         <h2 class="mb-3 mt-5">Οι παραγγελίες μου</h2>
         <div class="row">
             <div class="col-12">
-                <ul class="list-group list-group-flush">
+                <ul class="list-group list-group-flush" id="orders">
                     <li class="list-group-item mt-4 mb-4 formobile">
                         <div class="row">
                             <div class="col-xl-3 col-lg-3">
@@ -104,65 +104,6 @@ if (!isset($_SESSION['email'])) header("location: /");
                             </div>
                         </div>
                     </li>
-                    <?php
-                    include("../php/db_connect.php");
-                    $sqlOrders = "SELECT id, date, time FROM cc_orders WHERE email = ? ORDER BY id DESC";
-                    $stmtOrders = $pdo -> prepare($sqlOrders);
-                    $stmtOrders -> execute([$_SESSION['email']]);
-                    if ($stmtOrders -> rowCount() > 0){
-                        $id = $date = $time = $qty = $coffee = array();
-                        while($rowOrders = $stmtOrders -> fetch()) {
-                            $id[] = $rowOrders['id'];
-                            $date[] = $rowOrders['date'];
-                            $time[] = $rowOrders['time'];
-                        }
-                        $ids = array_unique($id);
-                        foreach($ids as $key => $val){
-                            ?>
-                            <li class='list-group-item mt-2 mb-4'>
-                                <div class='row'>
-                                    <div class='col-xl-3 col-lg-3 col-md-3 col-6 text-xl-left text-lg-left text-left my-auto'>
-                                        <h6><?php echo $ids[$key]; ?></h6>
-                                    </div>
-                                    <div class='col-xl-3 col-lg-3 col-md-3 col-6 text-xl-left text-lg-left text-right my-auto'>
-                                        <h6><?php echo $date[$key]; ?></h6>
-                                        <p><?php echo $time[$key]; ?></p>
-                                    </div>
-                                    <div class='col-xl-3 col-lg-3 col-md-3 col-12 my-auto'>
-                                        <?php
-                                        $sqlProducts = "SELECT coffee, price, qty FROM cc_orders WHERE id = ?";
-                                        $stmtProducts = $pdo -> prepare($sqlProducts);
-                                        $stmtProducts -> execute([$ids[$key]]);
-                                        $totalCost = 0;
-                                        while($products = $stmtProducts -> fetch()){
-                                            $totalCost += $products['price'];
-                                            echo "<h6>".$products['qty']."x ".$products['coffee']."</h6>";
-                                        }
-                                        ?>
-                                    </div>
-                                    <div class='col-xl-1 col-lg-1 col-md-1 col-12 cost my-auto'>
-                                        <h6>
-                                            <?php
-                                            $costString = sprintf("%0.2f", $totalCost);
-                                            echo $costString;?>€
-                                        </h6>
-                                    </div>
-                                    <div class="col-xl-2 col-lg-2 col-md-2 col-12 my-auto">
-                                        <button type="button" class="btn mainbtn btn-block text-white orderAgain" onclick="orderAgain('<?php echo $ids[$key]; ?>')">Παράγγειλε ξανά</button>
-                                    </div>
-                                </div>
-                            </li>
-                            <?php
-                        }
-                    }
-                    else{
-                        ?>
-                        <li class='list-group-item mt-2 mb-4'>
-                            <h6>Δεν υπάρχει καμία παραγγελία.</h6>
-                        </li>
-                    <?php
-                    }
-                    ?>
                 </ul>
             </div>
         </div>

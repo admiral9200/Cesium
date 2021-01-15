@@ -5,7 +5,7 @@ const address = document.getElementById('address');
 const state = document.getElementById('state');
 const input = [address, state];
 let falseMsg = document.getElementById('false');
-let addresses;
+let addresses, orders;
 
 for (let i = 0; i < input.length; i++) {
 	input[i].addEventListener('keyup', function(e){
@@ -105,12 +105,64 @@ const fetchAddress = () => {
 	xhr.send();
 };
 
-const fetchOreers = async () => {};
+const fetchOrders = async () => {
+	let response = await fetch('./addressHandler.php?orders');
+	if(response.ok){
+		orders = await response.json();
+
+		if(orders.length > 0){
+			for (let i = 0; i < orders.length; i++) {
+
+				let coffees = orders[i].coffees.split(',');
+				let qtys = orders[i].qty.split(',');
+				let totalPrice = orders[i].price.split(',').reduce((acc, cur) => parseFloat(acc) + parseFloat(cur));
+				console.log(totalPrice);
+
+				$("#orders").append(`<li class='list-group-item mt-2 mb-4'>
+										<div class='row'>
+											<div class='col-xl-3 col-lg-3 col-md-3 col-6 text-xl-left text-lg-left text-left my-auto'>
+												<h6>${orders[i].id}</h6>
+											</div>
+											<div class='col-xl-3 col-lg-3 col-md-3 col-6 text-xl-left text-lg-left text-right my-auto'>
+												<h6>${orders[i].date}</h6>
+												<p>${orders[i].time}</p>
+											</div>
+											<div class='col-xl-3 col-lg-3 col-md-3 col-12 my-auto'>
+												${(() => {
+													let string = '';
+													for (let k = 0; k < coffees.length; k++){
+														string +=	`<div class='row'>
+																		<h6 class='mr-2'>${qtys[k]}x</h6><h6>${coffees[k]}</h6>
+																	</div>`;
+													}
+													return string;
+												})()}
+											</div>
+											<div class='col-xl-1 col-lg-1 col-md-1 col-12 cost my-auto'>
+												<h6>
+													${totalPrice}€
+												</h6>
+											</div>
+											<div class="col-xl-2 col-lg-2 col-md-2 col-12 my-auto">
+												<button type="button" class="btn mainbtn btn-block text-white orderAgain" onclick="orderAgain('<?php echo $ids[$key]; ?>')">Παράγγειλε ξανά</button>
+											</div>
+										</div>
+									</li>`);	
+			}
+		}
+		else{
+			$("#orders").append(`<li class='list-group-item mt-2 mb-4'>
+									<h6>Δεν υπάρχει καμία παραγγελία.</h6>
+								</li>`);
+		}
+	}
+};
 
 //Invoke functions at load
 (() => {
 	addressHandler();
 	fetchAddress();
+	fetchOrders();
 })();
 
 //go to order page

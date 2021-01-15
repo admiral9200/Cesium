@@ -22,6 +22,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
         else if (@isset($_GET['f'])) { //fetch address
             echo fetchAddress();
         }
+        else if(@isset($_GET['orders'])){
+            echo fetchOrders();
+        }
         else{
             echo    "<div class='alert alert-danger alert-dismissible fade show'>
                         <button type='button' class='close' data-dismiss='alert'>&times;</button>Κάτι πήγε λάθος.
@@ -121,5 +124,30 @@ function countAddresses(){
     }
     catch (PDOException $e){
         return false;
+    }
+}
+
+function fetchOrders(){
+    global $pdo;
+    $sqlOrders = "SELECT 
+                    cc_orders.*, 
+                    GROUP_CONCAT(cc_orders_products.coffee) as coffees,
+                    GROUP_CONCAT(cc_orders_products.price) as price,
+                    GROUP_CONCAT(cc_orders_products.qty) as qty
+                    FROM cc_orders 
+                    JOIN cc_orders_products ON cc_orders.id = cc_orders_products.id 
+                    WHERE email = ?
+                    GROUP BY cc_orders.id
+                    ORDER BY cc_orders.id DESC";
+    $stmtOrders = $pdo -> prepare($sqlOrders);
+    $stmtOrders -> execute([$_SESSION['email']]);
+    if($stmtOrders){
+        $orders = $stmtOrders -> fetchAll();
+        return json_encode($orders);
+    }
+    else{
+        return "<div class='alert alert-danger alert-dismissible fade show'>
+                    <button type='button' class='close' data-dismiss='alert'>&times;</button>Κάτι πήγε λάθος.
+                </div>";
     }
 }

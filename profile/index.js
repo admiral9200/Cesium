@@ -8,7 +8,7 @@ const newpass = document.getElementById("newpass");
 
 const getProfile = () => {
 	let xhr = new XMLHttpRequest();
-	xhr.open('GET', '/php/functions.php?user', true);
+	xhr.open('GET', '/php/userHandler.php?user', true);
 	xhr.onload = function(){
 		if (this.status == 200) {
 			let prof = JSON.parse(this.responseText);
@@ -131,7 +131,7 @@ function changePass(){
 
 function deleteAccount(){
 	let xhr = new XMLHttpRequest();
-	xhr.open('POST', '../php/functions.php', true);
+	xhr.open('POST', '../php/userHandler.php', true);
 	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 	let params = "delete=" + true;
 	xhr.onload = function(){
