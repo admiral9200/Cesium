@@ -116,7 +116,6 @@ const fetchOrders = async () => {
 				let coffees = orders[i].coffees.split(',');
 				let qtys = orders[i].qty.split(',');
 				let totalPrice = orders[i].price.split(',').reduce((acc, cur) => parseFloat(acc) + parseFloat(cur));
-				console.log(totalPrice);
 
 				$("#orders").append(`<li class='list-group-item mt-2 mb-4'>
 										<div class='row'>
