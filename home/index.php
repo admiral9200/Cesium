@@ -99,9 +99,10 @@ if (!isset($_SESSION['email'])) header("location: /");
                             <div class="col-xl-3 col-lg-3">
                                 <h6>Περιεχόμενα</h6>
                             </div>
-                            <div class="col-xl-2 col-lg-3">
+                            <div class="col-xl-1 col-lg-1">
                                 <h6>Κόστος</h6>
                             </div>
+                            <div class="col-xl-2 col-lg-2"></div>
                         </div>
                     </li>
                 </ul>

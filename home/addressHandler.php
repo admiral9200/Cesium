@@ -39,11 +39,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
 }
 
 function checkAddress(){
-    if (gettype(countAddresses()) === 'integer') 
-    return countAddresses();
-    else return "<div class='alert alert-danger alert-dismissible fade show'>
+    if (gettype(countAddresses()) === 'integer'){
+        return countAddresses();
+    }
+    else {
+        return "<div class='alert alert-danger alert-dismissible fade show'>
                     <button type='button' class='close' data-dismiss='alert'>&times;</button>Κάτι πήγε λάθος.
                 </div>";
+    }
 }
 
 function deleteAddress(){
@@ -96,8 +99,7 @@ function fetchAddress(){
     $stmtAddress = $pdo -> prepare($sqlFetchAddress); 
     $stmtAddress -> execute([$_SESSION['email']]);
     if ($stmtAddress) {
-        $addresses = $stmtAddress -> fetchAll();
-        return json_encode($addresses);
+        return json_encode($stmtAddress -> fetchAll());
     }
     else{
         return "<div class='alert alert-danger alert-dismissible fade show'>
@@ -142,8 +144,7 @@ function fetchOrders(){
     $stmtOrders = $pdo -> prepare($sqlOrders);
     $stmtOrders -> execute([$_SESSION['email']]);
     if($stmtOrders){
-        $orders = $stmtOrders -> fetchAll();
-        return json_encode($orders);
+        return json_encode($stmtOrders -> fetchAll());
     }
     else{
         return "<div class='alert alert-danger alert-dismissible fade show'>

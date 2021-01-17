@@ -122,7 +122,16 @@ function removeCoffeeFromCart($countToDelete){
 function orderAgain(){
     global $pdo;
     //Get products of order selected
-    $sqlOrderAgain = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_orders WHERE id = ?";
+    $sqlOrderAgain = "SELECT 
+                    cc_orders.*, 
+                    GROUP_CONCAT(cc_orders_products.coffee) as coffees,
+                    GROUP_CONCAT(cc_orders_products.price) as price,
+                    GROUP_CONCAT(cc_orders_products.qty) as qty
+                    FROM cc_orders 
+                    JOIN cc_orders_products ON cc_orders.id = cc_orders_products.id 
+                    WHERE email = ?
+                    GROUP BY cc_orders.id
+                    ORDER BY cc_orders.id DESC";
     $stmtOrderAgain = $pdo -> prepare($sqlOrderAgain);
     $stmtOrderAgain -> execute([$_POST['orderagain']]);
     if ($stmtOrderAgain && clearCart()) { //clear the cart and check the query ran
@@ -156,10 +165,6 @@ function clearCart(){
         return true;
     }
     else return false;
-}
-
-function insertCoffeesToDB(){
-    //To be used
 }
 
 function isCartEmpty(){

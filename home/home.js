@@ -113,6 +113,7 @@ const fetchOrders = async () => {
 		if(orders.length > 0){
 			for (let i = 0; i < orders.length; i++) {
 
+				let date = orders[i].date.slice(0, 2) + '/' + orders[i].date.slice(3, 5) + '/' + orders[i].date.slice(6, 10);
 				let coffees = orders[i].coffees.split(',');
 				let qtys = orders[i].qty.split(',');
 				let totalPrice = orders[i].price.split(',').reduce((acc, cur) => parseFloat(acc) + parseFloat(cur));
@@ -123,7 +124,7 @@ const fetchOrders = async () => {
 												<h6>${orders[i].id}</h6>
 											</div>
 											<div class='col-xl-3 col-lg-3 col-md-3 col-6 text-xl-left text-lg-left text-right my-auto'>
-												<h6>${orders[i].date}</h6>
+												<h6>${date}</h6>
 												<p>${orders[i].time}</p>
 											</div>
 											<div class='col-xl-3 col-lg-3 col-md-3 col-12 my-auto'>
