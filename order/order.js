@@ -1,18 +1,64 @@
 let loader = document.getElementById("loader");
 let blurred = document.getElementById("blurred");
 
-let cartProducts = {
-	coffee: "Espresso",
-	code: 1000,
-	sugar: "Γλυκός",
-	sugarType: "Μαύρη"
-};
-
 const cartHandler = () => {
-	
+	let total = 0;
+	let cartContent = `<h3 class='mt-3 mb-3'>Το καλάθι σου</h3>
+							<ul class='list-group list-group-flush list'>`;
+	if (localStorage.length > 0){
+		let keys = Object.keys(localStorage);
+		for (let key in keys) {
+			let cartProduct = localStorage.getItem(key);
+			cartProduct = JSON.parse(cartProduct);
+			let price = cartProduct.price;
+			cartContent += `<li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-1'>
+								<h5>${cartProduct.coffee}</h5>
+								<a onclick="deleteCoffee(${cartProduct.code})" type='button' class='btn btn-sm btn-outline-danger mr-2' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></a>
+							</li>
+							<li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0 pt-0 mt-0'>
+								<p class='attr'>
+									${cartProduct.sugar}
+									${cartProduct.sugarType !== '' ? ', ' + cartProduct.sugarType : ''}
+									${cartProduct.milk == 1 ? ', Γάλα' : ''}
+									${cartProduct.cinnamon == 1 ? ', Κανέλα' : ''}
+									${cartProduct.choco == 1 ? ', Σκόνη Σοκολάτας' : ''}
+								</p>
+							</li>
+							<li>
+								<div class='row d-flex justify-content-center'>
+									<div class='col-4 d-flex justify-content-center mt-3'>
+										<h5>${price.toFixed(2)}€</h5>
+									</div>
+									<div class='col-8'>
+										<div class='qty d-flex justify-content-center mt-2'>
+											<a class='minus' onclick="quantity(${cartProduct.code}, 'minus')" id="minus">-</a>
+											<input type='number' class='count' name='qty' value="${cartProduct.qty}" disabled>
+											<a class='plus' onclick="quantity(${cartProduct.code}, 'plus')" id="plus">+</a>
+										</div>
+									</div>
+								</div>
+							</li>`;
+			total += cartProduct.price;
+			
+		}
+	}
+	else{
+		cartContent += `<li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-1'>
+							<h6>Το καλάθι σου είναι άδειο</h6>
+						</li>`;	
+	}
+	cartContent += `<li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3 mt-5">
+						<h5 class="m-0">Συνολικό Κόστος</h5>
+						<h5 class="m-0">${total.toFixed(2)}€</h5>
+					</li>
+					</ul>
+					<button type="button" name="continue" class="btn mainbtn text-white btn-block btn-lg" onclick="location.href='/checkout/'">Συνέχεια</button>`
+	$("#cart").append(cartContent);
 };
 
-(async () => {
+(
+	cartHandler(),
+	async () => {
 	try {	
 		let response = await fetch('order.php');
 		if(response.ok){
@@ -63,11 +109,11 @@ const cartHandler = () => {
 																	</div>
 																	<div class='col-xl-3 col-12 mb-2'>
 																		${
-																		(() => coffee.milk == 1 || coffee.cinnamon == 1 || coffee.choco == 1 ? '<h5>Πρόσθεσε</h5>' : '')()+ //HOW THE FUCK THIS WORKS XD
-																		(() => coffee.milk == 1 ? `<div class='custom-control custom-checkbox cursor'>
+																		(() => coffee.milk == 1 || coffee.cinnamon == 1 || coffee.choco == 1 ? '<h5>Πρόσθεσε</h5>' : '')(),
+																		() => coffee.milk == 1 ? `<div class='custom-control custom-checkbox cursor'>
 																										<input class='custom-control-input cursor' type='checkbox' name='milk${coffee.code}' id='milk_${coffee.code}'>
 																										<label class='custom-control-label cursor' for='milk_${coffee.code}'>Γάλα</label>
-																									</div>` : '')()+
+																									</div>` : ''(),
 																		(() => coffee.cinnamon == 1 ? `<div class='custom-control custom-checkbox cursor'>
 																											<input class='custom-control-input cursor' type='checkbox' name='cinnamon${coffee.code}' id='cinnamon_${coffee.code}'>
 																											<label class='custom-control-label cursor' for='cinnamon_${coffee.code}'>Κανέλα</label>
@@ -81,7 +127,7 @@ const cartHandler = () => {
 																</div>
 															</form>
 															<div class='row justify-content-center mt-3'>
-																<button type='button' class='btn mainbtn btn-md text-white' onclick="getValues(${coffee.code})">Προσθήκη στο καλάθι</button>
+																<button type='button' class='btn mainbtn btn-md text-white' onclick="getValues(${coffee.code} , ${coffee.price})">Προσθήκη στο καλάθι</button>
 															</div>
 														</div>  
 													</div>
@@ -103,7 +149,6 @@ const cartHandler = () => {
 })();
 
 $(document).ready(function () {
-	$("#cart").load("view_cart.php");
 	$('form').each(function(){
 		this.reset();
 	});
@@ -142,7 +187,7 @@ let uncheck = (id) => {
 	};
 };
 
-const getValues = (code) =>{
+const getValues = (code, price) =>{
 	let noSugar = document.getElementById('no'+code);
 	let sugar = document.querySelector('input[name="sugar'+code+'"]:checked');
 	let sugarType = document.querySelector('input[name="sugarType'+code+'"]:checked');
@@ -155,7 +200,7 @@ const getValues = (code) =>{
 		milk = milk === null ? milk = 0 : milk = 1;
 		cinnamon = cinnamon === null ? cinnamon = 0 : cinnamon = 1;
 		choco = choco === null ? choco = 0 : choco = 1;
-		addCoffeeToCart (code ,sugar, sugarType, milk, cinnamon, choco);	
+		addCoffeeToCart (code, price ,sugar, sugarType, milk, cinnamon, choco);
 	}
 	else if(noSugar.checked && sugarType == null){
 		sugar = sugar.value;
@@ -163,9 +208,46 @@ const getValues = (code) =>{
 		milk = milk === null ? milk = 0 : milk = 1;
 		cinnamon = cinnamon === null ? cinnamon = 0 : cinnamon = 1;
 		choco = choco === null ? choco = 0 : choco = 1;
-		addCoffeeToCart (code ,sugar, sugarType, milk, cinnamon, choco);
+		addCoffeeToCart (code, price ,sugar, sugarType, milk, cinnamon, choco);
 	}
-	else{}
+	else{
+
+	}
+};
+
+const addCoffeeToCart = (code, price, sugar, sugarType, milk, cinnamon, choco) => {
+
+	loader.style.display = "block";
+	blurred.style.display = "block";
+	$('body').addClass('stop-scrolling');
+
+	let counter = localStorage.length;
+
+	let coffee = {
+		code: code,
+		sugar: sugar,
+		sugarType: sugarType,
+		milk: milk,
+		cinnamon: cinnamon,
+		choco: choco,
+		price: price,
+		qty: 1
+	};
+
+	if (counter > 0) {
+		let keys = Object.keys(localStorage);
+		for (let key in keys) {
+			let cartProduct = localStorage.getItem(key);
+			cartProduct = JSON.parse(cartProduct);
+
+			// for duplicate coffees increase quantity and replace with same key
+			if (coffee.code === cartProduct.code && coffee.sugar === cartProduct.sugar && coffee.sugarType === cartProduct.sugarType && coffee.milk === cartProduct.milk && coffee.cinnamon === cartProduct.cinnamon && coffee.choco === cartProduct.choco) {
+				coffee.qty++;
+				localStorage.setItem(key, JSON.stringify(coffee));
+			}
+		}
+	}
+
 };
 
 let quantity = (count, qty) => {
@@ -179,12 +261,14 @@ let quantity = (count, qty) => {
 	xhr.onload = function(){
 		if(this.status == 200){
 			if(this.responseText == true){
-				$("#cart").load("view_cart.php", () => resetForms());
+				cartHandler();
+				resetForms();
 			}
 			else{
 				document.getElementById('false').classList.add("mt-3");
 				document.getElementById('false').innerHTML = this.responseText;
-				$("#cart").load("view_cart.php", () => resetForms());
+				cartHandler();
+				resetForms();
 			}
 		}
 	}
@@ -202,12 +286,14 @@ let deleteCoffee = (code) => {
 	xhr.onload = function(){
 		if(this.status == 200){
 			if(this.responseText == true){
-				$("#cart").load("view_cart.php", () => resetForms());
+				cartHandler();
+				resetForms();
 			}
 			else{
 				document.getElementById('false').classList.add("mt-3");
 				document.getElementById('false').innerHTML = this.responseText;
-				$("#cart").load("view_cart.php", () => resetForms());
+				cartHandler();
+				resetForms();
 			}
 		}
 	}
