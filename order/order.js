@@ -1,45 +1,61 @@
 let loader = document.getElementById("loader");
 let blurred = document.getElementById("blurred");
+let coffees;
 
 const cartHandler = () => {
 	let total = 0;
 	let cartContent = `<h3 class='mt-3 mb-3'>Το καλάθι σου</h3>
 							<ul class='list-group list-group-flush list'>`;
+
 	if (localStorage.length > 0){
+
 		let keys = Object.keys(localStorage);
-		for (let key in keys) {
-			let cartProduct = localStorage.getItem(key);
-			cartProduct = JSON.parse(cartProduct);
-			let price = cartProduct.price;
-			cartContent += `<li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-1'>
-								<h5>${cartProduct.coffee}</h5>
-								<a onclick="deleteCoffee(${cartProduct.code})" type='button' class='btn btn-sm btn-outline-danger mr-2' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></a>
-							</li>
-							<li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0 pt-0 mt-0'>
-								<p class='attr'>
-									${cartProduct.sugar}
-									${cartProduct.sugarType !== '' ? ', ' + cartProduct.sugarType : ''}
-									${cartProduct.milk == 1 ? ', Γάλα' : ''}
-									${cartProduct.cinnamon == 1 ? ', Κανέλα' : ''}
-									${cartProduct.choco == 1 ? ', Σκόνη Σοκολάτας' : ''}
-								</p>
-							</li>
-							<li>
-								<div class='row d-flex justify-content-center'>
-									<div class='col-4 d-flex justify-content-center mt-3'>
-										<h5>${price.toFixed(2)}€</h5>
-									</div>
-									<div class='col-8'>
-										<div class='qty d-flex justify-content-center mt-2'>
-											<a class='minus' onclick="quantity(${cartProduct.code}, 'minus')" id="minus">-</a>
-											<input type='number' class='count' name='qty' value="${cartProduct.qty}" disabled>
-											<a class='plus' onclick="quantity(${cartProduct.code}, 'plus')" id="plus">+</a>
+		keys = keys.map(key => parseInt(key)).sort((a, b) => a - b);
+
+		for (let i = 0; i < localStorage.length; i++) {
+
+			let coffeeInCart = localStorage.getItem(keys[i]);
+			coffeeInCart = JSON.parse(coffeeInCart);
+
+			try {
+
+				let price = coffeeInCart.price;
+
+				cartContent += `<li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-1'>
+									<h5>${coffeeInCart.name}</h5>
+									<a onclick="deleteCoffee(${keys[i]})" type='button' class='btn btn-sm btn-outline-danger mr-2' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></a>
+								</li>
+								<li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0 pt-0 mt-0'>
+									<p class='attr'>
+										${coffeeInCart.sugar}
+										${coffeeInCart.sugarType !== '' ? ', ' + coffeeInCart.sugarType : ''}
+										${coffeeInCart.milk === 1 ? ', Γάλα' : ''}
+										${coffeeInCart.cinnamon === 1 ? ', Κανέλα' : ''}
+										${coffeeInCart.choco === 1 ? ', Σκόνη Σοκολάτας' : ''}
+									</p>
+								</li>
+								<li>
+									<div class='row d-flex justify-content-center'>
+										<div class='col-4 d-flex justify-content-center mt-3'>
+											<h5>${price.toFixed(2)}€</h5>
+										</div>
+										<div class='col-8'>
+											<div class='qty d-flex justify-content-center mt-2'>
+												<a class='minus' onclick="quantity(${keys[i]}, 'minus')" id="minus">-</a>
+												<input type='number' class='count' name='qty' value="${coffeeInCart.qty}" disabled>
+												<a class='plus' onclick="quantity(${keys[i]}, 'plus')" id="plus">+</a>
+											</div>
 										</div>
 									</div>
-								</div>
-							</li>`;
-			total += cartProduct.price;
-			
+								</li>`;
+
+				total += coffeeInCart.price;
+
+			} 
+			catch (err) {
+				console.error(err);
+				break;
+			}
 		}
 	}
 	else{
@@ -53,7 +69,7 @@ const cartHandler = () => {
 					</li>
 					</ul>
 					<button type="button" name="continue" class="btn mainbtn text-white btn-block btn-lg" onclick="location.href='/checkout/'">Συνέχεια</button>`
-	$("#cart").append(cartContent);
+	$("#cart").html(cartContent);
 };
 
 (
@@ -62,7 +78,7 @@ const cartHandler = () => {
 	try {	
 		let response = await fetch('order.php');
 		if(response.ok){
-			let coffees = await response.json();
+			coffees = await response.json();
 			if (coffees.length > 0) {
 				coffees.forEach((coffee, i) => {		
 					$("#coffeesCatalog").append(`<div class='card'>
@@ -109,11 +125,11 @@ const cartHandler = () => {
 																	</div>
 																	<div class='col-xl-3 col-12 mb-2'>
 																		${
-																		(() => coffee.milk == 1 || coffee.cinnamon == 1 || coffee.choco == 1 ? '<h5>Πρόσθεσε</h5>' : '')(),
-																		() => coffee.milk == 1 ? `<div class='custom-control custom-checkbox cursor'>
+																		(() => coffee.milk == 1 || coffee.cinnamon == 1 || coffee.choco == 1 ? '<h5>Πρόσθεσε</h5>' : '')()+
+																		(() => coffee.milk == 1 ? `<div class='custom-control custom-checkbox cursor'>
 																										<input class='custom-control-input cursor' type='checkbox' name='milk${coffee.code}' id='milk_${coffee.code}'>
 																										<label class='custom-control-label cursor' for='milk_${coffee.code}'>Γάλα</label>
-																									</div>` : ''(),
+																									</div>` : '')()+
 																		(() => coffee.cinnamon == 1 ? `<div class='custom-control custom-checkbox cursor'>
 																											<input class='custom-control-input cursor' type='checkbox' name='cinnamon${coffee.code}' id='cinnamon_${coffee.code}'>
 																											<label class='custom-control-label cursor' for='cinnamon_${coffee.code}'>Κανέλα</label>
@@ -188,12 +204,14 @@ let uncheck = (id) => {
 };
 
 const getValues = (code, price) =>{
+
 	let noSugar = document.getElementById('no'+code);
 	let sugar = document.querySelector('input[name="sugar'+code+'"]:checked');
 	let sugarType = document.querySelector('input[name="sugarType'+code+'"]:checked');
 	let milk = document.querySelector('input[name="milk'+code+'"]:checked');
 	let cinnamon = document.querySelector('input[name="cinnamon'+code+'"]:checked');
 	let choco = document.querySelector('input[name="choco'+code+'"]:checked');
+
 	if (sugar !== null && sugarType !== null){
 		sugar = sugar.value;
 		sugarType = sugarType.value;
@@ -221,10 +239,9 @@ const addCoffeeToCart = (code, price, sugar, sugarType, milk, cinnamon, choco) =
 	blurred.style.display = "block";
 	$('body').addClass('stop-scrolling');
 
-	let counter = localStorage.length;
-
 	let coffee = {
 		code: code,
+		name: coffees.find(coffee => coffee.code == code).name,
 		sugar: sugar,
 		sugarType: sugarType,
 		milk: milk,
@@ -234,70 +251,98 @@ const addCoffeeToCart = (code, price, sugar, sugarType, milk, cinnamon, choco) =
 		qty: 1
 	};
 
+	let counter = localStorage.length;
+
 	if (counter > 0) {
 		let keys = Object.keys(localStorage);
-		for (let key in keys) {
-			let cartProduct = localStorage.getItem(key);
-			cartProduct = JSON.parse(cartProduct);
+		keys = keys.map(key => parseInt(key)).sort((a, b) => a - b);
 
-			// for duplicate coffees increase quantity and replace with same key
-			if (coffee.code === cartProduct.code && coffee.sugar === cartProduct.sugar && coffee.sugarType === cartProduct.sugarType && coffee.milk === cartProduct.milk && coffee.cinnamon === cartProduct.cinnamon && coffee.choco === cartProduct.choco) {
-				coffee.qty++;
-				localStorage.setItem(key, JSON.stringify(coffee));
+		for (let i = 0; i < localStorage.length; i++) {
+			let coffeeInCart = localStorage.getItem(keys[i]);
+			coffeeInCart = JSON.parse(coffeeInCart);
+
+			// for duplicate coffees increase quantity and replace with same keys
+			if (coffee.code === coffeeInCart.code && coffee.sugar === coffeeInCart.sugar && coffee.sugarType === coffeeInCart.sugarType && coffee.milk === coffeeInCart.milk && coffee.cinnamon === coffeeInCart.cinnamon && coffee.choco === coffeeInCart.choco) {
+				coffeeInCart.qty++;
+				// TODO: logic fucked for increase quantity
+				coffeeInCart.price *= coffeeInCart.qty;
+				localStorage.setItem(keys[i], JSON.stringify(coffeeInCart));
+			}
+			else{
+				localStorage.setItem(counter, JSON.stringify(coffee));
+				break;
 			}
 		}
 	}
+	else {
+		localStorage.setItem(counter, JSON.stringify(coffee));
+	}
+
+	cartHandler();
+	resetForms();
 
 };
 
-let quantity = (count, qty) => {
+let quantity = (pos, qty) => {
 	loader.style.display = "block";
 	blurred.style.display = "block";
 	$('body').addClass('stop-scrolling');
-	const xhr = new XMLHttpRequest();
-	xhr.open('POST', 'cart.php', true);
-	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-	let params = "qty=" + qty + "&counter=" + count;
-	xhr.onload = function(){
-		if(this.status == 200){
-			if(this.responseText == true){
-				cartHandler();
-				resetForms();
+	
+	let keys = Object.keys(localStorage);
+
+	for (let i = 0; i <= localStorage.length; i++){
+
+		let coffee = localStorage.getItem(keys[i]);
+		coffee = JSON.parse(coffee);
+		
+		try {
+			
+			if (keys[i] === pos) {
+
+				if (qty === 'plus') {
+					coffee.qty++;
+					coffee.price *= coffee.qty;
+					localStorage.setItem(keys[i], JSON.stringify(coffee));
+				}
+				else if (qty === 'plus'){
+					coffee.qty--;
+					coffee.price *= coffee.qty;
+					localStorage.setItem(keys[i], JSON.stringify(coffee));
+				}
+
 			}
-			else{
-				document.getElementById('false').classList.add("mt-3");
-				document.getElementById('false').innerHTML = this.responseText;
-				cartHandler();
-				resetForms();
-			}
+		} 
+		catch (error) {
+			
 		}
 	}
-	xhr.send(params);
+
+	cartHandler();
+	resetForms();
 };
 
-let deleteCoffee = (code) => {
+let deleteCoffee = (pos) => {
 	loader.style.display = "block";
 	blurred.style.display = "block";
 	$('body').addClass('stop-scrolling');
-	const xhr = new XMLHttpRequest();
-	xhr.open('POST', 'cart.php', true);
-	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-	let params = "count=" + code;
-	xhr.onload = function(){
-		if(this.status == 200){
-			if(this.responseText == true){
-				cartHandler();
-				resetForms();
-			}
-			else{
-				document.getElementById('false').classList.add("mt-3");
-				document.getElementById('false').innerHTML = this.responseText;
-				cartHandler();
-				resetForms();
-			}
+	
+	let keys = Object.keys(localStorage);
+
+	for (let i = 0; i <= localStorage.length; i++){
+		let deleted = localStorage.getItem(keys[i]);
+
+		try {
+			deleted = JSON.parse(deleted);
+
+			if (keys[i] == pos) localStorage.removeItem(keys[i]);
+		} 
+		catch (error) {
+			
 		}
 	}
-	xhr.send(params);
+
+	cartHandler();
+	resetForms();
 };
 
 const resetForms = () => {
