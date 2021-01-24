@@ -35,15 +35,15 @@ const cartHandler = () => {
 									</p>
 								</li>
 								<li>
-									<div class='row d-flex justify-content-center'>
+									<div class='row d-flex justify-content-center user-select-none'>
 										<div class='col-4 d-flex justify-content-center mt-3'>
 											<h5>${price.toFixed(2)}€</h5>
 										</div>
 										<div class='col-8'>
 											<div class='qty d-flex justify-content-center mt-2'>
-												<a class='minus' onclick="quantity(${keys[i]}, 'minus')" id="minus">-</a>
+												<a type='button' class='minus' onclick="quantityHelper(${keys[i]}, 'minus')" id="minus">-</a>
 												<input type='number' class='count' name='qty' value="${coffeeInCart.qty}" disabled>
-												<a class='plus' onclick="quantity(${keys[i]}, 'plus')" id="plus">+</a>
+												<a type='button' class='plus' onclick="quantityHelper(${keys[i]}, 'plus')" id="plus">+</a>
 											</div>
 										</div>
 									</div>
@@ -76,7 +76,7 @@ const cartHandler = () => {
 	cartHandler(),
 	async () => {
 	try {	
-		let response = await fetch('order.php');
+		let response = await fetch('order.php?coffees');
 		if(response.ok){
 			coffees = await response.json();
 			if (coffees.length > 0) {
@@ -264,8 +264,7 @@ const addCoffeeToCart = (code, price, sugar, sugarType, milk, cinnamon, choco) =
 			// for duplicate coffees increase quantity and replace with same keys
 			if (coffee.code === coffeeInCart.code && coffee.sugar === coffeeInCart.sugar && coffee.sugarType === coffeeInCart.sugarType && coffee.milk === coffeeInCart.milk && coffee.cinnamon === coffeeInCart.cinnamon && coffee.choco === coffeeInCart.choco) {
 				coffeeInCart.qty++;
-				// TODO: logic fucked for increase quantity
-				coffeeInCart.price *= coffeeInCart.qty;
+				coffeeInCart.price = coffee.price * coffeeInCart.qty;
 				localStorage.setItem(keys[i], JSON.stringify(coffeeInCart));
 			}
 			else{
@@ -283,7 +282,7 @@ const addCoffeeToCart = (code, price, sugar, sugarType, milk, cinnamon, choco) =
 
 };
 
-let quantity = (pos, qty) => {
+let quantityHelper = (pos, qty) => {
 	loader.style.display = "block";
 	blurred.style.display = "block";
 	$('body').addClass('stop-scrolling');
