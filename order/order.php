@@ -9,12 +9,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
         if(!empty($_POST['orderagain'])){
             echo orderAgain();
 		}
-		else if (!empty($_POST['coffees'])){
+        break;
+    case 'GET':
+        if (isset($_GET['coffees'])){
 			$fetchCoffees = $pdo -> query('SELECT * FROM cc_coffees');
 			echo json_encode($fetchCoffees -> fetchAll());
 		}
-        break;
-    case 'GET':
         break;
     default:
         echo false;

@@ -3,7 +3,6 @@ session_start();
 include("../php/db_connect.php");
 if (!isset($_SESSION['email'])) header("location: /");
 if ($_SESSION['addressExists'] == 0) header("location: ../home/");
-if ($_SESSION['isCartEmpty'] == 0) header("location: ../order/");
 ?>
 <!DOCTYPE html>
 <html lang="en">
