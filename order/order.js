@@ -68,7 +68,7 @@ const cartHandler = () => {
 						<h5 class="m-0">${total.toFixed(2)}€</h5>
 					</li>
 					</ul>
-					<button type="button" name="continue" class="btn mainbtn text-white btn-block btn-lg" onclick="location.href='/checkout/'">Συνέχεια</button>`
+					<button type="button" name="continue" class="btn mainbtn text-white btn-block btn-lg" onclick="CheckoutHelper(${localStorage.length})" ${localStorage.length > 0 ? '' : 'disabled style="cursor: not-allowed;"'}>Συνέχεια</button>`
 	$("#cart").html(cartContent);
 };
 
@@ -168,15 +168,24 @@ $(document).ready(function () {
 	$('form').each(function(){
 		this.reset();
 	});
+
+	$(".collapse").on('show.bs.collapse', function(){
+		$(this).prev('.card-header').find('svg').toggleClass('fa-plus fa-minus'); 
+		console.log("adsadasdddsasdaasd");
+	});
+	
+	$(".collapse").on('hide.bs.collapse', function(){
+		console.log("adsadasdddsasdaasd");
+		$(this).prev('.card-header').find('svg').toggleClass('fa-minus fa-plus'); 
+	});
+
 });
 
-$(".collapse").on('show.bs.collapse', function(){
-	$(this).prev('.card-header').find('svg').toggleClass('fa-plus fa-minus'); 
-});
-
-$(".collapse").on('hide.bs.collapse', function(){
-	$(this).prev('.card-header').find('svg').toggleClass('fa-minus fa-plus'); 
-});
+let CheckoutHelper = (cartCounter) => {
+	if (cartCounter > 0) {
+		location.href = '/checkout/';	
+	}
+};
 
 let noneSugar = (id) => {
 	document.getElementById("no"+id).onclick = function(){
@@ -240,14 +249,15 @@ const addCoffeeToCart = (code, price, sugar, sugarType, milk, cinnamon, choco) =
 	$('body').addClass('stop-scrolling');
 
 	let coffee = {
-		code: code,
+		code,
 		name: coffees.find(coffee => coffee.code == code).name,
-		sugar: sugar,
-		sugarType: sugarType,
-		milk: milk,
-		cinnamon: cinnamon,
-		choco: choco,
-		price: price,
+		sugar,
+		sugarType,
+		milk,
+		cinnamon,
+		choco,
+		basePrice: price,
+		price,
 		qty: 1
 	};
 
@@ -264,7 +274,7 @@ const addCoffeeToCart = (code, price, sugar, sugarType, milk, cinnamon, choco) =
 			// for duplicate coffees increase quantity and replace with same keys
 			if (coffee.code === coffeeInCart.code && coffee.sugar === coffeeInCart.sugar && coffee.sugarType === coffeeInCart.sugarType && coffee.milk === coffeeInCart.milk && coffee.cinnamon === coffeeInCart.cinnamon && coffee.choco === coffeeInCart.choco) {
 				coffeeInCart.qty++;
-				coffeeInCart.price = coffee.price * coffeeInCart.qty;
+				coffeeInCart.price = coffee.basePrice * coffeeInCart.qty;
 				localStorage.setItem(keys[i], JSON.stringify(coffeeInCart));
 			}
 			else{
@@ -296,23 +306,23 @@ let quantityHelper = (pos, qty) => {
 		
 		try {
 			
-			if (keys[i] === pos) {
+			if (parseInt(keys[i]) === pos) {
 
 				if (qty === 'plus') {
 					coffee.qty++;
-					coffee.price *= coffee.qty;
+					coffee.price = coffee.basePrice * coffee.qty;
 					localStorage.setItem(keys[i], JSON.stringify(coffee));
 				}
-				else if (qty === 'plus'){
+				else if (qty === 'minus' && coffee.qty > 1){
 					coffee.qty--;
-					coffee.price *= coffee.qty;
+					coffee.price = coffee.basePrice * coffee.qty;
 					localStorage.setItem(keys[i], JSON.stringify(coffee));
 				}
 
 			}
 		} 
 		catch (error) {
-			
+			console.error(error);
 		}
 	}
 
