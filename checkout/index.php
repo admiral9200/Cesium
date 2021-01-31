@@ -42,7 +42,7 @@ if ($_SESSION['addressExists'] == 0) header("location: ../home/");
             <h1>Ολοκλήρωση Παραγγελίας</h1>
         </div>
     </div>
-    <div class="container my-5">
+    <div class="container my-5" id="orderCompletion">
         <div id="false"></div>
         <div class="row d-flex justify-content-center">
             <div class="col-xl-4 col-md-12 col-12 box p-xl-5 p-md-5">
@@ -51,16 +51,12 @@ if ($_SESSION['addressExists'] == 0) header("location: ../home/");
                     <div class="col-xl-8 col-12" id="input">
                         <label for="doorbell">Όνομα στο κουδούνι *</label>
                         <input type="text" class="form-control" id="doorname" required>
-                        <div class="text-danger">
-                                Πρέπει να συμπληρώσεις όνομα στο κουδούνι.
-                        </div>
+                        <div class="text-danger">Πρέπει να συμπληρώσεις όνομα στο κουδούνι.</div>
                     </div>
                     <div class="col-md-4" id="input">
                         <label for="floor">Όροφος *</label>
                         <input type="number" class="form-control" id="floor" required>
-                        <div class="text-danger">
-                                Πρέπει να συμπληρώσεις τον όροφο.
-                        </div>
+                        <div class="text-danger">Πρέπει να συμπληρώσεις τον όροφο.</div>
                     </div>
                 </div>
                 <div class="space">
@@ -90,64 +86,8 @@ if ($_SESSION['addressExists'] == 0) header("location: ../home/");
             </div>
             <div class="col-xl-4 col-md-12 col-12 box p-xl-5 p-md-5">
                 <h4 class="d-flex justify-content-between align-items-center mb-4">3. Ολοκλήρωση</h4>
-                <ul class="list-group mb-1">
-                    <?php
-                    $cart_query = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_cart WHERE email = ?";
-                    $stmtCart = $pdo -> prepare($cart_query);
-                    $stmtCart -> execute([$_SESSION['email']]);
-                    $totalCost = 0;
-                    while($rowCart = $stmtCart -> fetch()){
-                        $coffee = $rowCart['coffee'];
-                        $sugar = $rowCart['sugar'];
-                        $sugarType = $rowCart['sugarType'];
-                        $milk = $rowCart['milk'];
-                        $cinnamon = $rowCart['cinnamon'];
-                        $choco = $rowCart['choco'];
-                        $price = $rowCart['price'];
-                        $quantity = $rowCart['qty'];
-                        $totalCost += $price;
-                        echo "<li class='list-group-item d-flex justify-content-between lh-condensed'>
-                                <div>
-                                    <h6 class='my-0'>".$quantity."x $coffee</h6>
-                                    <small class='text-muted'>
-                                    ".$sugar.", ".$sugarType."";
-                                    if($milk == 1){
-                                        echo ", Γάλα";
-                                    }
-                                    if($cinnamon == 1){
-                                        echo ", Κανέλα";
-                                    }
-                                    if($choco == 1){
-                                        echo ", Σκόνη Σοκολάτας";
-                                    }
-                                    echo "</small>
-                                    </div>
-                                <span class='text-muted'>".$price."€</span>
-                            </li>";
-                    }
-                    ?>
-                    <!-- PROMO CODE -->
-                    <!-- <li class="list-group-item d-flex justify-content-between bg-light">
-                        <div class="text-success">
-                            <h6 class="my-0">Promo code</h6>
-                            <small>NEWCHIPCOFFEE</small>
-                        </div>
-                        <span class="text-success">-0,70€</span>
-                    </li> -->
-                    <li class="list-group-item d-flex justify-content-between">
-                        <h5>Κόστος</h5>
-                        <h5><?php $costString = sprintf("%0.2f", $totalCost); $_SESSION['itemAmount'] = $costString; echo $costString; ?>€</h5>
-                    </li>
-                </ul>
-                <!-- <div class="card p-2">
-                    <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Promo code">
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-secondary">Εξαργύρωση</button>
-                        </div>
-                    </div>
-                </div> -->
-                <button class="btn mainbtn text-white btn-lg btn-block my-2" type="button" id="checkout" value="order">Αποστολή Παραγγελίας</button>
+                <ul class="list-group mb-1" id="FinalCart"></ul>
+                <button class="btn mainbtn text-white btn-lg btn-block my-2" type="button" onclick="sendOrder()">Αποστολή Παραγγελίας</button>
             </div>
         </div>
     </div>

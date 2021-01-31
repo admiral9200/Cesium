@@ -4,7 +4,7 @@ session_start();
 if (!empty($_POST['email']) && filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) && !empty($_POST['pass'])){
     $email = $_POST['email'];
     $pass = $_POST['pass'];
-    $sqlUser = "SELECT * FROM cc_admins WHERE email = ? AND password = ?";
+    $sqlUser = "SELECT * FROM cc_staff WHERE email = ? AND password = ?";
     $stmtUser = $pdo -> prepare($sqlUser);
     $stmtUser -> execute([$email, $pass]);
     if($stmtUser) {

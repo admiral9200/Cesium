@@ -5,24 +5,26 @@ if (!isset($_SESSION['admin'])) {
     header('location: ../');
 }
 include_once("db.php");
-$sqlCheckout = "SELECT * FROM cc_checkout";
+$sqlCheckout = "SELECT * FROM cc_orders WHERE executed = 0";
 $stmtCheckout = $pdo->prepare($sqlCheckout);
-$stmtCheckout->execute();
-$sqlOrdersExists = "SELECT COUNT(id) AS OrdersExists FROM cc_ordersBackendPanel";
-$stmtOrdersExists = $pdo->prepare($sqlOrdersExists);
-$stmtOrdersExists->execute();
-if (($stmtCheckout->rowCount() > 0) && ($stmtOrdersExists->rowCount() > 0)) {
+$stmtCheckout -> execute();
+
+if ($stmtCheckout->rowCount() > 0) {
+
 	while ($rowCheckout = $stmtCheckout->fetch()) {
 		$id = $rowCheckout['id'];
 		$email = $rowCheckout['email'];
+
 		$sqlUserName = "SELECT firstName, lastName FROM cc_users WHERE email = ?";
 		$stmtUserName = $pdo->prepare($sqlUserName);
 		$stmtUserName->execute([$email]);
 		$rowUserName = $stmtUserName->fetch();
+
 		$sqlAddress = "SELECT address, state FROM cc_address WHERE email = ?";
 		$stmtAddress = $pdo -> prepare($sqlAddress);
 		$stmtAddress -> execute([$email]);
 		$rowAddress = $stmtAddress -> fetch();
+
 		$address = $rowAddress['address'];
 		$state = $rowAddress['state'];
 		$firstName = $rowUserName['firstName'];
@@ -57,7 +59,7 @@ if (($stmtCheckout->rowCount() > 0) && ($stmtOrdersExists->rowCount() > 0)) {
 				<div class="col-xl-2">
 					<?php
 					$totalCost = 0;
-					$sqlBackendOrders = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_ordersBackendPanel WHERE id = ?";
+					$sqlBackendOrders = "SELECT coffee, sugar, sugarType, milk, cinnamon, choco, price, qty FROM cc_orders_products WHERE id = ?";
 					$stmtOrdersPanel = $pdo->prepare($sqlBackendOrders);
 					$stmtOrdersPanel->execute([$id]);
 					while ($rowOrder = $stmtOrdersPanel->fetch()) {
@@ -71,7 +73,7 @@ if (($stmtCheckout->rowCount() > 0) && ($stmtOrdersExists->rowCount() > 0)) {
 						$totalCost += $price;
 						$qty = $rowOrder['qty'];
 					?>
-						<h5 class="mb-0"><?php echo $qty . "x " . $coffee ?></h5>
+						<h5 class="mb-0"><?php echo $qty."x ".$coffee." ".$price ?>€</h5>
 						<p class="sz">
 							<?php echo $sugar . ", " . $sugarType;
 							if ($milk == 1) echo ", Γάλα";
@@ -89,6 +91,7 @@ if (($stmtCheckout->rowCount() > 0) && ($stmtOrdersExists->rowCount() > 0)) {
 						$costString = sprintf("%0.2f", $totalCost);
 						echo $costString;
 						?>
+						€
 					</h6>
 				</div>
 				<div class="col-xl-2">

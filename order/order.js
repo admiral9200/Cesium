@@ -263,33 +263,38 @@ const addCoffeeToCart = (code, price, sugar, sugarType, milk, cinnamon, choco) =
 
 	let counter = localStorage.length;
 
-	if (counter > 0) {
-		let keys = Object.keys(localStorage);
-		keys = keys.map(key => parseInt(key)).sort((a, b) => a - b);
-
-		for (let i = 0; i < localStorage.length; i++) {
-			let coffeeInCart = localStorage.getItem(keys[i]);
-			coffeeInCart = JSON.parse(coffeeInCart);
-
-			// for duplicate coffees increase quantity and replace with same keys
-			if (coffee.code === coffeeInCart.code && coffee.sugar === coffeeInCart.sugar && coffee.sugarType === coffeeInCart.sugarType && coffee.milk === coffeeInCart.milk && coffee.cinnamon === coffeeInCart.cinnamon && coffee.choco === coffeeInCart.choco) {
-				coffeeInCart.qty++;
-				coffeeInCart.price = coffee.basePrice * coffeeInCart.qty;
-				localStorage.setItem(keys[i], JSON.stringify(coffeeInCart));
-			}
-			else{
-				localStorage.setItem(counter, JSON.stringify(coffee));
-				break;
+	try {
+		if (counter > 0) {
+			let keys = Object.keys(localStorage);
+			keys = keys.map(key => parseInt(key)).sort((a, b) => a - b);
+	
+			for (let i = 0; i < localStorage.length; i++) {
+				let coffeeInCart = localStorage.getItem(keys[i]);
+				coffeeInCart = JSON.parse(coffeeInCart);
+	
+				// for duplicate coffees increase quantity and replace with same keys
+				if (coffee.code === coffeeInCart.code && coffee.sugar === coffeeInCart.sugar && coffee.sugarType === coffeeInCart.sugarType && coffee.milk === coffeeInCart.milk && coffee.cinnamon === coffeeInCart.cinnamon && coffee.choco === coffeeInCart.choco) {
+					coffeeInCart.qty++;
+					coffeeInCart.price = coffee.basePrice * coffeeInCart.qty;
+					localStorage.setItem(keys[i], JSON.stringify(coffeeInCart));
+				}
+				else{
+					localStorage.setItem(counter, JSON.stringify(coffee));
+					break;
+				}
 			}
 		}
+		else {
+			localStorage.setItem(counter, JSON.stringify(coffee));
+		}	
+	} 
+	catch (error) {
+		console.error(error);
 	}
-	else {
-		localStorage.setItem(counter, JSON.stringify(coffee));
+	finally {
+		cartHandler();
+		resetForms();
 	}
-
-	cartHandler();
-	resetForms();
-
 };
 
 let quantityHelper = (pos, qty) => {

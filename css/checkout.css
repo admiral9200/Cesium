@@ -3,6 +3,10 @@
   font-size: 13px;
 }
 
+.chk {
+  width: 150px;
+}
+
 .wrong:focus {
   outline: 1px #dc354665 !important;
   box-shadow: 0 0 0 3px #dc354665 !important;
