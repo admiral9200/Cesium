@@ -144,10 +144,7 @@ let sendOrder = () => {
 };
 
 let showCompleteOrder = async () => {
-	$("#orderCompletion").empty();
-
 	let response = await fetch('checkout.php');
-
 	if (response.ok) {
 		let orderDetails = await response.json();
 		let component = `<div class="p-xl-0 p-lg-0 p-md-0 p-sm-4 p-4">
@@ -172,8 +169,7 @@ let showCompleteOrder = async () => {
 								</div>
 							</div>
 						</div>`;
-		$("#orderCompletion").html(component);
-
+		$("#orderCompletion").empty().html(component);
 	}
 	else{
 		console.error(response.status);
