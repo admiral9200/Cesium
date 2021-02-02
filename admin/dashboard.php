@@ -9,7 +9,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['logout'])){
   session_unset();
   header("location: index.php");
 }
-@include_once("./php/db.php");
+@include_once("../config/db.connect.php");
 $email = $_SESSION['admin'];
 $sqlAdmin = "SELECT firstName, lastName FROM cc_admins WHERE email = ?";
 $stmtAdmin = $pdo -> prepare($sqlAdmin);

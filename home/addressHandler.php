@@ -1,5 +1,5 @@
 <?php
-include("../php/db_connect.php");
+include("../config/db.connect.php");
 session_start();
 if (!isset($_SESSION['email'])) header("location: /");
 

@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_NOTICE);
 session_start();
-require("/php/db_connect.php");
+require("../config/db.connect.php");
 if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reset']) && isset($_POST['email'])){
 	$email = $_POST['email'];
 	$res = validateEmail($email);

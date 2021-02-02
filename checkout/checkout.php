@@ -2,7 +2,7 @@
 session_start();
 if (!isset($_SESSION['email'])) header("location: /");
 date_default_timezone_set('Europe/Athens');
-include("../php/db_connect.php");
+@include_once("../config/db.connect.php");
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
 

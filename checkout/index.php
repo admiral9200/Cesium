@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("../php/db_connect.php");
+@include_once("../config/db.connect.php");
 if (!isset($_SESSION['email'])) header("location: /");
 if ($_SESSION['addressExists'] == 0) header("location: ../home/");
 ?>

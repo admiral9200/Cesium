@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("../php/db_connect.php");
+include("../config/db.connect.php");
 if (!isset($_SESSION['email'])) header('location: ../');
 
 if(!empty($_POST['oldpass']) && !empty($_POST['newpass'])){

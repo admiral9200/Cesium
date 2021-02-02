@@ -2,7 +2,7 @@
 session_start();
 if (!isset($_SESSION['email'])) header('location: /');
 $email = $_SESSION['email'];
-include("../php/db_connect.php");
+include("../config/db.connect.php");
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':

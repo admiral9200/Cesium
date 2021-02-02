@@ -1,5 +1,5 @@
 <?php
-include("db_connect.php");
+include("db.connect.php");
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && @!is_null($_POST['email']) && @!is_null($_POST['pass']) && @!is_null($_POST['firstName']) && @!is_null($_POST['lastName'])){
     echo registerUser();
 }

@@ -1,0 +1,30 @@
+version: '3'
+services:
+  dev_chip_coffee:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - C:\Users\z3r0Luck\Documents\Personal_Projects\Chip_Coffee:/var/www/html/
+  db_chip_coffee:
+    build:
+      context: ./
+      dockerfile: MySQL.Dockerfile
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+      MYSQL_ALLOW_EMPTY_PASSWORD : 'yes'
+    restart: always
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    environment:
+     - PMA_ARBITRARY=1
+    restart: always
+    ports:
+     - 8080:80
+    volumes:
+     - /sessions
