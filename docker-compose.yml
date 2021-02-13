@@ -18,9 +18,8 @@ services:
       MYSQL_ROOT_PASSWORD: 'root'
       MYSQL_ALLOW_EMPTY_PASSWORD : 'yes'
     restart: always
-  phpmyadmin:
+  db_admin_ChipCoffee:
     image: phpmyadmin
-    container_name: phpmyadmin
     environment:
      - PMA_ARBITRARY=1
     restart: always

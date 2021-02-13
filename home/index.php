@@ -5,6 +5,10 @@ if (!isset($_SESSION['email'])) header("location: /");
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script async src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script async src="home.js"></script>
     <meta charset=UTF-8>
     <meta http-equiv="content-type" content="text/html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,10 +19,6 @@ if (!isset($_SESSION['email'])) header("location: /");
     <link rel="stylesheet" type="text/css" href="/css/footer.css">
     <link rel="stylesheet" type="text/css" href="/css/home.css">
     <link rel="stylesheet" type="text/css" href="/bootstrap-4.5.0/css/bootstrap.min.css">
-    <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script async src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
-    <script async src="home.js"></script>
 </head>
 <body>
     <div id="blurred" class="blurred"></div>
@@ -48,19 +48,19 @@ if (!isset($_SESSION['email'])) header("location: /");
         <div id='false' class="m-3"></div>
         <div class="row">
             <div class="group col-xl-5 col-12 mt-2 m-xl-0">   
-                <input id="address" type="text" class="input form-control form-control-lg w-100" placeholder="Πρόσθεσε εδώ την διεύθυνσή σου" required>
+                <input id="address" type="text" class="input form-control w-100" placeholder="Πρόσθεσε εδώ την διεύθυνσή σου" required>
                 <div class="text-danger">
                     Πρέπει να συμπληρώσεις την διεύθυνσή σου.
                 </div>
             </div>
             <div class="group col-xl-5 col-12 mt-2 m-xl-0">
-                <input id="state" type="text" class="input form-control form-control-lg w-100" placeholder="Πρόσθεσε εδώ την περιοχή σου" required>
+                <input id="state" type="text" class="input form-control w-100" placeholder="Πρόσθεσε εδώ την περιοχή σου" required>
                 <div class="text-danger">
                     Πρέπει να συμπληρώσεις την περιοχή σου.
                 </div>
             </div>
             <div class="group col-xl-2 col-12 mt-2 m-xl-0">
-                <button onclick="addAddress()" type="button" class="btn mainbtn btn-lg btn-block text-white">Προσθήκη</button>
+                <button onclick="addAddress(address.value, state.value)" type="button" class="btn mainbtn btn-block text-white">Προσθήκη</button>
             </div>
         </div>
         <h2 class="mb-2 mt-5">Οι διευθύνσεις μου</h2>

@@ -17,11 +17,11 @@ const blurred = document.getElementById("blurred");
 			coffeeToOrder = JSON.parse(coffeeToOrder);
 
 			try {
-				let price = coffeeToOrder.price;
+				let price = parseFloat(coffeeToOrder.price);
 
 				finalCart += `<li class='list-group-item d-flex justify-content-between lh-condensed'>
 									<div>
-										<h6 class='my-0'>${coffeeToOrder.qty}x ${coffeeToOrder.name}</h6>
+										<h6 class='my-0'>${ coffeeToOrder.qty }x ${ coffeeToOrder.coffee }</h6>
 										<small class='text-muted'>
 											${coffeeToOrder.sugar}
 											${coffeeToOrder.sugarType !== '' ? ', ' + coffeeToOrder.sugarType : ''}
@@ -30,10 +30,10 @@ const blurred = document.getElementById("blurred");
 											${coffeeToOrder.choco === 1 ? ', Σκόνη Σοκολάτας' : ''}
 										</small>
 									</div>
-									<span class='text-muted'>${price.toFixed(2)}€</span>
+									<span class='text-muted'>${ price.toFixed(2) }€</span>
 								</li>`;
 				
-				totalCost += coffeeToOrder.price;
+				totalCost += price;
 			}
 			catch (err){
 				console.error(err);
@@ -42,7 +42,7 @@ const blurred = document.getElementById("blurred");
 
 		finalCart += `<li class="list-group-item d-flex justify-content-between">
 						<h5>Κόστος</h5>
-						<h5>${totalCost.toFixed(2)}€</h5>
+						<h5>${ totalCost.toFixed(2) }€</h5>
 					</li>`;
 
 		$("#FinalCart").append(finalCart);
@@ -129,12 +129,25 @@ let sendOrder = () => {
 					blurred.style.display = "none";
 					$('body').removeClass('stop-scrolling');
 				}
+				else if (res == 0){
+
+					$("#false").addClass('my-2');
+					$("#false").html(`<div class='alert alert-danger alert-dismissible fade show'>
+										<button type='button' class='close' data-dismiss='alert'>&times;</button>Προέκυψε σφάλμα στην αποστολή παραγγελίας. Δοκίμασε ξανά.
+									</div>`);
+
+					loader.style.display = "none";
+					blurred.style.display = "none";
+					$('body').removeClass('stop-scrolling');
+				}
 			})
 			.catch(() => {
-				document.getElementById('false').classList.add("my-2");
-				document.getElementById('false').innerHTML = `<div class='alert alert-danger alert-dismissible fade show'>
-																<button type='button' class='close' data-dismiss='alert'>&times;</button>Κάτι πήγε λάθος. Δοκίμασε ξανά.
-																</div>`;
+
+				$("#false").addClass('my-2');
+				$("#false").html(`<div class='alert alert-danger alert-dismissible fade show'>
+									<button type='button' class='close' data-dismiss='alert'>&times;</button>Κάτι πήγε λάθος. Δοκίμασε ξανά.
+								</div>`);
+
 				loader.style.display = "none";
 				blurred.style.display = "none";
 				$('body').removeClass('stop-scrolling');

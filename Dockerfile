@@ -3,7 +3,6 @@ FROM ubuntu:latest
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt update -y
-RUN apt upgrade -y
 RUN apt install -y apache2 
 RUN apt install -y php 
 RUN apt install -y php-dev 

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("db.connect.php");
+include("../config/db.connect.php");
 $email = $_SESSION['email'];
 $sqlClearCart = "DELETE FROM cc_cart WHERE email = ?";
 $stmtClearCart = $pdo -> prepare($sqlClearCart);
