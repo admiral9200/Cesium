@@ -14,7 +14,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 		}
         break;
     default:
-        echo false;
+        echo json_encode($res['status'] = 'fail');
         break;
 }
 
@@ -30,10 +30,10 @@ function orderAgain(){
     $sqlOrderAgain = "SELECT * FROM cc_orders_products WHERE id= ?";
 
     $stmtOrderAgain = $pdo -> prepare($sqlOrderAgain);
-    $orderFetched =  $stmtOrderAgain -> execute([$order -> code]);
+    $queryResolved =  $stmtOrderAgain -> execute([$order -> code]);
 
-    if ($orderFetched) {
+    if ($queryResolved) {
         return json_encode($stmtOrderAgain -> fetchAll());
     }
-    return false;
+    return json_encode($res['status'] = 'fail');
 }

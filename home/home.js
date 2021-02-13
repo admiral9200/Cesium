@@ -146,7 +146,7 @@ const fetchOrders = async () => {
 													${(() => {
 														let string = '';
 														for (let k = 0; k < coffees.length; k++){
-															string +=	`<div class='row'>
+															string +=	`<div class='row m-xl-0 m-lg-0 m-md-0 mx-1'>
 																			<h6 class='mr-2'>${qtys[k]}x</h6><h6>${coffees[k]}</h6>
 																		</div>`;
 														}
@@ -312,7 +312,7 @@ const orderAgain = async (code) => {
 		if (response.ok) {
 			let res = await response.json();
 	
-			if (res.length > 0) {
+			if (res.length > 0 && res !== 'fail') {
 				localStorage.clear();
 				for (let i = 0; i < res.length; i++) {
 					localStorage.setItem(i, JSON.stringify(res[i]));
@@ -321,12 +321,17 @@ const orderAgain = async (code) => {
 			}
 		}
 		else if (!response.ok){
-			console.log(err);
-			reset();
+			$("#false").html(`<div class='alert alert-danger alert-dismissible fade show'>
+							<button type='button' class='close' data-dismiss='alert'>&times;</button>${ res.status }
+						</div>`);
 		}	
 	} 
 	catch (error) {
-		console.error(error);
+		$("#false").html(`<div class='alert alert-danger alert-dismissible fade show'>
+							<button type='button' class='close' data-dismiss='alert'>&times;</button>${ error }
+						</div>`);
+	}
+	finally {
 		reset();
 	}
 };
