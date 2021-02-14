@@ -36,11 +36,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (strpos($key, '_') !== false) {
             $coffee = json_decode($cartData -> $key);
 
-            $sqlInsertProductsDetails = "INSERT INTO cc_orders_products (id, coffee, sugar, sugarType, milk, cinnamon, choco, price, qty) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $sqlInsertProductsDetails = "INSERT INTO cc_orders_products (id, coffee, sugar, sugarType, milk, choco, cinnamon, price, qty) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $stmtInsertProductsDetails = $pdo -> prepare($sqlInsertProductsDetails);
             $coffeesInserted = $stmtInsertProductsDetails -> execute([
                                             $id['id'],
-                                            $coffee -> name,
+                                            $coffee -> coffee,
                                             $coffee -> sugar,
                                             $coffee -> sugarType,
                                             $coffee -> milk,
@@ -52,22 +52,25 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    if($orderPlaced && $orderIdMatches && $coffeesInserted) echo true;
-    else echo false;
+    if($orderPlaced && $orderIdMatches && $coffeesInserted) {
+        echo json_encode($res['status'] = 'success');
+        exit();
+    }
+    echo json_encode($res['status'] = 'fail');
+    exit();
 }
 else if($_SERVER['REQUEST_METHOD'] === 'GET'){
+
     $sqlOrderDetails = "SELECT cc_address.address, cc_orders.floor, cc_orders.time FROM cc_address JOIN cc_orders ON cc_address.email = cc_orders.email WHERE cc_address.email = ? AND cc_orders.email = ? AND cc_orders.id IN (SELECT max(id) FROM cc_orders WHERE email = ?)";
     $stmtOrderDetails = $pdo -> prepare($sqlOrderDetails);
-    $stmtOrderDetails -> execute([$_SESSION['email'], $_SESSION['email'], $_SESSION['email']]);
-    if ($stmtOrderDetails) {
-        $orderDetails = $stmtOrderDetails -> fetchAll();
-        $orderDetails = json_encode($orderDetails);
-        echo $orderDetails;
+    $queryResolved = $stmtOrderDetails -> execute([$_SESSION['email'], $_SESSION['email'], $_SESSION['email']]);
+    
+    if ($queryResolved) {
+        echo json_encode($stmtOrderDetails -> fetchAll());
+        exit();
     }
-    else{
-        echo false;
-    }
+    echo json_encode($res['status'] = 'fail');
+    exit();
 }
-else{
-    echo false;
-}
+
+http_response_code(404);
