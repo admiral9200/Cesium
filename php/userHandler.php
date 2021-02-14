@@ -1,16 +1,11 @@
 <?php
 include("../config/db.connect.php");
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && @!is_null($_POST['email']) && @!is_null($_POST['pass']) && @!is_null($_POST['firstName']) && @!is_null($_POST['lastName'])){
     echo registerUser();
 }
 else if ($_SERVER['REQUEST_METHOD'] == 'POST' && @!empty($_POST['email']) && @!empty($_POST['pass'])){
     echo loginUser();
-}
-else if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['delete'] == true) {
-    echo deleteUser();
-}
-else if($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['user'])){
-    echo getUser();
 }
 
 
@@ -59,44 +54,6 @@ function registerUser(){
         else{
             return false;
         }
-    }
-    else{
-        return false;
-    }
-}
-
-function getUser(){
-    session_start();
-    global $pdo;
-    $sqlLoggedInUser = "SELECT email, firstName, lastName FROM cc_users WHERE email = ?";
-    $resultUser = $pdo->prepare($sqlLoggedInUser);
-    $resultUser->execute([$_SESSION['email']]);
-    if ($resultUser){
-        $user = $resultUser->fetchAll();
-        $user = json_encode($user);
-        return $user;
-    }
-    else return "Κάτι πήγε λάθος. Δοκίμασε ξανά";
-}
-
-function deleteUser(){
-    global $pdo;
-    $sqlDeleteUser = "DELETE FROM cc_users WHERE email = ?";
-    $stmtDeleteUser = $pdo -> prepare($sqlDeleteUser);
-    $stmtDeleteUser -> execute([$_SESSION['email']]);
-    $sqlDeleteUser1 = "DELETE FROM cc_address WHERE email = ?";
-    $stmtDeleteUser1 = $pdo -> prepare($sqlDeleteUser1);
-    $stmtDeleteUser1 -> execute([$_SESSION['email']]);
-    $sqlDeleteUser2 = "DELETE FROM cc_orders WHERE email = ?";
-    $stmtDeleteUser2 = $pdo -> prepare($sqlDeleteUser2);
-    $stmtDeleteUser2 -> execute([$_SESSION['email']]);
-    $sqlDeleteUser3 = "DELETE FROM cc_cart WHERE email = ?";
-    $stmtDeleteUser3 = $pdo -> prepare($sqlDeleteUser3);
-    $stmtDeleteUser3 -> execute([$_SESSION['email']]);
-    if ($stmtDeleteUser && $stmtDeleteUser1 && $stmtDeleteUser2 && $stmtDeleteUser3) {
-        session_unset();
-        session_destroy();
-        return true;
     }
     else{
         return false;

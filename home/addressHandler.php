@@ -1,35 +1,41 @@
 <?php
-include("../config/db.connect.php");
 session_start();
-if (!isset($_SESSION['email'])) header("location: /");
+if (!isset($_SESSION['email'])) {
+    http_response_code(400);
+    header("location: /");
+}
+include("../config/db.connect.php");
 
 switch ($_SERVER['REQUEST_METHOD']) {
     case 'POST':
+        header("Content-Type: application/json; charset=UTF-8");
+        $req = json_decode(file_get_contents('php://input'));
 
-        header("Content-Type: application/json");
-
-        $address = file_get_contents('php://input');
-        $address = json_decode($address);
-
-        if (@!empty($address -> address) && @!empty($address -> state)) {
-            echo insertAddress($address -> address, $address -> state);
+        if (@!empty($req -> address) && @!empty($req -> state)) {
+            echo insertAddress($req -> address, $req -> state);
+            exit();
         }
-        else if (@!empty($address -> address)) { //delete address
-            echo deleteAddress($address -> address);
+        else if (@!empty($req -> address)) { //delete address
+            echo deleteAddress($req -> address);
+            exit();
         }
         else {
             echo json_encode($res['status'] = 'fail');
+            exit();
         }
         break;
     case 'GET':
         if (@isset($_GET['q'])) { //check address
             echo json_encode($res['count'] = countAddresses());
+            exit();
         }
         else if (@isset($_GET['f'])) { //fetch address
             echo fetchAddress();
+            exit();
         }
         else if(@isset($_GET['orders'])){
             echo fetchOrders();
+            exit();
         }
         break;
 }
@@ -43,9 +49,10 @@ function deleteAddress($address) {
 
     if ($stmtDeleteAddress) {
         unset($_SESSION['addressExists']);
-        return json_encode($res['status'] = 'success');
+        return json_encode(['status' => 'success']);
     }
-    return json_encode($res['status'] = 'fail');
+    $res = ['error' => 'Internal Error'];
+    return json_encode($res);
 }
 
 function insertAddress ($address, $state) {
@@ -54,35 +61,39 @@ function insertAddress ($address, $state) {
     $pattern = '/[\'\/~`\!@#\$%\^&\*\(\)_\-\+=\{\}\[\]\|;:"\<\>,\.\?\\\]/';
 
     if (preg_match($pattern, $address) && preg_match($pattern, $state)) {
-        return json_encode($res['status'] = 'Not Valid');   
+        $res = ['error' => 'Not Valid'];
     }
     else if (countAddresses() >= 3){
-        return json_encode($res['status'] = 'Over Limit');
+        $res = ['error' => 'Over Limit'];
     }
-    else{
-
+    else {
         $sqlInsertAddress = "INSERT INTO cc_address (email, address, state, active) VALUES (? , ? , ? , 1)";
         $stmtInsertAddress = $pdo -> prepare($sqlInsertAddress);
         $addressInsertedToDB = $stmtInsertAddress -> execute([$_SESSION['email'], $address, $state]);
 
         if ($addressInsertedToDB) {
-            return json_encode($res['status'] = 'success');
+            $res = ['status' => 'success'];
+        }
+        else {
+            $res = ['error' => 'Internal Error'];
         }
     }
-    return json_encode($res['status'] = 'fail');
+    return json_encode($res);
 }
 
 function fetchAddress(){
     global $pdo;
+
     $sqlFetchAddress = "SELECT address, state, active FROM cc_address WHERE email = ?";
     $stmtAddress = $pdo -> prepare($sqlFetchAddress); 
-    $stmtAddress -> execute([$_SESSION['email']]);
-    if ($stmtAddress) {
+    $queryResolved = $stmtAddress -> execute([$_SESSION['email']]);
+
+    if ($queryResolved) {
         return json_encode($stmtAddress -> fetchAll());
     }
-    else{
-        return json_encode($res['status'] = 'fail');
-    }
+
+    $res = ['error' => 'Internal Error'];
+    return json_encode($res);
 }
 
 function countAddresses(){
@@ -122,5 +133,9 @@ function fetchOrders(){
     if($stmtOrders){
         return json_encode($stmtOrders -> fetchAll());
     }
-    return json_encode($res['status'] = 'fail');
+    $res = ['error' => 'Internal Error'];
+    return json_encode($res);
 }
+
+http_response_code(400);
+exit();

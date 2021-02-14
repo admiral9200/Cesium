@@ -1,6 +1,9 @@
 <?php
 session_start();
-if (!isset($_SESSION['email'])) header('location: ../');
+if (!isset($_SESSION['email'])) {
+    http_response_code(400);
+    header('location: ../');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,7 +55,7 @@ if (!isset($_SESSION['email'])) header('location: ../');
             </div>
             <div class="col-xl-9 col-12 personal-info">
                 <h4 class="mb-4">Τα στοιχεία μου</h4>
-                <div id="res"></div>
+                <div id="info"></div>
                 <div class="form-group row mb-0">
                     <div class="col-xl-5 col-12">
                         <label class="col-xl-5 col-form-label form-control-label pl-0">Όνομα</label>
@@ -70,7 +73,7 @@ if (!isset($_SESSION['email'])) header('location: ../');
                 </div>
                 <div class="form-group row">
                     <div class="col-xl-5 mb-0">
-                        <input class="form-control" type="text" id="email" value="" disabled/>
+                        <input class="form-control" type="text" id="email" value="<?php echo $_SESSION['email']; ?>" disabled/>
                     </div>
                 </div>
                 <!-- <div class="form-group row mt-4 mb-0">
@@ -83,12 +86,12 @@ if (!isset($_SESSION['email'])) header('location: ../');
                 </div> -->
                 <div class="form-group row">
                     <div class="col-12 mt-4 text-left">
-                        <button type="button" id="changeCreds" class="btn mainbtn text-white btn-lg btn-block" value="save">Αποθήκευση Αλλαγών</button>
+                        <button type="button" onclick="changeCreds()" class="btn mainbtn text-white btn-lg btn-block" value="save">Αποθήκευση Αλλαγών</button>
                     </div>
                 </div>
                 <hr class="mt-4 mb-4">
                 <h4 class="mb-4">Αλλαγή κωδικού</h4>
-                <div id="resPass"></div>
+                <div id="infoPass"></div>
                 <div class="form-group row mt-4 mb-0">
                     <label class="col-xl-5 col-12 col-form-label form-control-label pl-3">Τρέχων κωδικός</label>
                 </div>
@@ -109,14 +112,15 @@ if (!isset($_SESSION['email'])) header('location: ../');
                 </div>
                 <div class="form-group row mt-4">
                     <div class="col-xl-12 col-12">
-                        <button type="submit" id="changepass" class="btn mainbtn text-white btn-lg btn-block" value="pass">Αποθήκευση Αλλαγών</button>
+                        <button type="button" onclick="changePass()" class="btn mainbtn text-white btn-lg btn-block" value="pass">Αποθήκευση Αλλαγών</button>
                     </div>
                 </div>
                 <hr class="mt-4 mb-4">
                 <h4 class="mb-4">Διαγραφή Λογαριασμού</h4>
+                <div id="error"></div>
                 <div class="form-group row mt-4">
                     <div class="col-xl-12 col-12">
-                        <button type="submit" class="btn text-white btn-lg btn-block btn-danger" data-toggle="modal" data-target="#exampleModalCenter">Οριστική Διαγραφή Λογαριασμού</button>
+                        <button type="button" class="btn text-white btn-lg btn-block btn-danger" data-toggle="modal" data-target="#exampleModalCenter">Οριστική Διαγραφή Λογαριασμού</button>
                     </div>
                 </div>
                 <!-- form delete -->
@@ -134,7 +138,7 @@ if (!isset($_SESSION['email'])) header('location: ../');
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Ακύρωση</button>
-                                <button type="button" class="btn btn-danger" id="account_delete">Συνέχεια</button>
+                                <button type="button" class="btn btn-danger" onclick="deleteAccount()">Συνέχεια</button>
                             </div>
                         </div>
                     </div>

@@ -6,26 +6,29 @@ const resPass = document.getElementById('resPass');
 const oldpass = document.getElementById("oldpass");
 const newpass = document.getElementById("newpass");
 
-const getProfile = () => {
-	let xhr = new XMLHttpRequest();
-	xhr.open('GET', '/php/userHandler.php?user', true);
-	xhr.onload = function(){
-		if (this.status == 200) {
-			let prof = JSON.parse(this.responseText);
-			document.getElementById('dropdownMenuLink').innerHTML = `${prof[0].firstName} <i class='far fa-user'></i>`;
-			try {
-				document.getElementById('email').value = prof[0].email;
-				document.getElementById('firstName').value = prof[0].firstName;
-				document.getElementById('lastName').value = prof[0].lastName;
-				document.getElementById('fullName').innerHTML = `${prof[0].firstName} ${prof[0].lastName}`;
-				document.getElementById('dropdownMenuLink').innerHTML = `${prof[0].firstName} <i class='far fa-user'></i>`;
-			} 
-			catch (error) {
-				
+let email = $("#email").val();
+
+const getProfile = async () => {
+	try {
+		let response = await fetch('profile.php?user=' + email);
+
+		if (response.ok) {
+			let res = await response.json();
+
+			if (!res.error){
+				$("#dropdownMenuLink").html(`${ res[0].firstName } <i class='far fa-user'></i>`);
+				$("#fullName").html(`${ res[0].firstName } ${ res[0].lastName }`);
+				$("#firstName").val(res[0].firstName);
+				$("#lastName").val(res[0].lastName);
+			}
+			else if (res.error === 'Internal Error') {
+				$("#dropdownMenuLink").html(`<i class='far fa-user'></i>`);
 			}
 		}
-	};
-	xhr.send();
+	} 
+	catch (error) {
+		
+	}
 };
 
 (() => getProfile())();
@@ -58,94 +61,151 @@ for (let j = 0; j > 2; j++) {
 	});
 }
 
-document.getElementById('changeCreds').addEventListener('click', changeCreds);
-document.getElementById('changepass').addEventListener('click', changePass);
-document.getElementById('account_delete').addEventListener('click', deleteAccount);
+const changeCreds = async () => {
 
-function changeCreds(){
-	const res = document.getElementById('res');
 	const firstName = document.getElementById("firstName");
 	const lastName = document.getElementById("lastName");
+
 	if(validateForm(firstName, lastName)){
+
 		loader.style.display = "block";
 		blurred.style.display = "block";
 		$('body').addClass('stop-scrolling');
-		let xhr = new XMLHttpRequest();
-		xhr.open('POST', 'profile.php', true);
-		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		let params = "firstName=" + firstName.value + "&lastName=" + lastName.value;
-		xhr.onload = function(){
-			if(this.status == 200){
-				if(this.responseText == true){
-					res.innerHTML = "<div class='alert alert-success alert-dismissible fade show'>" +
-                    					"<button type='button' class='close' data-dismiss='alert'>&times;</button>" +
-                    						'Τα στοιχεία σου άλλαξαν επιτυχώς' +
-               						"</div>";
-					getProfile();
-					removeLoader();
+
+		try {
+			let params = {
+				firstName: firstName.value,
+				lastName: lastName.value
+			};
+
+			let response = await fetch('profile.php', {
+				method: "POST",
+				body: JSON.stringify(params),
+				headers: {
+					"Content-type": "application/json; charset=UTF-8"
 				}
-				else{
-					res.style.display = "block";
-					res.classList.remove('alert-success');
-					res.classList.add('alert-danger');
-					res.innerHTML = this.responseText;
+			});
+
+			if (response.ok) {
+				let res = await response.json();
+
+				if (res.status === 'success') {
+					$("#info").html(`<div class='alert alert-success alert-dismissible fade show'>
+										<button type='button' class='close' data-dismiss='alert'>&times;</button>Τα στοιχεία σου άλλαξαν επιτυχώς.
+				   					</div>`);
 					getProfile();
-					removeLoader();
+				}
+				else if (res.error){
+					$("#info").html(`<div class='alert alert-danger alert-dismissible fade show'>
+										<button type='button' class='close' data-dismiss='alert'>&times;</button>${ res.error }
+									</div>`);
 				}
 			}
-		};
-		xhr.send(params);
+			else if (!response.ok) {
+				$("#info").html(`<div class='alert alert-danger alert-dismissible fade show'>
+									<button type='button' class='close' data-dismiss='alert'>&times;</button>${ res.status }
+								</div>`);
+			}
+		} 
+		catch (error) {
+			$("#info").html(`<div class='alert alert-danger alert-dismissible fade show'>
+								<button type='button' class='close' data-dismiss='alert'>&times;</button>${ error }
+							</div>`);
+		}
+		finally {
+			removeLoader();
+		}
 	}
-}
+};
 
-function changePass(){
+const changePass = async () => {
 	if(validateForm(oldpass, newpass)){
+
 		loader.style.display = "block";
 		blurred.style.display = "block";
 		$('body').addClass('stop-scrolling');
-		let xhr = new XMLHttpRequest();
-		xhr.open('POST', 'profile.php', true);
-		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		let params = "oldpass=" + oldpass.value + "&newpass=" + newpass.value;
-		xhr.onload = function(){
-			if(this.status == 200){
-				if(this.responseText == true){
-					resPass.innerHTML = "<div class='alert alert-success alert-dismissible'>" +
-                    						"<button type='button' class='close' data-dismiss='alert'>&times;</button>" +
-											"Ο κωδικός σας άλλαξε επιτυχώς" +
-                						"</div>";
-					removeLoader();
-				}
-				else{
-					resPass.innerHTML = "<div class='alert alert-danger alert-dismissible'>" +
-                    						"<button type='button' class='close' data-dismiss='alert'>&times;</button>" +
-											this.responseText +
-                						"</div>";
-					removeLoader();
-				}
-			}
-		};
-		xhr.send(params);
-	}
-}
 
-function deleteAccount(){
-	let xhr = new XMLHttpRequest();
-	xhr.open('POST', '../php/userHandler.php', true);
-	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-	let params = "delete=" + true;
-	xhr.onload = function(){
-		if(this.status == 200){
-			if(this.responseText == true){
-				location.href = "../";
+		try {
+			let params = {
+				oldPassword: oldpass.value,
+				newPassword: newpass.value
+			};
+
+			let response = await fetch('profile.php', {
+				method: "POST",
+				body: JSON.stringify(params),
+				headers: {
+					"Content-type": "application/json; charset=UTF-8"
+				}
+			});
+
+			if (response.ok) {
+				let res = await response.json();
+
+				if (res.status === 'success') {
+					$("#infoPass").html(`<div class='alert alert-success alert-dismissible fade show'>
+										<button type='button' class='close' data-dismiss='alert'>&times;</button>Ο κωδικός σου άλλαξε επιτυχώς.
+				   					</div>`);
+					getProfile();
+				}
+				else if (res.error){
+					$("#infoPass").html(`<div class='alert alert-danger alert-dismissible fade show'>
+										<button type='button' class='close' data-dismiss='alert'>&times;</button>${ res.error }
+									</div>`);
+				}
 			}
-			else if(this.responseText == false){
-				//response on error
+			else if (!response.ok) {
+				$("#infoPass").html(`<div class='alert alert-danger alert-dismissible fade show'>
+									<button type='button' class='close' data-dismiss='alert'>&times;</button>${ res.status }
+								</div>`);
+			}
+		} 
+		catch (error) {
+			$("#infoPass").html(`<div class='alert alert-danger alert-dismissible fade show'>
+								<button type='button' class='close' data-dismiss='alert'>&times;</button>${ error }
+							</div>`);
+		}
+		finally {
+			removeLoader();
+		}
+	}
+};
+
+const deleteAccount = async () => {
+	try {
+		let params = {
+			email
+		};
+
+		let response = await fetch('profile.php', {
+			method: "POST",
+			body: JSON.stringify(params),
+			headers: {
+				"Content-type": "application/json; charset=UTF-8"
+			}
+		});
+
+		if (response.ok) {
+			let res = await response.json();
+
+			if (res.error){
+				$("#error").html(`<div class='alert alert-danger alert-dismissible fade show'>
+									<button type='button' class='close' data-dismiss='alert'>&times;</button>${ res.error }
+								</div>`);
 			}
 		}
-	};
-	xhr.send(params);
-}
+		else if (!response.ok) {
+			$("#error").html(`<div class='alert alert-danger alert-dismissible fade show'>
+								<button type='button' class='close' data-dismiss='alert'>&times;</button>${ res.status }
+							</div>`);
+		}
+	} 
+	catch (error) {
+		$("#error").html(`<div class='alert alert-danger alert-dismissible fade show'>
+							<button type='button' class='close' data-dismiss='alert'>&times;</button>${ error }
+						</div>`);
+	}
+};
 
 const validateForm = (value1, value2) => {
 	let form = [value1, value2];

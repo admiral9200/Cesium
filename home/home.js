@@ -6,19 +6,21 @@ const state = document.getElementById('state');
 const input = [address, state];
 let addresses, orders;
 
-for (let i = 0; i < input.length; i++) {
-	input[i].addEventListener('keyup', function(e){
-		input[i].closest(".group").querySelector('.text-danger').style.display = 'none';
-		input[i].classList.remove("wrong");
-		if(input[i].value == "") {
-			input[i].closest(".group").querySelector('.text-danger').style.display = 'block';
-			input[i].classList.add("wrong");
-		}
-		if (e.keyCode === 13 || e.key === 13) {
-			addAddress(address.value, state.value);
-		}
-	});
-}
+const ValidateEmptyForms = () => {
+	for (let i = 0; i < input.length; i++) {
+		input[i].addEventListener('keyup', function(e){
+			input[i].closest(".group").querySelector('.text-danger').style.display = 'none';
+			input[i].classList.remove("wrong");
+			if(input[i].value == "") {
+				input[i].closest(".group").querySelector('.text-danger').style.display = 'block';
+				input[i].classList.add("wrong");
+			}
+			if (e.keyCode === 13 || e.key === 13) {
+				addAddress(address.value, state.value);
+			}
+		});
+	}
+};
 
 //Check if there is address stored in db
 const addressHandler = async () => {
@@ -40,9 +42,6 @@ const addressHandler = async () => {
 				}
 				else if (resolver > 0){
 					$("#home").html("<button class='btn mainbtn btn-lg btn-block text-white' role='button' onclick='order()'>Παράγγειλε τώρα</button>");
-				}
-				else{
-					$("#false").html(``);
 				}
 				$('#home').fadeIn(300);
 			});
@@ -86,13 +85,11 @@ const fetchAddress = async () => {
 							orderAgainBtn[k].removeAttribute("title");
 							orderAgainBtn[k].classList.remove("disableBtn");	
 						}
-						catch (error) {
-							
-						}
+						catch (error) {}
 					}
 				}
 			}
-			else {
+			else if (addresses.length === 0){
 				address_list = `<li class='list-group-item m-0 border-0'>
 										<h6>Δεν υπάρχει ενεργή διεύθυνση</h6>
 									</li>`;
@@ -102,10 +99,13 @@ const fetchAddress = async () => {
 						orderAgainBtn[k].disabled = true;
 						orderAgainBtn[k].classList.add("disableBtn");	
 					}
-					catch (error) {
-						
-					}
+					catch (error) {}
 				}
+			}
+			else if (addresses.error){
+				$("#false").html(`<div class='alert alert-danger alert-dismissible fade show'>
+								<button type='button' class='close' data-dismiss='alert'>&times;</button>${ addresses.error }
+							</div>`);
 			}
 			$('#addresses').fadeOut(300, function(){
 				$(this).removeClass('lds-dual-ring-sm-bl d-flex justify-content-center').html(address_list).fadeIn(300);
@@ -165,9 +165,14 @@ const fetchOrders = async () => {
 										</li>`);	
 				}
 			}
-			else{
+			else if (orders.length === 0){
 				$("#orders").append(`<li class='list-group-item mt-2 mb-4'>
 										<h6>Δεν υπάρχει καμία παραγγελία.</h6>
+									</li>`);
+			}
+			else if (orders.error === 'Internal Error'){
+				$("#orders").append(`<li class='list-group-item mt-2 mb-4'>
+										<h6>Unexpected Error..</h6>
 									</li>`);
 			}
 		}	
@@ -189,12 +194,12 @@ const order = () => location.href = "/order/";
 
 //add address to db
 const addAddress = async (address, state) => {
-	loader.style.display = "block";
-	blurred.style.display = "block";
-	$('body').addClass('stop-scrolling');
-	
 	if(isAddressValidated(input) && noDuplicateAddress()){
 		
+		loader.style.display = "block";
+		blurred.style.display = "block";
+		$('body').addClass('stop-scrolling');
+
 		let params = {
 			address,
 			state
@@ -212,23 +217,26 @@ const addAddress = async (address, state) => {
 			if (response.ok) {
 				let res = await response.json();
 
-				if (res === 'success'){
-					
+				if (res.status && res.status === 'success'){
+					addressHandler();
+					fetchAddress();
 				}
-				else if (res === 'fail'){
-					$("#msg").html(`<div class='alert alert-danger alert-dismissible fade show'>
-										<button type='button' class='close' data-dismiss='alert'>&times;</button>Δεν προσθέθηκε η διεύθυνση. Προσπάθησε ξανά.
-									</div>`);
-				}
-				else if (res === 'Not Valid') {
-					$("#msg").html(`<div class='alert alert-danger alert-dismissible fade show'>
-                    					<button type='button' class='close' data-dismiss='alert'>&times;</button>Δεν είναι έγκυρο αυτό που συμπλήρωσες.
-                					</div>`);
-				}
-				else if (res === 'Over Limit') {
-					$("#msg").html(`<div class='alert alert-danger alert-dismissible fade show'>
-                					    <button type='button' class='close' data-dismiss='alert'>&times;</button>Δε μπορείτε να προσθέσετε άλλη διεύθυνση.
-                					</div>`);
+				else if (res.error){
+					if (res === 'Internal Error'){
+						$("#msg").html(`<div class='alert alert-danger alert-dismissible fade show'>
+											<button type='button' class='close' data-dismiss='alert'>&times;</button>Δεν προσθέθηκε η διεύθυνση. Προσπάθησε ξανά.
+										</div>`);
+					}
+					else if (res === 'Not Valid') {
+						$("#msg").html(`<div class='alert alert-danger alert-dismissible fade show'>
+											<button type='button' class='close' data-dismiss='alert'>&times;</button>Δεν είναι έγκυρο αυτό που συμπλήρωσες.
+										</div>`);
+					}
+					else if (res === 'Over Limit') {
+						$("#msg").html(`<div class='alert alert-danger alert-dismissible fade show'>
+											<button type='button' class='close' data-dismiss='alert'>&times;</button>Δε μπορείτε να προσθέσετε άλλη διεύθυνση.
+										</div>`);
+					}
 				}
 			}
 		} 
@@ -238,8 +246,6 @@ const addAddress = async (address, state) => {
 							</div>`);
 		}
 		finally {
-			addressHandler();
-			fetchAddress();
 			reset();
 		}
 	}
@@ -267,12 +273,12 @@ const deleteAddress = async (address) => {
 		if (response.ok) {
 			let res = await response.json();
 
-			if (res === 'success'){
+			if (res.status === 'success'){
 				$("#msg").html(`<div class='alert alert-success alert-dismissible fade show'>
 								<button type='button' class='close' data-dismiss='alert'>&times;</button>Η διεύθυνση διαγράφηκε.
 							</div>`);
 			}
-			else if (res === 'fail'){
+			else if (res.error === 'Internal Error'){
 				$("#msg").html(`<div class='alert alert-danger alert-dismissible fade show'>
 									<button type='button' class='close' data-dismiss='alert'>&times;</button>Προέκυψε σφάλμα στην διαγραφή.
 								</div>`);
