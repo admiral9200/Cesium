@@ -1,12 +1,18 @@
 <?php
 session_start();
-@include_once("../config/db.connect.php");
-if (!isset($_SESSION['email'])) header("location: /");
+if (!isset($_SESSION['email'])) {
+    http_response_code(400);
+    header("location: /");
+}
 if ($_SESSION['addressExists'] == 0) header("location: ../home/");
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script async src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script async src="checkout.js"></script>
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
     <title>Chip Coffee | Online Coffee Delivery</title>
@@ -16,10 +22,6 @@ if ($_SESSION['addressExists'] == 0) header("location: ../home/");
     <link rel="stylesheet" type="text/css" href="/css/footer.css">
     <link rel="stylesheet" href="/bootstrap-4.5.0/css/bootstrap.min.css">
     <link rel="icon" type="image/png" href="/images/chip_coffee.png" size="20x20">
-    <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script async src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
-    <script async src="checkout.js"></script>
 </head>
 <body>
     <div id="blurred" class="blurred"></div>

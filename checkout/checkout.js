@@ -35,11 +35,8 @@ const blurred = document.getElementById("blurred");
 				
 				totalCost += price;
 			}
-			catch (err){
-				console.error(err);
-			}
+			catch (err){}
 		}
-
 		finalCart += `<li class="list-group-item d-flex justify-content-between">
 						<h5>Κόστος</h5>
 						<h5>${ totalCost.toFixed(2) }€</h5>
@@ -121,16 +118,14 @@ let sendOrder = async () => {
 				if (response.ok) {
 					let res = await response.json();
 	
-					if (res === 'success'){
-	
+					if (res.status === 'success'){
 						showCompleteOrder();
 						localStorage.clear();
 					}
-					else if (res === 'fail'){
-	
+					else if (res.error){
 						$("#false").addClass('my-2');
 						$("#false").html(`<div class='alert alert-danger alert-dismissible fade show'>
-											<button type='button' class='close' data-dismiss='alert'>&times;</button>Προέκυψε σφάλμα στην αποστολή παραγγελίας. Δοκίμασε ξανά.
+											<button type='button' class='close' data-dismiss='alert'>&times;</button>${ res.error } - Προέκυψε σφάλμα στην αποστολή παραγγελίας. Δοκίμασε ξανά.
 										</div>`);
 					}
 				}
@@ -151,8 +146,8 @@ let sendOrder = async () => {
 };
 
 let showCompleteOrder = async () => {
-
 	try {
+
 		let response = await fetch('checkout.php');
 		if (response.ok) {
 			let orderDetails = await response.json();

@@ -8,6 +8,10 @@ if (!isset($_SESSION['email'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script async src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script async src="profile.js"></script>
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 shrink-to-fit=no">
     <title>Chip Coffee | Online Coffee Delivery</title>
@@ -17,10 +21,6 @@ if (!isset($_SESSION['email'])) {
     <link rel="icon" type="image/png" href="/images/chip_coffee.png">
     <link rel="stylesheet" href="/bootstrap-4.5.0/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;523;600;700;800&display=swap" rel="stylesheet">
-    <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script async src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
-    <script async src="index.js"></script>
 </head>
 <body>
     <div id="blurred" class="blurred"></div>

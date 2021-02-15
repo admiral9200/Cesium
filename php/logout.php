@@ -1,11 +1,12 @@
 <?php
 session_start();
-include("../config/db.connect.php");
-$email = $_SESSION['email'];
-$sqlClearCart = "DELETE FROM cc_cart WHERE email = ?";
-$stmtClearCart = $pdo -> prepare($sqlClearCart);
-$stmtClearCart -> execute([$email]);
+
+if (!isset($_SESSION['email'])) {
+    http_response_code(400);
+    header('location: ../');
+}
+
 session_unset();
 session_destroy();
-header("location: /");
-?>
+
+header("location: ../");
