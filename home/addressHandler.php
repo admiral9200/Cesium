@@ -12,11 +12,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $req = json_decode(file_get_contents('php://input'));
 
         if (@!empty($req -> address) && @!empty($req -> state)) {
-            echo insertAddress($req -> address, $req -> state);
+            echo json_encode(insertAddress($req -> address, $req -> state));
             exit();
         }
         else if (@!empty($req -> address)) { //delete address
-            echo deleteAddress($req -> address);
+            echo json_encode(deleteAddress($req -> address));
             exit();
         }
         else {
@@ -30,11 +30,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
             exit();
         }
         else if (@isset($_GET['f'])) { //fetch address
-            echo fetchAddress();
+            echo json_encode(fetchAddress());
             exit();
         }
         else if(@isset($_GET['orders'])){
-            echo fetchOrders();
+            echo json_encode(fetchOrders());
             exit();
         }
         break;
@@ -49,10 +49,10 @@ function deleteAddress($address) {
 
     if ($stmtDeleteAddress) {
         unset($_SESSION['addressExists']);
-        return json_encode(['status' => 'success']);
+        return ['status' => 'success'];
     }
     $res = ['error' => 'Internal Error'];
-    return json_encode($res);
+    return $res;
 }
 
 function insertAddress ($address, $state) {
@@ -71,14 +71,9 @@ function insertAddress ($address, $state) {
         $stmtInsertAddress = $pdo -> prepare($sqlInsertAddress);
         $addressInsertedToDB = $stmtInsertAddress -> execute([$_SESSION['email'], $address, $state]);
 
-        if ($addressInsertedToDB) {
-            $res = ['status' => 'success'];
-        }
-        else {
-            $res = ['error' => 'Internal Error'];
-        }
+        $addressInsertedToDB ? $res = ['status' => 'success'] : $res = ['error' => 'Internal Error'];
     }
-    return json_encode($res);
+    return $res;
 }
 
 function fetchAddress(){
@@ -88,12 +83,7 @@ function fetchAddress(){
     $stmtAddress = $pdo -> prepare($sqlFetchAddress); 
     $queryResolved = $stmtAddress -> execute([$_SESSION['email']]);
 
-    if ($queryResolved) {
-        return json_encode($stmtAddress -> fetchAll());
-    }
-
-    $res = ['error' => 'Internal Error'];
-    return json_encode($res);
+    return $queryResolved ? $stmtAddress -> fetchAll() : ['error' => 'Internal Error'];
 }
 
 function countAddresses(){
@@ -129,12 +119,9 @@ function fetchOrders(){
                     GROUP BY cc_orders.id
                     ORDER BY cc_orders.id DESC";
     $stmtOrders = $pdo -> prepare($sqlOrders);
-    $stmtOrders -> execute([$_SESSION['email']]);
-    if($stmtOrders){
-        return json_encode($stmtOrders -> fetchAll());
-    }
-    $res = ['error' => 'Internal Error'];
-    return json_encode($res);
+    $ifOrdersFetched = $stmtOrders -> execute([$_SESSION['email']]);
+
+    return $ifOrdersFetched ? $stmtOrders -> fetchAll() : ['error' => 'Internal Error'];
 }
 
 http_response_code(400);
