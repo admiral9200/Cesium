@@ -222,17 +222,17 @@ const addAddress = async (address, state) => {
 					fetchAddress();
 				}
 				else if (res.error){
-					if (res === 'Internal Error'){
+					if (res.error === 'Internal Error'){
 						$("#msg").html(`<div class='alert alert-danger alert-dismissible fade show'>
 											<button type='button' class='close' data-dismiss='alert'>&times;</button>Δεν προσθέθηκε η διεύθυνση. Προσπάθησε ξανά.
 										</div>`);
 					}
-					else if (res === 'Not Valid') {
+					else if (res.error === 'Not Valid') {
 						$("#msg").html(`<div class='alert alert-danger alert-dismissible fade show'>
 											<button type='button' class='close' data-dismiss='alert'>&times;</button>Δεν είναι έγκυρο αυτό που συμπλήρωσες.
 										</div>`);
 					}
-					else if (res === 'Over Limit') {
+					else if (res.error === 'Over Limit') {
 						$("#msg").html(`<div class='alert alert-danger alert-dismissible fade show'>
 											<button type='button' class='close' data-dismiss='alert'>&times;</button>Δε μπορείτε να προσθέσετε άλλη διεύθυνση.
 										</div>`);

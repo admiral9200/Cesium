@@ -14,7 +14,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         header("Content-Type: application/json");
         $req = json_decode(file_get_contents('php://input'));
 
-        echo json_encode(orderAgain());
+        echo json_encode(orderAgain($req));
         exit();
 
     case 'GET':
@@ -32,13 +32,13 @@ function fetchCoffees() {
     return $queryResolved ? $stmtCoffees -> fetchAll() : ['error' => 'Database Error'];
 }
 
-function orderAgain(){
+function orderAgain($order){
     global $pdo;
 
     //Get products of order selected
     $sqlOrderAgain = "SELECT * FROM cc_orders_products WHERE id= ?";
     $stmtOrderAgain = $pdo -> prepare($sqlOrderAgain);
-    $queryResolved =  $stmtOrderAgain -> execute([$req -> code]);
+    $queryResolved =  $stmtOrderAgain -> execute([$order -> code]);
 
     return $queryResolved ? $stmtOrderAgain -> fetchAll() : ['error' => 'Database Error'];
 }

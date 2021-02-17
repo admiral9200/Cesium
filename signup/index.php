@@ -5,6 +5,10 @@ if (isset($_SESSION['email'])) header("location: /home/");
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script async src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script async src="signup.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>Chip Coffee | Online Coffee Delivery</title>
@@ -17,10 +21,6 @@ if (isset($_SESSION['email'])) header("location: /home/");
     <link rel="stylesheet" type="text/css" href="/css/footer.css">
     <link rel="stylesheet" type="text/css" href="/css/form.css">
     <link rel="stylesheet" href="/bootstrap-4.5.0/css/bootstrap.min.css">
-    <script async src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/js/all.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script async src="/bootstrap-4.5.0/js/bootstrap.bundle.min.js"></script>
-    <script async src="/js/index.js"></script>
 </head>
 <body>
     <div class="row main m-0 p-0">
@@ -37,9 +37,10 @@ if (isset($_SESSION['email'])) header("location: /home/");
             <div class="overlayLogo">
                 <img class="logoStyle" src="/images/chip_coffee.png">
             </div>
-            <div class="login-snip text-white user-select-none">
-                <div class="d-flex justify-content-start">
-                    <h1>Σύνδεση</h1>
+            <div class="login-snip user-select-none">
+                <div class="d-flex justify-content-center">
+                    <input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" id="signin-tab" class="tab mr-3">Σύνδεση</label>
+                    <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" id="signup-tab" class="tab ml-3">Εγγραφή</label>
                 </div>
                 <div class="login-space">
                     <div class="login form-check pl-0">
@@ -47,30 +48,54 @@ if (isset($_SESSION['email'])) header("location: /home/");
                             <div class="group">
                                 <label class="label">Email</label>
                                 <input id="email" type="email" class="input form-control form-control-lg index" placeholder="Γράψε τη Διεύθυνση Email" required>
-                                <div id="warnEmail" class="text-danger"></div>
+                                <div class="text-danger">Πρέπει να συμπληρώσεις το email σου.</div>
                             </div>
                             <div class="group">
                                 <label class="label">Password</label>
-                                <input id="password" type="password" class="input form-control form-control-lg index" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
-                                <div id="warnPassword" class="text-danger">Πρέπει να συμπληρώσεις τον κωδικό σου.</div>
+                                <input id="pass" type="password" class="input form-control form-control-lg index" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
+                                <div class="text-danger">Πρέπει να συμπληρώσεις τον κωδικό σου.</div>
                             </div>
                             <div class="group">
                                 <div class="custom-control custom-checkbox w-50" style="cursor: pointer;">
-                                    <input type="checkbox" class="custom-control-input" id="rememberme" style="cursor: pointer;">
-                                    <label class="custom-control-label" for="rememberme" style="cursor: pointer;">Να με θυμάσαι</label>
+                                    <input type="checkbox" class="custom-control-input" id="rmbrme" style="cursor: pointer;">
+                                    <label class="custom-control-label text-white" for="rmbrme" style="cursor: pointer;">Να με θυμάσαι</label>
                                 </div>
                             </div>
                             <div class="group"> 
                                 <button type="button" class="button btn mainbtn btn-lg" onclick="signIn()">Σύνδεση</button>
                                 <div id="res" class="d-flex justify-content-center pt-2"></div>
                             </div>
-                            <h2 class="d-flex justify-content-center mb-2">ή</h2>
-                            <div class="group">
-                                <button type="button" class="button btn mainbtn" onclick="goToSignUp()">Κάνε Εγγραφή</button>
-                            </div>
                             <div class="hr mt-4 mb-4"></div>
                             <div class="text-center"> 
                                 <a href="/reset/">Ξέχασες τον κωδικό σου?</a>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="sign-up-form form-check pl-0">
+                        <form id="signupForm" class="form-group">
+                            <div class="group">
+                                <label class="label">Email</label>
+                                <input id="emailR" type="email" class="input form-control form-control-lg index" placeholder="Γράψε τη Διέυθυνση Email" required>
+                                <div class="text-danger">Πρέπει να συμπληρώσεις μία έγκυρη διεύθυνση email.</div>
+                            </div>
+                            <div class="group">
+                                <label class="label">Όνομα</label> 
+                                <input id="firstName" type="text" class="input form-control form-control-lg index" data-type="firstName" placeholder="Γράψε το Όνομα σου" required>
+                                <div class="text-danger">Πρέπει να συμπληρώσεις το όνομα σου</div>
+                            </div>
+                            <div class="group">
+                                <label class="label">Επίθετο</label> 
+                                <input id="lastName" type="text" class="input form-control form-control-lg index" data-type="lastName" placeholder="Γράψε το Επίθετο σου" required>
+                                <div class="text-danger">Πρέπει να συμπληρώσεις το επίθετο σου.</div>
+                            </div>
+                            <div class="group">
+                                <label class="label">Password</label> 
+                                <input id="password" type="password" class="input form-control form-control-lg index" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
+                                <div class="text-danger">Πρέπει να συμπληρώσεις ένα κωδικό πρόσβασης.</div>
+                            </div>                                            
+                            <div class="group mt-4">
+                                <button type="button" class="button btn mainbtn btn-lg" onclick="signUp()">Εγγραφή</button>
+                                <div id="resReg" class="d-flex justify-content-center pt-2"></div>
                             </div>
                         </form>
                     </div>
