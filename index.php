@@ -33,40 +33,40 @@ if (isset($_SESSION['email'])) header("location: /home/");
                 </div>
             </div>
         </div>
-        <div class="right d-flex justify-content-center align-items-center col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 p-xl-5 p-lg-5 p-md-5 p-sm-5 p-0">
+        <div class="right d-flex justify-content-center align-items-center user-select-none col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 p-xl-5 p-lg-5 p-md-5 p-sm-5 p-0">
             <div class="overlayLogo">
                 <img class="logoStyle" src="/images/chip_coffee.png">
             </div>
-            <div class="login-snip text-white user-select-none">
+            <div class="login-snip text-white">
                 <div class="d-flex justify-content-start">
                     <h1>Σύνδεση</h1>
                 </div>
                 <div class="login-space">
                     <div class="login form-check pl-0">
                         <form class="form-group">
-                            <div class="group">
+                            <div class="group py-2">
                                 <label class="label">Email</label>
-                                <input id="email" type="email" class="input form-control form-control-lg index" placeholder="Γράψε τη Διεύθυνση Email" required>
+                                <input id="email" type="email" class="input form-control form-control-lg border-0" placeholder="Γράψε τη Διεύθυνση Email" required>
                                 <div id="warnEmail" class="text-danger"></div>
                             </div>
-                            <div class="group">
+                            <div class="group py-2">
                                 <label class="label">Password</label>
-                                <input id="password" type="password" class="input form-control form-control-lg index" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
+                                <input id="password" type="password" class="input form-control form-control-lg border-0" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
                                 <div id="warnPassword" class="text-danger">Πρέπει να συμπληρώσεις τον κωδικό σου.</div>
                             </div>
-                            <div class="group">
+                            <div class="group py-2">
                                 <div class="custom-control custom-checkbox w-50" style="cursor: pointer;">
                                     <input type="checkbox" class="custom-control-input" id="rememberme" style="cursor: pointer;">
                                     <label class="custom-control-label" for="rememberme" style="cursor: pointer;">Να με θυμάσαι</label>
                                 </div>
                             </div>
-                            <div class="group"> 
-                                <button type="button" class="button btn mainbtn btn-lg" onclick="signIn()">Σύνδεση</button>
-                                <div id="res" class="d-flex justify-content-center pt-2"></div>
+                            <div class="group py-2"> 
+                                <button type="button" class="button btn btn-block btn-lg mainbtn text-white" id="signIn">Σύνδεση</button>
+                                <div id="res" class="d-flex justify-content-center p-2"></div>
                             </div>
                             <h2 class="d-flex justify-content-center mb-2">ή</h2>
                             <div class="group">
-                                <button type="button" class="button btn mainbtn" onclick="goToSignUp()">Κάνε Εγγραφή</button>
+                                <button type="button" class="button btn btn-block mainbtn text-white" onclick="goToSignUp()">Κάνε Εγγραφή</button>
                             </div>
                             <div class="hr mt-4 mb-4"></div>
                             <div class="text-center"> 

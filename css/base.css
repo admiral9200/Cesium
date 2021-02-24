@@ -60,10 +60,6 @@ input{
   border-radius: 8px !important;
 }
 
-.index{
-  border: none !important;
-}
-
 input:focus{
   outline: none !important;
   box-shadow: 0 0 0 2px #bb6b00 !important;

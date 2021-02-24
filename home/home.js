@@ -4,23 +4,22 @@ const orderAgainBtn = document.getElementsByClassName('orderAgain');
 const address = document.getElementById('address');
 const state = document.getElementById('state');
 const input = [address, state];
-let addresses, orders;
 
-const ValidateEmptyForms = () => {
-	for (let i = 0; i < input.length; i++) {
-		input[i].addEventListener('keyup', function(e){
-			input[i].closest(".group").querySelector('.text-danger').style.display = 'none';
-			input[i].classList.remove("wrong");
-			if(input[i].value == "") {
-				input[i].closest(".group").querySelector('.text-danger').style.display = 'block';
-				input[i].classList.add("wrong");
-			}
-			if (e.keyCode === 13 || e.key === 13) {
-				addAddress(address.value, state.value);
-			}
-		});
-	}
-};
+let addresses;
+
+for (let i = 0; i < input.length; i++) {
+	input[i].addEventListener('keyup', function(e){
+		input[i].closest(".group").querySelector('.text-danger').style.display = 'none';
+		input[i].classList.remove("wrong");
+		if(input[i].value == "") {
+			input[i].closest(".group").querySelector('.text-danger').style.display = 'block';
+			input[i].classList.add("wrong");
+		}
+		if (e.keyCode === 13 || e.key === 13) {
+			addAddress(address.value, state.value);
+		}
+	});
+}
 
 //Check if there is address stored in db
 const addressHandler = async () => {
@@ -62,7 +61,7 @@ const fetchAddress = async () => {
 		let response = await fetch('addressHandler.php?f');
 
 		if (response.ok) {
-			let addresses = await response.json();
+			addresses = await response.json();
 
 			if(addresses.length > 0){
 				for (let i = 0; i < addresses.length; i++) {
@@ -123,7 +122,7 @@ const fetchOrders = async () => {
 	try {
 		let response = await fetch('addressHandler.php?orders');
 		if(response.ok){
-			orders = await response.json();
+			let orders = await response.json();
 
 			if(orders.length > 0){
 				for (let i = 0; i < orders.length; i++) {
@@ -136,18 +135,18 @@ const fetchOrders = async () => {
 					$("#orders").append(`<li class='list-group-item mt-2 mb-4'>
 											<div class='row'>
 												<div class='col-xl-3 col-lg-3 col-md-3 col-6 text-xl-left text-lg-left text-left my-auto'>
-													<h6>${orders[i].id}</h6>
+													<h6>${ orders[i].id }</h6>
 												</div>
 												<div class='col-xl-3 col-lg-3 col-md-3 col-6 text-xl-left text-lg-left text-right my-auto'>
-													<h6>${date}</h6>
-													<p>${orders[i].time}</p>
+													<h6>${ date }</h6>
+													<p>${ orders[i].time }</p>
 												</div>
 												<div class='col-xl-3 col-lg-3 col-md-3 col-12 my-auto'>
 													${(() => {
 														let string = '';
 														for (let k = 0; k < coffees.length; k++){
 															string +=	`<div class='row m-xl-0 m-lg-0 m-md-0 mx-1'>
-																			<h6 class='mr-2'>${qtys[k]}x</h6><h6>${coffees[k]}</h6>
+																			<h6 class='mr-2'>${ qtys[k] }x</h6><h6>${ coffees[k] }</h6>
 																		</div>`;
 														}
 														return string;
@@ -155,7 +154,7 @@ const fetchOrders = async () => {
 												</div>
 												<div class='col-xl-1 col-lg-1 col-md-1 col-12 cost my-auto'>
 													<h6>
-														${ totalPrice.toFixed(2) }€
+														${ parseFloat(totalPrice).toFixed(2) }€
 													</h6>
 												</div>
 												<div class="col-xl-2 col-lg-2 col-md-2 col-12 my-auto">
@@ -178,7 +177,7 @@ const fetchOrders = async () => {
 		}	
 	} 
 	catch (error) {
-		
+		console.trace(error);
 	}
 };
 

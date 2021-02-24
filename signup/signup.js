@@ -1,77 +1,141 @@
-//Register
-const emailR = document.getElementById('emailR');
+//Register Form
+const email = document.getElementById('email');
 const firstName = document.getElementById('firstName');
 const lastName = document.getElementById('lastName');
+const mobile = document.getElementById('mobile');
 const password = document.getElementById('password');
-const input = [firstName, lastName];
+const passwordRetype = document.getElementById('passwordRetype');
+const termsAccept = document.getElementById('termsAccept');
+//Register Form
+let form = [email, password, passwordRetype, firstName, lastName, mobile, termsAccept];
+
+//Clear warnings on browser tab change
+for (let i = 0; i < form.length; i++) {
+	document.addEventListener('visibilitychange', function(){
+		$(form[i]).removeClass("wrong");
+		$(".text-danger").hide();
+	});
+}
 
 //Email Register validate
-emailR.addEventListener('input', function() {
-	if(emailValidated(emailR.value)) {
-		emailR.closest(".group").querySelector('.text-danger').style.display = 'none';
-		emailR.classList.remove("wrong");
+$("#email").on('input', function() {
+	let email = $(this).val();
+
+	if(!emailValidated(email) && email !== ""){
+		$(this).addClass("wrong");
+		$("#warnEmail").show().html("Πρέπει να συμπληρώσεις μία έγκυρη διεύθυνση email.");
 	}
-	else{
-		emailR.closest(".group").querySelector('.text-danger').style.display = 'block';
-		emailR.classList.add("wrong");
+	else if (email === "") {
+		$(this).addClass("wrong");
+		$("#warnEmail").show().html("Πρέπει να συμπληρώσεις το email σου.");
+	}
+	else {
+		$(this).removeClass("wrong");
+		$("#warnEmail").hide();
 	}
 });
 
 //Password Register validate
 password.addEventListener('input', function() {
-	$("#password").next().css({"display": "none"});
-	password.classList.remove("wrong");
+	$("#password").next().hide();
+	$("#password").removeClass("wrong");
+
 	if(password.value.length === 0) {
-		$("#password").next().css({"display": "block"});
-		password.classList.add("wrong");
+		$("#password").next().show();
+		$("#password").addClass("wrong");
 	}
 	else if (password.value.length <= 8 && password.value.length > 0) {
-		password.classList.add('wrong');
-		$("#password").next().css({"display": "block"});
-		$("#password").next().html("Ο κωδικός πρέπει να είναι μεγαλύτερος από 8 χαρακτήρες");
+		$("#password").addClass("wrong");
+		$("#password").next().show().html("Ο κωδικός πρέπει να είναι μεγαλύτερος από 8 χαρακτήρες");
 	}
 });
 
-for(let i = 0; i < input.length; i++){
-	input[i].addEventListener('input', function(){
+passwordRetype.addEventListener('input', function() {
+	$("#passwordRetype").next().hide();
+	$("#passwordRetype").removeClass("wrong");
+
+	if(passwordRetype.value.length === 0) {
+		$("#password").next().show();
+		$("#password").addClass("wrong");
+	}
+	if (passwordRetype.value !== password.value) {
+		$("#passwordRetype").addClass("wrong");
+		$("#passwordRetype").next().show().html("Ο κωδικός που έχεις εισάγει δεν είναι ίδιος με τον προηγούμενο.");
+	}
+});
+
+for(let i = 3; i < form.length; i++){
+	form[i].addEventListener('input', function(){
 		this.closest(".group").querySelector('.text-danger').style.display = 'none';
 		this.classList.remove("wrong");
-		if (this.value == '') {
+		if (this.value === '') {
 			this.closest(".group").querySelector('.text-danger').style.display = 'block';
 			$(this).addClass("wrong");
-			$("#resReg").empty();
+			$("#response").empty();
 		}
 	});
 }
 
-const signUp = () => {
-	$("#resReg").empty();
+const signUp = async () => {
+	$("#response").empty();
 
-	let inputRegister = [emailR, firstName, lastName, password];
+	if(FormValidated(form) && emailValidated(email.value)){
 
-	if(FormValidated(inputRegister) && emailValidated(emailR.value)){
-
-		$("#resReg").addClass("lds-dual-ring");
+		$("#loader, #blurred").show();
+		$('body').addClass('stop-scrolling');
 		
-		let xhr = new XMLHttpRequest();
-		let params = "email=" + emailR.value + "&firstName=" + firstName.value + "&lastName=" + lastName.value + "&pass=" + password.value;
-		xhr.open('POST', '/php/userHandler.php', true);
-		xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-		xhr.onload = function(){
-			if(this.status == 200){
-				if(this.responseText == 1){
-					document.getElementById('resReg').innerHTML = "";
-					window.location.href = "./php/success.php";
+		try {
+			let params = {
+				email: email.value,
+				password: password.value,
+				passwordRetype: passwordRetype.value,
+				firstName: firstName.value,
+				lastName: lastName.value,
+				mobile: mobile.value,
+				termsAccept: termsAccept.value
+			}
+
+			let response = await fetch('/php/userHandler.php', {
+				method: 'POST',
+				body: JSON.stringify(params),
+				headers: {
+					"Content-type" : "application/json; charset=UTF-8"
 				}
-				else if(this.responseText == 0){
-					$("#resReg").removeClass("lds-dual-ring").html("<p class='text-center mt-3' style='color: #dc3545 !important'>Κάτι πήγε λάθος, δοκίμασε ξανά!</p>");
+			});
+
+			if (response.ok) {
+				let resolve = await response.json();
+
+				if (resolve.status === "success") {
+					$("#registerForm").empty().html(`<div class="container">
+														<div class="alert alert-success" role="alert">
+															<div class="text-center">
+																<img src="/images/success.png" class="chk" alt="Success">
+															</div>
+															<h1 class="text-center">Καλωσήρθες στο Chip Coffee!</h1>
+															<p class="text-center">Η εγγραφή σου έγινε με επιτυχία. Θα λάβεις ένα email για την επιβεβαίωση του λογαριασμού σου.</p>
+															<div class="row justify-content-center">
+																<a role="button" class="btn mainbtn btn-lg" href="/">Πίσω στην αρχική</a>
+															</div>
+														</div>
+													</div>`);
 				}
-				else{
-					$("#resReg").removeClass('lds-dual-ring').html(`<p class='text-center mt-3' style='color: #dc3545 !important'>${  }</p>`);
+				else if (resolve.status) {
+					$("#response").html(resolve.status);
 				}
 			}
-		};
-		xhr.send(params);
+			else if (!response.ok) {
+				$("#response").html(resolve.status);
+			}
+		}
+		catch (error) {
+			$("#response").html(error);
+		}
+		finally {
+			$("#loader").hide();
+			$("#blurred").hide();
+			$('body').removeClass('stop-scrolling');
+		}
 	}
 }
 
@@ -91,21 +155,20 @@ let FormValidated = (input) => {
 			val = false;
 		}
 	}
+	if (!termsAccept.checked){
+		$("#termsAccept").addClass("wrong");
+		$("#termsAccept").next().show();
+		val = false;
+	}
 	if (password.value.length < 8 && password.value) {
-		password.classList.add('wrong');
-		$("#password").next().css({"display": "block"});
-		$("#password").next().html("Ο κωδικός πρέπει να είναι μεγαλύτερος από 8 χαρακτήρες");
+		$("#password").addClass("wrong");
+		$("#password").next().html("Ο κωδικός πρέπει να είναι μεγαλύτερος από 8 χαρακτήρες").show();
+		val = false;
+	}
+	if (passwordRetype.value !== password.value) {
+		$("#passwordRetype").addClass("wrong");
+		$("#passwordRetype").next().show().html("Ο κωδικός που έχεις εισάγει δεν είναι ίδιος με τον προηγούμενο.");
 		val = false;
 	}
 	return val;
-};
-
-//Clear warnings on browser tab change
-let clearWarns = () => {
-	for (let i = 0; i < warnTexts.length; i++) {
-		document.addEventListener('visibilitychange', function(){
-			document.getElementsByClassName('text-danger')[i].style.display = 'none';
-		});
-		document.getElementsByClassName('text-danger')[i].style.display = 'none';
-	}
 };

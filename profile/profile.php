@@ -70,7 +70,7 @@ function changeCreds($firstName, $lastName){
     $stmtChangeName = $pdo -> prepare($sqlChangeName);
     $queryResolved = $stmtChangeName -> execute([$firstName, $lastName, $_SESSION['email']]);
     
-    return $queryResolved ? ['status' => 'success'] : ['error' => 'Internal Error'];
+    return $queryResolved ? ['status' => 'success'] : ['error' => 'An Internal Error occured'];
 }
 
 function deleteUser(){

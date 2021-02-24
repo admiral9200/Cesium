@@ -51,6 +51,9 @@ function loginUser($email, $pass, $rememberme){
                     return ['status' => 'Το email ή ο κωδικός που έχεις εισάγει είναι λάθος!'];
                 }
             }
+            else {
+                return ['status' => 'Το email ή ο κωδικός που έχεις εισάγει είναι λάθος!'];
+            }
         }    
     }
     catch (Error $error) {
@@ -62,32 +65,42 @@ function signUp($req){
     global $pdo;
     
     try {
+        $sanitizedEmail = filter_var($req -> email, FILTER_SANITIZE_EMAIL);
+
+        if ($sanitizedEmail !== $req -> email){
+            return ['error' => 'Email is not valid'];
+        }
+        
         $sqlCheckEmail = "SELECT email FROM cc_users WHERE email = ? LIMIT 1";
         $stmtCheckEmail = $pdo -> prepare($sqlCheckEmail);
-        $stmtCheckEmail -> execute([$_POST['email']]);
+        $stmtCheckEmail -> execute([$req -> email]);
 
         $emailToCheck = $stmtCheckEmail -> fetch();
+
         if ($emailToCheck && ($emailToCheck['email'] === $req -> email)){
-            return ['status' => 'Το email αυτό υπάρχει ήδη'];
+            return ['status' => 'Το email αυτό υπάρχει ήδη!'];
         }
-        else if(strlen($_POST['pass']) > 8){
-            $pass = password_hash($_POST['pass'], PASSWORD_DEFAULT);
+
+        if (filter_var($req -> email , FILTER_VALIDATE_EMAIL) && strlen($req -> password) > 8){
+            
+            $password = password_hash($req -> password, PASSWORD_DEFAULT);
+
             $sqlNewUser = "INSERT INTO cc_users (email, password, firstName, lastName) VALUES(? , ? , ? , ?)";
             $stmtNewUser = $pdo -> prepare($sqlNewUser);
-            $stmtNewUser -> execute([$_POST['email'], $pass, $req -> firstName, $req -> lastName]);
-            if($stmtNewUser){
-                session_start();
-                $_SESSION['msgsuccess'] = true;
-                return true;
+            $queryResolved = $stmtNewUser -> execute([$req -> email, $password, $req -> firstName, $req -> lastName]);
+
+            if ($queryResolved){
+                return ['status' => 'success'];
             }
             else{
-                return false;
+                return ['error' => 'An Internal Server Error occured'];
             }
         }
         else{
-            return false;
-        }   
+            return ['error' => 'An Internal Server Error occured'];
+        } 
     }
     catch (Error $error) {
+        return ['error' => $error];
     }
 }

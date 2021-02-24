@@ -1,9 +1,16 @@
 const rememberme = document.querySelector('#rememberme');
 //Warn Texts
-let warnTexts = document.getElementsByClassName('text-danger');
+const warnTexts = document.getElementsByClassName('text-danger');
 //Newsletter
 const emailNewsletter = document.getElementById('emailNewsletter');
 const subscribeBtn = document.getElementById('subscribe');
+
+//Clear warnings on browser tab change
+for (let i = 0; i < warnTexts.length; i++) {
+	document.addEventListener('visibilitychange', function(){
+		document.getElementsByClassName('text-danger')[i].style.display = 'none';
+	});
+}
 
 $("#email").on('input', function() {
 	let email = $(this).val();
@@ -34,19 +41,25 @@ $("#password").on('input', function() {
 
 const goToSignUp = () => location.href = '/signup/';
 
-const signIn = async () => {
-	let inputLogin = [email, pass];
+$("#signIn").click(function (e) { 
+	e.preventDefault();
+	signIn();
+});
 
-	if(FormValidated(inputLogin) && emailValidated(email.value)){
+const signIn = async () => {
+	let email = $('#email');
+	let pass = $("#password");
+	let inputs = [email, pass];
+
+	if(FormValidated(inputs) && emailValidated(email.value)){
 		$("#res").empty().addClass("lds-dual-ring");
 
 		try {
 			let params = {
-				email: email.value,
-				pass: pass.value,
-				rememberme: rmbrme.checked
+				email,
+				pass,
+				rememberme: rememberme.checked
 			}
-
 			let response = await fetch('/php/userHandler.php', {
 				method: 'POST',
 				body: JSON.stringify(params),
@@ -63,12 +76,12 @@ const signIn = async () => {
 					window.location.href = "./home/";
 				}
 				else if (resolve.status) {
-					$("#res").removeClass('lds-dual-ring').html(`<p class='text-center mt-3' style='color: #dc3545 !important'>${ resolve.error }</p>`);
+					$("#res").removeClass('lds-dual-ring').html(`<p class='text-center' style='color: #dc3545 !important'>${ resolve.status }</p>`);
 				}
 			}
 		}
 		catch (error) {
-			$("#res").removeClass('lds-dual-ring').html(`<p class='text-center mt-3' style='color: #dc3545 !important'>${ error }</p>`);
+			$("#res").removeClass('lds-dual-ring').html(`<p class='text-center' style='color: #dc3545 !important'>${ error }</p>`);
 		}
 	}
 }
@@ -82,27 +95,11 @@ let emailValidated = (email) => {
 let FormValidated = (input) => {
 	let val = true;
 	for(let i = 0; i < input.length; i++){
-		if(input[i].value == ""){
+		if(input[i].value === ""){
 			input[i].closest(".group").querySelector('.text-danger').style.display = 'block';
 			input[i].classList.add('wrong');
 			val = false;
 		}
 	}
-	if (password.value.length < 8 && password.value) {
-		$("#password").addClass("wrong");
-		$("#password").next().css({"display": "block"});
-		$("#password").next().html("Ο κωδικός πρέπει να είναι μεγαλύτερος από 8 χαρακτήρες");
-		val = false;
-	}
 	return val;
-};
-
-//Clear warnings on browser tab change
-let clearWarns = () => {
-	for (let i = 0; i < warnTexts.length; i++) {
-		document.addEventListener('visibilitychange', function(){
-			document.getElementsByClassName('text-danger')[i].style.display = 'none';
-		});
-		document.getElementsByClassName('text-danger')[i].style.display = 'none';
-	}
 };
