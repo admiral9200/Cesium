@@ -1,3 +1,4 @@
 .jshintrc
 server/node_modules
 vanilla_php
+.vscode
