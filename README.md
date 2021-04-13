@@ -1,2 +1,2 @@
-# Chip-Coffee v3.9
-Coffee order Web App made with PHP, MySQL, HTML, CSS, JavaScript and Bootstrap 4 for FrontEnd. Design is fully responsive to most of mobile devices.
+# Chip-Coffee v1.0
+Coffee order Web App made with VueJS, ExpressJS, NodeJS and MySQL. Design is fully responsive to most of mobile devices.
