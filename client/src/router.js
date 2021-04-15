@@ -19,12 +19,22 @@ const routes = [
 	{
 		path: '/',
 		name: 'Index',
-		component: Index
+		component: Index,
+		beforeEnter: (to, from, next) => {
+			NProgress.start();
+			if (VueCookies.get('token') === null && VueCookies.get('user') === null) {
+				next();
+			} 
+			else {
+				next({ path: '/home'});
+				NProgress.done();
+			}
+		}
 	},
 	{
 		path: '/reset',
 		name: 'Reset',
-		component: Reset
+		component: Reset,
 	},
 	{
 		path: '/register',
@@ -35,6 +45,9 @@ const routes = [
 		path: '/home',
 		name: 'Home',
 		component: Home,
+		props: {
+			default: true
+		},
 		meta: {
 			requiresAuth: true
 		}
@@ -43,6 +56,9 @@ const routes = [
 		path: '/order',
 		name: 'Order',
 		component: Order,
+		props: {
+			default: true
+		},
 		meta: {
 			requiresAuth: true
 		}
@@ -51,6 +67,9 @@ const routes = [
 		path: '/checkout',
 		name: 'Checkout',
 		component: Checkout,
+		props: {
+			default: true
+		},
 		meta: {
 			requiresAuth: true
 		}
@@ -59,6 +78,9 @@ const routes = [
 		path: '/profile',
 		name: 'Profile',
 		component: Profile,
+		props: {
+			default: true
+		},
 		meta: {
 			requiresAuth: true
 		}
@@ -79,7 +101,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
 	NProgress.start();
 	if (to.matched.some(record => record.meta.requiresAuth)) {
-		if (VueCookies.get('token') == null && VueCookies.get('user') == null) {
+		if (VueCookies.get('token') === null && VueCookies.get('user') === null) {
 			next({ path: '/' });
 		} 
 		else {

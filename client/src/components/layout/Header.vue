@@ -4,7 +4,7 @@
 			<img src="/images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
 		</router-link>
 		<div class="dropdown">
-			<a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username <i class='far fa-user'></i></a>
+			<a class="dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ name }} <i class='far fa-user'></i></a>
 			<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
 				<router-link to="/profile" class="dropdown-item">Ο λογαριασμός μου</router-link>
 				<div class="dropdown-divider"></div>
@@ -19,6 +19,7 @@ import router from '../../router';
 
 export default {
 	name: 'Header',
+	props: ['name'],
 	methods: {
 		logout: async function() {
 			let user = this.$cookies.get("user");

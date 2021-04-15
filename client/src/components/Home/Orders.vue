@@ -17,17 +17,17 @@
 					<h6>{{ formatDate(order.date) }}</h6>
 					<p>{{ order.time }}</p>
 				</div>
-				<div  class='col-xl-3 col-lg-3 col-md-3 col-12 my-auto'>
-					<div class='row m-xl-0 m-lg-0 m-md-0 mx-1'>
-						<h6 class='mr-2'>${ qtys[k] }x</h6>
-						<h6>${ coffees[k] }</h6>
+				<div class='col-xl-3 col-lg-3 col-md-3 col-12 my-auto'>
+					<div v-for="(coffee, index) in coffeesOrder(order)" :key="index" class='row m-xl-0 m-lg-0 m-md-0 mx-1'>
+						<h6 class='mr-2'>{{ index }}x</h6>
+						<h6>{{ coffee }}</h6>
 					</div>
 				</div>
 				<div class='col-xl-1 col-lg-1 col-md-1 col-12 cost my-auto'>
 					<h6>2.53€</h6>
 				</div>
 				<div class="col-xl-2 col-lg-2 col-md-2 col-12 my-auto">
-					<button type="button" class="btn mainbtn btn-block text-white orderAgain" onclick="orderAgain(${orders[i].id})">Παράγγειλε ξανά</button>
+					<button type="button" class="btn mainbtn btn-block text-white orderAgain">Παράγγειλε ξανά</button>
 				</div>
 			</div>
 		</li>
@@ -69,9 +69,6 @@ export default {
 				if (res.hasOrders) {
 					this.hasNoOrders = false;
 					this.orders = res.orders;
-					console.log(res.orders[0].coffees);
-					this.coffees = res.orders[0].coffees.split(',');
-					console.log(this.coffees);
 				}
 				else if (!res.hasOrders) {
 					this.hasNoOrders = true;
@@ -89,6 +86,13 @@ export default {
 	methods: {
 		formatDate: function(date) {
 			return date.slice(8, 10) + '/' + date.slice(5, 7) + '/' + date.slice(0, 4);
+		},
+
+		coffeesOrder: function(order) {
+			let coffees = order.coffees.split(',');
+			let quantities = order.qty.split(',');
+			let prices = order.price.split(',');
+			return { coffees, quantities, prices };
 		}
 	},
 }

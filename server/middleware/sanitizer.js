@@ -30,7 +30,13 @@ const AddressRules = () => {
 		check('user').not().isEmpty().isEmail().withMessage('2').normalizeEmail(),
 		check('address').not().isEmpty().trim().escape(),
 		check('state').not().isEmpty().trim().escape()
-	]
+	];
+};
+
+const UserIdRule = () => {
+	return [
+		check('user').not().isEmpty().isNumeric().trim().escape()
+	];
 };
 
 const validate = (req, res, next) => {
@@ -46,5 +52,6 @@ module.exports = {
 	signupSanitizeRules,
 	reorderSanitizeRules,
 	AddressRules,
+	UserIdRule,
 	validate
 };

@@ -2,8 +2,10 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../utils/db.config');
-const { loginSanitizeRules, signupSanitizeRules, validate } = require('../middleware/sanitizer');
+const { loginSanitizeRules, signupSanitizeRules, UserIdRule, validate } = require('../middleware/sanitizer');
 const config = require('../utils/jwt.config');
+const { route } = require('./home');
+const verifyToken = require('../middleware/verifyToken');
 
 const router = express.Router();
 
@@ -25,7 +27,7 @@ router.post('/login', loginSanitizeRules(), validate, (req, res) => {
 					if (result){
 						let token = jwt.sign({ email: results[0].email }, config.secret, { expiresIn: 1600 }); //low seconds for testing
 
-						res.send({ auth: true, token: token, user: results[0].email });
+						res.send({ auth: true, token: token, user: results[0].id });
 					}
 					else {
 						res.status(401).send({ 'error': 'Το email ή ο κωδικός που έχεις εισάγει είναι λάθος!' });
@@ -83,6 +85,18 @@ router.post('/signup', signupSanitizeRules(), validate, (req, res) => {
 			'error': 'Passwords do not match'
 		}));
 	}
+});
+
+router.get('/user/:user', UserIdRule(), verifyToken, (req, res) => {
+	let queryToGetUserDetails = 'SELECT firstName, lastName FROM cc_users WHERE id = ?';
+
+	db.execute(queryToGetUserDetails, [req.params.user], (error, results) => {
+		if (error) res.status(500).send({'error': error });
+
+		if (results.length > 0) {
+			res.send({ name: results[0].firstName, surname: results[0].lastName });
+		}
+	});
 });
 
 router.post('/logout' , (req, res) => {

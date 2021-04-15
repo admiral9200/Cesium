@@ -1,12 +1,56 @@
 <template>
 	<div class="h-100">
-		<router-view class="h-100"/>
+		<notifications group="errors"/>
+		<router-view :userInfo="userInfo" class="h-100"/>
 	</div>
 </template>
 
 <script>
+import VueCookies from 'vue-cookies';
+
 export default {
-	name: 'App'
+	data() {
+		return {
+			user: null,
+			userInfo: {}
+		}
+	},
+
+	watch: {
+		
+	},
+
+	async created() {
+		this.user = VueCookies.get('user');
+		let token = VueCookies.get('token');
+
+		if (token !== null && this.user !== null) {
+			try {
+				let res = await fetch('http://localhost:3000/auth/user/' + this.user, {
+					method: 'GET',
+					headers: {
+						"Authorization" : token,
+					}
+				});
+
+				if (res.ok) {
+					let response = await res.json();
+					this.userInfo = response;
+				}
+			} 
+			catch (error) {
+				this.$notify({
+					group: 'errors',
+					title: 'Important message',
+					text: 'Hello user! This is a notification!'
+				});
+			}
+		}
+		else {
+			this.userInfo = {};
+			this.user = null;
+		}
+	},
 }
 </script>
 

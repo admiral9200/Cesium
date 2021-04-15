@@ -1,10 +1,10 @@
 <template>
 	<div>
 		<div class="background">
-			<Header/>
+			<Header :name="userInfo.name"/>
 			<div class="jumbotron jumbotron-fluid">
 				<div class="container">
-					<h1 class="mb-xl-4">Καλωσήρθες, Username</h1>
+					<h1 class="mb-xl-4">Καλωσήρθες, {{ userInfo.name }}</h1>
 					<div class="d-flex justify-content-center">
 
 					</div>
@@ -57,6 +57,7 @@ import Orders from '../components/Home/Orders';
 
 export default {
 	name: 'Home',
+	props: ['userInfo'],
 	components: {
 		InsertAddress,
 		Addresses,
