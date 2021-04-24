@@ -11,3 +11,11 @@ NPM packages used in frontend:
 * Nprogress for loading bar
 * Vue Notifications
 * Vuelidate for form validation
+
+NPM packages used in backend:
+* bcrypt
+* cors
+* express-validator
+* jsonwebtoken
+* jwt-decode
+* mysql2
