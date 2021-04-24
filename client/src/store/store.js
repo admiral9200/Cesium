@@ -13,5 +13,6 @@ export default new Vuex.Store({
 			email: null,
 			mobile: null
 		},
+		userAddresses: {}
 	}
 });

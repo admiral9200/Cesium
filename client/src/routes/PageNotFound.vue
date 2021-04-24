@@ -3,11 +3,13 @@
 		<div class="background">
 			<Header/>
 		</div>
-		<div class="h-100 d-flex justify-content-center align-items-center">
+		<div class="h-100 d-grid justify-content-center align-items-center">
 			<div class="col mx-auto">
-				<img src="">
-				<h1 class="text-center">Φαίνεσαι λίγο χαμένος, μήπως θες ένα καφέ να ξυπνήσεις??</h1>
-				<router-link to="/" class="btn btn-lg mainbtn">Θέλω καφέ!</router-link>
+				<h1 class="text-center display-1">404</h1>
+				<h2 class="text-center">Φαίνεσαι λίγο χαμένος, μήπως θες ένα καφέ να ξυπνήσεις??</h2>
+				<div class="d-flex justify-content-center">
+					<router-link to="/" class="btn btn-lg mainbtn">Ναι!</router-link>
+				</div>
 			</div>
 		</div>
 		<Footer/>
@@ -19,7 +21,6 @@ import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 
 export default {
-	props: ['userInfo'],
 	components: {
 		Header,
 		Footer

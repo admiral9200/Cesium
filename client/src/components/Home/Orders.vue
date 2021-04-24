@@ -31,7 +31,7 @@
 
 <script>
 import VueCookies from 'vue-cookies';
-
+import NProgress from 'nprogress';
 
 export default {
 	name: 'Orders',
@@ -82,6 +82,9 @@ export default {
 				title: 'Error',
 				text: error
 			});
+		}
+		finally {
+			NProgress.done();
 		}
 	
 	},

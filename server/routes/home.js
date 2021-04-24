@@ -56,7 +56,7 @@ router.post('/delete', AddressRule(), validate, verifyToken, (req, res) => {
 });
 
 router.get('/addresses', verifyToken , (req, res) => {
-	const queryToFetchAddresses = 'SELECT address, active FROM cc_address WHERE user_id = ?';
+	const queryToFetchAddresses = 'SELECT address, floor, ringbell, active FROM cc_address WHERE user_id = ?';
 
 	const user = jwt_decode(req.headers.authorization);
 

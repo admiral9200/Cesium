@@ -1,5 +1,5 @@
 <template>
-	<nav class="navbar pt-4 container">
+	<nav class="navbar py-4 container">
 		<router-link to="/home" class="navbar-brand">
 			<img src="/images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
 		</router-link>
@@ -7,6 +7,8 @@
 			<a class="dropdown-toggle dropdown-font" href="#" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">{{ username }} <i class='far fa-user'></i></a>
 			<div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
 				<router-link to="/profile" class="dropdown-item">Ο λογαριασμός μου</router-link>
+				<router-link to="/rates" class="dropdown-item">Οι Αξιολογήσεις μου</router-link>
+				<router-link to="/payments" class="dropdown-item">Ηλ. Πληρωμές</router-link>
 				<router-link to="/settings" class="dropdown-item">Ρυθμίσεις</router-link>
 				<div class="dropdown-divider"></div>
 				<a v-on:click="logout" class="anchor-cursor dropdown-item">Αποσύνδεση</a>
