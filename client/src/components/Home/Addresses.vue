@@ -61,6 +61,12 @@ export default {
 		}
 	},
 
+	mounted() {
+		this.$root.$on('fetchAdresses', () => {
+			this.fetchAddress();
+		});
+	},
+
 	created() {
 		this.fetchAddress();	
 	},
