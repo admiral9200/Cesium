@@ -1,7 +1,7 @@
 <template>
 	<div class="h-100">
-		<notifications group="errors"/>
-		<router-view :userInfo="userInfo" class="h-100"/>
+		<notifications group="errors" position="top center" width="400px" class="m-2 user-select-none"/>
+		<router-view class="h-100"/>
 	</div>
 </template>
 
@@ -9,24 +9,11 @@
 import VueCookies from 'vue-cookies';
 
 export default {
-	data() {
-		return {
-			user: null,
-			userInfo: {}
-		}
-	},
-
-	watch: {
-		
-	},
-
 	async created() {
-		this.user = VueCookies.get('user');
-		let token = VueCookies.get('token');
-
-		if (token !== null && this.user !== null) {
+		const token = VueCookies.get('token');
+		if (token) {
 			try {
-				let res = await fetch('http://localhost:3000/auth/user/' + this.user, {
+				let res = await fetch('http://localhost:3000/auth/user', {
 					method: 'GET',
 					headers: {
 						"Authorization" : token,
@@ -34,21 +21,32 @@ export default {
 				});
 
 				if (res.ok) {
-					let response = await res.json();
-					this.userInfo = response;
+					let resolve = await res.json();
+
+					if (!resolve.error) {
+						this.$store.state.userInfo.email = resolve.email;
+						this.$store.state.userInfo.name = resolve.name;
+						this.$store.state.userInfo.surname = resolve.surname;
+						this.$store.state.userInfo.mobile = resolve.mobile;
+					}
+					else {
+						this.$notify({
+							group: 'errors',
+							type: 'error',
+							title: 'Error',
+							text: resolve.error
+						});
+					}
 				}
 			} 
 			catch (error) {
 				this.$notify({
 					group: 'errors',
-					title: 'Important message',
-					text: 'Hello user! This is a notification!'
+					type: 'error',
+					title: 'Error',
+					text: error
 				});
 			}
-		}
-		else {
-			this.userInfo = {};
-			this.user = null;
 		}
 	},
 }
@@ -65,6 +63,10 @@ export default {
 	.background{
 		background-position: center !important;
 	}
+}
+
+.vue-notification {
+	font-size: 0.9rem !important;
 }
 
 html, body {

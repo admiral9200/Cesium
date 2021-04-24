@@ -3,13 +3,15 @@
         <div class="container p-lg-5 p-md-4 p-4">
             <div class="h-100 d-flex justify-content-center align-items-center mb-5">
                 <hr class="col-xl-4">
-                <h4 class="col-xl-4 text-white text-center">Chip Coffee Newsletter</h4>
+                <h4 class="col-xl-4 text-white text-center">Cofy Newsletter</h4>
                 <hr class="col-xl-4">
             </div>
             <div class="h-100 d-flex justify-content-center align-items-center row p-4">
-                <h6 class="mx-xl-0 mx-lg-0 mx-5 w-25 text-white text-left col-xl-5 col-12">Κάνε εγγραφή τώρα για να λαμβάνεις νέες προσφορές μέσω email.</h6>
-                <input type="email" class="subEmail form-control mx-3 mt-xl-0 mt-lg-0 mt-md-0 mt-3 col-xl-4 col-12" id="emailNewsletter" placeholder="Email" required>
-                <button type="click" class="subButton btn mainbtn index mt-xl-0 mt-lg-0 mt-md-0 mt-2 col-xl-2 col-12" id="subscribe">Εγγραφή</button>
+                <form v-on:submit.prevent="subscribe" class="form-inline w-100">
+                    <h6 class="mx-xl-3 mx-lg-3 w-25 text-white text-left col-xl-5 col-12">Κάνε εγγραφή τώρα για να λαμβάνεις νέες προσφορές μέσω email.</h6>
+                    <input v-model="email" type="email" class="subEmail form-control mx-xl-3 mx-lg-3 mt-xl-0 mt-lg-0 mt-md-0 mt-3 col-xl-4 col-12" placeholder="Email" required>
+                    <button type="submit" class="subButton btn mainbtn index mt-xl-0 mt-lg-0 mt-md-0 mt-2 col-xl-2 col-12">Εγγραφή</button>
+                </form>
             </div>
         </div>
     </div>
@@ -17,7 +19,58 @@
 
 <script>
 export default {
-	name: "Newsletter"
+	name: "Newsletter",
+
+    data() {
+        return {
+            email: ''
+        }
+    },
+
+    methods: {
+        subscribe: async function () {
+            try {
+                let response = await fetch('http://localhost:3000/subscribe', {
+                    method: 'POST',
+					body: JSON.stringify({
+						email: this.email
+					}),
+					headers: {
+						"Content-type" : "application/json; charset=UTF-8"
+					}
+                });
+
+                if (response.ok) {
+                    let resolve = await response.json();
+
+                    if (resolve.status) {
+                        this.$notify({
+                            group: 'errors',
+                            type: 'success',
+                            title: 'Chip Coffee',
+                            text: 'Εγγράφηκες με επιτυχία στο newsletter του Chip Coffee!'
+                        });
+                    }
+                    else if (resolve.error) {
+                        this.$notify({
+                            group: 'errors',
+                            type: 'error',
+                            title: 'Error',
+                            text: resolve.error
+                        });
+                    }
+                }
+            } 
+            catch (error) {
+                this.$notify({
+                    group: 'errors',
+                    type: 'error',
+                    title: 'Error',
+                    text: error
+                });
+            }
+        }  
+    },
 }
 </script>
 
@@ -63,10 +116,6 @@ export default {
 	height: 1px;
 	width: 30%;
 	background-color: white;
-}
-
-.subEmail{
-	width: 40% !important;	
 }
 
 .subEmail:focus{

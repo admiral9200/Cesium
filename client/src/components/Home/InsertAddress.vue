@@ -1,20 +1,11 @@
 <template>
-	<div class="col">
-		<div v-if="hasErrorMessage" class="m-3">
-			<div class='alert alert-danger alert-dismissible fade show'>
-				<button type='button' class='close' data-dismiss='alert'>&times;</button>{{ hasErrorMessage }}
+	<div class="col justify-content-center">
+		<form v-on:submit.prevent="addAddress" class="row justify-content-center">
+			<div class="group col-xl-5 col-12 pr-0">   
+				<input v-model.trim="$v.address.$model" :class="{ 'wrong': $v.address.$error }" type="text" class="input form-control border-right-0" placeholder="Πρόσθεσε εδώ την διεύθυνσή σου">
+				<div v-if="$v.address.$error" class="text-danger">Πρέπει να συμπληρώσεις την διεύθυνσή σου.</div>
 			</div>
-		</div>
-		<form v-on:submit.prevent="addAddress" class="row w-100 mx-auto">
-			<div class="group col-xl-5 col-12 mt-2 m-xl-0">   
-				<input v-model="address" v-on:input="CheckAddress" :class="{ 'wrong' : isAddressEmpty === true}" type="text" class="input form-control w-100" placeholder="Πρόσθεσε εδώ την διεύθυνσή σου">
-				<div v-if="isAddressEmpty" class="text-danger">Πρέπει να συμπληρώσεις την διεύθυνσή σου.</div>
-			</div>
-			<div class="group col-xl-5 col-12 mt-2 m-xl-0">
-				<input v-model="state" v-on:input="CheckState" :class="{ 'wrong' : isStateEmpty === true}" type="text" class="input form-control w-100" placeholder="Πρόσθεσε εδώ την περιοχή σου">
-				<div v-if="isStateEmpty" class="text-danger">Πρέπει να συμπληρώσεις την περιοχή σου.</div>
-			</div>
-			<div class="group col-xl-2 col-12 mt-2 m-xl-0">
+			<div class="group col-xl-2 col-12 pl-0">
 				<button type="submit" class="btn btn-block mainbtn">Προσθήκη</button>
 			</div>
 		</form>
@@ -24,16 +15,19 @@
 <script>
 import NProgress from 'nprogress';
 import VueCookies from 'vue-cookies';
+import { required } from 'vuelidate/lib/validators';
 
 export default {
 	name: "InsertAddress",
 	data() {
 		return {
-			address: '',
-			state: '',
-			isAddressEmpty: false,
-			isStateEmpty: false,
-			hasErrorMessage: false,
+			address: ''
+		}
+	},
+
+	validations: {
+		address: {
+			required
 		}
 	},
 
@@ -43,52 +37,22 @@ export default {
 
 	methods: {
 		visibilityChange: function() {
-			this.isAddressEmpty = false;
-			this.isStateEmpty = false;
-		},
-
-		CheckAddress: function() {
-			this.isAddressEmpty = false;
-			if (this.address === '') {
-				this.isAddressEmpty = true;
-			}
-		},
-
-		CheckState: function() {
-			this.isStateEmpty = false;
-			if (this.state === '') {
-				this.isStateEmpty = true;
-			}
-		},
-
-		ValidateForm: function() {
-			let val = true;
-			if (this.address === '') {
-				this.isAddressEmpty = true;
-				val = false;
-			}
-			if (this.state === '') {
-				this.isStateEmpty = true;
-				val = false;
-			}
-			return val;
+			this.$v.address.$reset;
 		},
 
 		addAddress: async function() {
-			if (this.ValidateForm()) {
-				try {
-					this.hasErrorMessage = '';
-					NProgress.start();
+			//TODO: Use google maps for searching legitimate addresses to insert
+			NProgress.start();
+			this.$v.address.$touch();
 
-					let user = VueCookies.get('user');
-					let token = VueCookies.get('token');
+			if (!this.$v.address.$invalid) {
+				try {
+					const token = VueCookies.get('token');
 
 					let response = await fetch('http://localhost:3000/home/insert', {
 						method: 'POST',
 						body: JSON.stringify({
-							user,
-							address: this.address,
-							state: this.state
+							address: this.address
 						}),
 						headers: {
 							"Authorization" : token,
@@ -100,19 +64,38 @@ export default {
 						let res = await response.json();
 
 						if (res.status === "OK") {
-							this.hasErrorMessage = '';
+							this.$notify({
+								group: 'errors',
+								type: 'success',
+								title: 'Ειδοποίηση',
+								text: 'Η διεύθυνση προστέθηκε.'
+							});
+						}
+						else if (res.error) {
+							this.$notify({
+								group: 'errors',
+								type: 'error',
+								title: 'Error',
+								text: res.error
+							});
 						}
 						else {
-							this.hasErrorMessage = res.status;
-						}
-
-						if (res.error) {
-							this.hasErrorMessage = res.error;
+							this.$notify({
+								group: 'errors',
+								type: 'error',
+								title: 'Error',
+								text: 'An unexpected error occured'
+							});
 						}
 					}
 				} 
 				catch (error) {
-					this.hasErrorMessage = error;
+					this.$notify({
+						group: 'errors',
+						type: 'error',
+						title: 'Error',
+						text: error
+					});
 				}
 				finally {
 					NProgress.done();

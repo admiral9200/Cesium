@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="background">
-			<Header/>
+			<Header :userInfo="userInfo"/>
 			<div class="jumbotron jumbotron-fluid">
 				<div class="container">
 					<h1>Διάλεξε τον καφέ που θες</h1>
@@ -38,6 +38,7 @@ import Cart from '../components/Order/Cart';
 
 export default {
 	name: 'Order',
+	props: ['userInfo'],
 	components: { 
 		Sale,
 		Newsletter,

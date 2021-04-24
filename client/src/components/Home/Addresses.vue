@@ -1,10 +1,5 @@
 <template>
 	<div>
-		<div v-if="hasErrorMessage" class="col-12 px-xl-2 px-0">
-			<div class='alert alert-danger alert-dismissible fade show'>
-				<button type='button' class='close' data-dismiss='alert'>&times;</button>{{ hasErrorMessage }}
-			</div>
-		</div>
 		<div class="row">
 			<div class="col-12">
 				<ul class="list-group list-group-flush">
@@ -31,7 +26,7 @@
 									<h6 class='m-0'>{{ address.state }}</h6>
 								</div>
 								<div class='col-xl-2 col-12'>
-									<button class='btn btn-block btn-danger mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button'>Διαγραφή</button>
+									<button v-on:click="deleteAddress(address.address)" class='btn btn-block btn-danger mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button'>Διαγραφή</button>
 								</div>
 							</div>
 						</li>
@@ -44,50 +39,104 @@
 
 <script>
 import VueCookies from 'vue-cookies';
+import NProgress from 'nprogress';
 
 export default {
 	name: 'Addresses',
 	data() {
 		return {
 			addresses: [],
-			hasNoAddress: true,
-			hasErrorMessage: ''
+			hasNoAddress: true
 		}
 	},
-	async created() {
-		try {
-			this.hasErrorMessage = '';
-			let token = VueCookies.get('token');
 
-			let response = await fetch('http://localhost:3000/home/addresses' , {
-				method: 'GET',
-				headers: {
-					"Authorization" : token,
-				}
-			});
-
-			if (response.ok) {
-				let res = await response.json();
-
-				if (res.hasAddress) {
-					this.hasNoAddress = false;
-					this.addresses = res.addresses;
-				}
-				else if (!res.hasAddress) {
-					this.hasNoAddress = true;
-				}
-			}
-			else if (!response.ok) {
-				this.hasErrorMessage = response.status;
-			}
-		}
-		catch (error) {
-			this.hasErrorMessage = error;
-		}
+	created() {
+		this.fetchAddress();	
 	},
 
 	methods: {
-		
+		deleteAddress: async function(address) {
+			NProgress.start();
+			try {
+				const token = VueCookies.get('token');
+
+				let response = await fetch('http://localhost:3000/home/delete', {
+					method: 'POST',
+					body: JSON.stringify({
+						address
+					}),
+					headers: {
+						"Authorization" : token,
+						"Content-type" : "application/json; charset=UTF-8"
+					}	
+				});
+
+				if (response.ok) {
+					let res = await response.json();
+
+					if (res.status === "OK") {
+						this.$notify({
+							group: 'errors',
+							type: 'success',
+							title: 'Ειδοποίηση',
+							text: 'Η διεύθυνση διαγράφηκε με επιτυχία.'
+						});
+						this.fetchAddress();
+					}
+				}
+			} 
+			catch (error) {
+				this.$notify({
+					group: 'errors',
+					type: 'error',
+					title: 'Error',
+					text: error
+				});
+			}
+			finally {
+				NProgress.done();
+			}
+		},
+
+		fetchAddress: async function() {
+			try {
+				const token = VueCookies.get('token');
+
+				let response = await fetch('http://localhost:3000/home/addresses' , {
+					method: 'GET',
+					headers: {
+						"Authorization" : token,
+					}
+				});
+
+				if (response.ok) {
+					let res = await response.json();
+
+					if (res.hasAddress) {
+						this.hasNoAddress = false;
+						this.addresses = res.addresses;
+					}
+					else if (!res.hasAddress) {
+						this.hasNoAddress = true;
+					}
+				}
+				else if (!response.ok) {
+					this.$notify({
+						group: 'errors',
+						type: 'error',
+						title: 'Error',
+						text: response.status
+					});
+				}
+			}
+			catch (error) {
+				this.$notify({
+					group: 'errors',
+					title: 'Error',
+					text: error
+				});
+			}
+		}
 	},
 }
 </script>

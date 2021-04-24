@@ -9,7 +9,7 @@ let db = mysql.createConnection({
 
 db.connect((error) => {
 	if (error) throw error;
-	console.log('Chip Coffee Database is connected successfully');
+	console.log('Cofy Database is connected successfully');
 });
 
 module.exports = db;

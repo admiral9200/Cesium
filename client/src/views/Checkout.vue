@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="background">
-			<Header/>
+			<Header :userInfo="userInfo"/>
 			<div class="container py-3">
 				<h1>Ολοκλήρωση Παραγγελίας</h1>
 			</div>
@@ -69,6 +69,7 @@ import Footer from '../components/layout/Footer';
 
 export default {
 	name: 'Checkout',
+  props: ['userInfo'],
 	components: { 
 		Sale,
 		Newsletter,

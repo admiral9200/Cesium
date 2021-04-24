@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueCookies from 'vue-cookies';
+import store from './store/store';
 import NProgress from 'nprogress';
 import Index from '@/views/Index';
 import Home from '@/views/Home';
@@ -20,16 +21,6 @@ const routes = [
 		path: '/',
 		name: 'Index',
 		component: Index,
-		beforeEnter: (to, from, next) => {
-			NProgress.start();
-			if (VueCookies.get('token') === null && VueCookies.get('user') === null) {
-				next();
-			} 
-			else {
-				next({ path: '/home'});
-				NProgress.done();
-			}
-		}
 	},
 	{
 		path: '/reset',
@@ -101,7 +92,8 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
 	NProgress.start();
 	if (to.matched.some(record => record.meta.requiresAuth)) {
-		if (VueCookies.get('token') === null && VueCookies.get('user') === null) {
+		if (VueCookies.get('token') === null) {
+			store.state.token = null;
 			next({ path: '/' });
 		} 
 		else {
@@ -111,7 +103,12 @@ router.beforeEach((to, from, next) => {
 	else {
 		next();
 	}
-	NProgress.done();
+});
+
+router.afterEach((to) => {
+	if (to.matched.some(record => !record.meta.requiresAuth)) {
+		NProgress.done();
+	}
 });
 
 export default router;

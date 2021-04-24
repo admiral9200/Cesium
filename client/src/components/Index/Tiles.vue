@@ -22,7 +22,7 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
 
 .cc-left{
-    background-image: url("/images/coffee-beans.jpg");
+    background-image: url("/images/cofy1.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

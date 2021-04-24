@@ -1,10 +1,10 @@
 <template>
 	<div>
 		<div class="background">
-			<Header :name="userInfo.name"/>
+			<Header/>
 			<div class="jumbotron jumbotron-fluid">
 				<div class="container">
-					<h1 class="mb-xl-4">Καλωσήρθες, {{ userInfo.name }}</h1>
+					<h1 class="mb-xl-4">Καλωσήρθες, {{ username }}</h1>
 					<div class="d-flex justify-content-center">
 
 					</div>
@@ -12,7 +12,7 @@
 			</div>
 		</div>
 		<div class="container">
-			<InsertAddress/>
+			<InsertAddress ref="insert"/>
 			<h2 class="mb-2 mt-5">Οι διευθύνσεις μου</h2>
 			<Addresses/>
 			<h2 class="mb-3 mt-5">Οι παραγγελίες μου</h2>
@@ -57,7 +57,6 @@ import Orders from '../components/Home/Orders';
 
 export default {
 	name: 'Home',
-	props: ['userInfo'],
 	components: {
 		InsertAddress,
 		Addresses,
@@ -66,6 +65,11 @@ export default {
 		Newsletter,
 		Header,
 		Footer
+	},
+	computed: {
+		username() {
+			return this.$store.state.userInfo.name;
+		}
 	}
 }
 </script>

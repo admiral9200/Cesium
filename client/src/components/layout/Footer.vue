@@ -6,7 +6,7 @@
 				<h6>Επικοινωνια</h6>
 				<ul class="footer-links">
 					<li><a class="phone" href="tel: 210-27-69696"><i class="fa fa-phone"></i> 210-xxxxxxx</a></li>
-					<li><a class="email" href="mailto: support@chipcoffee.gr"><i class="fa fa-envelope"></i> support@chipcoffee.gr</a></li>
+					<li><a class="email" href="mailto: support@cofy.gr"><i class="fa fa-envelope"></i> support@cofy.gr</a></li>
 					<li class="text-white">Η ομάδα μας είναι στη διάθεσή σου, κάθε μέρα, 07:00 - 03:00, για να σε βοηθήσει με οποιαδήποτε ερώτηση έχεις.</li>
 				</ul>
 				</div>
@@ -20,7 +20,7 @@
 				</ul>
 				</div>
 				<div class="col-xs-6 col-md-3">
-					<h6>Ακολουθησε το ChipCoffee στα social media!</h6>
+					<h6>Ακολουθησε το Cofy στα social media!</h6>
 					<ul class="social-icons float-left">
 						<li><a class="facebook" href="#"><i class="fab fa-facebook"></i></a></li>
 						<li><a class="twitter" href="#"><i class="fab fa-twitter"></i></a></li>
@@ -33,7 +33,7 @@
         <div class="container">
 			<div class="row">
 				<div class="col-12">
-					<p class="copyright-text text-muted text-center">&copy;{{ year }} Chip Coffee. Handcrafted by z3r0Luck.</p>
+					<p class="copyright-text text-muted text-center">&copy;{{ year }} Cofy. Handcrafted by z3r0Luck.</p>
 				</div>
 			</div>
         </div>

@@ -21,21 +21,41 @@ const loginSanitizeRules= () => {
 
 const reorderSanitizeRules = () => {
 	return [
-		check('orderId').not().isEmpty().trim().escape()
+		check('id').not().isEmpty().withMessage('ID is empty').isNumeric().withMessage('Order id is invalid').trim().escape()
 	];
 };
 
 const AddressRules = () => {
 	return [
-		check('user').not().isEmpty().isEmail().withMessage('2').normalizeEmail(),
 		check('address').not().isEmpty().trim().escape(),
 		check('state').not().isEmpty().trim().escape()
 	];
 };
 
-const UserIdRule = () => {
+const AddressRule = () => {
 	return [
-		check('user').not().isEmpty().isNumeric().trim().escape()
+		check('address').not().isEmpty().trim().escape()
+	];
+};
+
+const subscribeRule = () => {
+	return [
+		check('email').not().isEmpty().withMessage('1').isEmail().withMessage('2').normalizeEmail().withMessage('3'),
+	]
+};
+
+const profileInfoRules = () => {
+	return [
+		check('name').not().isEmpty().isString().trim().escape(),
+		check('surname').not().isEmpty().isString().trim().escape(),
+		check('mobile').not().isEmpty().isNumeric().trim().escape(),
+	];
+};
+
+const profileCredentialsRules = () => {
+	return [
+		check('oldpass').not().isEmpty().withMessage('Πρέπει να συμπληρώσεις τον τωρινό κωδικό').isString().trim().escape(),
+		check('newpass').not().isEmpty().withMessage('Πρέπει να συμπληρώσεις τον καινούριο κωδικό').isString().trim().escape()
 	];
 };
 
@@ -52,6 +72,9 @@ module.exports = {
 	signupSanitizeRules,
 	reorderSanitizeRules,
 	AddressRules,
-	UserIdRule,
+	AddressRule,
+	subscribeRule,
+	profileInfoRules,
+	profileCredentialsRules,
 	validate
 };

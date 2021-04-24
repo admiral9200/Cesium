@@ -2,10 +2,10 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../utils/db.config');
-const { loginSanitizeRules, signupSanitizeRules, UserIdRule, validate } = require('../middleware/sanitizer');
+const { loginSanitizeRules, signupSanitizeRules, validate } = require('../middleware/sanitizer');
 const config = require('../utils/jwt.config');
-const { route } = require('./home');
 const verifyToken = require('../middleware/verifyToken');
+const jwt_decode = require('jwt-decode');
 
 const router = express.Router();
 
@@ -17,26 +17,31 @@ router.post('/login', loginSanitizeRules(), validate, (req, res) => {
 			res.status(500).send({'error': error });
 		}
 		
-		if (results.length > 0) {
-			(async (data) => {
-				await bcrypt.compare(data, results[0].password, (error, result) => {
-					if (error) {
-						res.status(500).send({ error: 'An internal error occured' });
-					}
-
-					if (result){
-						let token = jwt.sign({ email: results[0].email }, config.secret, { expiresIn: 1600 }); //low seconds for testing
-
-						res.send({ auth: true, token: token, user: results[0].id });
-					}
-					else {
-						res.status(401).send({ 'error': 'Το email ή ο κωδικός που έχεις εισάγει είναι λάθος!' });
-					}
-				});
-			})(req.body.password);
-		}
-		else {
-			res.send({ 'error': 'Το email ή ο κωδικός που έχεις εισάγει είναι λάθος!' });
+		try {
+			if (results.length > 0) {
+				(async (data) => {
+					await bcrypt.compare(data, results[0].password, (error, result) => {
+						if (error) {
+							res.status(500).send({ error: 'An internal error occured' });
+						}
+	
+						if (result){
+							const token = jwt.sign({ email: results[0].email, id: results[0].id }, config.secret, { expiresIn: 1600 }); //low seconds for testing
+	
+							res.send({ auth: true, token: token });
+						}
+						else {
+							res.send({ 'error': 'Το email ή ο κωδικός που έχεις εισάγει είναι λάθος!' });
+						}
+					});
+				})(req.body.password);
+			}
+			else {
+				res.send({ 'error': 'Το email ή ο κωδικός που έχεις εισάγει είναι λάθος!' });
+			}	
+		} 
+		catch (error) {
+			res.status(500).send({ error: 'An unexpected error occured. Try again' + error });
 		}
 	});
 });
@@ -63,15 +68,12 @@ router.post('/signup', signupSanitizeRules(), validate, (req, res) => {
 
 				(async (pass) => {
 					await bcrypt.hash(pass, saltRounds = 10, (error, encrypted) => {
-						if (error) {
-							res.status(500).send({ 'error': 'An error occured' });
-						}
+						if (error) res.status(500).send({ 'error': 'An error occured' });
+
 						db.execute(queryToAddUser, [email, encrypted, name, surname, mobile], (error, results) => {
-							if (error){
-								console.error(error);
-								res.status(500).send({ 'error': 'An internal Database error occured. Try again' });
-							}
-							else {
+							if (error) res.status(500).send({ 'error': 'An internal Database error occured. Try again' });
+							
+							if (results) {
 								res.send({ 'status': 'ok' });
 							}
 						});
@@ -87,14 +89,21 @@ router.post('/signup', signupSanitizeRules(), validate, (req, res) => {
 	}
 });
 
-router.get('/user/:user', UserIdRule(), verifyToken, (req, res) => {
-	let queryToGetUserDetails = 'SELECT firstName, lastName FROM cc_users WHERE id = ?';
+router.get('/user', verifyToken, (req, res) => {
+	let queryToGetUserDetails = 'SELECT firstName, lastName, email, mobile FROM cc_users WHERE id = ?';
 
-	db.execute(queryToGetUserDetails, [req.params.user], (error, results) => {
+	const user = jwt_decode(req.headers['authorization']);
+
+	db.execute(queryToGetUserDetails, [user.id], (error, results) => {
 		if (error) res.status(500).send({'error': error });
 
 		if (results.length > 0) {
-			res.send({ name: results[0].firstName, surname: results[0].lastName });
+			res.send({ 
+				name: results[0].firstName, 
+				surname: results[0].lastName, 
+				email: results[0].email, 
+				mobile: results[0].mobile 
+			});
 		}
 	});
 });
