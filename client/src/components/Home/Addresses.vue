@@ -13,7 +13,7 @@
 							</div>
 						</div>
 					</li>
-					<li v-if="hasNoAddress" class='list-group-item m-0 border-0'>
+					<li v-if="addresses.length === 0" class='list-group-item m-0 border-0'>
 						<h6>Δεν υπάρχει ενεργή διεύθυνση</h6>
 					</li>
 					<div v-else v-for="(address, index) in addresses" :key="index" class="d-flex justify-content-center w-100">
@@ -45,8 +45,7 @@ export default {
 	name: 'Addresses',
 	data() {
 		return {
-			addresses: [],
-			hasNoAddress: true
+			addresses: []
 		}
 	},
 
@@ -74,14 +73,22 @@ export default {
 				if (response.ok) {
 					let res = await response.json();
 
-					if (res.status === "OK") {
+					if (res.deleted === true) {
 						this.$notify({
 							group: 'errors',
 							type: 'success',
-							title: 'Ειδοποίηση',
+							title: 'Cofy',
 							text: 'Η διεύθυνση διαγράφηκε με επιτυχία.'
 						});
 						this.fetchAddress();
+					}
+					else if (res.status){
+						this.$notify({
+							group: 'errors',
+							type: 'error',
+							title: 'Cofy',
+							text: res.status
+						});
 					}
 				}
 			} 
@@ -113,11 +120,10 @@ export default {
 					let res = await response.json();
 
 					if (res.hasAddress) {
-						this.hasNoAddress = false;
 						this.addresses = res.addresses;
 					}
 					else if (!res.hasAddress) {
-						this.hasNoAddress = true;
+						this.addresses = [];
 					}
 				}
 				else if (!response.ok) {

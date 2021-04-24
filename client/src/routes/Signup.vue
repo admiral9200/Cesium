@@ -33,7 +33,7 @@
 
 <script>
 import SignUpHeader from '../components/layout/SignUpHeader';
-import Form from '../components/signup/Form';
+import Form from '../components/Register/Form';
 import Newsletter from '../components/layout/Newsletter';
 import Sale from '../components/layout/Sale';
 import Footer from '../components/layout/Footer';

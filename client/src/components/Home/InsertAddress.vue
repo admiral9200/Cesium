@@ -1,12 +1,9 @@
 <template>
-	<div class="col justify-content-center">
-		<form v-on:submit.prevent="addAddress" class="row justify-content-center">
-			<div class="group col-xl-5 col-12 pr-0">   
-				<input v-model.trim="$v.address.$model" :class="{ 'wrong': $v.address.$error }" type="text" class="input form-control border-right-0" placeholder="Πρόσθεσε εδώ την διεύθυνσή σου">
-				<div v-if="$v.address.$error" class="text-danger">Πρέπει να συμπληρώσεις την διεύθυνσή σου.</div>
-			</div>
-			<div class="group col-xl-2 col-12 pl-0">
-				<button type="submit" class="btn btn-block mainbtn">Προσθήκη</button>
+	<div class="container my-3">
+		<form v-on:submit.prevent="addAddress" class="d-flex justify-content-center">
+			<div class="input-group w-50">
+				<input v-model.trim="$v.address.$model" :class="{ 'wrong': $v.address.$error }" type="text" class="form-control form-control-lg" placeholder="Πρόσθεσε εδώ την διεύθυνσή σου" aria-describedby="insert">
+				<button class="btn mainbtn" type="submit" id="insert">Προσθήκη</button>
 			</div>
 		</form>
 	</div>
@@ -37,7 +34,7 @@ export default {
 
 	methods: {
 		visibilityChange: function() {
-			this.$v.address.$reset;
+			this.$v.address.$reset();
 		},
 
 		addAddress: async function() {
@@ -63,7 +60,7 @@ export default {
 					if (response.ok) {
 						let res = await response.json();
 
-						if (res.status === "OK") {
+						if (res.completed === true) {
 							this.$notify({
 								group: 'errors',
 								type: 'success',

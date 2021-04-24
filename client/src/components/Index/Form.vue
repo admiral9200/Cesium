@@ -1,10 +1,10 @@
 <template>
 	<div class="login-snip text-white">
-		<div class="d-flex justify-content-start">
+		<div class="d-grid justify-content-start">
 			<h1>Σύνδεση</h1>
 		</div>
 		<div class="login-space">
-			<div class="login form-check pl-0">
+			<div class="login pl-0">
 				<form v-on:submit.prevent="SignIn" novalidate>
 					<div class="group py-2">
 						<label class="label">Email</label>
@@ -17,20 +17,20 @@
 						<div v-if="isPasswordEmpty" class="text-danger">Πρέπει να συμπληρώσεις τον κωδικό σου.</div>
 					</div>
 					<div class="group py-2">
-						<div class="custom-control custom-checkbox w-50" style="cursor: pointer;">
-							<input type="checkbox" class="custom-control-input" id="rememberme" style="cursor: pointer;" v-model="RememberMe">
-							<label class="custom-control-label" for="rememberme" style="cursor: pointer;">Να με θυμάσαι</label>
+						<div class="form-check pointer-base">
+							<input type="checkbox" class="form-check-input" id="rememberme" v-model="RememberMe">
+							<label class="custom-control-label pointer-base ms-1" for="rememberme">Να με θυμάσαι</label>
 						</div>
 					</div>
-					<div class="group py-2">
-						<button type="submit" class="button btn btn-block btn-lg mainbtn text-white">Σύνδεση</button>
+					<div class="group d-grid pt-2">
+						<button type="submit" class="btn mainbtn">Σύνδεση</button>
 						<div class="d-flex justify-content-center" :class="{ 'lds-dual-ring': isLoading, 'my-3': isLoading }">
-							<p class='text-center my-1' style='color: #dc3545 !important'>{{ hasErrorMsg }}</p>
+							<p class='text-center text-danger my-1'>{{ hasErrorMsg }}</p>
 						</div>
 					</div>
 					<h2 class="d-flex justify-content-center mb-2">ή</h2>
-					<div class="group">
-						<router-link to="/register" type="button" class="button btn btn-block mainbtn text-white">Εγγραφή</router-link>
+					<div class="group d-grid">
+						<router-link to="/register" type="button" class="btn mainbtn">Εγγραφή</router-link>
 					</div>
 					<div class="hr mt-4 mb-4"></div>
 					<div class="text-center"> 
@@ -213,11 +213,17 @@ export default {
 	.form-control-lg{
         font-size: 1rem !important;
     }
+	.login-snip {
+		border-radius: 0 !important;
+	}
 }
 
 @media screen and (min-width: 400px) and (max-width: 850px) {
 	.login-snip {
 		padding: 30px 40px 10px 40px !important;
+	}
+	.login-snip {
+		border-radius: 0 !important;
 	}
 }
 
@@ -277,7 +283,6 @@ export default {
 }
 
 .login-space .group .input {
-padding: 22px 15px !important;
 	background: #c2c2c21c;
 }
 </style>

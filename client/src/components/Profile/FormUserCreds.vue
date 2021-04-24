@@ -48,7 +48,16 @@ export default {
 		},
 	},
 
+	mounted() {
+		document.addEventListener('visibilitychange', this.visibilityChange);
+	},
+
 	methods: {
+		visibilityChange: function() {
+			this.$v.oldPassword.$reset();
+			this.$v.newPassword.$reset();
+		},
+
 		changeUserCreds: async function() {
 			NProgress.start();
 			const token = VueCookies.get('token');

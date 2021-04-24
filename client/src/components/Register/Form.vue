@@ -43,7 +43,7 @@
 								<div v-if="termsButtonNotChecked" class="warn-info">Πρέπει να αποδεχτείς τους όρους χρήσης.</div>
 							</div>
 						</div>
-						<div class=" mt-4 py-2">
+						<div class="d-grid mt-4 py-2">
 							<button type="submit" class="btn btn-block text-white mainbtn">Εγγραφή</button>
 							<div :class="{ 'lds-dual-ring': isLoading, 'my-3': isLoading }" class="d-flex justify-content-center pt-2">
 								<p class='my-1 warn-info'>{{ hasErrorMsg }}</p>
@@ -295,7 +295,6 @@ export default {
 }
 
 .signup-space .group .input {
-	padding: 22px 15px !important;
 	background: #c2c2c21c;
 }
 

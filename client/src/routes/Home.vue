@@ -4,14 +4,14 @@
 			<Header/>
 			<div class="jumbotron jumbotron-fluid">
 				<div class="container">
-					<h1 class="mb-xl-4">Καλωσήρθες, {{ username }}</h1>
+					<h1 class="pb-5">Καλωσήρθες, {{ username }}</h1>
 					<div class="d-flex justify-content-center">
 
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="container">
+		<div class="container ">
 			<InsertAddress ref="insert"/>
 			<h2 class="mb-2 mt-5">Οι διευθύνσεις μου</h2>
 			<Addresses/>
@@ -76,27 +76,21 @@ export default {
 
 <style scoped>
 .background h1 {
-  color: white;
-  padding: 10%;
-  padding-left: 0;
-  padding-bottom: 0;
-  text-align: left;
-  font-size: 75px;
-  font-weight: 300;
-}
-
-.background h2{
 	color: white;
+	padding: 10%;
+	padding-left: 0;
+	text-align: left;
+	font-size: 75px;
 	font-weight: 300;
 }
 
 .background h3{
-  color: white;
-  padding: 3%;
-  padding-left: 0;
-  text-align: left;
-  font-size: 20px;
-  font-weight: 300;
+	color: white;
+	padding: 3%;
+	padding-left: 0;
+	text-align: left;
+	font-size: 20px;
+	font-weight: 300;
 }
 
 .hr {
@@ -111,11 +105,6 @@ export default {
 
 .disableOrderAgainBtn:hover{
   color: #bb6b00;
-}
-
-.stop-scrolling {
-  height: 100%;
-  overflow: hidden;
 }
 
 .blurred{
@@ -139,32 +128,6 @@ export default {
   display: none;
   z-index:1200;
 }
-
-/* Animation Loaded */
-.lds-dual-ring {
-  padding-bottom: 5px;
-  padding-top: 5px;
-}
-.lds-dual-ring:after {
-  content: " ";
-  display: block;
-  width: 90px;
-  height: 90px;
-  margin: 0;
-  border-radius: 60%;
-  border: 9px solid #fff;
-  border-color: #fff transparent #fff transparent;
-  animation: lds-dual-ring 1.2s linear infinite;
-}
-@keyframes lds-dual-ring {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 
 /* small animation */
 .lds-dual-ring-sm {

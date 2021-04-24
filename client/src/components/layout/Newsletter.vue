@@ -6,11 +6,17 @@
                 <h4 class="col-xl-4 text-white text-center">Cofy Newsletter</h4>
                 <hr class="col-xl-4">
             </div>
-            <div class="h-100 d-flex justify-content-center align-items-center row p-4">
-                <form v-on:submit.prevent="subscribe" class="form-inline w-100">
-                    <h6 class="mx-xl-3 mx-lg-3 w-25 text-white text-left col-xl-5 col-12">Κάνε εγγραφή τώρα για να λαμβάνεις νέες προσφορές μέσω email.</h6>
-                    <input v-model="email" type="email" class="subEmail form-control mx-xl-3 mx-lg-3 mt-xl-0 mt-lg-0 mt-md-0 mt-3 col-xl-4 col-12" placeholder="Email" required>
-                    <button type="submit" class="subButton btn mainbtn index mt-xl-0 mt-lg-0 mt-md-0 mt-2 col-xl-2 col-12">Εγγραφή</button>
+            <div class="d-flex justify-content-center align-items-center col p-4">
+                <form v-on:submit.prevent="subscribe" class="row w-100 g-3">
+                    <div class="col-5 mx-4">
+                        <h6 class="text-white text-left">Κάνε εγγραφή τώρα για να λαμβάνεις νέες προσφορές μέσω email.</h6>
+                    </div>
+                    <div class="col-4 d-grid">
+                        <input v-model="email" type="email" class="form-control" placeholder="Email" required>
+                    </div>
+                    <div class="col-2 d-grid">
+                        <button type="submit" class="btn mainbtn">Εγγραφή</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -116,20 +122,5 @@ export default {
 	height: 1px;
 	width: 30%;
 	background-color: white;
-}
-
-.subEmail:focus{
-	outline: none !important;
-	border-color: #bb6b00 !important;
-	box-shadow: 0 0 0 2px #bb6b00 !important;
-}
-
-.subButton{
-	color: white !important;
-	background-color: #BB6B00 !important;
-}
-
-.subButton:focus{
-	background-color: #BB6B00 !important;
 }
 </style>

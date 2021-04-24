@@ -4,7 +4,7 @@
 			<Header/>
 			<div class="jumbotron jumbotron-fluid">
 				<div class="container">
-					<h1>Ο λογαριασμός μου</h1>
+					<h1 class="pb-5">Ο λογαριασμός μου</h1>
 				</div>
 			</div>
 		</div>
@@ -18,7 +18,7 @@
 				</div>
 				<div class="col-xl-9 col-12 personal-info">
 					<h4 class="mb-4">Τα στοιχεία μου</h4>
-					<FormUserInfo :name="Name" :surname="Surname" :mobile="Mobile" :email="Email"/>
+					<FormUserInfo/>
 					<hr class="mt-4 mb-4">
 					<h4 class="mb-4">Αλλαγή κωδικού</h4>
 					<FormUserCreds/>

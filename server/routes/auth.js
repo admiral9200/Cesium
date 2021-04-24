@@ -92,7 +92,7 @@ router.post('/signup', signupSanitizeRules(), validate, (req, res) => {
 router.get('/user', verifyToken, (req, res) => {
 	let queryToGetUserDetails = 'SELECT firstName, lastName, email, mobile FROM cc_users WHERE id = ?';
 
-	const user = jwt_decode(req.headers['authorization']);
+	const user = jwt_decode(req.headers.authorization);
 
 	db.execute(queryToGetUserDetails, [user.id], (error, results) => {
 		if (error) res.status(500).send({'error': error });

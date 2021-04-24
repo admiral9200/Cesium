@@ -27,8 +27,7 @@ const reorderSanitizeRules = () => {
 
 const AddressRules = () => {
 	return [
-		check('address').not().isEmpty().trim().escape(),
-		check('state').not().isEmpty().trim().escape()
+		check('address').not().isEmpty().trim().escape()
 	];
 };
 
@@ -41,7 +40,7 @@ const AddressRule = () => {
 const subscribeRule = () => {
 	return [
 		check('email').not().isEmpty().withMessage('1').isEmail().withMessage('2').normalizeEmail().withMessage('3'),
-	]
+	];
 };
 
 const profileInfoRules = () => {

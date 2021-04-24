@@ -1,10 +1,10 @@
 <template>
 	<div class="container-fluid m-0 p-0 text-white">
 		<div class="row m-0">
-			<div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12 p-0 cc-left">
+			<div class="col-xxl-8 col-lg-8 col-md-8 col-sm-12 col-12 p-0 cc-left">
 				<h1 class="text-left ml-xl-5 ml-lg-5 ml-md-4 ml-0 art-left">Discover the blonde flavor at Chip Coffee</h1>
 			</div>
-			<div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 p-0 cc-right h-100 d-flex justify-content-center align-items-center">
+			<div class="col-xxl-4 col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12 p-0 cc-right h-100 d-flex justify-content-center align-items-center">
 				<h1 class="w-50 art-right">Life, Liberty and the pursuit of perfect roast</h1> 
 			</div>
 		</div>
@@ -26,7 +26,6 @@ export default {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    width: 100%;
     min-height: 800px;
     border: none;
     border-radius: 30px 0 0 0;
@@ -37,7 +36,6 @@ export default {
     background-size: cover;
     background-position: bottom;
     background-repeat: no-repeat;
-    width: 100%;
     min-height: 800px;
     border: none;
     border-radius: 0 30px 0 0;

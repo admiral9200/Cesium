@@ -1,7 +1,7 @@
 <template>
 	<div class="overflow-hidden main">
 		<div class="row h-100 d-flex flex-row m-0 p-0">
-			<div class="bg d-flex col-xl-7 col-lg-12 col-md-12 col-sm-12 col-12 p-0 pb-md-5">
+			<div class="bg d-flex col-xxl-7 col-xl-7 col-lg-12 col-md-12 col-sm-12 col-12 p-0 pb-md-5">
 				<div class="left">
 					<router-link class="logo-responsive" to="/"><img src="/images/chip_coffee_page.png" class="logo" alt="Chip Coffee"></router-link>
 					<div class="content d-flex flex-column justify-content-center p-xl-0 p-lg-0 p-md-0 pt-5">
@@ -10,11 +10,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="right d-flex justify-content-center align-items-center user-select-none col-xl-5 col-lg-12 col-md-12 col-sm-12 col-12 p-xl-5 p-lg-5 p-md-5 p-sm-5 p-0">
+			<div class="d-flex justify-content-center align-items-center user-select-none col-xxl-5 col-xl-5 col-lg-12 col-md-12 col-sm-12 col-12 p-xl-5 p-lg-5 p-md-5 p-sm-5 p-0">
+				<Form/>
 				<div class="overlayLogo">
 					<img class="logoStyle" src="/images/chip_coffee.png">
 				</div>
-				<Form/>
 			</div>
 		</div>	
 	</div>
@@ -135,7 +135,7 @@ export default {
 }
 
 .main{
-    min-height: 600px;
+    min-height: 700px;
 }
 
 .content{
@@ -171,15 +171,9 @@ export default {
     padding: 60px 60px 60px 25%;
 }
 
-.right{
-    height: 100%;
-    width: 25%;
-}
-
 .overlayLogo{
-    width: 100%;
     z-index: -100;
-    position: absolute;
+    position: fixed;
     top: -200px;
     right: -200px;
 }

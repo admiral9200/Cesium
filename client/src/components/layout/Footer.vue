@@ -91,10 +91,6 @@ export default {
   padding: 2%;
 }
 
-.site-footer .social-icons {
-  text-align: right;
-}
-
 .site-footer .social-icons a {
   width: 40px;
   height: 40px;

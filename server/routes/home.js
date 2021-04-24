@@ -7,8 +7,8 @@ const jwt_decode = require('jwt-decode');
 const router = express.Router();
 
 router.post('/insert' , AddressRules(), validate, verifyToken, (req, res) => {
-	const queryToCheckAddressLimitation = 'SELECT address, state FROM cc_address WHERE user_id = ?';
-	const user = jwt_decode(req.headers['authorization']);
+	const queryToCheckAddressLimitation = 'SELECT address FROM cc_address WHERE user_id = ?';
+	const user = jwt_decode(req.headers.authorization);
 
 	db.execute(queryToCheckAddressLimitation, [user.id], (error, results) => {
 		if (error) res.status(500).send({ 'error': error });
@@ -18,12 +18,12 @@ router.post('/insert' , AddressRules(), validate, verifyToken, (req, res) => {
 				res.send({ 'error' : 'Η διεύθυνση υπάρχει ήδη' });
 			}
 			else {
-				const queryToAddAddress = "INSERT INTO cc_address (user_id, address, state, active) VALUES (? , ? , ? , 1)";
+				const queryToAddAddress = "INSERT INTO cc_address (user_id, address, active) VALUES (? , ? , 1)";
 		
-				db.execute(queryToAddAddress, [user.id, req.body.address, req.body.state], (error, results) => {
+				db.execute(queryToAddAddress, [user.id, req.body.address], (error, results) => {
 					if (error) res.status(500).send({ 'error': error });
 	
-					res.send({ 'status' : 'OK' });
+					if (results) res.send({ 'completed' : true });
 				});
 			}
 		}
@@ -36,14 +36,17 @@ router.post('/insert' , AddressRules(), validate, verifyToken, (req, res) => {
 router.post('/delete', AddressRule(), validate, verifyToken, (req, res) => {
 	const queryToDeleteAddress = 'DELETE FROM cc_address WHERE address = ? AND user_id = ?';
 
-	const user = jwt_decode(req.headers['authorization']);
+	const user = jwt_decode(req.headers.authorization);
 
 	db.execute(queryToDeleteAddress, [req.body.address, user.id], (error, results) => {
 		if (error) res.status(500).send({ 'error': error });
 
 		try {	
 			if (results !== undefined) {
-				res.send({ 'status' : 'OK' });
+				res.send({ 'deleted' : true });
+			}
+			else {
+				res.send({ 'status': 'An unexpected error occured'});
 			}
 		} 
 		catch (error) {
@@ -53,9 +56,9 @@ router.post('/delete', AddressRule(), validate, verifyToken, (req, res) => {
 });
 
 router.get('/addresses', verifyToken , (req, res) => {
-	const queryToFetchAddresses = 'SELECT address, state, active FROM cc_address WHERE user_id = ?';
+	const queryToFetchAddresses = 'SELECT address, active FROM cc_address WHERE user_id = ?';
 
-	const user = jwt_decode(req.headers['authorization']);
+	const user = jwt_decode(req.headers.authorization);
 
 	db.execute(queryToFetchAddresses, [user.id], (error, results) => {
 		if (error) res.status(500).send({ 'error': error });
@@ -85,7 +88,7 @@ router.get('/orders' , verifyToken , (req, res) => {
 								GROUP BY cc_orders.id, cc_orders.date, cc_orders.time
 								ORDER BY cc_orders.id DESC`;
 	
-	const user = jwt_decode(req.headers['authorization']);
+	const user = jwt_decode(req.headers.authorization);
 
 	db.execute(queryToFetchOrders, [user.id], (error, results) => {
 		if (error) res.status(500).send({ 'error': error });

@@ -75,32 +75,52 @@ html, body {
 	height: 100%;
 }
 
+.container {
+	max-width: 1200px;
+}
+
 .wrong:focus {
-  outline: 1px #dc354665 !important;
-  box-shadow: 0 0 0 3px #dc354665 !important;
+	outline: 1px #dc354665 !important;
+	box-shadow: 0 0 0 3px #dc354665 !important;
 }
 
 .wrong{
-  border: 1px solid #dc3545 !important;
+	border: 1px solid #dc3545 !important;
 }
 
 .text-danger {
-  font-size: 13px;
+	font-size: 13px;
+	color: #dc3545 !important
 }
 
 ::-moz-selection {
-  color: white;
-  background: #bb6b00;
+	color: white;
+	background: #bb6b00;
 }
 
 ::selection {
-  color: white;
-  background: #bb6b00;
+	color: white;
+	background: #bb6b00;
+}
+
+.pointer-base {
+	cursor: pointer;
 }
 
 .custom-control-input:checked~.custom-control-label::before {
   border-color:  #bb6b00 !important;
   background-color: #bb6b00 !important;
+}
+
+.form-check-input {
+	cursor: pointer;
+	width: 1.2rem;
+	height: 1.2rem;
+}
+
+.form-check-input:checked {
+	background-color: #bb6b00;
+	border-color: #995700;
 }
 
 a:hover{
@@ -114,6 +134,7 @@ a:hover{
 }
 
 .mainbtn {
+	font-size: 1.1rem !important;
 	color: white;
 	background: #bb6b00;
 }
@@ -136,11 +157,7 @@ input:focus{
 
 .logo {
 	width: auto;
-	height: 100px;
-}
-
-.navbar {
-  padding-top: 20px;
+	height: 80px;
 }
 
 #dropdownMenuLink,
@@ -171,11 +188,6 @@ input:focus{
 }
 
 ::placeholder {
-  color: #b3b3b3;
-}
-
-.color {
-  cursor: pointer;
-  color: white;
+	color: #b3b3b3;
 }
 </style>

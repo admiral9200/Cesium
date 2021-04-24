@@ -3,8 +3,8 @@
 		<div class="form-group row mb-0">
 			<div class="col-xl-5 col-12">
 				<label class="col-xl-5 col-form-label form-control-label pl-0">Όνομα</label>
-				<input v-model="formName" :class="{ 'wrong' : !formName}" class="form-control"/>
-				<div v-if="!formName" class="text-danger">Πρέπει να συμπληρώσεις ένα όνομα</div>
+				<input v-model="Name" :class="{ 'wrong' : !Name}" class="form-control"/>
+				<div v-if="!Name" class="text-danger">Πρέπει να συμπληρώσεις ένα όνομα</div>
 			</div>
 			<div class="col-xl-5 col-12">
 				<label class="col-xl-5 col-form-label form-control-label pl-0" autocomplete="off">Επώνυμο</label>
@@ -17,7 +17,7 @@
 		</div>
 		<div class="form-group row">
 			<div class="col-xl-5 mb-0">
-				<input v-model="formEmail" class="form-control" type="email" disabled/>
+				<input :value="Email" class="form-control" type="email" disabled/>
 			</div>
 		</div>
 		<div class="form-group row mt-4 mb-0">
@@ -44,14 +44,30 @@ import NProgress from 'nprogress';
 export default {
 	name: 'FormUserInfo',
 
-	props: ['name', 'surname', 'mobile', 'email'],
-
 	data() {
 		return {
-			formName: this.name,
-			formSurname: this.surname,
-			formMobile: this.mobile,
-			formEmail: this.email,
+			formName: null,
+			formSurname: null,
+			formMobile: null,
+			formEmail: null,
+		}
+	},
+
+	computed: {
+		Name() {
+			return this.$store.state.userInfo.name;
+		},
+
+		Surname() {
+			return this.$store.state.userInfo.surname;
+		},
+
+		Email() {
+			return this.$store.state.userInfo.email;
+		},
+
+		Mobile(){
+			return this.$store.state.userInfo.mobile;
 		}
 	},
 
@@ -90,7 +106,6 @@ export default {
                             title: 'Cofy',
                             text: 'Τα στοιχεία σου άλλαξαν με επιτυχία'
                         });
-						NProgress.done();
 					}
 				}
 				else {
@@ -100,7 +115,6 @@ export default {
 						title: 'Error',
 						text: response.status
 					});
-					NProgress.done();
 				}
 			} 
 			catch (error) {
@@ -110,6 +124,8 @@ export default {
 					title: 'Error',
 					text: error
 				});
+			}
+			finally {
 				NProgress.done();
 			}
 		},

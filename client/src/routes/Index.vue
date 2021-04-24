@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<Main class="h-100"/>	
+		<Main class="h-100 w-100"/>	
 		<Mid/>
 		<Tiles/>
 		<Sale/>
