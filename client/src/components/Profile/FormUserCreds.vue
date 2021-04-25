@@ -4,14 +4,14 @@
 			<label class="col-xl-5 col-12 col-form-label form-control-label pl-3">Τρέχων κωδικός</label>
 		</div>
 		<div class="form-group">
-			<input type="password" class="form-control" v-model.trim="$v.oldPassword.$model" :class="{ 'wrong': $v.oldPassword.$error }"/>
+			<input type="password" class="form-control" v-model.trim="$v.oldPassword.$model" :class="{ 'error': $v.oldPassword.$error }"/>
 			<div class="text-danger" v-if="$v.oldPassword.$error">Πρέπει να συμπληρώσεις τον τωρινό κωδικό</div>
 		</div>
 		<div class="form-group row mt-4 mb-0">
 			<label class="col-xl-5 col-12 col-form-label form-control-label">Νέος κωδικός</label>
 		</div>
 		<div class="form-group">
-			<input type="password" class="form-control" v-model.trim="$v.newPassword.$model" :class="{ 'wrong': $v.newPassword.$error }"/>
+			<input type="password" class="form-control" v-model.trim="$v.newPassword.$model" :class="{ 'error': $v.newPassword.$error }"/>
 			<div class="text-danger" v-if="!$v.newPassword.required && $v.newPassword.$dirty">Πρέπει να συμπληρώσεις τον καινούριο κωδικό</div>
 			<div class="text-danger" v-if="!$v.newPassword.minLength && $v.newPassword.$dirty">Ο κωδικός πρέπει να είναι μεγαλύτερος απο 9 χαρακτήρες</div>
 		</div>

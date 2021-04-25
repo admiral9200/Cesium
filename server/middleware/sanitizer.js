@@ -7,7 +7,6 @@ const signupSanitizeRules = () => {
 		check('passwordConfirm').not().isEmpty().isLength({ min: 9}).trim().escape(),
 		check('name').not().isEmpty().trim().escape(),
 		check('surname').not().isEmpty().trim().escape(),
-		check('mobile').not().isEmpty().trim().escape().isNumeric(),
 		check('termsAccept').not().isEmpty().isBoolean()
 	];
 };

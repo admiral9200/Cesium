@@ -1,7 +1,11 @@
 <template>
 	<div>
 		<div class="background">
-			<SignUpHeader/>
+			<nav class="navbar py-4 d-flex justify-content-center">
+				<router-link to="/" class="navbar-brand">
+					<img src="/images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
+				</router-link>
+			</nav>
 			<div v-if="signupCompleted" class="py-3 p-0">
 				<div class="container">
 					<div class="alert alert-success rounded" role="alert">
@@ -16,25 +20,20 @@
 					</div>
 				</div>
 			</div>
-			<div v-else class="py-1 p-0">
-				<div class="mx-auto col-xl-7 col-lg-7 col-md-7 col-sm-12 col-12 py-xl-4 py-lg-4 py-md-3 py-sm-2 p-0">
-					<div class="signup-snip text-white user-select-none">
-						<h1>Εγγραφή</h1>
-						<Form :signupCompleted="signupCompleted" @SignUpSuccessful="SignUpOk"/>			
-					</div>
+			<div v-else class="mx-auto col-xxl-4 col-xl-4 col-lg-4 col-md-9 col-sm-12 col-12 py-xl-3 py-lg-3 py-md-3 py-sm-2 p-0">
+				<div class="signup-snip text-white user-select-none">
+					<h1>Εγγραφή</h1>
+					<Form :signupCompleted="signupCompleted" @SignUpSuccessful="SignUpOk"/>			
 				</div>
 			</div>
 		</div>
 		<Sale/>
-		<Newsletter/>
 		<Footer/>
 	</div>
 </template>
 
 <script>
-import SignUpHeader from '../components/layout/SignUpHeader';
 import Form from '../components/Register/Form';
-import Newsletter from '../components/layout/Newsletter';
 import Sale from '../components/layout/Sale';
 import Footer from '../components/layout/Footer';
 
@@ -43,8 +42,6 @@ export default {
 	components: {
 		Sale,
 		Form,
-		Newsletter,
-		SignUpHeader,
 		Footer
 	},
 
@@ -71,6 +68,10 @@ export default {
 	}
 }
 
+.logo {
+	height: 100px !important;
+}
+
 .image-success {
 	width: 250px;
 }
@@ -78,8 +79,8 @@ export default {
 .signup-snip {
 	width: 100%;
 	border-radius: 23px;
-	padding: 40px;
-	background: #301504ea;
+	padding: 50px;
+	background: #301504d2;
 	backdrop-filter: blur(25px);
 }
 </style>

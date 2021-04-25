@@ -8,12 +8,12 @@
 				<form v-on:submit.prevent="SignIn" novalidate>
 					<div class="group py-2">
 						<label class="label">Email</label>
-						<input v-on:input="CheckEmail" v-model="email" :class="{ 'wrong' : isEmailEmpty === true}" type="email" class="input form-control form-control-lg border-0" placeholder="Γράψε τη Διεύθυνση Email" required>
+						<input v-on:input="CheckEmail" v-model="email" :class="{ 'error' : isEmailEmpty === true}" type="email" class="input form-control form-control-lg border-0" placeholder="Γράψε τη Διεύθυνση Email" required>
 						<div v-if="isEmailEmpty" class="text-danger">{{ warnMsg }}</div>
 					</div>
 					<div class="group py-2">
 						<label class="label">Password</label>
-						<input v-on:input="CheckPass" :class="{ 'wrong' : isPasswordEmpty === true}" v-model="password" type="password" class="input form-control form-control-lg border-0" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
+						<input v-on:input="CheckPass" :class="{ 'error' : isPasswordEmpty === true}" v-model="password" type="password" class="input form-control form-control-lg border-0" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
 						<div v-if="isPasswordEmpty" class="text-danger">Πρέπει να συμπληρώσεις τον κωδικό σου.</div>
 					</div>
 					<div class="group py-2">
@@ -22,10 +22,11 @@
 							<label class="custom-control-label pointer-base ms-1" for="rememberme">Να με θυμάσαι</label>
 						</div>
 					</div>
-					<div class="group d-grid pt-2">
+					<div class="group d-grid py-2">
 						<button type="submit" class="btn mainbtn">Σύνδεση</button>
-						<div class="d-flex justify-content-center" :class="{ 'lds-dual-ring': isLoading, 'my-3': isLoading }">
-							<p class='text-center text-danger my-1'>{{ hasErrorMsg }}</p>
+						<div class="d-flex justify-content-center" :class="{ 'my-3': isLoading }">
+							<div v-if="isLoading" class="spinner-border text-light" role="status"></div>
+							<p v-if="hasErrorMsg" class='text-center text-danger mt-1 mb-0'>{{ hasErrorMsg }}</p>
 						</div>
 					</div>
 					<h2 class="d-flex justify-content-center mb-2">ή</h2>
@@ -231,34 +232,6 @@ export default {
     height: 2px;
     background: rgba(255, 255, 255, 0.39)
 }
-
-/* Animation Loader */
-.lds-dual-ring {
-	margin-bottom: 5px;
-	margin-top: 5px;
-}
-
-.lds-dual-ring:after {
-	content: " ";
-	display: block;
-	width: 30px;
-	height: 30px;
-	margin: 0;
-	border-radius: 50%;
-	border: 6px solid #fff;
-	border-color: #fff transparent #fff transparent;
-	animation: lds-dual-ring 1.2s linear infinite;
-}
-
-@keyframes lds-dual-ring {
-	0% {
-		transform: rotate(0deg);
-	}
-	100% {
-		transform: rotate(360deg);
-	}
-}
-/* Animation Loader */
 
 .login-snip {
 	width: 100%;

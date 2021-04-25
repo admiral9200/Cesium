@@ -3,12 +3,12 @@
 		<div class="form-group row mb-0">
 			<div class="col-xl-5 col-12">
 				<label class="col-xl-5 col-form-label form-control-label pl-0">Όνομα</label>
-				<input v-model="Name" :class="{ 'wrong' : !Name}" class="form-control"/>
+				<input v-model="Name" :class="{ 'error' : !Name}" class="form-control"/>
 				<div v-if="!Name" class="text-danger">Πρέπει να συμπληρώσεις ένα όνομα</div>
 			</div>
 			<div class="col-xl-5 col-12">
 				<label class="col-xl-5 col-form-label form-control-label pl-0" autocomplete="off">Επώνυμο</label>
-				<input v-model="formSurname" :class="{ 'wrong' : !formSurname}" class="form-control" type="text"/>
+				<input v-model="formSurname" :class="{ 'error' : !formSurname}" class="form-control" type="text"/>
 				<div v-if="!formSurname" class="text-danger">Πρέπει να συμπληρώσεις ένα επίθετο</div>
 			</div>
 		</div>
@@ -25,7 +25,7 @@
 		</div>
 		<div class="form-group row">
 			<div class="col-5 mb-0">
-				<input class="form-control" :class="{ 'wrong' : !formMobile}" type="text" v-model="formMobile"/>
+				<input class="form-control" :class="{ 'error' : !formMobile}" type="text" v-model="formMobile"/>
 				<div v-if="!formMobile" class="text-danger">Πρέπει να συμπληρώσεις το κινητό σου</div>
 			</div>
 		</div>

@@ -39,14 +39,12 @@
 			</div>
 		</div>
 		<Sale/>
-		<Newsletter/>
 		<Footer/>
 	</div>
 </template>
 
 <script>
 import Sale from '../components/layout/Sale';
-import Newsletter from '../components/layout/Newsletter';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import InsertAddress from '../components/Home/InsertAddress';
@@ -61,7 +59,6 @@ export default {
 		Addresses,
 		Orders,
 		Sale,
-		Newsletter,
 		Header,
 		Footer
 	},

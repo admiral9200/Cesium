@@ -79,12 +79,13 @@ html, body {
 	max-width: 1200px;
 }
 
-.wrong:focus {
+.error:focus {
 	outline: 1px #dc354665 !important;
 	box-shadow: 0 0 0 3px #dc354665 !important;
+	border-color: #dc3545 !important;
 }
 
-.wrong{
+.error{
 	border: 1px solid #dc3545 !important;
 }
 

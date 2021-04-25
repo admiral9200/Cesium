@@ -17,14 +17,12 @@
 			</div>
 		</div>
 		<Sale/>
-		<Newsletter/>
 		<Footer/>
 	</div>
 </template>
 
 <script>
 import Sale from '../components/layout/Sale';
-import Newsletter from '../components/layout/Newsletter';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import Menu from '../components/Order/Menu';
@@ -35,7 +33,6 @@ export default {
 
 	components: { 
 		Sale,
-		Newsletter,
 		Header,
 		Menu,
 		Cart,

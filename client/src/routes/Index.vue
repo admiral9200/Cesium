@@ -4,7 +4,6 @@
 		<Mid/>
 		<Tiles/>
 		<Sale/>
-		<Newsletter/>
         <Footer/>
 	</div>
 </template>
@@ -14,7 +13,6 @@ import Main from '../components/Index/Main';
 import Mid from '../components/Index/Mid';
 import Tiles from '../components/Index/Tiles';
 import Sale from '../components/layout/Sale';
-import Newsletter from '../components/layout/Newsletter';
 import Footer from '../components/layout/Footer';
 
 export default {
@@ -24,7 +22,6 @@ export default {
 		Mid,
         Tiles,
 		Sale,
-		Newsletter,
         Footer
 	}
 };

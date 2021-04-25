@@ -56,14 +56,12 @@
 			</div>
 		</div>
 		<Sale/>
-		<Newsletter/>
 		<Footer/>
 	</div>
 </template>
 
 <script>
 import Sale from '../components/layout/Sale';
-import Newsletter from '../components/layout/Newsletter';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 
@@ -72,7 +70,6 @@ export default {
   props: ['userInfo'],
 	components: { 
 		Sale,
-		Newsletter,
 		Header,
 		Footer
 	}

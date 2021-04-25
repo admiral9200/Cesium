@@ -35,8 +35,6 @@ app.use('/order' , require('./routes/order'));
 
 app.use('/home' , require('./routes/home'));
 
-app.use('/', require('./routes/subscribe'));
-
 app.use('/profile', require('./routes/profile'));
 
 app.listen(port, () => {
