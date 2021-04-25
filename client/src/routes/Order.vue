@@ -1,21 +1,15 @@
 <template>
 	<div>
 		<div class="background">
-			<Header :userInfo="userInfo"/>
-			<div class="jumbotron jumbotron-fluid">
-				<div class="container">
-					<h1>Διάλεξε τον καφέ που θες</h1>
-				</div>
+			<Header/>
+			<div class="container">
+				<h1 class="pb-5">Διάλεξε τον καφέ που θες</h1>
 			</div>
 		</div>
 		<div class="container">
-			<div id="false"></div>
 			<div class="row">
 				<div class="col-12 col-xl-9 order-1 order-xl-0 coffees">
-					<div id="info"></div>
-					<div class="accordion">
-						<Menu/>
-					</div>
+					<Menu/>
 				</div>
 				<div class="col-xl-3 col-12 order-0 order-xl-1">
 					<Cart/>
@@ -38,7 +32,7 @@ import Cart from '../components/Order/Cart';
 
 export default {
 	name: 'Order',
-	props: ['userInfo'],
+
 	components: { 
 		Sale,
 		Newsletter,

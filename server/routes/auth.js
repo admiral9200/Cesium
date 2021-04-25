@@ -26,7 +26,7 @@ router.post('/login', loginSanitizeRules(), validate, (req, res) => {
 						}
 	
 						if (result){
-							const token = jwt.sign({ email: results[0].email, id: results[0].id }, config.secret, { expiresIn: 1600 }); //low seconds for testing
+							const token = jwt.sign({ email: results[0].email, id: results[0].id }, config.secret, { expiresIn: 3200 }); //low seconds for testing
 	
 							res.send({ auth: true, token: token });
 						}

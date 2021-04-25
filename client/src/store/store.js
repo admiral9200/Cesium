@@ -13,6 +13,7 @@ export default new Vuex.Store({
 			email: null,
 			mobile: null
 		},
-		userAddresses: {}
+		userAddresses: null,
+		userCart: null
 	}
 });

@@ -92,7 +92,7 @@ export default {
 
 						if (resolve.auth === true) {
 							this.$store.state.token = resolve.token;
-							this.$cookies.set("token" , resolve.token , "1600s");
+							this.$cookies.set("token" , resolve.token , "2h");
 							const token = VueCookies.get('token');
 							this.FetchUserInfo(token);
 							router.push("/home");

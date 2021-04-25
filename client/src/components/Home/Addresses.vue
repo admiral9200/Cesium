@@ -16,7 +16,7 @@
 							</div>
 						</div>
 					</li>
-					<li v-if="!UserAddresses" class='list-group-item m-0 border-0'>
+					<li v-if="UserAddresses === null" class='list-group-item m-0 border-0'>
 						<h6>Δεν υπάρχει ενεργή διεύθυνση</h6>
 					</li>
 					<div v-else v-for="(address, index) in UserAddresses" :key="index" class="d-flex justify-content-center w-100">
@@ -49,6 +49,7 @@ import NProgress from 'nprogress';
 
 export default {
 	name: 'Addresses',
+	
 	data() {
 		return {
 			addresses: []
@@ -140,8 +141,8 @@ export default {
 					if (res.hasAddress) {
 						this.$store.state.userAddresses = res.addresses;
 					}
-					else if (!res.hasAddress) {
-						this.addresses = [];
+					else {
+						this.$store.state.userAddresses = null;
 					}
 				}
 				else if (!response.ok) {

@@ -13,11 +13,11 @@ router.get('/coffees', verifyToken, (req, res) => {
 
 		try {
 			if (results !== undefined) {
-				res.send(results);
+				res.send({ 'menu': results });
 			}
 		} 
 		catch (error) {
-			res.status(500).send({ error });
+			res.status(500).send({ 'error': error });
 		}
 	});
 });
