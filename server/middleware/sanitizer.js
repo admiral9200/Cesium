@@ -20,7 +20,7 @@ const loginSanitizeRules= () => {
 
 const reorderSanitizeRules = () => {
 	return [
-		check('id').not().isEmpty().withMessage('ID is empty').isNumeric().withMessage('Order id is invalid').trim().escape()
+		check('id').not().isEmpty().withMessage('ID is required').isNumeric().withMessage('Order id is invalid').trim().escape()
 	];
 };
 

@@ -59,12 +59,13 @@ export default {
 		},
 
 		changeUserCreds: async function() {
-			NProgress.start();
 			const token = VueCookies.get('token');
 			this.$v.oldPassword.$touch();
 			this.$v.newPassword.$touch();
 
 			if (!this.$v.oldPassword.$invalid && !this.$v.newPassword.$invalid && token) {
+				NProgress.start();
+				
 				const oldpass = this.oldPassword;
 				const newpass = this.newPassword;
 				try {
