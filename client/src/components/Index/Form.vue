@@ -8,13 +8,13 @@
 				<form v-on:submit.prevent="SignIn" novalidate>
 					<div class="group py-2">
 						<label class="label">Email</label>
-						<input v-on:input="CheckEmail" v-model="email" :class="{ 'error' : isEmailEmpty === true}" type="email" class="input form-control form-control-lg border-0" placeholder="Γράψε τη Διεύθυνση Email" required>
-						<div v-if="isEmailEmpty" class="text-danger">{{ warnMsg }}</div>
+						<input v-model.trim="$v.email.$model" :class="{ 'error' : $v.email.$error }" type="email" class="input form-control form-control-lg border-0" placeholder="Γράψε τη Διεύθυνση Email" required>
+						<div v-if="!$v.email.required && $v.email.$dirty" class="text-danger">Πρέπει να συμπληρώσεις το email σου.</div>
 					</div>
 					<div class="group py-2">
 						<label class="label">Password</label>
-						<input v-on:input="CheckPass" :class="{ 'error' : isPasswordEmpty === true}" v-model="password" type="password" class="input form-control form-control-lg border-0" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
-						<div v-if="isPasswordEmpty" class="text-danger">Πρέπει να συμπληρώσεις τον κωδικό σου.</div>
+						<input v-model.trim="$v.password.$model" :class="{ 'error' : $v.password.$error}" type="password" class="input form-control form-control-lg border-0" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
+						<div v-if="!$v.password.required && $v.password.$dirty" class="text-danger">Πρέπει να συμπληρώσεις τον κωδικό σου.</div>
 					</div>
 					<div class="group py-2">
 						<div class="form-check pointer-base">
@@ -29,15 +29,15 @@
 							<p v-if="hasErrorMsg" class='text-center text-danger mt-1 mb-0'>{{ hasErrorMsg }}</p>
 						</div>
 					</div>
-					<h2 class="d-flex justify-content-center mb-2">ή</h2>
-					<div class="group d-grid">
-						<router-link to="/register" type="button" class="btn mainbtn">Εγγραφή</router-link>
-					</div>
-					<div class="hr mt-4 mb-4"></div>
-					<div class="text-center"> 
-						<router-link to="/reset">Ξέχασες τον κωδικό σου?</router-link>
-					</div>
 				</form>
+				<h2 class="d-flex justify-content-center mb-2">ή</h2>
+				<div class="group d-grid">
+					<router-link to="/register" type="button" class="btn mainbtn">Εγγραφή</router-link>
+				</div>
+				<hr class="my-4"/>
+				<div class="text-center"> 
+					<router-link to="/reset">Ξέχασες τον κωδικό σου?</router-link>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -46,34 +46,46 @@
 <script>
 import VueCookies from 'vue-cookies';
 import router from '../../router';
+import { required } from 'vuelidate/lib/validators';
 
 export default {
 	name: "Form",
+
+	validations: {
+		email: {
+			required,
+		},
+		password: {
+			required,
+		},
+	},
+
 	data() {
 		return {
 			email: '',
-			isEmailEmpty: false,
-			warnMsg: '',
 			password: '',
-			isPasswordEmpty: false,
-			isLoading: false,
 			hasErrorMsg: '',
+			isLoading: false,
 			RememberMe: false
 		}
 	},
+
 	mounted() {
 		document.addEventListener('visibilitychange', this.visibilityChange);
 	},
+
 	methods: {
 		visibilityChange: function() {
-			this.isPasswordEmpty = false;
-			this.isEmailEmpty = false;
+			this.$v.email.$reset();
+			this.$v.password.$reset();
 		},
 
 		SignIn: async function() {
-			if(this.FormValidated() && this.EmailValidated(this.email)){
-				this.hasErrorMsg = '';
+			this.$v.$touch();
+
+			if(!this.$v.$invalid){
 				this.isLoading = true;
+				this.hasErrorMsg = '';
 
 				try {
 					let response = await fetch('http://localhost:3000/auth/login', {
@@ -110,57 +122,14 @@ export default {
 				}
 				catch (error) {
 					this.isLoading = false;
-					this.hasErrorMsg = error;
+					this.$notify({
+						group: 'errors',
+						type: 'error',
+						title: 'Cofy',
+						text: error
+					});
 				}
 			}
-		},
-
-		CheckPass: function() {
-			if (this.password === '') {
-				this.isPasswordEmpty = true;
-			}
-			else {
-				this.isPasswordEmpty = false;
-			}
-		},
-
-		CheckEmail: function() {
-			if (!this.EmailValidated(this.email) && this.email !== '') {
-				this.warnMsg = 'Πρέπει να συμπληρώσεις μία έγκυρη διεύθυνση email.';
-				this.isEmailEmpty = true;
-			}
-			else if (this.email === '') {
-				this.warnMsg = 'Πρέπει να συμπληρώσεις το email σου.';
-				this.isEmailEmpty = true;
-			}
-			else {
-				this.isEmailEmpty = false;
-			}
-		},
-
-		EmailValidated: function(email) {
-			const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-			return re.test(email);
-		},
-
-		FormValidated: function() {
-			let val = true;
-			if (this.password === '') {
-				this.isPasswordEmpty = true;
-				val = false;
-			}
-			if (!this.EmailValidated(this.email) && this.email !== '') {
-				this.warnMsg = 'Πρέπει να συμπληρώσεις μία έγκυρη διεύθυνση email.';
-				this.isEmailEmpty = true;
-			}
-			else if (this.email === '') {
-				this.warnMsg = 'Πρέπει να συμπληρώσεις το email σου.';
-				this.isEmailEmpty = true;
-			}
-			else {
-				this.isEmailEmpty = false;
-			}
-			return val;
 		},
 
 		FetchUserInfo: async function(token) {

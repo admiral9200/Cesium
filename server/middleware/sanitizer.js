@@ -2,19 +2,19 @@ const { check, validationResult } = require('express-validator');
 
 const signupSanitizeRules = () => {
 	return [
-		check('email').not().isEmpty().withMessage('1').isEmail().withMessage('2').normalizeEmail().withMessage('3'),
-		check('password').not().isEmpty().isLength({ min: 9}).trim().escape(),
-		check('passwordConfirm').not().isEmpty().isLength({ min: 9}).trim().escape(),
-		check('name').not().isEmpty().trim().escape(),
-		check('surname').not().isEmpty().trim().escape(),
-		check('termsAccept').not().isEmpty().isBoolean()
+		check('email').not().isEmpty().withMessage('Email is required').isEmail().withMessage('Email is not a valid format').normalizeEmail(),
+		check('password').not().isEmpty().withMessage('Password is required').isLength({ min: 9}).trim().escape(),
+		check('passwordConfirm').not().isEmpty().withMessage('Password is required').isLength({ min: 9}).trim().escape(),
+		check('name').not().isEmpty().withMessage('Name is required').trim().escape(),
+		check('surname').not().isEmpty().withMessage('Surname is required').trim().escape(),
+		check('termsAccept').not().isEmpty().withMessage('Terms Acceptance is required').isBoolean()
 	];
 };
 
 const loginSanitizeRules= () => {
 	return [ 
-		check('email').not().isEmpty().withMessage('1').isEmail().withMessage('2').normalizeEmail().withMessage('3'), 
-		check('password').not().isEmpty().trim().escape()
+		check('email').not().isEmpty().withMessage('Email is required').normalizeEmail().withMessage('3'), 
+		check('password').not().isEmpty().withMessage('Password is required').trim().escape()
 	];
 };
 

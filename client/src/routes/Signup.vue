@@ -6,17 +6,15 @@
 					<img src="/images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
 				</router-link>
 			</nav>
-			<div v-if="signupCompleted" class="py-3 p-0">
-				<div class="container">
-					<div class="alert alert-success rounded" role="alert">
-						<div class="text-center">
-							<img src="/images/success.png" class="image-success" alt="Success">
-						</div>
-						<h1 class="text-center">Καλωσήρθες στο Chip Coffee!</h1>
-						<p class="text-center">Η εγγραφή σου έγινε με επιτυχία. Θα λάβεις ένα email για την επιβεβαίωση του λογαριασμού σου.</p>
-						<div class="row justify-content-center">
-							<router-link role="button" class="btn mainbtn btn-lg" to="/">Πίσω στην αρχική</router-link>
-						</div>
+			<div v-if="signupCompleted" class="container py-5">
+				<div class="alert alert-success rounded" role="alert">
+					<div class="text-center">
+						<img src="/images/success.png" class="image-success" alt="Success">
+					</div>
+					<h1 class="text-center">Καλωσήρθες στο Chip Coffee!</h1>
+					<p class="text-center">Η εγγραφή σου έγινε με επιτυχία. Θα λάβεις ένα email για την επιβεβαίωση του λογαριασμού σου.</p>
+					<div class="d-flex justify-content-center">
+						<router-link role="button" class="btn mainbtn btn-lg" to="/">Πίσω στην αρχική</router-link>
 					</div>
 				</div>
 			</div>

@@ -14,7 +14,7 @@ router.post('/login', loginSanitizeRules(), validate, (req, res) => {
 	
 	db.execute(sqlUser, [req.body.email], (error, results) => {
 		if (error) {
-			res.status(500).send({'error': error });
+			res.send({'error': error });
 		}
 		
 		try {
@@ -22,7 +22,7 @@ router.post('/login', loginSanitizeRules(), validate, (req, res) => {
 				(async (data) => {
 					await bcrypt.compare(data, results[0].password, (error, result) => {
 						if (error) {
-							res.status(500).send({ error: 'An internal error occured' });
+							res.send({ error: 'An internal error occured' });
 						}
 	
 						if (result){
@@ -41,37 +41,36 @@ router.post('/login', loginSanitizeRules(), validate, (req, res) => {
 			}	
 		} 
 		catch (error) {
-			res.status(500).send({ error: 'An unexpected error occured. Try again' + error });
+			res.send({ error: 'An unexpected error occured. Try again' + error });
 		}
 	});
 });
 
-router.post('/signup', signupSanitizeRules(), validate, (req, res) => {
+router.post('/register', signupSanitizeRules(), validate, (req, res) => {
 	let sqlQueryIfUserExists = 'SELECT email FROM cc_users WHERE email = ?';
 
 	const email = req.body.email;
 	const name = req.body.name;
 	const surname = req.body.surname;
-	const mobile = req.body.mobile;
 
 	if (req.body.password === req.body.passwordConfirm) {
 		db.execute(sqlQueryIfUserExists, [email], (error, results) => {
 			if (error) {
-				res.status(500).send({'error': error });
+				res.send({'error': error });
 			}
 			
 			if (results.length > 0) {
 				res.send({ 'error': 'Το email αυτό υπάρχει ήδη!' });
 			}
 			else {
-				let queryToAddUser = 'INSERT INTO cc_users (email, password, firstName, lastName, mobile) VALUES(? , ? , ? , ? , ?)';
+				let queryToAddUser = 'INSERT INTO cc_users (email, password, firstName, lastName) VALUES(? , ? , ? , ?)';
 
 				(async (pass) => {
 					await bcrypt.hash(pass, saltRounds = 10, (error, encrypted) => {
-						if (error) res.status(500).send({ 'error': 'An error occured' });
+						if (error) res.send({ 'error': 'An error occured' });
 
-						db.execute(queryToAddUser, [email, encrypted, name, surname, mobile], (error, results) => {
-							if (error) res.status(500).send({ 'error': 'An internal Database error occured. Try again' });
+						db.execute(queryToAddUser, [email, encrypted, name, surname], (error, results) => {
+							if (error) res.send({ 'error': 'An internal Database error occured. Try again' });
 							
 							if (results) {
 								res.send({ 'status': 'ok' });
@@ -95,7 +94,7 @@ router.get('/user', verifyToken, (req, res) => {
 	const user = jwt_decode(req.headers.authorization);
 
 	db.execute(queryToGetUserDetails, [user.id], (error, results) => {
-		if (error) res.status(500).send({'error': error });
+		if (error) res.send({'error': error });
 
 		if (results.length > 0) {
 			res.send({ 

@@ -36,17 +36,13 @@
 						</div>
 						<div class="group py-2">
 							<div class="form-check pointer-base">
-								<input type="checkbox" class="form-check-input" id="termsAccept" v-model="termsAccept" required>
+								<input @change="$v.terms.$touch()" v-model="terms" type="checkbox" class="form-check-input" id="termsAccept" required>
 								<label class="custom-control-label pointer-base ms-1" for="termsAccept">Αποδέχομαι τους όρους χρήσης</label>
-								<div v-if="termsButtonNotChecked" class="text-danger">Πρέπει να αποδεχτείς τους όρους χρήσης.</div>
+								<div v-if="!$v.terms.sameAs && $v.terms.$dirty" class="text-danger">Πρέπει να αποδεχτείς τους όρους χρήσης.</div>
 							</div>
 						</div>
-						<div class="d-grid mt-4 py-2 align-content-end">
+						<div class="d-grid mt-4 py-2">
 							<button type="submit" class="btn btn-block text-white mainbtn">Εγγραφή</button>
-							<div :class="{ 'my-3': isLoading }" class="d-flex justify-content-center pt-2">
-								<div v-if="isLoading" class="spinner-border text-light" role="status"></div>
-								<p v-if="hasErrorMsg" class='my-1 text-danger'>{{ hasErrorMsg }}</p>
-							</div>
 						</div> 
 					</div>
 				</div>
@@ -56,6 +52,7 @@
 </template>
 
 <script>
+import NProgress from 'nprogress';
 import { required, minLength, email, alpha, sameAs } from 'vuelidate/lib/validators';
 
 export default {
@@ -83,6 +80,9 @@ export default {
 		passwordConfirm: {
 			required,
 			sameAsPassword: sameAs('password')
+		},
+		terms: {
+			sameAs: sameAs(() => true),
 		}
 	},
 
@@ -93,8 +93,7 @@ export default {
 			passwordConfirm: '',
 			name: '',
 			surname: '',
-			isLoading: false,
-			termsAccept: false,
+			terms: false,
 			termsButtonNotChecked: false,
 			hasErrorMsg: '',
 		}
@@ -114,15 +113,14 @@ export default {
 		},
 
 		SignUp: async function() {
-
+			NProgress.start();
 			this.$v.$touch();
 
-			if(!this.$v.$invalid && this.termsAccept === true){
+			if(!this.$v.$invalid){
 				this.hasErrorMsg = '';
-				this.isLoading = true;
 
 				try {
-					const response = await fetch('http://localhost:3000/auth/signup', {
+					const response = await fetch('http://localhost:3000/auth/register', {
 						method: 'POST',
 						body: JSON.stringify({
 							email: this.email,
@@ -130,38 +128,56 @@ export default {
 							passwordConfirm: this.passwordConfirm,
 							name: this.name,
 							surname: this.surname,
-							termsAccept: this.termsAccept
+							termsAccept: this.terms
 						}),
 						headers: {
 							"Content-type" : "application/json; charset=UTF-8"
 						}
 					});
 
-					let resolve = await response.json();
 					if (response.ok) {
+						let resolve = await response.json();
 
 						if (resolve.status === "ok") {
-							this.isLoading = false;
-							let signUpOk = true;
-							this.$emit("SignUpSuccessful", signUpOk);
+							this.$emit("SignUpSuccessful", true);
 						}
 						else if (resolve.errors) {
-							this.isLoading = false;
-							this.hasErrorMsg = resolve.errors[0].msg;
+							this.$notify({
+								group: 'errors',
+								type: 'error',
+								title: 'Cofy',
+								text: resolve.errors[0].msg
+							});
+							
 						}
 						else if (resolve.error){
-							this.isLoading = false;
-							this.hasErrorMsg = resolve.error;
+							this.$notify({
+								group: 'errors',
+								type: 'error',
+								title: 'Cofy',
+								text: resolve.error
+							});
 						}
 					}
 					else if (!response.ok) {
-						this.isLoading = false;
-						this.hasErrorMsg = resolve.error;
+						this.$notify({
+							group: 'errors',
+							type: 'error',
+							title: 'Cofy',
+							text: response.status
+						});
 					}
 				}
 				catch (error) {
-					this.isLoading = false;
-					this.hasErrorMsg = error;
+					this.$notify({
+						group: 'errors',
+						type: 'error',
+						title: 'Cofy',
+						text: error
+					});
+				}
+				finally {
+					NProgress.done();
 				}
 			}
 		}
