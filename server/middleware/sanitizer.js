@@ -46,7 +46,6 @@ const profileInfoRules = () => {
 	return [
 		check('name').not().isEmpty().isString().trim().escape(),
 		check('surname').not().isEmpty().isString().trim().escape(),
-		check('mobile').not().isEmpty().isNumeric().trim().escape(),
 	];
 };
 

@@ -47,7 +47,7 @@ router.post('/login', loginSanitizeRules(), validate, (req, res) => {
 });
 
 router.post('/register', signupSanitizeRules(), validate, (req, res) => {
-	let sqlQueryIfUserExists = 'SELECT email FROM cc_users WHERE email = ?';
+	const sqlQueryIfUserExists = 'SELECT email FROM cc_users WHERE email = ?';
 
 	const email = req.body.email;
 	const name = req.body.name;

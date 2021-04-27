@@ -3,13 +3,13 @@
 		<div class="form-group row mb-0">
 			<div class="col-xl-5 col-12">
 				<label class="col-xl-5 col-form-label form-control-label pl-0">Όνομα</label>
-				<input v-model="formName" :class="{ 'error' : !formName}" class="form-control"/>
-				<div v-if="!formName" class="text-danger">Πρέπει να συμπληρώσεις ένα όνομα</div>
+				<input v-model.trim="$v.name.$model" :class="{ 'error' : $v.name.$error }" class="form-control"/>
+				<div v-if="!$v.name.required && $v.name.$dirty" class="text-danger">Πρέπει να συμπληρώσεις ένα όνομα</div>
 			</div>
 			<div class="col-xl-5 col-12">
 				<label class="col-xl-5 col-form-label form-control-label pl-0" autocomplete="off">Επώνυμο</label>
-				<input v-model="formSurname" :class="{ 'error' : !formSurname}" class="form-control" type="text"/>
-				<div v-if="!formSurname" class="text-danger">Πρέπει να συμπληρώσεις ένα επίθετο</div>
+				<input v-model.trim="$v.surname.$model" :class="{ 'error' : $v.surname.$error}" class="form-control" type="text"/>
+				<div v-if="!$v.surname.required && $v.surname.$dirty" class="text-danger">Πρέπει να συμπληρώσεις ένα επίθετο</div>
 			</div>
 		</div>
 		<div class="form-group row mt-4 mb-0">
@@ -25,13 +25,13 @@
 		</div>
 		<div class="form-group row">
 			<div class="col-5 mb-0">
-				<input class="form-control" :class="{ 'error' : !formMobile}" type="text" v-model="formMobile"/>
-				<div v-if="!formMobile" class="text-danger">Πρέπει να συμπληρώσεις το κινητό σου</div>
+				<input v-model.trim="$v.mobile.$model" class="form-control" :class="{ 'error' : $v.mobile.$error}" type="text"/>
+				<div v-if="!$v.mobile.numeric && $v.mobile.$dirty" class="text-danger">Πρέπει να συμπληρώσεις το κινητό σου σωστά</div>
 			</div>
 		</div>
 		<div class="form-group row">
 			<div class="col-12 mt-4 text-left">
-				<button type="submit" class="btn btn-lg btn-block mainbtn">Αποθήκευση Αλλαγών</button>
+				<button type="submit" class="btn btn-block mainbtn">Αποθήκευση Αλλαγών</button>
 			</div>
 		</div>
 	</form>
@@ -40,16 +40,45 @@
 <script>
 import VueCookies from 'vue-cookies';
 import NProgress from 'nprogress';
+import { required, numeric } from 'vuelidate/lib/validators';
 
 export default {
 	name: 'FormUserInfo',
 
 	data() {
 		return {
-			formName: null,
-			formSurname: null,
-			formMobile: null,
-			formEmail: null,
+			name: '',
+			surname: '',
+			mobile: '',
+		}
+	},
+
+	validations: {
+		name: {
+			required,
+		},
+
+		surname: {
+			required,
+		},
+
+		mobile: {
+			numeric
+		}
+	},
+
+	watch: {
+		Name: function() {
+			console.log("WATCH RUN")
+			this.name = this.Name;
+		},
+
+		Surname: function() {
+			this.surname = this.Surname;
+		},
+
+		Mobile: function() {
+			this.mobile = this.Mobile;
 		}
 	},
 
@@ -71,69 +100,60 @@ export default {
 		}
 	},
 
-	beforeCreate() {
-		this.formName = this.Name;
-		this.formSurname = this.Surname;
-		this.formEmail = this.Email;
-		this.formMobile = this.Mobile;
-	},
-
 	methods: {
 		changeUserInfo: async function() {
 			NProgress.start();
 			const token = VueCookies.get('token');
-			const name = this.formName;
-			const surname = this.formSurname;
-			const mobile = this.formMobile;
+			this.$v.$touch();
 
-			try {	
-				let response = await fetch('http://localhost:3000/profile/info', {
-					method: 'POST',
-					body: JSON.stringify({
-						name,
-						surname,
-						mobile
-					}),
-					headers: {
-						"Content-type" : "application/json; charset=UTF-8",
-						"Authorization" : token,
+			if (!this.$v.$invalid) {
+				try {	
+					let response = await fetch('http://localhost:3000/profile/info', {
+						method: 'POST',
+						body: JSON.stringify({
+							name: this.name,
+							surname: this.surname,
+						}),
+						headers: {
+							"Content-type" : "application/json; charset=UTF-8",
+							"Authorization" : token,
+						}
+					});
+
+					if (response.ok) {
+						let res = await response.json();
+
+						if (res.completed) {
+							this.$store.state.userInfo.name = this.name;
+							this.$store.state.userInfo.surname = this.surname;
+							this.$notify({
+								group: 'errors',
+								type: 'success',
+								title: 'Cofy',
+								text: 'Τα στοιχεία σου άλλαξαν με επιτυχία'
+							});
+						}
 					}
-				});
-
-				if (response.ok) {
-					let res = await response.json();
-
-					if (res.completed) {
-						this.$store.state.userInfo.name = name;
-						this.$store.state.userInfo.surname = surname;
-						this.$store.state.userInfo.mobile = mobile;
+					else {
 						this.$notify({
-                            group: 'errors',
-                            type: 'success',
-                            title: 'Cofy',
-                            text: 'Τα στοιχεία σου άλλαξαν με επιτυχία'
-                        });
+							group: 'errors',
+							type: 'error',
+							title: 'Error',
+							text: response.status
+						});
 					}
-				}
-				else {
+				} 
+				catch (error) {
 					this.$notify({
 						group: 'errors',
 						type: 'error',
 						title: 'Error',
-						text: response.status
+						text: error
 					});
 				}
-			} 
-			catch (error) {
-				this.$notify({
-					group: 'errors',
-					type: 'error',
-					title: 'Error',
-					text: error
-				});
-			}
-			finally {
-				NProgress.done();
+				finally {
+					NProgress.done();
+				}
 			}
 		},
 	},

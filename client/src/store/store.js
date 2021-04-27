@@ -8,10 +8,10 @@ export default new Vuex.Store({
 	state: {
 		token: VueCookies.get('token') || null,
 		userInfo: {
-			name: null,
-			surname: null,
-			email: null,
-			mobile: null
+			name: '',
+			surname: '',
+			email: '',
+			mobile: '',
 		},
 		userAddresses: null,
 		userCart: null

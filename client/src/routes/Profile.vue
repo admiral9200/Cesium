@@ -62,14 +62,6 @@ export default {
 		Surname() {
 			return this.$store.state.userInfo.surname;
 		},
-
-		Email() {
-			return this.$store.state.userInfo.email;
-		},
-
-		Mobile(){
-			return this.$store.state.userInfo.mobile;
-		}
 	},
 
 	mounted() {

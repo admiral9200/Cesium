@@ -12,10 +12,8 @@ Vue.use(Vuelidate);
 
 Vue.config.productionTip = false;
 
-const app = new Vue({
+new Vue({
 	store,
 	router,
 	render: h => h(App)
-});
-
-app.$mount('#app');
+}).$mount('#app');

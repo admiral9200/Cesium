@@ -9,11 +9,11 @@
 import VueCookies from 'vue-cookies';
 
 export default {
-	async created() {
+	async beforeCreate() {
 		const token = VueCookies.get('token');
 		if (token) {
 			try {
-				let res = await fetch('http://localhost:3000/auth/user', {
+				const res = await fetch('http://localhost:3000/auth/user', {
 					method: 'GET',
 					headers: {
 						"Authorization" : token,
@@ -21,13 +21,15 @@ export default {
 				});
 
 				if (res.ok) {
-					let resolve = await res.json();
+					const resolve = await res.json();
 
 					if (!resolve.error) {
-						this.$store.state.userInfo.email = resolve.email;
-						this.$store.state.userInfo.name = resolve.name;
-						this.$store.state.userInfo.surname = resolve.surname;
-						this.$store.state.userInfo.mobile = resolve.mobile;
+						this.$store.state.userInfo = {
+							email: resolve.email,
+							name: resolve.name,
+							surname: resolve.surname,
+							mobile: resolve.mobile
+						};
 					}
 					else {
 						this.$notify({
@@ -135,7 +137,6 @@ a:hover{
 }
 
 .mainbtn {
-	font-size: 1.1rem !important;
 	color: white;
 	background: #bb6b00;
 }

@@ -17,7 +17,7 @@
 		</div>
 		<div class="form-group row mt-4">
 			<div class="col-xl-12 col-12">
-				<button type="submit" class="btn mainbtn btn-lg btn-block">Αποθήκευση Αλλαγών</button>
+				<button type="submit" class="btn mainbtn">Αποθήκευση Αλλαγών</button>
 			</div>
 		</div>
 	</form>
@@ -82,7 +82,7 @@ export default {
 					});
 
 					if (response.ok) {
-						let res = await response.json();
+						const res = await response.json();
 
 						if (res.completed) {
 							this.$notify({

@@ -1,36 +1,44 @@
 <template>
 	<div class="card sticky-top">
-		<li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-1'>
-			<h5>Espresso</h5>
-			<a onclick="deleteCoffee(${ keys[i] })" type='button' class='btn btn-sm btn-outline-danger mr-2' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></a>
+		<h5 class='my-4'>Το καλάθι σου</h5>
+		<li class='row border-0'>
+			<div class="col-10">
+				<p class="m-0">Espresso</p>
+				<p class='text-muted m-0'>Γλυκός, Κανέλα</p>
+			</div>
+			<div class="col-2">
+				<button type="button" class="btn-close" aria-label="Close"></button>
+			</div>
 		</li>
-		<li class='list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0 pt-0 mt-0'>
-			<p class='attr'>Γλυκός, Κανέλα</p>
-		</li>
-		<li>
-			<div class='row d-flex justify-content-center user-select-none'>
-				<div class='col-4 d-flex justify-content-center mt-3'>
-					<h5>2.20€</h5>
+		<li class='list-group-item border-0 p-0 my-2'>
+			<div class='row user-select-none'>
+				<div class='col-7 align-self-center'>
+					<h6 class="m-0">2.20€</h6>
 				</div>
-				<div class='col-8'>
-					<div class='qty d-flex justify-content-center mt-2'>
-						<a type='button' class='minus' onclick="quantityHelper(${ keys[i] }, 'minus')" id="minus">-</a>
-						<input type='number' class='count' name='qty' value="${ coffeeInCart.qty }" disabled>
-						<a type='button' class='plus' onclick="quantityHelper(${ keys[i] }, 'plus')" id="plus">+</a>
+				<div class='col-5 align-self-center'>
+					<div class="input-group">
+						<button class="cart_btn btn btn-sm rounded-circle">-</button>
+						<p class="m-0 mx-2 align-self-center">1</p>
+						<button class="cart_btn btn btn-sm rounded-circle">+</button>
 					</div>
 				</div>
 			</div>
 		</li>
+		<button class="mainbtn btn my-3" disabled>Συνέχεια</button>
 	</div>
 </template>
 
 <script>
 export default {
-
+	
 }
 </script>
 
 <style scoped>
+.cart_btn {
+	
+}
+
 .card {
 	border: none;
 }

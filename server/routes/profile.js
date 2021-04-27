@@ -8,13 +8,15 @@ const jwt_decode = require('jwt-decode');
 const router = express.Router();
 
 router.post('/info', profileInfoRules(), validate, verifyToken, (req, res) => {
-	const queryToChangeUserInfo = 'UPDATE cc_users SET firstName = ?, lastName = ?, mobile = ? WHERE id = ?';
+	const queryToChangeUserInfo = 'UPDATE cc_users SET firstName = ?, lastName = ? WHERE id = ?';
 
 	const user = jwt_decode(req.headers['authorization']);
 
-	db.execute(queryToChangeUserInfo, [req.body.name, req.body.surname, req.body.mobile, user.id], (error, results) => {
+	db.execute(queryToChangeUserInfo, [req.body.name, req.body.surname, user.id], (error, results) => {
 		if (error) res.send({'error': error });
-		else res.send({ 'completed': true });
+
+		if (results) res.send({ 'completed': true });
+		else res.send({ 'error': 'An unexpected error occured'});
 	});
 });
 
