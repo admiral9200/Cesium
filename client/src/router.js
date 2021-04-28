@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import store from './store/store';
 import VueCookies from 'vue-cookies';
 import NProgress from 'nprogress';
 import Index from '@/routes/Index';
@@ -23,7 +24,7 @@ const routes = [
 		meta: {
 			disallowAuthed: true
 		},
-		beforeRouteEnter (to, from, next) {
+		beforeEnter (to, from, next) {
 			if (VueCookies.get('token') === null) {
 				next();
 			} 
@@ -69,6 +70,14 @@ const routes = [
 		meta: {
 			requiresAuth: true
 		},
+		beforeEnter (to, from, next) {
+			if (store.state.userAddresses === null) {
+				next({ path: '/home'});
+			}
+			else {
+				next();
+			}
+		}
 	},
 	{
 		path: '/checkout',

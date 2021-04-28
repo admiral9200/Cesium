@@ -1,42 +1,37 @@
 <template>
-	<div class="card sticky-top">
-		<h5 class='my-4'>Το καλάθι σου</h5>
-		<li class='row border-0'>
-			<div class="col-10">
-				<p class="m-0">Espresso</p>
-				<p class='text-muted m-0'>Γλυκός, Κανέλα</p>
-			</div>
-			<div class="col-2">
-				<button type="button" class="btn-close" aria-label="Close"></button>
-			</div>
-		</li>
-		<li class='list-group-item border-0 p-0 my-2'>
-			<div class='row user-select-none'>
-				<div class='col-7 align-self-center'>
-					<h6 class="m-0">2.20€</h6>
-				</div>
-				<div class='col-5 align-self-center'>
-					<div class="input-group">
-						<button class="cart_btn btn btn-sm rounded-circle">-</button>
-						<p class="m-0 mx-2 align-self-center">1</p>
-						<button class="cart_btn btn btn-sm rounded-circle">+</button>
-					</div>
-				</div>
-			</div>
-		</li>
-		<button class="mainbtn btn my-3" disabled>Συνέχεια</button>
+	<div class="card sticky-top bg-light shadow-sm p-3 m-3">
+		<h5 class='my-2 text-center'>Το καλάθι σου</h5>
+		<div v-if="UserCart === null" class="my-5 d-grid">
+			<img src="/images/cc_cup.png" class="cup mx-auto">
+			<p class="text-center">Βάλε προϊόντα στο καλάθι σου από το μενού στα αριστερά</p>
+		</div>
+		<CartItem v-else :userCart="UserCart"/>
+		<button class="mainbtn btn my-3" :disabled="UserCart === null">Συνέχεια</button>
 	</div>
 </template>
 
 <script>
+import CartItem from './CartItem';
+
 export default {
-	
+	name: 'Cart',
+
+	components: {
+		CartItem
+	},
+
+	computed: {
+		UserCart() {
+			return this.$store.state.userCart;
+		}
+	}
 }
 </script>
 
 <style scoped>
-.cart_btn {
-	
+.cup {
+	height: auto;
+	width: 25px;
 }
 
 .card {

@@ -22,28 +22,26 @@
 						<h6>Επιλέξτε μέγεθος*</h6>
 						<div class="row">
 							<div class="col-5 m-1 pointer user-select-none border border-white bg-white rounded-1 py-2 px-3" for="flexCheckDefault">
-								<input class="form-check-input cc-input m-0 pointer-base" type="checkbox" value="" id="flexCheckDefault">
-								<label class="form-check-label ps-2 pointer-base" for="flexCheckDefault">Default checkbox</label>
-							</div>
-							<div class="col-5 m-1 pointer user-select-none border border-white bg-white rounded-1 py-2 px-3" for="flexCheckDefault">
-								<input class="form-check-input cc-input m-0 pointer-base" type="checkbox" value="" id="flexCheckDefault">
-								<label class="form-check-label ps-2 pointer-base" for="flexCheckDefault">Default checkbox</label>
-							</div>
-							<div class="col-5 m-1 pointer user-select-none border border-white bg-white rounded-1 py-2 px-3" for="flexCheckDefault">
-								<input class="form-check-input cc-input m-0 pointer-base" type="checkbox" value="" id="flexCheckDefault">
+								<input class="form-check-input cc-input m-0 pointer-base" type="radio" value="" id="flexCheckDefault">
 								<label class="form-check-label ps-2 pointer-base" for="flexCheckDefault">Default checkbox</label>
 							</div>
 						</div>
 						<h6 class="mt-3">Επιλέξτε ζάχαρη*</h6>
 						<div class="row">
 							<div class="col-5 m-1 pointer user-select-none border border-white bg-white rounded-1 py-2 px-3" for="flexCheckDefault">
-								<input class="form-check-input cc-input m-0 pointer-base" type="checkbox" value="" id="flexCheckDefault">
+								<input class="form-check-input cc-input m-0 pointer-base" type="radio" value="" id="flexCheckDefault">
 								<label class="form-check-label ps-2 pointer-base" for="flexCheckDefault">Default checkbox</label>
 							</div>
+						</div>
+						<h6 class="mt-3">Επιλέξτε είδος ζάχαρης</h6>
+						<div class="row">
 							<div class="col-5 m-1 pointer user-select-none border border-white bg-white rounded-1 py-2 px-3" for="flexCheckDefault">
-								<input class="form-check-input cc-input m-0 pointer-base" type="checkbox" value="" id="flexCheckDefault">
+								<input class="form-check-input cc-input m-0 pointer-base" type="radio" value="" id="flexCheckDefault">
 								<label class="form-check-label ps-2 pointer-base" for="flexCheckDefault">Default checkbox</label>
 							</div>
+						</div>
+						<h6 class="mt-3">Προσθέστε</h6>
+						<div class="row">
 							<div class="col-5 m-1 pointer user-select-none border border-white bg-white rounded-1 py-2 px-3" for="flexCheckDefault">
 								<input class="form-check-input cc-input m-0 pointer-base" type="checkbox" value="" id="flexCheckDefault">
 								<label class="form-check-label ps-2 pointer-base" for="flexCheckDefault">Default checkbox</label>
@@ -53,9 +51,9 @@
 					<div class="modal-footer justify-content-between">
 						<div class="justify-content-start w-25">
 							<div class="input-group">
-								<button v-on:click="quantityMinus" class="input-group-text">-</button>
-								<input v-model="quantity" class="form-control ps-3" disabled>
-								<button v-on:click="quantity++" class="input-group-text">+</button>
+								<button v-on:click="quantityMinus" class="btn menu_btn">-</button>
+								<p class="m-0 mx-2 align-self-center">{{ quantity }}</p>
+								<button v-on:click="quantity++" class="btn menu_btn">+</button>
 							</div>
 						</div>
 						<div class="justify-content-end">
@@ -90,6 +88,11 @@ export default {
 </script>
 
 <style scoped>
+.menu_btn:focus {
+	outline: none;
+	box-shadow: none;
+}
+
 .modal-content {
 	font-size: 14px;
 }
