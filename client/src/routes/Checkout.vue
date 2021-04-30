@@ -6,30 +6,29 @@
 				<h1>Ολοκλήρωση Παραγγελίας</h1>
 			</div>
 		</div>
-		<div class="container my-5" id="orderCompletion">
-			<div id="false"></div>
+		<div class="container my-5">
 			<div class="row d-flex justify-content-center">
 				<div class="col-xl-4 col-md-12 col-12 box p-xl-5 p-md-5">
 					<h4 class="mb-2">1. Στοιχεία Παραγγελίας</h4>
 					<div class="row">
-						<div class="col-xl-8 col-12" id="input">
-							<label for="doorbell">Όνομα στο κουδούνι *</label>
-							<input type="text" class="form-control" id="doorname" required>
-							<div class="text-danger">Πρέπει να συμπληρώσεις όνομα στο κουδούνι.</div>
+						<div class="col-xl-8 col-12">
+							<label>Όνομα στο κουδούνι*</label>
+							<input type="text" v-model.trim="$v.ringbell.$model" class="form-control" required>
+							<div v-if="!$v.ringbell.required && $v.ringbell.$dirty" class="text-danger">Πρέπει να συμπληρώσεις όνομα στο κουδούνι.</div>
 						</div>
-						<div class="col-md-4" id="input">
-							<label for="floor">Όροφος *</label>
-							<input type="number" class="form-control" id="floor" required>
-							<div class="text-danger">Πρέπει να συμπληρώσεις τον όροφο.</div>
+						<div class="col-md-4">
+							<label>Όροφος*</label>
+							<input v-model.trim="$v.floor.$model" type="number" class="form-control" required>
+							<div v-if="!$v.floor.required && $v.floor.$dirty" class="text-danger">Πρέπει να συμπληρώσεις τον όροφο.</div>
 						</div>
 					</div>
 					<div class="space">
-						<label for="address">Προαιρετικό τηλ. επικοινωνίας</label>
-						<input type="number" class="form-control" id="phone">
+						<label>Προαιρετικό τηλ. επικοινωνίας</label>
+						<input type="number" class="form-control">
 					</div>
 					<div class="form-group">
-						<label for="exampleFormControlTextarea1">Σχόλια διεύθυνσης</label>
-						<textarea class="form-control" id="comment" rows="3" placeholder="Π.χ. Καλέστε στο τηλέφωνο αντί να χτυπήσετε κουδούνι"></textarea>
+						<label>Σχόλια διεύθυνσης</label>
+						<textarea class="form-control" rows="3" placeholder="Π.χ. Καλέστε στο τηλέφωνο αντί να χτυπήσετε κουδούνι"></textarea>
 					</div>
 				</div>
 				<div class="col-xl-4 col-md-12 col-12 box p-xl-5 p-md-5">
@@ -41,17 +40,15 @@
 								<label class="list-group-item form-check-label" for="paypal">PayPal</label>
 								<input class="form-check-input" type="radio" name="payment" value="credit" id="card" required/>
 								<label class="list-group-item form-check-label" for="card">Πιστωτική/Χρεωστική Κάρτα</label>
-								<div class="text-danger" id="payment">
-									Πρέπει να διαλέξεις έναν τρόπο πληρωμής.
-								</div>
+								<div class="text-danger">Πρέπει να διαλέξεις έναν τρόπο πληρωμής.</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="col-xl-4 col-md-12 col-12 box p-xl-5 p-md-5">
 					<h4 class="d-flex justify-content-between align-items-center mb-4">3. Ολοκλήρωση</h4>
-					<ul class="list-group mb-1" id="FinalCart"></ul>
-					<button class="btn mainbtn text-white btn-lg btn-block my-2" type="button" onclick="sendOrder()">Αποστολή Παραγγελίας</button>
+					<ul class="list-group mb-1"></ul>
+					<button type="submit" class="btn mainbtn text-white btn-lg btn-block my-2">Αποστολή Παραγγελίας</button>
 				</div>
 			</div>
 		</div>
@@ -64,74 +61,65 @@
 import Sale from '../components/layout/Sale';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
+import NProgress from 'nprogress';
+import { required, numeric } from 'vuelidate/lib/validators';
 
 export default {
 	name: 'Checkout',
-  props: ['userInfo'],
+
+	props: ['userInfo'],
+
 	components: { 
 		Sale,
 		Header,
 		Footer
-	}
+	},
+
+	validations: {
+		floor: {
+			required
+		},
+		ringbell: {
+			required
+		},
+		phone: {
+			numeric
+		}
+	},
+
+	mounted() {
+		NProgress.done();
+	},
 }
 </script>
 
 <style scoped>
+.background h1 {
+  color: white;
+  padding: 10%;
+  padding-left: 0;
+  padding-bottom: 0;
+  text-align: left;
+  font-size: 75px;
+  font-weight: 300;
+}
+
+.background h2{
+	color: white;
+	font-weight: 300;
+}
+
+.background h3{
+  color: white;
+  padding: 3%;
+  padding-left: 0;
+  text-align: left;
+  font-size: 20px;
+  font-weight: 300;
+}
 
 .chk {
   width: 150px;
-}
-
-.stop-scrolling {
-  height: 100%;
-  overflow: hidden;
-}
-
-.blurred {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  display: none;
-  backdrop-filter: blur(8px);
-  background-color: rgba(97, 97, 97, 0.603);
-  z-index: 9000;
-}
-
-.loader {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  margin-top: -50px;
-  margin-left: -50px;
-  width: 100px;
-  height: 100px;
-  display: none;
-  z-index: 9999;
-}
-
-/* Animation Loaded */
-.lds-dual-ring {
-  padding-bottom: 5px;
-  padding-top: 5px;
-}
-.lds-dual-ring:after {
-  content: " ";
-  display: block;
-  width: 90px;
-  height: 90px;
-  margin: 0;
-  border-radius: 50%;
-  border: 9px solid #fff;
-  border-color: #fff transparent #fff transparent;
-  animation: lds-dual-ring 1.2s linear infinite;
-}
-@keyframes lds-dual-ring {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
 }
 
 @media screen and (min-width: 280px) and (max-width: 400px){
@@ -152,15 +140,6 @@ export default {
   .background h3 {
     text-align: center !important;
   }
-  .col-md* {
-    padding: 0 !important;
-  }
-  .col-sm-* {
-    padding: 0 !important;
-  }
-  .col-xs-* {
-    padding: 0 !important;
-  }
 }
 
 @media screen and (min-width: 400px) and (max-width: 600px){
@@ -180,15 +159,6 @@ export default {
   }
   .background h3 {
     text-align: center !important;
-  }
-  .col-md* {
-    padding: 0 !important;
-  }
-  .col-sm-* {
-    padding: 0 !important;
-  }
-  .col-xs-* {
-    padding: 0 !important;
   }
 }
 

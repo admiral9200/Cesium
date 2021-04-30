@@ -88,6 +88,15 @@ const routes = [
 		},
 		meta: {
 			requiresAuth: true
+		},
+		beforeEnter (to, from, next) {
+			if (store.state.userCart === null) {
+				next({ path: '/order' });
+			}
+			else if (store.state.userAddresses === null) {
+				next({ path: '/home' });
+			}
+			else next();
 		}
 	},
 	{

@@ -6,7 +6,7 @@
 			<p class="text-center">Βάλε προϊόντα στο καλάθι σου από το μενού στα αριστερά</p>
 		</div>
 		<CartItem v-else :userCart="UserCart"/>
-		<button class="mainbtn btn my-3" :disabled="UserCart === null">Συνέχεια</button>
+		<router-link to="/checkout" class="mainbtn btn my-3" :class="{ disabled: UserCart === null }">Συνέχεια</router-link>
 	</div>
 </template>
 

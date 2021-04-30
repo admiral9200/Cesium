@@ -6,51 +6,8 @@
 </template>
 
 <script>
-import VueCookies from 'vue-cookies';
-
 export default {
-	async beforeCreate() {
-		const token = VueCookies.get('token');
-		if (token) {
-			try {
-				const res = await fetch('http://localhost:3000/auth/user', {
-					method: 'GET',
-					headers: {
-						"Authorization" : token,
-					}
-				});
-
-				if (res.ok) {
-					const resolve = await res.json();
-
-					if (!resolve.error) {
-						this.$store.state.userInfo = {
-							email: resolve.email,
-							name: resolve.name,
-							surname: resolve.surname,
-							mobile: resolve.mobile
-						};
-					}
-					else {
-						this.$notify({
-							group: 'errors',
-							type: 'error',
-							title: 'Error',
-							text: resolve.error
-						});
-					}
-				}
-			} 
-			catch (error) {
-				this.$notify({
-					group: 'errors',
-					type: 'error',
-					title: 'Error',
-					text: error
-				});
-			}
-		}
-	},
+	
 }
 </script>
 
