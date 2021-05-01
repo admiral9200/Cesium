@@ -108,6 +108,18 @@ a:hover{
 	box-shadow: 0 0 0 2px #804800;
 }
 
+.form-select:focus {
+	border-color: rgb(216, 122, 0) !important;
+	outline: none !important;
+	box-shadow: 0 0 0 2px #da800ad8 !important;
+}
+
+.form-control:focus {
+	border-color: rgb(216, 122, 0) !important;
+	outline: none !important;
+	box-shadow: 0 0 0 2px #da800ad8 !important;
+}
+
 input:focus{
 	border-color: rgb(216, 122, 0) !important;
 	outline: none !important;

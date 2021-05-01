@@ -40,7 +40,6 @@ import Footer from '../components/layout/Footer';
 import FormUserInfo from '../components/Profile/FormUserInfo';
 import FormUserCreds from '../components/Profile/FormUserCreds';
 import AccountDelete from '../components/Profile/AccountDelete';
-import NProgress from 'nprogress';
 
 export default {
 	name: 'Profile',
@@ -62,10 +61,6 @@ export default {
 		Surname() {
 			return this.$store.state.userInfo.surname;
 		},
-	},
-
-	mounted() {
-		NProgress.done();
 	},
 }
 </script>

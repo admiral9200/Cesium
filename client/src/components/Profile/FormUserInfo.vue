@@ -49,7 +49,7 @@ export default {
 		return {
 			name: '',
 			surname: '',
-			mobile: '',
+			mobile: ''
 		}
 	},
 
@@ -67,36 +67,47 @@ export default {
 		}
 	},
 
-	watch: {
-		Name: function() {
-			console.log("WATCH RUN")
-			this.name = this.Name;
-		},
-
-		Surname: function() {
-			this.surname = this.Surname;
-		},
-
-		Mobile: function() {
-			this.mobile = this.Mobile;
+	computed: {
+		Email() {
+			return this.$store.state.userInfo.email;
 		}
 	},
 
-	computed: {
-		Name() {
-			return this.$store.state.userInfo.name;
-		},
+	async created() {
+		const token = VueCookies.get('token');
 
-		Surname() {
-			return this.$store.state.userInfo.surname;
-		},
-
-		Email() {
-			return this.$store.state.userInfo.email;
-		},
-
-		Mobile(){
-			return this.$store.state.userInfo.mobile;
+		if (token !== null) {
+			fetch('http://localhost:3000/auth/user', {
+				method: 'GET',
+				headers: {
+					"Authorization" : token,
+				}
+			})
+			.then(res => res.json())
+			.then(resolve => {
+				if (!resolve.error) {
+					this.name = resolve.name;
+					this.surname = resolve.surname;
+					this.mobile = resolve.mobile;
+				}
+				else {
+					this.$notify({
+						group: 'errors',
+						type: 'error',
+						title: 'Error',
+						text: resolve.error
+					});
+				}
+			})
+			.catch(error => {
+				this.$notify({
+					group: 'errors',
+					type: 'error',
+					title: 'Error',
+					text: error
+				});
+			})
+			.finally(() => NProgress.done());
 		}
 	},
 
@@ -106,7 +117,7 @@ export default {
 			const token = VueCookies.get('token');
 			this.$v.$touch();
 
-			if (!this.$v.$invalid) {
+			if (!this.$v.$invalid && token !== null) {
 				try {	
 					let response = await fetch('http://localhost:3000/profile/info', {
 						method: 'POST',
