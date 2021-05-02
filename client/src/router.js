@@ -1,12 +1,14 @@
 import Vue from 'vue';
-import VueRouter from 'vue-router';
 import store from './store/store';
+import VueRouter from 'vue-router';
 import VueCookies from 'vue-cookies';
 import NProgress from 'nprogress';
+//Components
 import Index from '@/routes/Index';
 import Home from '@/routes/Home';
 import Order from '@/routes/Order';
 import Checkout from '@/routes/Checkout';
+import Stores from '@/routes/Stores';
 import Reset from '@/routes/Reset';
 import Profile from '@/routes/Profile';
 import Signup from '@/routes/Signup';
@@ -40,6 +42,14 @@ const routes = [
 		meta: {
 			disallowAuthed: true
 		},
+		beforeEnter (to, from, next) {
+			if (VueCookies.get('token') === null) {
+				next();
+			} 
+			else {
+				next({ path: '/home'});
+			}
+		}
 	},
 	{
 		path: '/register',
@@ -48,6 +58,14 @@ const routes = [
 		meta: {
 			disallowAuthed: true
 		},
+		beforeEnter (to, from, next) {
+			if (VueCookies.get('token') === null) {
+				next();
+			} 
+			else {
+				next({ path: '/home'});
+			}
+		}
 	},
 	{
 		path: '/home',
@@ -70,7 +88,9 @@ const routes = [
 		meta: {
 			requiresAuth: true
 		},
-		beforeEnter (to, from, next) {
+		async beforeEnter (to, from, next) {
+			await store.dispatch('fetchUserAddresses');
+
 			if (store.state.userAddresses === null) {
 				next({ path: '/home'});
 			}
@@ -100,6 +120,17 @@ const routes = [
 		}
 	},
 	{
+		path: '/stores',
+		name: 'Stores',
+		component: Stores,
+		props: {
+			default: true
+		},
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
 		path: '/profile',
 		name: 'Profile',
 		component: Profile,
@@ -123,8 +154,10 @@ const router = new VueRouter({
 	routes
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
 	NProgress.start();
+	await store.dispatch('fetchUserInfo');
+
 	if (to.matched.some(record => record.meta.requiresAuth)) {
 		if (!VueCookies.get('token')) {
 			next({ path: '/'});
