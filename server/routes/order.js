@@ -1,24 +1,50 @@
 const express = require('express');
 const db = require('../utils/db.config');
-const { reorderSanitizeRules , validate } = require('../middleware/sanitizer');
+const { reorderSanitizeRules, cartSanitizeRules , validate } = require('../middleware/sanitizer');
 const verifyToken = require('../middleware/verifyToken');
+const Coffee = require('../models/coffee');
+const Cart = require('../models/cart');
 
 const router = express.Router();
 
 router.get('/coffees', verifyToken, (req, res) => {
-	let sqlQueryToGetCoffees = 'SELECT * FROM cc_coffees';
-
-	db.execute(sqlQueryToGetCoffees, (error, results) => {
-		if (error) res.status(500).send({ error });
-
-		try {
-			if (results !== undefined) {
-				res.send({ 'menu': results });
-			}
-		} 
-		catch (error) {
-			res.status(500).send({ 'error': error });
+	Coffee.find({}, (error, results) => {
+		if (error) {
+			res.send({ 'error': error });
 		}
+
+		if (results) {
+			res.send({ 'menu': results });
+		}
+	});
+});
+
+router.post('/cart', verifyToken, cartSanitizeRules(), validate, (req, res) => {
+	let coffees = [
+		
+	];
+	
+	const cart = new Cart({
+		dateCreated: new Date(),
+		user_id: req.body.user_id,
+		products: [{ 
+			id: Number,
+			name: String,
+			sugar: String,
+			sugarType: String,
+			blends: Array,
+			size: Number,
+			adds: Array,
+			extras: Array
+		}]
+	});
+
+	cart.save()
+	.then(doc => {
+		res.send({ 'status': true });
+	})
+	.catch(err => {
+		res.send({ 'error': err});
 	});
 });
 
@@ -28,7 +54,9 @@ router.post('/reorder', verifyToken, reorderSanitizeRules(), validate , (req, re
 	db.execute(sqlQueryToOrderAgain , [req.body.id] , (error, results) => {
 		if (error) res.status(500).send({ error });
 
-		res.send({ 'status': true});
+		if (results) {
+			res.send({ 'status': true });
+		}
 	});
 });
 
