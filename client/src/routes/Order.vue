@@ -6,7 +6,7 @@
 				<h1 class="pb-5">Διάλεξε τον καφέ που θες</h1>
 			</div>
 		</div>
-		<div class="container">
+		<div class="container user-select-none">
 			<div class="row">
 				<div class="col-12 col-xl-9 order-1 order-xl-0 coffees">
 					<Menu/>

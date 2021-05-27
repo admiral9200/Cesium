@@ -128,7 +128,7 @@ input:focus{
 
 .logo {
 	width: auto;
-	height: 80px;
+	height: 76px;
 }
 
 #dropdownMenuLink,

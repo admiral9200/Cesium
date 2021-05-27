@@ -89,7 +89,7 @@ router.post('/register', signupSanitizeRules(), validate, (req, res) => {
 });
 
 router.get('/user', verifyToken, (req, res) => {
-	let queryToGetUserDetails = 'SELECT firstName, lastName, email, mobile FROM cc_users WHERE id = ?';
+	const queryToGetUserDetails = 'SELECT id, firstName, lastName, email, mobile FROM cc_users WHERE id = ?';
 
 	const user = jwt_decode(req.headers.authorization);
 
@@ -97,7 +97,8 @@ router.get('/user', verifyToken, (req, res) => {
 		if (error) res.send({'error': error });
 
 		if (results.length > 0) {
-			res.send({ 
+			res.send({
+				id: results[0].id,
 				name: results[0].firstName, 
 				surname: results[0].lastName, 
 				email: results[0].email, 

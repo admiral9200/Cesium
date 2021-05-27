@@ -27,7 +27,7 @@ export default {
 
 		if (token) {
 			try {
-				let response = await fetch('http://localhost:3000/order/coffees', {
+				const response = await fetch('http://localhost:3000/order/coffees', {
 					method: 'GET',
 					headers: {
 						"Authorization" : token,
@@ -39,6 +39,14 @@ export default {
 
 					if (res.menu) {
 						this.menu = res.menu;
+					}
+					else {
+						this.$notify({
+							group: 'errors',
+							type: 'error',
+							title: 'Error',
+							text: 'Unexpected error: ' + res.error
+						});
 					}
 				}
 				else if (!response.ok){

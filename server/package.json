@@ -25,6 +25,7 @@
     "express-validator": "^6.10.0",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
+    "mongoose": "^5.12.7",
     "mysql2": "^2.2.5"
   }
 }

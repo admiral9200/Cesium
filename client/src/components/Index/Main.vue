@@ -1,14 +1,12 @@
 <template>
 	<div class="overflow-hidden main">
-		<div class="row h-100 d-flex flex-row m-0 p-0">
-			<div class="bg d-flex col-xxl-7 col-xl-7 col-lg-12 col-md-12 col-sm-12 col-12 p-0 pb-md-5">
-				<div class="left">
-					<router-link class="logo-responsive" to="/"><img src="/images/chip_coffee_page.png" class="logo" alt="Chip Coffee"></router-link>
-					<div class="content d-flex flex-column justify-content-center p-xl-0 p-lg-0 p-md-0 pt-5">
-						<h1>Παράγγειλε καφέ σε ένα 1'</h1>
-						<h2 class="mt-2">Φθηνά, γρήγορα και ηλεκτρονικά</h2>
-					</div>
-				</div>
+		<div class="row h-100 d-flex flex-row">
+			<div class="bg h-100 col-xxl-7 col-xl-7 col-lg-12 col-md-12 col-sm-12 col-12 p-0 pb-md-5">
+                <router-link class="logo-responsive d-grid content-main-left py-5 my-3" to="/"><img src="/images/chip_coffee_page.png" class="logo" alt="Chip Coffee"></router-link>
+                <div class="d-grid align-content-center flex-wrap content-main-left">
+                    <h1 class="display-1">Παράγγειλε καφέ σε ένα 1'</h1>
+                    <h3 class="text-white">Φθηνά, γρήγορα και ηλεκτρονικά</h3>
+                </div>
 			</div>
 			<div class="d-flex justify-content-center align-items-center user-select-none col-xxl-5 col-xl-5 col-lg-12 col-md-12 col-sm-12 col-12 p-xl-5 p-lg-5 p-md-5 p-sm-5 p-0">
 				<Form/>
@@ -138,11 +136,6 @@ export default {
     min-height: 700px;
 }
 
-.content{
-    height: 80%;
-    width: 90%;
-}
-
 .bg {
     background-image: url("/images/main_coffee.jpg");
     background-size: cover;
@@ -155,33 +148,31 @@ export default {
 .bg h1{
     max-width: 800px;
     color: white;
-    font-size: 5.5rem;
     font-weight: 300;
 }
 
 .bg h2{
     color: white;
     text-align: left;
-    font-size: 1.5rem;
     font-weight: 300;
 }
 
-.left{
-    height: 100%;
-    padding: 60px 60px 60px 25%;
+.content-main-left {
+    min-height: 35%;
+    padding-left: 34%;
 }
 
 .overlayLogo{
     z-index: -100;
     position: fixed;
-    top: -200px;
-    right: -200px;
+    top: -300px;
+    right: -300px;
 }
 
 .logoStyle{
-    opacity: 0.1;
+    opacity: 0.3;
     transform: rotate(40deg);
     filter: invert(1);
-    width: 1100px;
+    width: 1200px;
 }
 </style>

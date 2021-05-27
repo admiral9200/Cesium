@@ -116,7 +116,7 @@ CREATE TABLE `cc_payments` (
   `payment_status` varchar(25) NOT NULL,
   `itemid` varchar(25) NOT NULL,
   `createdtime` datetime NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 

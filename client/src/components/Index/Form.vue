@@ -1,19 +1,19 @@
 <template>
 	<div class="login-snip text-white">
 		<div class="d-grid justify-content-start">
-			<h1>Σύνδεση</h1>
+			<h2>Σύνδεση</h2>
 		</div>
 		<div class="login-space">
 			<div class="login pl-0">
 				<form v-on:submit.prevent="SignIn" novalidate>
 					<div class="group py-2">
 						<label class="label">Email</label>
-						<input v-model.trim="$v.email.$model" :class="{ 'error' : $v.email.$error }" type="email" class="input form-control form-control-lg border-0" placeholder="Γράψε τη Διεύθυνση Email" required>
+						<input v-model.trim="$v.email.$model" :class="{ 'error' : $v.email.$error }" type="email" class="input form-control border-0" placeholder="Γράψε τη Διεύθυνση Email" required>
 						<div v-if="!$v.email.required && $v.email.$dirty" class="text-danger">Πρέπει να συμπληρώσεις το email σου.</div>
 					</div>
 					<div class="group py-2">
 						<label class="label">Password</label>
-						<input v-model.trim="$v.password.$model" :class="{ 'error' : $v.password.$error}" type="password" class="input form-control form-control-lg border-0" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
+						<input v-model.trim="$v.password.$model" :class="{ 'error' : $v.password.$error}" type="password" class="input form-control border-0" data-type="password" placeholder="Γράψε τον κωδικό σου" required>
 						<div v-if="!$v.password.required && $v.password.$dirty" class="text-danger">Πρέπει να συμπληρώσεις τον κωδικό σου.</div>
 					</div>
 					<div class="group py-2">
@@ -180,9 +180,6 @@ export default {
 		padding: 20px 20px 20px 20px !important;
 	}
 
-	.form-control-lg{
-        font-size: 1rem !important;
-    }
 	.login-snip {
 		border-radius: 0 !important;
 	}
@@ -204,7 +201,7 @@ export default {
 
 .login-snip {
 	width: 100%;
-	max-width: 440px;
+	max-width: 400px;
 	min-width: 400px;
 	min-height: 600px;
 	border-radius: 23px;

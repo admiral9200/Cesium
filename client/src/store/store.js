@@ -7,6 +7,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
 	state: {
 		userInfo: {
+			id: '',
 			email: '',
 			name: '',
 			surname: '',
@@ -23,6 +24,10 @@ const store = new Vuex.Store({
 
 		SET_USER_ADDRESSES (state, userAddresses) {
 			state.userAddresses = userAddresses;
+		},
+
+		SET_USER_CART (state, userCart) {
+			state.userCart = userCart;
 		}
 	},
 
@@ -103,7 +108,46 @@ const store = new Vuex.Store({
 					});
 				}
 			}
-		}
+		},
+
+		async fetchUserCart ({ commit }) {
+			const token = VueCookies.get('token');
+
+			if (token !== null) {
+				try {	
+					const res = await fetch('http://localhost:3000/home/addresses', {
+						method: 'GET',
+						headers: {
+							"Authorization" : token,
+						}
+					});
+
+					if (res.ok) {
+						const resolve = await res.json();
+
+						if (!resolve.error) {
+							commit('SET_USER_ADDRESSES', resolve.addresses);
+						}
+						else {
+							this.$notify({
+								group: 'errors',
+								type: 'error',
+								title: 'Error',
+								text: resolve.error
+							});
+						}
+					}
+				} 
+				catch (error) {	
+					this.$notify({
+						group: 'errors',
+						type: 'error',
+						title: 'Error',
+						text: error
+					});
+				}
+			}
+		},
 	}
 });
 

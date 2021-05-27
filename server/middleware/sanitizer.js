@@ -56,6 +56,20 @@ const profileCredentialsRules = () => {
 	];
 };
 
+const cartSanitizeRules = () => {
+	return [
+		check('user_id').not().isEmpty().withMessage('User ID not provided').trim().escape(),
+		check('c_name').not().isEmpty().withMessage('Πρέπει να διαλέξεις ένα καφέ').isString().trim().escape(),
+		check('c_size').not().isEmpty().withMessage('Πρέπει να διαλέξεις ένα μέγεθος καφέ').isNumeric().trim().escape(),
+		check('c_qty').not().isEmpty().withMessage('Πρέπει να επιλέξεις την ποσότητα').isNumeric().trim().escape(),
+		check('c_sugar').not().isEmpty().withMessage('Πρέπει να επιλέξεις την ζάχαρη που θες').isString().trim().escape(),
+		check('c_sugartype').not().isEmpty().withMessage('Πρέπει να επιλέξεις τον τύπο της ζάχαρης που θες').isString().trim().escape(),
+		check('c_decaf').isBoolean().trim().escape(),
+		check('c_adds').isArray().trim().escape(),
+		check('c_extras').isArray().trim().escape(),
+	];
+};
+
 const validate = (req, res, next) => {
 	const errors = validationResult(req);
 	if (errors.isEmpty()) {
@@ -68,6 +82,7 @@ module.exports = {
 	loginSanitizeRules,
 	signupSanitizeRules,
 	reorderSanitizeRules,
+	cartSanitizeRules,
 	AddressRules,
 	AddressRule,
 	subscribeRule,

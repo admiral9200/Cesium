@@ -2,7 +2,7 @@
 	<li class='list-group-item bg-light border-0 p-0 my-3'>
 		<div class="row border-0">
 			<div class="col-10">
-				<p class="m-0">Espresso</p>
+				<p class="m-0">{{ cart.name }}</p>
 				<p class='text-muted m-0'>Γλυκός, Κανέλα</p>
 			</div>
 			<div class="col-2">
@@ -29,6 +29,8 @@
 <script>
 export default {
 	name: 'CartItem',
+
+	props: ['cart'],
 
 	data() {
 		return {
