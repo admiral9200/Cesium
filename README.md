@@ -19,3 +19,4 @@ NPM packages used in backend:
 * jsonwebtoken
 * jwt-decode
 * mysql2
+* mongoosejs
