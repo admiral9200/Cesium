@@ -7,10 +7,10 @@
 			</div>
 		</div>
 		<div class="container">
-			<div class="d-grid justify-content-center mt-3">
-				<router-link to="/order" :class="{ 'disabled': !UserHasAddress }" class="btn btn-lg mainbtn" role="button">Παράγγειλε καφέ</router-link>
+			<div class="d-flex justify-content-center my-3">
+				<InsertAddress/>
+				<router-link to="/order" :class="{ 'disabled': !UserHasAddress }" class="btn mainbtn" role="button">Παράγγειλε καφέ</router-link>
 			</div>
-			<InsertAddress/>
 			<h2 class="mb-2 mt-5">Οι διευθύνσεις μου</h2>
 			<Addresses/>
 			<h2 class="mb-3 mt-5">Οι παραγγελίες μου</h2>

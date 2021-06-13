@@ -4,14 +4,34 @@ const CartSchema = new mongoose.Schema({
 	dateCreated: Date,
 	user_id: Number,
 	products: [{
-		name: String,
-		size: Number,
-		sugar: String,
-		sugarType: String,
-		blends: Array,
-		decaf: Boolean,
-		adds: Array,
-		extras: Array
+		name: {
+			type: String,
+			required: true
+		},
+		size: {
+			type: Number,
+			required: true
+		},
+		sugar: {
+			type: String,
+			required: true
+		},
+		sugarType: {
+			type: String,
+			required: true
+		},
+		blends: {
+			type: String
+		},
+		decaf: {
+			type: Boolean
+		},
+		adds: {
+			type: Array
+		},
+		extras: {
+			type: Array
+		}
 	}]
 });
 

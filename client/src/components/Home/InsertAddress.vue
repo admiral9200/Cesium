@@ -1,12 +1,10 @@
 <template>
-	<div class="container my-3">
-		<form v-on:submit.prevent="addAddress" class="d-flex justify-content-center">
-			<div class="input-group w-50">
-				<input v-model.trim="$v.address.$model" :class="{ 'error': $v.address.$error }" type="text" class="form-control form-control-lg" placeholder="Πρόσθεσε εδώ την διεύθυνσή σου" aria-describedby="insert">
-				<button class="btn mainbtn" type="submit" id="insert">Προσθήκη</button>
-			</div>
-		</form>
-	</div>
+	<form v-on:submit.prevent="addAddress" class="mx-5 w-50">
+		<div class="input-group">
+			<input v-model.trim="$v.address.$model" :class="{ 'error': $v.address.$error }" type="text" class="form-control" placeholder="Πρόσθεσε εδώ την διεύθυνσή σου" aria-describedby="insert">
+			<button class="btn mainbtn" type="submit" id="insert">Προσθήκη</button>
+		</div>
+	</form>
 </template>
 
 <script>

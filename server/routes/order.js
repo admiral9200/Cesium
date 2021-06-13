@@ -57,7 +57,10 @@ router.post('/cart', verifyToken, cartSanitizeRules(), validate, (req, res) => {
 			});
 
 			cart.save()
-			.then(doc => res.send({ 'status': true }) )
+			.then(doc => res.send({ 
+				'success': true,
+				'msg': 'Προστέθηκε στο καλάθι'
+			}))
 			.catch(error => res.send({ 'error': error }) );
 		}
 		else if (results.length > 0) {

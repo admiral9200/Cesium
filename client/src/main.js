@@ -5,10 +5,12 @@ import App from '@/App.vue';
 import VueCookies from 'vue-cookies';
 import Notifications from 'vue-notification';
 import Vuelidate from 'vuelidate';
+import VueContentPlaceholders from 'vue-content-placeholders';
 
 Vue.use(Notifications);
 Vue.use(VueCookies);
 Vue.use(Vuelidate);
+Vue.use(VueContentPlaceholders);
 
 Vue.config.productionTip = false;
 

@@ -1,12 +1,12 @@
 <template>
-	<li class='list-group-item bg-light border-0 p-0 my-3'>
+	<li vfo class='list-group-item bg-light border-0 p-0 my-3'>
 		<div class="row border-0">
 			<div class="col-10">
 				<p class="m-0">{{ cart.name }}</p>
-				<p class='text-muted m-0'>Γλυκός, Κανέλα</p>
+				<p class='text-muted m-0'>{{ cart.sugar }}</p>
 			</div>
 			<div class="col-2">
-				<button type="button" class="btn-close btn-sm" aria-label="Close"></button>
+				<button v-on:click="RemoveItemFromCart" type="button" class="btn-close btn-sm" aria-label="Remove Coffee"></button>
 			</div>
 		</div>
 		<div class="row border-0 p-0 my-2">
@@ -16,9 +16,9 @@
 				</div>
 				<div class='col-6 p-0 align-self-center'>
 					<div class="input-group justify-content-end">
-						<button v-on:click="quantityMinus" class="btn btn-sm cart_btn">-</button>
+						<button v-on:click="quantityDecrease" class="btn btn-sm cart_btn">-</button>
 						<p class="m-0 mx-2 align-self-center">{{ quantity }}</p>
-						<button v-on:click="quantity++" class="btn btn-sm cart_btn">+</button>
+						<button v-on:click="quantityIncrease" class="btn btn-sm cart_btn">+</button>
 					</div>
 				</div>
 			</div>
@@ -38,9 +38,21 @@ export default {
 		}
 	},
 
+	mounted() {
+		console.log(this.cart[0].name);
+	},
+
 	methods: {
-		quantityMinus: function() {
-			if (this.quantity > 1) this.quantity--;
+		quantityIncrease: function() {
+
+		},
+
+		quantityDecrease: function() {
+			
+		},
+
+		RemoveItemFromCart: function() {
+			
 		}
 	},
 }

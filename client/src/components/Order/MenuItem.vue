@@ -8,8 +8,8 @@
 				</div>
 			</div>
 		</a>
-		<div class="modal h-75 fade" :id="'coffee' + coffee._id" tabindex="-1" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		<div class="modal fade" :id="'coffee' + coffee._id" tabindex="-1" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-scrollable">
 				<form v-on:submit.prevent="AddToCart" class="modal-content">
 					<div class="modal-header">
 						<div class="d-grid">
@@ -44,9 +44,10 @@
 							</div>
 						</div>
 						<div v-if="coffee.blends.length > 0" class="row">
-							<h6 class="mt-3">Επιλέξτε είδος καφέ</h6>
+							<h6 class="mt-3">Επιλέξτε ποικιλία</h6>
+							<div v-if="!$v.CoffeeBlends.required && $v.CoffeeBlends.$dirty" class="text-danger">Πρέπει να διαλέξεις μία ποικιλία καφέ</div>
 							<div v-for="(blend, index) in coffee.blends" :key="index" class="col-5 m-1 pointer user-select-none border border-white bg-white rounded-1 py-2 px-3" :for="blend + coffee.name + coffee._id + index">
-								<input v-model.trim="CoffeeBlends" :value="blend" class="form-check-input cc-input m-0 pointer-base" type="radio" :name="coffee._id + coffee.name + 'SugarType'" :id="blend + coffee.name + coffee._id + index">
+								<input v-model.trim="$v.CoffeeBlends.$model" :value="blend" class="form-check-input cc-input m-0 pointer-base" type="radio" :name="coffee._id + coffee.name + 'Blend'" :id="blend + coffee.name + coffee._id + index">
 								<label class="form-check-label ps-2 pointer-base" :for="blend + coffee.name + coffee._id + index">{{ blend }}</label>
 							</div>
 						</div>
@@ -94,6 +95,8 @@
 <script>
 import VueCookies from 'vue-cookies';
 import { required, numeric, minLength } from 'vuelidate/lib/validators';
+import NProgress from 'nprogress';
+import bootstrap from 'bootstrap';
 
 export default {
 	name: 'MenuItem',
@@ -105,8 +108,8 @@ export default {
 			CoffeeSize: null,
 			CoffeeSugar: null,
 			CoffeeSugarType: null,
+			CoffeeBlends: null,
 			CoffeeDecaf: false,
-			CoffeeBlends: [],
 			CoffeeAdds: [],
 			CoffeeExtras: [],
 			CoffeeQuantity: 1,
@@ -133,6 +136,14 @@ export default {
 			required,
 			minLength: minLength(1)
 		},
+
+		CoffeeBlends: {
+			required
+		}
+	},
+
+	mounted() {
+		console.log(bootstrap);
 	},
 
 	methods: {
@@ -145,14 +156,15 @@ export default {
 			this.CoffeeSize = null;
 			this.CoffeeSugar = null;
 			this.CoffeeSugarType = null;
+			this.CoffeeBlends = null;
 			this.CoffeeDecaf = false;
 			this.CoffeeAdds = [];
 			this.CoffeeExtras = [];
-			this.CoffeeBlends = [];
 			this.$v.CoffeeSize.$reset();
 			this.$v.CoffeeSugar.$reset();
 			this.$v.CoffeeSugarType.$reset();
 			this.$v.CoffeeQuantity.$reset();
+			this.$v.CoffeeBlends.$reset();
 		},
 
 		AddToCart: async function() {
@@ -160,29 +172,52 @@ export default {
 			this.$v.$touch();
 
 			if (token && !this.$v.$invalid) {
-				const response = await fetch('http://localhost:3000/order/cart', {
-					method: 'POST',
-					headers: {
-						"Content-type" : "application/json; charset=UTF-8",	
-						"Authorization" : token,
-					},
-					body: JSON.stringify({
-						user_id: this.$store.state.userInfo.id,
-						c_name: this.coffee.name,
-						c_size: this.CoffeeSize,
-						c_qty: this.CoffeeQuantity,
-						c_sugar: this.CoffeeSugar,
-						c_sugartype: this.CoffeeSugarType,
-						c_decaf: this.CoffeeDecaf,
-						c_blends: this.CoffeeBlends,
-						c_adds: this.CoffeeAdds,
-						c_extras: this.CoffeeExtras
-					})
-				});
+				NProgress.start();
+				try {	
+					const response = await fetch('http://localhost:3000/order/cart', {
+						method: 'POST',
+						headers: {
+							"Content-type" : "application/json; charset=UTF-8",	
+							"Authorization" : token,
+						},
+						body: JSON.stringify({
+							user_id: this.$store.state.userInfo.id,
+							c_name: this.coffee.name,
+							c_size: this.CoffeeSize,
+							c_qty: this.CoffeeQuantity,
+							c_sugar: this.CoffeeSugar,
+							c_sugartype: this.CoffeeSugarType,
+							c_decaf: this.CoffeeDecaf,
+							c_blends: this.CoffeeBlends,
+							c_adds: this.CoffeeAdds,
+							c_extras: this.CoffeeExtras
+						})
+					});
 
-				if (response.ok) {
-					const res = await response.json();
-					console.log(res);
+					if (response.ok) {
+						const res = await response.json();
+						
+						if (res.success) {
+
+							this.$notify({
+								group: 'errors',
+								type: 'success',
+								title: 'Chip Coffee',
+								text: res.msg
+							});
+						}
+					}
+				} 
+				catch (error) {
+					this.$notify({
+						group: 'errors',
+						type: 'error',
+						title: 'Error',
+						text: error
+					});
+				}
+				finally {
+					NProgress.done();
 				}
 			}
 		}
@@ -209,6 +244,10 @@ export default {
 
 .modal-content {
 	font-size: 14px;
+}
+
+.modal-dialog {
+	max-height: 600px;
 }
 
 .cc-input {

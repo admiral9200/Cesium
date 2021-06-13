@@ -1,12 +1,16 @@
 <template>
 	<div class="card sticky-top bg-light shadow-sm p-3 m-3">
 		<h5 class='my-2 text-center'>Το καλάθι σου</h5>
-		<div v-if="UserCart === null || UserCart.length < 1" class="my-5 d-grid">
+		<div v-if="UserCartProducts === null || UserCartProducts.length < 1" class="my-5 d-grid">
 			<img src="/images/cc_cup.png" class="cup mx-auto">
 			<p class="text-center">Βάλε προϊόντα στο καλάθι σου από το μενού στα αριστερά</p>
 		</div>
-		<CartItem v-else v-for="(cart, index) in UserCart" :key="index" :cart="UserCart"/>
-		<router-link to="/stores" class="mainbtn btn my-3" :class="{ disabled: UserCart === null || UserCart.length < 1 }">Συνέχεια</router-link>
+		<CartItem 
+			v-else 
+			v-for="(cart, index) in UserCartProducts" 
+			:key="index" 
+			:cart="UserCartProducts"/>
+		<router-link to="/stores" class="mainbtn btn my-3" :class="{ disabled: UserCartProducts === null || UserCartProducts.length < 1 }">Συνέχεια</router-link>
 	</div>
 </template>
 
@@ -23,8 +27,13 @@ export default {
 	},
 
 	computed: {
-		UserCart() {
-			return this.$store.state.userCart;
+		UserCartProducts() {
+			try {
+				return this.$store.state.userCart.products;
+			} 
+			catch {
+				return [];
+			}
 		}
 	},
 
@@ -44,7 +53,7 @@ export default {
 					const res = await response.json();
 
 					if (res.cart) {
-						this.$store.state.userCart = res.cart;
+						this.$store.state.userCart = res.cart[0];
 					}
 					else {
 						this.$notify({

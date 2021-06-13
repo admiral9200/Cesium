@@ -1,6 +1,11 @@
 <template>
 	<div class="my-4">
-		<MenuItem v-bind:key="coffee.code" v-for="coffee in menu" :coffee="coffee"/>
+		<div v-if="menu.length === 0">
+			<content-placeholders class="my-5" :rounded="true" v-for="(item, index) in placeholder" :key="index">
+				<content-placeholders-heading />
+			</content-placeholders>
+		</div>
+		<MenuItem v-else v-bind:key="coffee.code" v-for="coffee in menu" :coffee="coffee"/>
 	</div>
 </template>
 
@@ -18,6 +23,7 @@ export default {
 
 	data() {
 		return {
+			placeholder: 5,
 			menu: [],
 		}
 	},
