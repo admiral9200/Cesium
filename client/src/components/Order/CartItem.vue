@@ -1,5 +1,5 @@
 <template>
-	<li vfo class='list-group-item bg-light border-0 p-0 my-3'>
+	<li vfo class='list-group-item bg-light border-0 p-0 my-1'>
 		<div class="row border-0">
 			<div class="col-10">
 				<p class="m-0">{{ cart.name }}</p>
@@ -12,7 +12,7 @@
 		<div class="row border-0 p-0 my-2">
 			<div class='row user-select-none'>
 				<div class='col-6 align-self-center'>
-					<h6 class="m-0">2.20€</h6>
+					<h6 class="m-0">{{ cart.price }}€</h6>
 				</div>
 				<div class='col-6 p-0 align-self-center'>
 					<div class="input-group justify-content-end">
@@ -36,10 +36,6 @@ export default {
 		return {
 			quantity: 1
 		}
-	},
-
-	mounted() {
-		console.log(this.cart[0].name);
 	},
 
 	methods: {

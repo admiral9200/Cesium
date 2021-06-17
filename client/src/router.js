@@ -91,7 +91,7 @@ const routes = [
 		async beforeEnter (to, from, next) {
 			await store.dispatch('fetchUserAddresses');
 
-			if (store.state.userAddresses === null) {
+			if (store.state.userAddresses === null || store.state.userAddresses === undefined) {
 				next({ path: '/home'});
 			}
 			else {

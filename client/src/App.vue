@@ -29,13 +29,26 @@ export default {
 }
 
 html, body {
-	font-family: "Manrope", sans-serif;
+	font-family: "Manrope", sans-serif !important;
 	-webkit-font-smoothing: antialiased;
 	height: 100%;
 }
 
+body.modal-open {
+  overflow: hidden;
+}
+
+a {
+    color: white;
+    text-decoration: none !important;
+}
+
+a:hover {
+	color: #995700 !important;
+}
+
 .container {
-	max-width: 1200px;
+	max-width: 1200px !important;
 }
 
 .error:focus {
@@ -49,7 +62,7 @@ html, body {
 }
 
 .text-danger {
-	font-size: 13px;
+	font-size: 13px !important;
 	color: #dc3545 !important
 }
 
@@ -59,8 +72,8 @@ html, body {
 }
 
 ::selection {
-	color: white;
-	background: #bb6b00;
+	color: white !important;
+	background: #bb6b00 !important;
 }
 
 .pointer-base {
@@ -79,33 +92,33 @@ html, body {
 }
 
 .form-check-input:checked {
-	background-color: #bb6b00;
-	border-color: #995700;
+	background-color: #bb6b00 !important;
+	border-color: #995700 !important;
 }
 
 a:hover{
-	color: #bb6b00;
-	text-decoration: none;
+	color: #bb6b00 !important;
+	text-decoration: none !important;
 }
 
 .dropdown-item:active {
-	color: white;
-	background: #995700;
+	color: white !important;
+	background: #995700 !important;
 }
 
 .mainbtn {
-	color: white;
-	background: #bb6b00;
+	color: white !important;
+	background: #bb6b00 !important;
 }
 
 .mainbtn:hover{
-	color: white;
-	background: #995700;
+	color: white !important;
+	background: #995700 !important;
 }
 
 .mainbtn:focus{
-	outline: none;
-	box-shadow: 0 0 0 2px #804800;
+	outline: none !important;
+	box-shadow: 0 0 0 2px #804800 !important;
 }
 
 .form-select:focus {
@@ -131,13 +144,6 @@ input:focus{
 	height: 76px;
 }
 
-#dropdownMenuLink,
-#dropdownMenuLink:hover {
-	color: white;
-	font-size: 20px;
-	text-decoration: none;
-}
-
 .jumbotron{
 	background-color: transparent;
 }
@@ -158,7 +164,13 @@ input:focus{
 	color: #bb6b00 !important;
 }
 
-::placeholder {
-	color: #b3b3b3;
+.modal-content {
+	font-size: 16px;
+}
+
+.modal-body {
+	max-height: 520px !important;
+	overflow-y: scroll;
+	overflow-x: hidden;
 }
 </style>

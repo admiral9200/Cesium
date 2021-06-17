@@ -37,10 +37,10 @@ export default {
 
 		addAddress: async function() {
 			//TODO: Use google maps for searching legitimate addresses to insert
-			NProgress.start();
 			this.$v.address.$touch();
 
 			if (!this.$v.address.$invalid) {
+				NProgress.start();
 				try {
 					const token = VueCookies.get('token');
 

@@ -77,9 +77,4 @@ export default {
 h2, h3{
     font-weight: 300;
 }
-
-a {
-    color: white;
-    text-decoration: none;
-}
 </style>

@@ -9,7 +9,7 @@
 			v-else 
 			v-for="(cart, index) in UserCartProducts" 
 			:key="index" 
-			:cart="UserCartProducts"/>
+			:cart="cart"/>
 		<router-link to="/stores" class="mainbtn btn my-3" :class="{ disabled: UserCartProducts === null || UserCartProducts.length < 1 }">Συνέχεια</router-link>
 	</div>
 </template>
@@ -29,7 +29,7 @@ export default {
 	computed: {
 		UserCartProducts() {
 			try {
-				return this.$store.state.userCart.products;
+				return this.$store.state.userCart;
 			} 
 			catch {
 				return [];
@@ -53,7 +53,7 @@ export default {
 					const res = await response.json();
 
 					if (res.cart) {
-						this.$store.state.userCart = res.cart[0];
+						this.$store.state.userCart = res.cart;
 					}
 					else {
 						this.$notify({

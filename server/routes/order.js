@@ -28,7 +28,7 @@ router.get('/cart', verifyToken, (req, res) => {
 			res.send({ 'error': error });
 		}
 		else {
-			res.send({ 'cart': results });
+			res.send({ 'cart': results[0].products });
 		}
 	});
 });

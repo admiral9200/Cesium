@@ -4,7 +4,7 @@ import VueCookies from 'vue-cookies';
 
 Vue.use(Vuex);
 
-const store = new Vuex.Store({
+export default new Vuex.Store({
 	state: {
 		userInfo: {
 			id: '',
@@ -150,5 +150,3 @@ const store = new Vuex.Store({
 		},
 	}
 });
-
-export default store;

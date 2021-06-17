@@ -128,30 +128,32 @@ export default {
 			try {
 				const token = VueCookies.get('token');
 
-				let response = await fetch('http://localhost:3000/home/addresses' , {
-					method: 'GET',
-					headers: {
-						"Authorization" : token,
-					}
-				});
-
-				if (response.ok) {
-					let res = await response.json();
-
-					if (res.hasAddress) {
-						this.$store.state.userAddresses = res.addresses;
-					}
-					else {
-						this.$store.state.userAddresses = null;
-					}
-				}
-				else if (!response.ok) {
-					this.$notify({
-						group: 'errors',
-						type: 'error',
-						title: 'Error',
-						text: response.status
+				if (token !== null) {
+					let response = await fetch('http://localhost:3000/home/addresses' , {
+						method: 'GET',
+						headers: {
+							"Authorization" : token,
+						}
 					});
+
+					if (response.ok) {
+						let res = await response.json();
+
+						if (res.hasAddress) {
+							this.$store.state.userAddresses = res.addresses;
+						}
+						else {
+							this.$store.state.userAddresses = null;
+						}
+					}
+					else if (!response.ok) {
+						this.$notify({
+							group: 'errors',
+							type: 'error',
+							title: 'Error',
+							text: response.status
+						});
+					}
 				}
 			}
 			catch (error) {
