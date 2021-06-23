@@ -37,52 +37,67 @@ export default {
 		}
 	},
 
-	async created() {
-		const token = VueCookies.get('token');
+	mounted() {
+		this.$root.$on('Cart Update', () => this.fetchCart());
+	},
 
-		if (token) {
-			try {
-				const response = await fetch('http://localhost:3000/order/cart', {
-					method: 'GET',
-					headers: {
-						"Authorization" : token,
-					}
-				});
-				
-				if (response.ok) {
-					const res = await response.json();
+	created() {
+		this.fetchCart();
+	},
 
-					if (res.cart) {
-						this.$store.state.userCart = res.cart;
+	destroyed() {
+		this.$root.$off;
+	},
+
+	methods: {
+		fetchCart: async function() {
+			const token = VueCookies.get('token');
+			if (token) {
+				NProgress.start();
+
+				try {
+					const response = await fetch('http://localhost:3000/order/cart', {
+						method: 'GET',
+						headers: {
+							"Authorization" : token,
+						}
+					});
+					
+					if (response.ok) {
+						const res = await response.json();
+
+						if (res.cart) {
+							this.$store.state.userCart = res.cart;
+						}
+						else {
+							this.$notify({
+								group: 'errors',
+								type: 'error',
+								title: 'Error',
+								text: 'Unexpected error: ' + res.error
+							});
+						}
 					}
-					else {
+					else if (!response.ok){
 						this.$notify({
 							group: 'errors',
 							type: 'error',
 							title: 'Error',
-							text: 'Unexpected error: ' + res.error
+							text: 'Unexpected error: ' + response.status
 						});
 					}
-				}
-				else if (!response.ok){
+				} 
+				catch (error) {
 					this.$notify({
 						group: 'errors',
 						type: 'error',
 						title: 'Error',
-						text: 'Unexpected error: ' + response.status
+						text: error
 					});
 				}
-			} 
-			catch (error) {
-				this.$notify({
-					group: 'errors',
-					type: 'error',
-					title: 'Error',
-					text: error
-				});
-			}
-			finally {
-				NProgress.done();
+				finally {
+					NProgress.done();
+				}
 			}
 		}
 	},

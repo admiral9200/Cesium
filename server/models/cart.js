@@ -31,6 +31,10 @@ const CartSchema = new mongoose.Schema({
 		},
 		extras: {
 			type: Array
+		},
+		qty: {
+			type: Number,
+			default: 1
 		}
 	}]
 });

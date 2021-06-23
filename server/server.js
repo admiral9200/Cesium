@@ -41,7 +41,7 @@ mongoose.connect('mongodb://localhost:27017/cofy', {
 app.use(cors(corsOptions));
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 app.use('/auth' , require('./routes/auth'));
 

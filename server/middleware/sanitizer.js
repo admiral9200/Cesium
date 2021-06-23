@@ -58,15 +58,15 @@ const profileCredentialsRules = () => {
 
 const cartSanitizeRules = () => {
 	return [
-		check('user_id').not().isEmpty().withMessage('User ID not provided').trim().escape(),
+		check('user_id').not().isEmpty().withMessage('User ID not provided').isNumeric(),
 		check('c_name').not().isEmpty().withMessage('Πρέπει να διαλέξεις ένα καφέ').isString().trim().escape(),
-		check('c_size').not().isEmpty().withMessage('Πρέπει να διαλέξεις ένα μέγεθος καφέ').isNumeric().trim().escape(),
-		check('c_qty').not().isEmpty().withMessage('Πρέπει να επιλέξεις την ποσότητα').isNumeric().trim().escape(),
+		check('c_size').not().isEmpty().withMessage('Πρέπει να διαλέξεις ένα μέγεθος καφέ').isNumeric(),
+		check('c_qty').not().isEmpty().withMessage('Πρέπει να επιλέξεις την ποσότητα').isNumeric(),
 		check('c_sugar').not().isEmpty().withMessage('Πρέπει να επιλέξεις την ζάχαρη που θες').isString().trim().escape(),
 		check('c_sugartype').not().isEmpty().withMessage('Πρέπει να επιλέξεις τον τύπο της ζάχαρης που θες').isString().trim().escape(),
-		check('c_decaf').isBoolean().trim().escape(),
-		check('c_adds').isArray().trim().escape(),
-		check('c_extras').isArray().trim().escape(),
+		check('c_decaf').isBoolean(),
+		check('c_adds').isArray(0, 10),
+		check('c_extras').isArray(0, 10),
 	];
 };
 

@@ -5,6 +5,8 @@ const verifyToken = require('../middleware/verifyToken');
 const Coffee = require('../models/coffee');
 const Cart = require('../models/cart');
 const jwt_decode = require('jwt-decode');
+const tools = require('../libs/functions');
+const { verify } = require('jsonwebtoken');
 
 const router = express.Router();
 
@@ -28,7 +30,7 @@ router.get('/cart', verifyToken, (req, res) => {
 			res.send({ 'error': error });
 		}
 		else {
-			res.send({ 'cart': results[0].products });
+			res.send({ 'cart': results.length > 0 ? results[0].products : [] });
 		}
 	});
 });
@@ -52,15 +54,18 @@ router.post('/cart', verifyToken, cartSanitizeRules(), validate, (req, res) => {
 					blends: req.body.c_blends,
 					decaf: req.body.c_decaf,
 					adds: req.body.c_adds,
-					extras: req.body.c_extras
+					extras: req.body.c_extras,
+					qty: req.body.c_qty
 				}]
 			});
-
+			
 			cart.save()
-			.then(doc => res.send({ 
-				'success': true,
-				'msg': 'Προστέθηκε στο καλάθι'
-			}))
+			.then(() => 
+				res.send({ 
+					'success': true,
+					'msg': 'Προστέθηκε στο καλάθι'
+				})
+			)
 			.catch(error => res.send({ 'error': error }) );
 		}
 		else if (results.length > 0) {
@@ -72,22 +77,136 @@ router.post('/cart', verifyToken, cartSanitizeRules(), validate, (req, res) => {
 				blends: req.body.c_blends,
 				decaf: req.body.c_decaf,
 				adds: req.body.c_adds,
-				extras: req.body.c_extras
+				extras: req.body.c_extras,
+				qty: req.body.c_qty
 			};
+
+			let duplicateProductCartExists = results[0].products.find(product => tools.isProductsEqual(product, coffee));
+
+			if (duplicateProductCartExists !== undefined) {
+				Cart.updateOne(
+					{ 
+						user_id: req.body.user_id,
+						'products._id': duplicateProductCartExists._id
+					},
+					{
+						$inc: { 'products.$.qty': 1}
+					},
+					(error, results) => {
+						if (error) {
+							res.send({ 'error': 'An unexpected error occured' });
+							console.log(error);
+						}
+
+						if (results) {
+							res.send({ 
+								'success': true,
+								'msg': 'Έχει προστεθεί ήδη στο καλάθι'
+							});			
+						}
+					}
+				);
+			}
+			else {
+				Cart.updateOne(
+					{ user_id: req.body.user_id }, 
+					{ $push: { products: [ coffee ] }}, 
+					(error, results) => {
+						if (error) {
+							res.send({ 'error': 'An unexpected error occured' });
+							console.log(error);
+						}
+	
+						if (results) {
+							res.send({ 
+								'success': true,
+								'msg': 'Προστέθηκε στο καλάθι'
+							});			
+						}
+					}
+				);
+			}
 		}
 	});
 });
 
-router.post('/reorder', verifyToken, reorderSanitizeRules(), validate , (req, res) => {
-	let sqlQueryToOrderAgain = 'SELECT * FROM cc_orders_products WHERE id= ?';
+router.post('/inc', verifyToken, (req, res) => {
+	Cart.findOneAndUpdate(
+		{ 
+			user_id: req.body.user_id,
+			'products._id': req.body.product_id
+		},
+		{
+			$inc: { 'products.$.qty': 1}
+		},
+		(error, results) => {
+			if (error) {
+				res.send({ 'error': 'An unexpected error occured' });
+				console.log(error);
+			}
 
-	db.execute(sqlQueryToOrderAgain , [req.body.id] , (error, results) => {
-		if (error) res.status(500).send({ error });
-
-		if (results) {
-			res.send({ 'status': true });
+			if (results) {
+				res.send({ 'ok': true });			
+			}
 		}
-	});
+	);
+});
+
+router.post('/dec', verifyToken, (req, res) => {
+	Cart.findOneAndUpdate(
+		{ 
+			user_id: req.body.user_id,
+			'products._id': req.body.product_id,
+			'products.qty': { $gt: 1 }
+		},
+		{
+			$inc: { 'products.$.qty': -1}
+		},
+		(error, results) => {
+			if (error) {
+				res.send({ 'error': 'An unexpected error occured' });
+				console.log(error);
+			}
+
+			if (results) {
+				res.send({ 'ok': true });			
+			}
+			else {
+				res.send({ 'error': 'Δε μπορείτε να έχετε ποσότητα μικρότερη του ενός' });
+			}
+		}
+	);
+});
+
+router.post('/del', verifyToken, (req, res) => {
+	Cart.findOneAndUpdate(
+		{ 
+			user_id: req.body.user_id,
+		},
+		{
+			"$pull": { "products": { "_id": req.body.product_id }}
+		},
+		(error, results) => {
+			if (error) {
+				res.send({ 'error': 'An unexpected error occured' });
+				console.log(error);
+			}
+
+			if (results) {
+				res.send({ 
+					'ok': true,
+					'msg': 'Αφαιρέθηκε από το καλάθι'
+				});			
+			}
+			else {
+				res.send({ 'error': '' });
+			}
+		}
+	);
+});
+
+router.post('/reorder', verifyToken, reorderSanitizeRules(), validate , (req, res) => {
+	
 });
 
 module.exports = router;

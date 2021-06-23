@@ -32,6 +32,8 @@ export default {
 		const token = VueCookies.get('token');
 
 		if (token) {
+			NProgress.start();
+			
 			try {
 				const response = await fetch('http://localhost:3000/order/coffees', {
 					method: 'GET',

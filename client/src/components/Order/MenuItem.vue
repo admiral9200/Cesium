@@ -183,7 +183,7 @@ export default {
 							c_decaf: this.CoffeeDecaf,
 							c_blends: this.CoffeeBlends,
 							c_adds: this.CoffeeAdds,
-							c_extras: this.CoffeeExtras
+							c_extras: this.CoffeeExtras,
 						})
 					});
 
@@ -193,6 +193,8 @@ export default {
 						if (res.success) {
 
 							this.$bvModal.hide('cc' + this.coffee._id);
+
+							this.$root.$emit('Cart Update');
 
 							this.$notify({
 								group: 'errors',
@@ -224,6 +226,10 @@ export default {
 				}
 			}
 		}
+	},
+
+	destroyed() {
+		this.$root.$off;
 	},
 }
 </script>
