@@ -70,11 +70,16 @@ const cartSanitizeRules = () => {
 	];
 };
 
+const CartOperationsRules = () => {
+	return [
+		check('user_id').not().isEmpty().withMessage('User ID not provided').isNumeric(),
+		check('product_id').not().isEmpty().withMessage('Product ID not provided')
+		//TODO Check why quantity decrease in above product rather than actual one 
+	];
+};
+
 const validate = (req, res, next) => {
-	const errors = validationResult(req);
-	if (errors.isEmpty()) {
-		return next();
-	}
+	if (validationResult(req).isEmpty()) return next();
 	return res.send(errors);
 };
 
@@ -83,6 +88,7 @@ module.exports = {
 	signupSanitizeRules,
 	reorderSanitizeRules,
 	cartSanitizeRules,
+	CartOperationsRules,
 	AddressRules,
 	AddressRule,
 	subscribeRule,

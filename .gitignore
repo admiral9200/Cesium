@@ -2,3 +2,6 @@
 server/node_modules
 vanilla_php
 .vscode
+server/utils/jwt.config.js
+server/utils/private.key
+server/utils/public.key

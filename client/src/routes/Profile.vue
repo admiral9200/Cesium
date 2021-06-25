@@ -3,8 +3,8 @@
 		<div class="background">
 			<Header/>
 			<div class="jumbotron jumbotron-fluid">
-				<div class="container">
-					<h1 class="pb-5">Ο λογαριασμός μου</h1>
+				<div class="container py-3">
+					<h1>Ο λογαριασμός μου</h1>
 				</div>
 			</div>
 		</div>
@@ -64,29 +64,3 @@ export default {
 	},
 }
 </script>
-
-<style scoped>
-.background h1 {
-  color: white;
-  padding: 10%;
-  padding-left: 0;
-  padding-bottom: 0;
-  text-align: left;
-  font-size: 75px;
-  font-weight: 300;
-}
-
-.background h2{
-	color: white;
-	font-weight: 300;
-}
-
-.background h3{
-  color: white;
-  padding: 3%;
-  padding-left: 0;
-  text-align: left;
-  font-size: 20px;
-  font-weight: 300;
-}
-</style>

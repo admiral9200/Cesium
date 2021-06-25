@@ -32,7 +32,7 @@
 									<h6 class='m-0'>{{ address.ringbell }}</h6>
 								</div>
 								<div class='col-xl-2 col-12'>
-									<button v-on:click="deleteAddress(address.address)" class='btn btn-block btn-danger mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button'>Διαγραφή</button>
+									<button v-on:click="deleteAddress(address.address)" class='btn btn-sm btn-danger mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button'>Διαγραφή</button>
 								</div>
 							</div>
 						</li>
@@ -63,9 +63,7 @@ export default {
 	},
 
 	mounted() {
-		this.$root.$on('fetchAdresses', () => {
-			this.fetchAddress();
-		});
+		this.$root.$on('fetchAdresses', () => this.fetchAddress());
 	},
 
 	created() {

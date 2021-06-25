@@ -47,6 +47,23 @@ a:hover {
 	color: #995700 !important;
 }
 
+.background h1 {
+	color: white;
+	padding: 10% 0 0 0;
+	text-align: left;
+	font-size: 65px;
+	font-weight: 300;
+}
+
+.background h3{
+	color: white;
+	padding: 3%;
+	padding-left: 0;
+	text-align: left;
+	font-size: 20px;
+	font-weight: 300;
+}
+
 .container {
 	max-width: 1200px !important;
 }

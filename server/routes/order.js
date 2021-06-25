@@ -1,12 +1,10 @@
 const express = require('express');
-const db = require('../utils/db.config');
-const { reorderSanitizeRules, cartSanitizeRules , validate } = require('../middleware/sanitizer');
+const { reorderSanitizeRules, cartSanitizeRules, CartOperationsRules , validate } = require('../middleware/sanitizer');
 const verifyToken = require('../middleware/verifyToken');
 const Coffee = require('../models/coffee');
 const Cart = require('../models/cart');
 const jwt_decode = require('jwt-decode');
 const tools = require('../libs/functions');
-const { verify } = require('jsonwebtoken');
 
 const router = express.Router();
 
@@ -59,7 +57,8 @@ router.post('/cart', verifyToken, cartSanitizeRules(), validate, (req, res) => {
 				}]
 			});
 			
-			cart.save()
+			cart
+			.save()
 			.then(() => 
 				res.send({ 
 					'success': true,
@@ -130,7 +129,7 @@ router.post('/cart', verifyToken, cartSanitizeRules(), validate, (req, res) => {
 	});
 });
 
-router.post('/inc', verifyToken, (req, res) => {
+router.post('/inc', verifyToken, CartOperationsRules(), validate, (req, res) => {
 	Cart.findOneAndUpdate(
 		{ 
 			user_id: req.body.user_id,
@@ -152,7 +151,7 @@ router.post('/inc', verifyToken, (req, res) => {
 	);
 });
 
-router.post('/dec', verifyToken, (req, res) => {
+router.post('/dec', verifyToken, CartOperationsRules(), validate, (req, res) => {
 	Cart.findOneAndUpdate(
 		{ 
 			user_id: req.body.user_id,
@@ -178,7 +177,7 @@ router.post('/dec', verifyToken, (req, res) => {
 	);
 });
 
-router.post('/del', verifyToken, (req, res) => {
+router.post('/del', verifyToken, CartOperationsRules(), validate, (req, res) => {
 	Cart.findOneAndUpdate(
 		{ 
 			user_id: req.body.user_id,

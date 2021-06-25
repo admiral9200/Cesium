@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../utils/db.config');
 const { loginSanitizeRules, signupSanitizeRules, validate } = require('../middleware/sanitizer');
-const config = require('../utils/jwt.config');
+const cert = require('../utils/jwt.config');
 const verifyToken = require('../middleware/verifyToken');
 const jwt_decode = require('jwt-decode');
 
@@ -19,22 +19,35 @@ router.post('/login', loginSanitizeRules(), validate, (req, res) => {
 		
 		try {
 			if (results.length > 0) {
-				(async (data) => {
-					await bcrypt.compare(data, results[0].password, (error, result) => {
-						if (error) {
-							res.send({ error: 'An internal error occured' });
-						}
-	
-						if (result){
-							const token = jwt.sign({ email: results[0].email, id: results[0].id }, config.secret, { expiresIn: 3200 }); //low seconds for testing
-	
-							res.send({ auth: true, token: token });
-						}
-						else {
-							res.send({ 'error': 'Το email ή ο κωδικός που έχεις εισάγει είναι λάθος!' });
-						}
-					});
-				})(req.body.password);
+				bcrypt.compare(req.body.password, results[0].password, (error, result) => {
+					if (error) {
+						res.send({ error: 'An internal error occured' });
+					}
+
+					if (result){
+						jwt.sign({ 
+							email: results[0].email, 
+							id: results[0].id 
+						}, cert.secret,
+						{
+							algorithm: 'RS256',
+							expiresIn: 3200 //low seconds for testing
+						}, (error, token) => {
+
+							if (error) {
+								res.send({ 'error': 'An unexpected error occured' });
+								console.log(error);
+							}
+
+							if (token) {
+								res.send({ auth: true, token: token });
+							}
+						});
+					}
+					else {
+						res.send({ 'error': 'Το email ή ο κωδικός που έχεις εισάγει είναι λάθος!' });
+					}
+				});
 			}
 			else {
 				res.send({ 'error': 'Το email ή ο κωδικός που έχεις εισάγει είναι λάθος!' });
@@ -65,19 +78,17 @@ router.post('/register', signupSanitizeRules(), validate, (req, res) => {
 			else {
 				let queryToAddUser = 'INSERT INTO cc_users (email, password, firstName, lastName) VALUES(? , ? , ? , ?)';
 
-				(async (pass) => {
-					await bcrypt.hash(pass, saltRounds = 10, (error, encrypted) => {
-						if (error) res.send({ 'error': 'An error occured' });
+				bcrypt.hash(req.body.password, saltRounds = 10, (error, encrypted) => {
+					if (error) res.send({ 'error': 'An error occured' });
 
-						db.execute(queryToAddUser, [email, encrypted, name, surname], (error, results) => {
-							if (error) res.send({ 'error': 'An internal Database error occured. Try again' });
-							
-							if (results) {
-								res.send({ 'status': 'ok' });
-							}
-						});
+					db.execute(queryToAddUser, [email, encrypted, name, surname], (error, results) => {
+						if (error) res.send({ 'error': 'An internal Database error occured. Try again' });
+						
+						if (results) {
+							res.send({ 'status': 'ok' });
+						}
 					});
-				})(req.body.password);
+				});
 			}
 		});
 	}

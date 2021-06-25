@@ -3,7 +3,7 @@
 		<div class="background">
 			<Header/>
 			<div class="container py-3">
-				<h1 class="pb-5">Βρήκαμε {{ stores.length }} {{ stores.length > 1 ? 'καταστήματα' : 'κατάστημα' }}</h1>
+				<h1>Βρήκαμε {{ stores.length }} {{ stores.length > 1 ? 'καταστήματα' : 'κατάστημα' }}</h1>
 			</div>
 		</div>
 		<div class="container">
@@ -89,23 +89,3 @@ export default {
 	},
 }
 </script>
-
-<style scoped>
-.background h1 {
-	color: white;
-	padding: 10%;
-	padding-left: 0;
-	text-align: left;
-	font-size: 60px;
-	font-weight: 300;
-}
-
-.background h3{
-	color: white;
-	padding: 3%;
-	padding-left: 0;
-	text-align: left;
-	font-size: 20px;
-	font-weight: 300;
-}
-</style>
