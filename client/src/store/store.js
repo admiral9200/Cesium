@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VueCookies from 'vue-cookies';
+import router from '../router';
 
 Vue.use(Vuex);
 
@@ -44,9 +45,9 @@ export default new Vuex.Store({
 						}
 					});
 
-					if (res.ok) {
-						const resolve = await res.json();
+					const resolve = await res.json();
 
+					if (res.ok) {
 						if (!resolve.error) {
 							commit('SET_USER', resolve);
 						}
@@ -58,6 +59,15 @@ export default new Vuex.Store({
 								text: resolve.error
 							});
 						}
+					}
+					else if (resolve.auth === false && res.status === 403) {
+						this.$store.state.userInfo.name = null;
+						this.$store.state.userInfo.surname = null;
+						this.$store.state.userInfo.mobile = null;
+						this.$store.state.userInfo.email = null;
+						this.$store.state.token = null;
+						this.$cookies.keys().forEach(cookie => this.$cookies.remove(cookie));
+						router.push("/");
 					}
 				} 
 				catch (error) {	
@@ -115,7 +125,7 @@ export default new Vuex.Store({
 
 			if (token !== null) {
 				try {	
-					const res = await fetch('http://localhost:3000/home/addresses', {
+					const res = await fetch('http://localhost:3000/order/cart', {
 						method: 'GET',
 						headers: {
 							"Authorization" : token,
@@ -126,7 +136,7 @@ export default new Vuex.Store({
 						const resolve = await res.json();
 
 						if (!resolve.error) {
-							commit('SET_USER_ADDRESSES', resolve.addresses);
+							commit('SET_USER_CART', resolve.cart);
 						}
 						else {
 							this.$notify({

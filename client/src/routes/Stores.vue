@@ -7,6 +7,7 @@
 			</div>
 		</div>
 		<div class="container">
+			<OverviewCart/>
 			<StoresList :stores="stores"/>
 		</div>
 		<Sale/>
@@ -19,6 +20,7 @@ import Sale from '../components/layout/Sale';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import StoresList from '../components/Stores/StoresList';
+import OverviewCart from '../components/Stores/OverviewCart';
 import VueCookies from 'vue-cookies';
 import NProgress from 'nprogress';
 
@@ -30,6 +32,7 @@ export default {
 		Footer,
 		Sale,
 		StoresList,
+		OverviewCart
 	},
 
 	data() {

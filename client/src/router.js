@@ -110,11 +110,8 @@ const routes = [
 			requiresAuth: true
 		},
 		beforeEnter (to, from, next) {
-			if (store.state.userCart === null) {
+			if ((store.state.userCart === null || store.state.userCart === []) && store.state.userCart.store_id === '') {
 				next({ path: '/order' });
-			}
-			else if (store.state.userAddresses === null) {
-				next({ path: '/home' });
 			}
 			else next();
 		}

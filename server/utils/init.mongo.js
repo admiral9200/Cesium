@@ -35,9 +35,26 @@ mongoose.connect('mongodb://localhost:27017/cofy', {
 	let Merchants = mongoose.model('Merchants', MerchantsSchema);
 	let Coffees = mongoose.model('Coffees', CoffeeSchema);
 
-	let dataCoffee = new Coffees({
+	new Coffees({
+		name: 'Espresso',
+		price: 1.30,
+		decaf: true,
+		blends: [
+			'Fine Brazilian blend',
+			'100% Superior Arabica'
+		],
+		adds: [
+			'Γάλα'
+		],
+		size: [
+			1
+		],
+		extras: [
+			'Σιρόπι σοκολάτα'
+		]
+	}).save().then(doc => console.log("COFFEE SAVED IN DB")).catch(err => console.log(err));
+	new Coffees({
 		name: 'Cappuccino',
-		name: 'Cappucino Latte',
 		price: 1.70,
 		decaf: true,
 		blends: [
@@ -50,14 +67,68 @@ mongoose.connect('mongodb://localhost:27017/cofy', {
 		],
 		size: [
 			1,
-			2
+			2,
+			3,
+			4,
+			5
+		],
+		extras: [
+			'Σιρόπι σοκολάτα',
+			'Σαντιγυ'
+		]
+	}).save().then(doc => console.log("COFFEE SAVED IN DB")).catch(err => console.log(err));
+
+	new Coffees({
+		name: 'Cappucino Latte',
+		price: 1.70,
+		decaf: true,
+		blends: [
+			'Fine Brazilian blend',
+			'100% Superior Arabica'
+		],
+		adds: [
+			'Γάλα',
+			'Κανέλα',
+			'Σοκολατα'
+		],
+		size: [
+			1,
+			2,
+			3,
+			4,
+			5
 		],
 		extras: [
 			'Σιρόπι σοκολάτα'
 		]
-	});
+	}).save().then(doc => console.log("COFFEE SAVED IN DB")).catch(err => console.log(err));
+
+	new Coffees({
+		name: 'Freddo Cappuccino',
+		price: 1.70,
+		decaf: true,
+		blends: [
+			'Fine Brazilian blend',
+			'100% Superior Arabica'
+		],
+		adds: [
+			'Γάλα',
+			'Κανέλα',
+			'Σοκολατα'
+		],
+		size: [
+			1,
+			2,
+			3,
+			4,
+			5
+		],
+		extras: [
+			'Σιρόπι σοκολάτα'
+		]
+	}).save().then(doc => console.log("COFFEE SAVED IN DB")).catch(err => console.log(err));
 	
-	let data = new Merchants({
+	/* let data = new Merchants({
 			dateCreated: new Date(),
 			name: 'Veribet',
 			location: '06 Russell Point',
@@ -140,10 +211,9 @@ mongoose.connect('mongodb://localhost:27017/cofy', {
 				},
 			]
 		},
-	);
+	); */
 	
-	data.save().then(doc => console.log(doc)).catch(err => console.log(err));
-	dataCoffee.save().then(doc => console.log("COFFEE SAVED IN DB")).catch(err => console.log(err));
+	//data.save().then(doc => console.log(doc)).catch(err => console.log(err));
 })
 .catch(() => {
 	console.error("Error in connecting");

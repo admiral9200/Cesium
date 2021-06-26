@@ -28,7 +28,14 @@ router.get('/cart', verifyToken, (req, res) => {
 			res.send({ 'error': error });
 		}
 		else {
-			res.send({ 'cart': results.length > 0 ? results[0].products : [] });
+			if (results.length > 0) {
+				const payload = {
+					storeId: results[0].store_id,
+					products: results[0].products
+				};
+				res.send({ 'cart': payload });
+			}
+			else res.send({ 'cart': [] });
 		}
 	});
 });

@@ -29,7 +29,7 @@ export default {
 	computed: {
 		UserCartProducts() {
 			try {
-				return this.$store.state.userCart;
+				return this.$store.state.userCart.products;
 			} 
 			catch {
 				return [];

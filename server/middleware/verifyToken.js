@@ -13,12 +13,13 @@ const verifyToken = (req, res, next) => {
 
     jwt.verify(token, cert.public, (error, decoded) => {
         if (error) {
-            console.log(decoded);
+            console.log(error);
             return res.status(403).send({ 
                     auth: false, 
-                    message: 'Fail to authenticate. Try again' 
+                    message: 'Fail to authenticate. Try logging in again' 
                 });
         }
+        // TODO Maybe check user to verify if it is not expired.. Use Redis for this
         next();
     });
 };

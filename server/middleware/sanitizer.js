@@ -78,6 +78,13 @@ const CartOperationsRules = () => {
 	];
 };
 
+const StoreSelectRule = () => {
+	return [
+		check('user_id').not().isEmpty().withMessage('User ID not provided').isNumeric(),
+		check('store_id').not().isEmpty().withMessage('Product ID not provided')
+	];
+};
+
 const validate = (req, res, next) => {
 	if (validationResult(req).isEmpty()) return next();
 	return res.send(errors);
@@ -88,6 +95,7 @@ module.exports = {
 	signupSanitizeRules,
 	reorderSanitizeRules,
 	cartSanitizeRules,
+	StoreSelectRule,
 	CartOperationsRules,
 	AddressRules,
 	AddressRule,

@@ -31,7 +31,7 @@ router.post('/login', loginSanitizeRules(), validate, (req, res) => {
 						}, cert.secret,
 						{
 							algorithm: 'RS256',
-							expiresIn: 3200 //low seconds for testing
+							expiresIn: '2h' // ! low seconds for testing
 						}, (error, token) => {
 
 							if (error) {

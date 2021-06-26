@@ -138,6 +138,10 @@ a:hover{
 	box-shadow: 0 0 0 2px #804800 !important;
 }
 
+.mainbtn:focus-visible{
+	outline: none !important;
+}
+
 .form-select:focus {
 	border-color: rgb(216, 122, 0) !important;
 	outline: none !important;

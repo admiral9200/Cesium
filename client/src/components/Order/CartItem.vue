@@ -1,5 +1,5 @@
 <template>
-	<li vfo class='list-group-item bg-light border-0 p-0 my-2'>
+	<li class='list-group-item bg-light border-0 p-0 my-2'>
 		<div class="row border-0">
 			<div class="col-10">
 				<p class="m-0">{{ cart.name }}</p>

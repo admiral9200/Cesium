@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 const CartSchema = new mongoose.Schema({
 	dateCreated: Date,
 	user_id: Number,
+	store_id: {
+		type: String,
+		default: ''
+	},
 	products: [{
 		name: {
 			type: String,

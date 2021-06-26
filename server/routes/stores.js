@@ -1,5 +1,5 @@
 const express = require('express');
-// const {  } = require('../middleware/sanitizer');
+const { StoreSelectRule, validate } = require('../middleware/sanitizer');
 const verifyToken = require('../middleware/verifyToken');
 const jwt_decode = require('jwt-decode');
 
@@ -29,8 +29,25 @@ router.get('/merchants', verifyToken, async (req, res) => {
 	}
 });
 
-router.post('/select', verifyToken, (req, res) => {
-	
+router.post('/select', verifyToken, StoreSelectRule(), validate, (req, res) => {
+	Cart.findOneAndUpdate(
+		{ 
+			user_id: req.body.user_id,
+		},
+		{
+			store_id: req.body.store_id
+		},
+		(error, results) => {
+			if (error) {
+				res.send({ 'error': 'An unexpected error occured' });
+				console.log(error);
+			}
+
+			if (results) {
+				res.send({ 'ok': true });			
+			}
+		}
+	);
 });
 
 module.exports = router;
