@@ -11,8 +11,6 @@ const whitelist = [
 	"http://192.168.1.3:8081",
 	"http://192.168.1.3:8082",
 	"http://192.168.1.3:3000",
-	"http://localhost:3000",
-	"http://192.168.1.244"
 ];
 
 var corsOptions = {
@@ -38,12 +36,17 @@ mongoose.connect('mongodb://localhost:27017/cofy', {
 	console.error("Error in connecting");
 });
 
+app.disable('x-powered-by');
+
 app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//ROUTES
 app.use('/auth' , require('./routes/auth'));
+
+app.use('/user' , require('./routes/user'));
 
 app.use('/order' , require('./routes/order'));
 

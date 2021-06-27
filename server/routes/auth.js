@@ -99,26 +99,6 @@ router.post('/register', signupSanitizeRules(), validate, (req, res) => {
 	}
 });
 
-router.get('/user', verifyToken, (req, res) => {
-	const queryToGetUserDetails = 'SELECT id, firstName, lastName, email, mobile FROM cc_users WHERE id = ?';
-
-	const user = jwt_decode(req.headers.authorization);
-
-	db.execute(queryToGetUserDetails, [user.id], (error, results) => {
-		if (error) res.send({'error': error });
-
-		if (results.length > 0) {
-			res.send({
-				id: results[0].id,
-				name: results[0].firstName, 
-				surname: results[0].lastName, 
-				email: results[0].email, 
-				mobile: results[0].mobile 
-			});
-		}
-	});
-});
-
 router.post('/logout' , (req, res) => {
 	res.send({ auth: false });
 });

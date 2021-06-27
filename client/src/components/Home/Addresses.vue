@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import store from '../../store/store';
 import VueCookies from 'vue-cookies';
 import NProgress from 'nprogress';
 
@@ -63,11 +64,10 @@ export default {
 	},
 
 	mounted() {
-		this.$root.$on('fetchAdresses', () => this.fetchAddress());
-	},
-
-	created() {
-		this.fetchAddress();	
+		this.$root.$on('fetchAdresses', async () => {
+			await store.dispatch('fetchUserAddresses')
+			NProgress.done();
+		});
 	},
 
 	methods: {
@@ -121,47 +121,6 @@ export default {
 				NProgress.done();
 			}
 		},
-
-		fetchAddress: async function() {
-			try {
-				const token = VueCookies.get('token');
-
-				if (token !== null) {
-					let response = await fetch('http://localhost:3000/home/addresses' , {
-						method: 'GET',
-						headers: {
-							"Authorization" : token,
-						}
-					});
-
-					if (response.ok) {
-						let res = await response.json();
-
-						if (res.hasAddress) {
-							this.$store.state.userAddresses = res.addresses;
-						}
-						else {
-							this.$store.state.userAddresses = null;
-						}
-					}
-					else if (!response.ok) {
-						this.$notify({
-							group: 'errors',
-							type: 'error',
-							title: 'Error',
-							text: response.status
-						});
-					}
-				}
-			}
-			catch (error) {
-				this.$notify({
-					group: 'errors',
-					title: 'Error',
-					text: error
-				});
-			}
-		}
 	},
 }
 </script>

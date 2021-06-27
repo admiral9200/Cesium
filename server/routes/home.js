@@ -55,25 +55,6 @@ router.post('/delete', AddressRule(), validate, verifyToken, (req, res) => {
 	});
 });
 
-router.get('/addresses', verifyToken , (req, res) => {
-	const queryToFetchAddresses = 'SELECT address, floor, ringbell, active FROM cc_address WHERE user_id = ?';
-
-	const user = jwt_decode(req.headers.authorization);
-
-	db.execute(queryToFetchAddresses, [user.id], (error, results) => {
-		if (error) res.status(500).send({ 'error': error });
-
-		if  (results !== undefined) {
-			if (results.length > 0) {
-				res.send({ 'hasAddress': true, 'addresses': results });
-			}
-			else {
-				res.send({ 'hasAddress': false });
-			}
-		}
-	});
-});
-
 router.get('/orders' , verifyToken , (req, res) => {
 	const queryToFetchOrders = `SELECT 
 								cc_orders.id,  

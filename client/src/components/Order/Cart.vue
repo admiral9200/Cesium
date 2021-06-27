@@ -15,8 +15,8 @@
 </template>
 
 <script>
+import store from '../../store/store';
 import CartItem from './CartItem';
-import VueCookies from 'vue-cookies';
 import NProgress from 'nprogress';
 
 export default {
@@ -38,69 +38,15 @@ export default {
 	},
 
 	mounted() {
-		this.$root.$on('Cart Update', () => this.fetchCart());
-	},
-
-	created() {
-		this.fetchCart();
+		this.$root.$on('Cart Update', async () => {
+			await store.dispatch('fetchUserCart')
+			NProgress.done();
+		});
 	},
 
 	destroyed() {
 		this.$root.$off;
-	},
-
-	methods: {
-		fetchCart: async function() {
-			const token = VueCookies.get('token');
-			if (token) {
-				NProgress.start();
-
-				try {
-					const response = await fetch('http://localhost:3000/order/cart', {
-						method: 'GET',
-						headers: {
-							"Authorization" : token,
-						}
-					});
-					
-					if (response.ok) {
-						const res = await response.json();
-
-						if (res.cart) {
-							this.$store.state.userCart = res.cart;
-						}
-						else {
-							this.$notify({
-								group: 'errors',
-								type: 'error',
-								title: 'Error',
-								text: 'Unexpected error: ' + res.error
-							});
-						}
-					}
-					else if (!response.ok){
-						this.$notify({
-							group: 'errors',
-							type: 'error',
-							title: 'Error',
-							text: 'Unexpected error: ' + response.status
-						});
-					}
-				} 
-				catch (error) {
-					this.$notify({
-						group: 'errors',
-						type: 'error',
-						title: 'Error',
-						text: error
-					});
-				}
-				finally {
-					NProgress.done();
-				}
-			}
-		}
-	},
+	}
 }
 </script>
 

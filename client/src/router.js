@@ -88,15 +88,32 @@ const routes = [
 		meta: {
 			requiresAuth: true
 		},
-		async beforeEnter (to, from, next) {
-			await store.dispatch('fetchUserAddresses');
+		beforeEnter (to, from, next) {
+			store.state.userCart.store_id = '';
 
-			if (store.state.userAddresses === null || store.state.userAddresses === undefined) {
+			if (store.state.userAddresses.length === 0) {
 				next({ path: '/home'});
 			}
 			else {
 				next();
 			}
+		}
+	},
+	{
+		path: '/stores',
+		name: 'Stores',
+		component: Stores,
+		props: {
+			default: true
+		},
+		meta: {
+			requiresAuth: true
+		},
+		beforeEnter (to, from, next) {
+			if (store.state.userCart.products.length === 0) {
+				next({ path: '/order' });
+			}
+			else next();
 		}
 	},
 	{
@@ -110,21 +127,10 @@ const routes = [
 			requiresAuth: true
 		},
 		beforeEnter (to, from, next) {
-			if ((store.state.userCart === null || store.state.userCart === []) && store.state.userCart.store_id === '') {
+			if (store.state.userCart.products.length === 0 && store.state.userCart.store_id === '') {
 				next({ path: '/order' });
 			}
 			else next();
-		}
-	},
-	{
-		path: '/stores',
-		name: 'Stores',
-		component: Stores,
-		props: {
-			default: true
-		},
-		meta: {
-			requiresAuth: true
 		}
 	},
 	{
@@ -151,9 +157,8 @@ const router = new VueRouter({
 	routes
 });
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach((to, from, next) => {
 	NProgress.start();
-	await store.dispatch('fetchUserInfo');
 
 	if (to.matched.some(record => record.meta.requiresAuth)) {
 		if (!VueCookies.get('token')) {
@@ -176,10 +181,8 @@ router.beforeEach(async (to, from, next) => {
 	}
 });
 
-router.afterEach((to) => {
-	if (to.matched.some(record => !record.meta.requiresAuth)) {
-		NProgress.done();
-	}
+router.afterEach(() => {
+	NProgress.done();
 });
 
 export default router;

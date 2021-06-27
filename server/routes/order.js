@@ -3,7 +3,6 @@ const { reorderSanitizeRules, cartSanitizeRules, CartOperationsRules , validate 
 const verifyToken = require('../middleware/verifyToken');
 const Coffee = require('../models/coffee');
 const Cart = require('../models/cart');
-const jwt_decode = require('jwt-decode');
 const tools = require('../libs/functions');
 
 const router = express.Router();
@@ -16,26 +15,6 @@ router.get('/coffees', verifyToken, (req, res) => {
 
 		if (results) {
 			res.send({ 'menu': results });
-		}
-	});
-});
-
-router.get('/cart', verifyToken, (req, res) => {
-	const user = jwt_decode(req.headers.authorization);
-
-	Cart.find({ user_id: user.id }, (error, results) => {
-		if (error) {
-			res.send({ 'error': error });
-		}
-		else {
-			if (results.length > 0) {
-				const payload = {
-					storeId: results[0].store_id,
-					products: results[0].products
-				};
-				res.send({ 'cart': payload });
-			}
-			else res.send({ 'cart': [] });
 		}
 	});
 });

@@ -19,8 +19,15 @@ Vue.use(IconsPlugin);
 
 Vue.config.productionTip = false;
 
-new Vue({
-	store,
-	router,
-	render: h => h(App)
-}).$mount('#app');
+(async function() {
+	if (VueCookies.get('token')) {
+		await store.dispatch('fetchUserInfo');
+		await store.dispatch('fetchUserAddresses');
+		await store.dispatch('fetchUserCart');
+	}
+	new Vue({
+		store,
+		router,
+		render: h => h(App)
+	}).$mount('#app');
+})();

@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import store from '../../store/store';
 import VueCookies from 'vue-cookies';
 import NProgress from 'nprogress';
 import { required, numeric } from 'vuelidate/lib/validators';
@@ -77,7 +78,7 @@ export default {
 		const token = VueCookies.get('token');
 
 		if (token !== null) {
-			fetch('http://localhost:3000/auth/user', {
+			fetch('http://localhost:3000/user/info', {
 				method: 'GET',
 				headers: {
 					"Authorization" : token,
@@ -113,11 +114,11 @@ export default {
 
 	methods: {
 		changeUserInfo: async function() {
-			NProgress.start();
 			const token = VueCookies.get('token');
 			this.$v.$touch();
 
-			if (!this.$v.$invalid && token !== null) {
+			if (!this.$v.$invalid && token) {
+				NProgress.start();
 				try {	
 					let response = await fetch('http://localhost:3000/profile/info', {
 						method: 'POST',
@@ -135,14 +136,16 @@ export default {
 						let res = await response.json();
 
 						if (res.completed) {
-							this.$store.state.userInfo.name = this.name;
-							this.$store.state.userInfo.surname = this.surname;
+							await store.dispatch('fetchUserInfo');
+							
 							this.$notify({
 								group: 'errors',
 								type: 'success',
 								title: 'Cofy',
 								text: 'Τα στοιχεία σου άλλαξαν με επιτυχία'
 							});
+							
+							NProgress.done();
 						}
 					}
 					else {
@@ -167,10 +170,8 @@ export default {
 				}
 			}
 		},
-	},
+
+		// TODO Create user password change and account deletion
+	}
 }
 </script>
-
-<style>
-
-</style>

@@ -1,6 +1,11 @@
 <template>
 	<div class="my-4">
-		<StoreItem v-bind:key="store.id" v-for="store in stores" :store="store"/>
+		<div v-if="stores.length === 0">
+			<content-placeholders class="my-5" :rounded="true" v-for="(item, index) in placeholder" :key="index">
+				<content-placeholders-heading />
+			</content-placeholders>
+		</div>
+		<StoreItem v-else v-bind:key="store.id" v-for="store in stores" :store="store"/>
 	</div>
 </template>
 
@@ -14,7 +19,13 @@ export default {
 		StoreItem
 	},
 
-	props: ['stores']
+	props: ['stores'],
+
+	data() {
+		return {
+			placeholder: 10
+		}
+	},
 }
 </script>
 

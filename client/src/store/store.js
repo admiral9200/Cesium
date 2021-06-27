@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import VueCookies from 'vue-cookies';
 import router from '../router';
+import NProgress from 'nprogress';
 
 Vue.use(Vuex);
 
@@ -14,12 +15,15 @@ export default new Vuex.Store({
 			surname: '',
 			mobile: ''
 		},
-		userAddresses: null,
-		userCart: null
+		userAddresses: [],
+		userCart: {
+			products: [],
+			store_id: ''
+		}
 	},
 
 	mutations: {
-		SET_USER(state, user) {
+		SET_USER_INFO(state, user) {
 			state.userInfo = user;
 		},
 
@@ -36,9 +40,11 @@ export default new Vuex.Store({
 		async fetchUserInfo({ commit }) {
 			const token = VueCookies.get('token');
 
-			if (token !== null) {
+			if (token) {
+				NProgress.start();
+
 				try {	
-					const res = await fetch('http://localhost:3000/auth/user', {
+					const res = await fetch('http://localhost:3000/user/info', {
 						method: 'GET',
 						headers: {
 							"Authorization" : token,
@@ -49,7 +55,7 @@ export default new Vuex.Store({
 
 					if (res.ok) {
 						if (!resolve.error) {
-							commit('SET_USER', resolve);
+							commit('SET_USER_INFO', resolve);
 						}
 						else {
 							this.$notify({
@@ -78,15 +84,20 @@ export default new Vuex.Store({
 						text: error
 					});
 				}
+				finally {
+					NProgress.inc();
+				}
 			}
 		},
 
 		async fetchUserAddresses ({ commit }) {
 			const token = VueCookies.get('token');
 
-			if (token !== null) {
+			if (token) {
+				NProgress.start();
+
 				try {	
-					const res = await fetch('http://localhost:3000/home/addresses', {
+					const res = await fetch('http://localhost:3000/user/addresses', {
 						method: 'GET',
 						headers: {
 							"Authorization" : token,
@@ -117,15 +128,20 @@ export default new Vuex.Store({
 						text: error
 					});
 				}
+				finally {
+					NProgress.inc();
+				}
 			}
 		},
 
 		async fetchUserCart ({ commit }) {
 			const token = VueCookies.get('token');
 
-			if (token !== null) {
-				try {	
-					const res = await fetch('http://localhost:3000/order/cart', {
+			if (token) {
+				NProgress.start();
+
+				try {
+					const res = await fetch('http://localhost:3000/user/cart', {
 						method: 'GET',
 						headers: {
 							"Authorization" : token,
@@ -135,7 +151,7 @@ export default new Vuex.Store({
 					if (res.ok) {
 						const resolve = await res.json();
 
-						if (!resolve.error) {
+						if (resolve.cart) {
 							commit('SET_USER_CART', resolve.cart);
 						}
 						else {
@@ -155,6 +171,9 @@ export default new Vuex.Store({
 						title: 'Error',
 						text: error
 					});
+				}
+				finally {
+					NProgress.inc();
 				}
 			}
 		},
