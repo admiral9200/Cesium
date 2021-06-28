@@ -6,7 +6,7 @@ Coffee order Web App made with VueJS, ExpressJS, NodeJS and MySQL.
 * Vuex for state management
 * Vue Router for main routing
 
-NPM packages used in frontend:
+NPM packages used in Vue app:
 * vuex
 * nprogress
 * vue-notification
@@ -15,7 +15,7 @@ NPM packages used in frontend:
 * vuelidate
 * bootstrap-vue
 
-NPM packages used in backend:
+NPM packages used in NodeJS server:
 * bcrypt
 * cors
 * express-validator
