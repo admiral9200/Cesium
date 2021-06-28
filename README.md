@@ -7,10 +7,13 @@ Coffee order Web App made with VueJS, ExpressJS, NodeJS and MySQL.
 * Vue Router for main routing
 
 NPM packages used in frontend:
-* VueCookies for cookies management
-* Nprogress for loading bar
-* Vue Notifications
-* Vuelidate for form validation
+* vuex
+* nprogress
+* vue-notification
+* vue-cookies
+* vue-router
+* vuelidate
+* bootstrap-vue
 
 NPM packages used in backend:
 * bcrypt
@@ -20,3 +23,4 @@ NPM packages used in backend:
 * jwt-decode
 * mysql2
 * mongoosejs
+* googlemaps/google-maps-services-js
