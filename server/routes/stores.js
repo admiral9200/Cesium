@@ -5,17 +5,23 @@ const jwt_decode = require('jwt-decode');
 
 const Cart = require('../models/cart');
 const Merchants = require('../models/merchant');
+const { distanceMatrixMap } = require('../services/geocode');
 
 const router = express.Router();
 
 router.get('/merchants', verifyToken, async (req, res) => {
 	const user = jwt_decode(req.headers.authorization);
 
+	// TODO check with gmaps to fetch closer stores based to user address
 	try {	
 		// let cart = await Cart.find({ user_id: user.id }).exec();
 		let stores = await Merchants.find({}).exec();
 
 		if (stores) {
+			stores = distanceMatrixMap('Ethnomartiron 3, Nea Ionia 142 32', stores);
+			stores.sort(function(a, b) {
+				return a.distance.value - b.distance.value;		
+			});
 			res.send({
 				'stores': stores
 			});

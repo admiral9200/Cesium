@@ -16,7 +16,7 @@
 							</div>
 						</div>
 					</li>
-					<li v-if="UserAddresses === null" class='list-group-item m-0 border-0'>
+					<li v-if="UserAddresses === undefined" class='list-group-item m-0 border-0'>
 						<h6>Δεν υπάρχει ενεργή διεύθυνση</h6>
 					</li>
 					<div v-else v-for="(address, index) in UserAddresses" :key="index" class="d-flex justify-content-center w-100">
@@ -97,7 +97,7 @@ export default {
 							title: 'Cofy',
 							text: 'Η διεύθυνση διαγράφηκε με επιτυχία.'
 						});
-						this.fetchAddress();
+						await store.dispatch('fetchUserAddresses')
 					}
 					else if (res.status){
 						this.$notify({

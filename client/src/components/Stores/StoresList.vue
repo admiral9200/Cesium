@@ -2,7 +2,7 @@
 	<div class="my-4">
 		<div v-if="stores.length === 0">
 			<content-placeholders class="my-5" :rounded="true" v-for="(item, index) in placeholder" :key="index">
-				<content-placeholders-heading />
+				<content-placeholders-heading :img="true"/>
 			</content-placeholders>
 		</div>
 		<StoreItem v-else v-bind:key="store.id" v-for="store in stores" :store="store"/>

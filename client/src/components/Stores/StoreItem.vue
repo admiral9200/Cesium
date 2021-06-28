@@ -5,8 +5,8 @@
 				<img :src="store.logo" class="store-img">
 			</div>
 			<div class="card-body flex-grow-1">
-				<h5 class="card-title">{{ store.name }}</h5>
-				<p class="card-text">{{ store.location + ' - ' + '15\'' }}</p>
+				<h5 class="card-title mb-1">{{ store.name }}</h5>
+				<p class="card-text text-muted">{{ store.location + ' - ' + 'Εκτιμώμενος χρόνος 15\'' }}</p>
 			</div>
 			<div class="card-body flex-grow-0 d-flex justify-content-center align-self-center">
 				<a v-on:click="handleStoreSelection(store._id)" class="btn mainbtn">Παράγγειλε από εδώ</a>

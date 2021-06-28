@@ -19,7 +19,7 @@ const verifyToken = (req, res, next) => {
                     message: 'Fail to authenticate. Try logging in again' 
                 });
         }
-        // TODO Maybe check user to verify if it is not expired.. Use Redis for this
+        // TODO Maybe check user token to verify if it is not expired.. Use Redis for this
         next();
     });
 };

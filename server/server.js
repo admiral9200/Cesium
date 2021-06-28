@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
@@ -23,7 +25,7 @@ var corsOptions = {
 	}
 };
 
-mongoose.connect('mongodb://localhost:27017/cofy', {
+mongoose.connect(process.env.MONGO_URL, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 	useCreateIndex: true,

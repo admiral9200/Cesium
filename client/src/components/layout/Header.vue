@@ -49,7 +49,13 @@ export default {
 						this.$store.state.userInfo.surname = null;
 						this.$store.state.userInfo.mobile = null;
 						this.$store.state.userInfo.email = null;
+						this.$store.state.userInfo.id = null;
 						this.$store.state.token = null;
+						this.$store.state.userAddresses = [];
+						this.$store.state.userCart = {
+							products: [],
+							store_id: ''
+						};
 						this.$cookies.keys().forEach(cookie => this.$cookies.remove(cookie));
 						router.push("/");
 					}

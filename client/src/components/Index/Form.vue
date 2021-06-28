@@ -44,9 +44,9 @@
 </template>
 
 <script>
-import VueCookies from 'vue-cookies';
 import router from '../../router';
 import { required } from 'vuelidate/lib/validators';
+import store from '../../store/store';
 
 export default {
 	name: "Form",
@@ -106,8 +106,11 @@ export default {
 						if (resolve.auth === true) {
 							this.$store.state.token = resolve.token;
 							this.$cookies.set("token" , resolve.token , "2h");
-							const token = VueCookies.get('token');
-							this.FetchUserInfo(token);
+
+							await store.dispatch('fetchUserInfo');
+							await store.dispatch('fetchUserAddresses');
+							await store.dispatch('fetchUserCart');
+							
 							router.push("/home");
 						}
 						else if (resolve.error) {
@@ -131,44 +134,6 @@ export default {
 				}
 			}
 		},
-
-		FetchUserInfo: async function(token) {
-			try {
-				let res = await fetch('http://localhost:3000/auth/user', {
-					method: 'GET',
-					headers: {
-						"Authorization" : token,
-					}
-				});
-
-				if (res.ok) {
-					let resolve = await res.json();
-
-					if (!resolve.error) {
-						this.$store.state.userInfo.email = resolve.email;
-						this.$store.state.userInfo.name = resolve.name;
-						this.$store.state.userInfo.surname = resolve.surname;
-						this.$store.state.userInfo.mobile = resolve.mobile;
-					}
-					else {
-						this.$notify({
-							group: 'errors',
-							type: 'error',
-							title: 'Error',
-							text: resolve.error
-						});
-					}
-				}
-			} 
-			catch (error) {
-				this.$notify({
-					group: 'errors',
-					type: 'error',
-					title: 'Error',
-					text: error
-				});
-			}
-		}
 	},
 }
 </script>

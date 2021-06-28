@@ -66,6 +66,7 @@ export default {
 								text: 'Η διεύθυνση προστέθηκε.'
 							});
 							this.$root.$emit('fetchAdresses');
+							this.address = '';
 						}
 						else if (res.error) {
 							this.$notify({

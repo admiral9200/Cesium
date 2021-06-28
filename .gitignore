@@ -2,6 +2,8 @@
 server/node_modules
 vanilla_php
 .vscode
+server/.env
 server/utils/jwt.config.js
+server/utils/init.mongo.js
 server/utils/private.key
 server/utils/public.key
