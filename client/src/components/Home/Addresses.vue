@@ -16,11 +16,12 @@
 					<div v-else v-for="(address, index) in UserAddresses" :key="index" class="d-flex justify-content-center w-100">
 						<li class='w-100 list-group-item m-0 border-0'>
 							<div class='row d-flex justify-content-start align-items-center'>
-								<div class='col-xl-3 col-6'>
-									<h6 class='m-0'>{{ address.address }}</h6>
+								<div class='col-xl-5 col-6'>
+									<h6 class='m-0'>{{ address.route }} {{ address.street_number }}, {{ address.locality }} {{ address.postal_code }}</h6>
 								</div>
-								<div class='col-xl-2 col-12'>
-									<button v-on:click="deleteAddress(address.address)" class='btn btn-sm btn-danger mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button'>Διαγραφή</button>
+								<div class='col-xl-5 col-12'>
+									<button v-on:click="MakeAddressActive()" class='btn btn-sm btn-outline-success mx-3 mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button'>Ενεργή</button>
+									<button v-on:click="deleteAddress(address._id)" class='btn btn-sm btn-danger mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button'>Διαγραφή</button>
 								</div>
 							</div>
 						</li>
@@ -59,7 +60,7 @@ export default {
 	},
 
 	methods: {
-		deleteAddress: async function(address) {
+		deleteAddress: async function(address_id) {
 			NProgress.start();
 			try {
 				const token = VueCookies.get('token');
@@ -67,7 +68,7 @@ export default {
 				let response = await fetch('http://localhost:3000/home/delete', {
 					method: 'POST',
 					body: JSON.stringify({
-						address
+						id: address_id
 					}),
 					headers: {
 						"Authorization" : token,
@@ -83,16 +84,16 @@ export default {
 							group: 'errors',
 							type: 'success',
 							title: 'Cofy',
-							text: 'Η διεύθυνση διαγράφηκε με επιτυχία.'
+							text: res.msg
 						});
 						await store.dispatch('fetchUserAddresses');
 					}
-					else if (res.status){
+					else if (res.error){
 						this.$notify({
 							group: 'errors',
 							type: 'error',
 							title: 'Cofy',
-							text: res.status
+							text: res.error
 						});
 					}
 				}

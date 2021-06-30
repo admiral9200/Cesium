@@ -79,7 +79,9 @@ router.post('/cart', verifyToken, cartSanitizeRules(), validate, (req, res) => {
 					},
 					(error, results) => {
 						if (error) {
-							res.send({ 'error': 'An unexpected error occured' });
+							res.send({ 
+								'error': 'An unexpected error occured' 
+							});
 							console.log(error);
 						}
 

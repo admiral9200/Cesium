@@ -11,16 +11,16 @@
 					<div class="text-center">
 						<img src="/images/success.png" class="image-success" alt="Success">
 					</div>
-					<h1 class="text-center">Καλωσήρθες στο Chip Coffee!</h1>
+					<h2 class="text-center">Καλωσήρθες στο Chip Coffee!</h2>
 					<p class="text-center">Η εγγραφή σου έγινε με επιτυχία. Θα λάβεις ένα email για την επιβεβαίωση του λογαριασμού σου.</p>
 					<div class="d-flex justify-content-center">
-						<router-link role="button" class="btn mainbtn btn-lg" to="/">Πίσω στην αρχική</router-link>
+						<router-link role="button" class="btn btn-sm mainbtn" to="/">Πίσω στην αρχική</router-link>
 					</div>
 				</div>
 			</div>
-			<div v-else class="mx-auto col-xxl-4 col-xl-4 col-lg-4 col-md-9 col-sm-12 col-12 py-xl-3 py-lg-3 py-md-3 py-sm-2 p-0">
+			<div v-else class="mx-auto col-xxl-4 col-xl-4 col-lg-4 col-md-9 col-sm-12 col-12 py-xl-4 py-lg-3 py-md-3 py-sm-2 p-0">
 				<div class="signup-snip text-white user-select-none">
-					<h1>Εγγραφή</h1>
+					<h2>Εγγραφή</h2>
 					<Form :signupCompleted="signupCompleted" @SignUpSuccessful="SignUpOk"/>			
 				</div>
 			</div>

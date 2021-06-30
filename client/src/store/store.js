@@ -164,18 +164,13 @@ export default new Vuex.Store({
 								group: 'errors',
 								type: 'error',
 								title: 'Error',
-								text: resolve.error
+								text: 'An unexpected error occured'
 							});
 						}
 					}
 				} 
 				catch (error) {	
-					this.$notify({
-						group: 'errors',
-						type: 'error',
-						title: 'Error',
-						text: error
-					});
+					console.log(error);
 				}
 				finally {
 					NProgress.inc();

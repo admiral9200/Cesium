@@ -132,7 +132,7 @@ export default {
 					if (response.ok) {
 						let resolve = await response.json();
 
-						if (resolve.status === "ok") {
+						if (resolve.status === 'OK') {
 							this.$emit("SignUpSuccessful", true);
 						}
 						else if (resolve.errors) {

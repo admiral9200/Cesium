@@ -1,9 +1,5 @@
 <template>
 	<form v-on:submit.prevent="addAddress" class="mx-5 w-50">
-		<!-- 
-			<input  type="text" class="form-control" placeholder="Πρόσθεσε εδώ την διεύθυνσή σου" aria-describedby="insert">
-			
-		</div> -->
 		<div class="input-group">
 			<vue-google-autocomplete
 				ref="address"
@@ -48,6 +44,7 @@ export default {
 	},
 
 	mounted() {
+		this.$refs.address.clear();
 		document.addEventListener('visibilitychange', this.visibilityChange);
 	},
 

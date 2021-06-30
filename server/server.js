@@ -9,10 +9,7 @@ const port = 3000;
 
 const whitelist = [
 	"http://localhost:8081", 
-	"http://localhost:8082", 
 	"http://192.168.1.3:8081",
-	"http://192.168.1.3:8082",
-	"http://192.168.1.3:3000",
 ];
 
 var corsOptions = {
@@ -32,7 +29,7 @@ mongoose.connect(process.env.MONGO_URL, {
 	useFindAndModify: false
 })
 .then(() => {
-	console.log("Mongo Cofy connected...");
+	console.log("Cofy Mongo connected...");
 })
 .catch(() => {
 	console.error("Error in connecting");
@@ -59,5 +56,5 @@ app.use('/home' , require('./routes/home'));
 app.use('/profile', require('./routes/profile'));
 
 app.listen(port, () => {
-	console.log(`Chip Coffee Backend running on port ${ port }`);
+	console.log(`Cofy Backend running on port ${ port }`);
 });

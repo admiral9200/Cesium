@@ -26,13 +26,19 @@ const reorderSanitizeRules = () => {
 
 const AddressRules = () => {
 	return [
-		check('address').not().isEmpty().trim().escape()
+		check('address.country').not().isEmpty().trim().escape(),
+		check('address.latitude').not().isEmpty().isNumeric(),
+		check('address.longitude').not().isEmpty().isNumeric(),
+		check('address.locality').not().isEmpty().trim().escape(),
+		check('address.postal_code').not().isEmpty().trim().escape(),
+		check('address.route').not().isEmpty().trim().escape(),
+		check('address.street_number').not().isEmpty().trim().escape(),
 	];
 };
 
 const AddressRule = () => {
 	return [
-		check('address').not().isEmpty().trim().escape()
+		check('id').not().isEmpty().trim().escape()
 	];
 };
 
@@ -58,7 +64,7 @@ const profileCredentialsRules = () => {
 
 const cartSanitizeRules = () => {
 	return [
-		check('user_id').not().isEmpty().withMessage('User ID not provided').isNumeric(),
+		check('user_id').not().isEmpty().withMessage('User ID not provided'),
 		check('c_name').not().isEmpty().withMessage('Πρέπει να διαλέξεις ένα καφέ').isString().trim().escape(),
 		check('c_size').not().isEmpty().withMessage('Πρέπει να διαλέξεις ένα μέγεθος καφέ').isNumeric(),
 		check('c_qty').not().isEmpty().withMessage('Πρέπει να επιλέξεις την ποσότητα').isNumeric(),
@@ -72,7 +78,7 @@ const cartSanitizeRules = () => {
 
 const CartOperationsRules = () => {
 	return [
-		check('user_id').not().isEmpty().withMessage('User ID not provided').isNumeric(),
+		check('user_id').not().isEmpty().withMessage('User ID not provided'),
 		check('product_id').not().isEmpty().withMessage('Product ID not provided')
 		//TODO Check why quantity decrease in above product rather than actual one 
 	];
@@ -80,14 +86,15 @@ const CartOperationsRules = () => {
 
 const StoreSelectRule = () => {
 	return [
-		check('user_id').not().isEmpty().withMessage('User ID not provided').isNumeric(),
+		check('user_id').not().isEmpty().withMessage('User ID not provided'),
 		check('store_id').not().isEmpty().withMessage('Product ID not provided')
 	];
 };
 
 const validate = (req, res, next) => {
-	if (validationResult(req).isEmpty()) return next();
-	return res.send(errors);
+	const errors = validationResult(req);
+	if (errors.isEmpty()) return next();
+	return res.send({ 'errors': errors });
 };
 
 module.exports = {

@@ -1,46 +1,58 @@
 const express = require('express');
-const db = require('../utils/db.config');
 const verifyToken = require('../middleware/verifyToken');
 const jwt_decode = require('jwt-decode');
 const Cart = require('../models/cart');
+const User = require('../models/user');
 
 const router = express.Router();
 
 router.get('/info', verifyToken, (req, res) => {
-	const queryToGetUserDetails = 'SELECT id, firstName, lastName, email, mobile FROM cc_users WHERE id = ?';
-
 	const user = jwt_decode(req.headers.authorization);
 
-	db.execute(queryToGetUserDetails, [user.id], (error, results) => {
-		if (error) res.send({'error': error });
-
-		if (results.length > 0) {
+	User.findOne({ _id: user.id, email: user.email }, (error, results) => {
+		if (error) {
+			console.log(error);
 			res.send({
-				id: results[0].id,
-				name: results[0].firstName, 
-				surname: results[0].lastName, 
-				email: results[0].email, 
-				mobile: results[0].mobile 
+				'error': 'An unexpected error occured' 
+			});
+		}
+
+		if (results !== null) {
+			res.send({
+				id: results.id,
+				email: results.email,
+				name: results.firstName,
+				surname: results.lastName,
+			});
+		}
+		else {
+			res.send({
+				'error': 'User does not exist' 
 			});
 		}
 	});
 });
 
 router.get('/addresses', verifyToken , (req, res) => {
-	const queryToFetchAddresses = 'SELECT address, floor, ringbell, active FROM cc_address WHERE user_id = ?';
-
 	const user = jwt_decode(req.headers.authorization);
 
-	db.execute(queryToFetchAddresses, [user.id], (error, results) => {
-		if (error) res.status(500).send({ 'error': error });
+	User.findOne({ _id: user.id, email: user.email }, (error, results) => {
+		if (error) {
+			res.send({ 
+				'error': error 
+			});
+		}
 
-		if  (results !== undefined) {
-			if (results.length > 0) {
-				res.send({ 'hasAddress': true, 'addresses': results });
-			}
-			else {
-				res.send({ 'hasAddress': false });
-			}
+		if (results !== null) {
+			res.send({ 
+				'hasAddress': true, 
+				'addresses': results.addresses
+			});
+		}
+		else {
+			res.send({ 
+				'hasAddress': false 
+			});
 		}
 	});
 });
