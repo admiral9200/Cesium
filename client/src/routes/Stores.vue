@@ -3,7 +3,7 @@
 		<div class="background">
 			<Header/>
 			<div class="container py-3">
-				<h1>Βρήκαμε {{ stores.length }} {{ stores.length > 1 ? 'καταστήματα' : 'κατάστημα' }}</h1>
+				<h1>Βρήκαμε {{ stores.length }} {{ stores.length === 1 ? 'κατάστημα' : 'καταστήματα' }}</h1>
 			</div>
 		</div>
 		<div class="container">

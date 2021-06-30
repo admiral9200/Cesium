@@ -108,7 +108,12 @@ export default new Vuex.Store({
 						const resolve = await res.json();
 
 						if (!resolve.error) {
-							commit('SET_USER_ADDRESSES', resolve.addresses);
+							if (resolve.hasAddress) {
+								commit('SET_USER_ADDRESSES', resolve.addresses);
+							}
+							else {
+								commit('SET_USER_ADDRESSES', []);
+							}
 						}
 						else {
 							this.$notify({

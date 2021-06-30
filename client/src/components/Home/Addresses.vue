@@ -8,15 +8,9 @@
 							<div class="col-xl-3 col-6">
 								<h6>Διεύθυνση</h6>
 							</div>
-							<div class="col-xl-3 col-6">
-								<h6>Όροφος</h6>
-							</div>
-							<div class="col-xl-3 col-6">
-								<h6>Όνομα στο κουδούνι</h6>
-							</div>
 						</div>
 					</li>
-					<li v-if="UserAddresses === undefined" class='list-group-item m-0 border-0'>
+					<li v-if="UserAddresses.length === 0" class='list-group-item m-0 border-0'>
 						<h6>Δεν υπάρχει ενεργή διεύθυνση</h6>
 					</li>
 					<div v-else v-for="(address, index) in UserAddresses" :key="index" class="d-flex justify-content-center w-100">
@@ -24,12 +18,6 @@
 							<div class='row d-flex justify-content-start align-items-center'>
 								<div class='col-xl-3 col-6'>
 									<h6 class='m-0'>{{ address.address }}</h6>
-								</div>
-								<div class='col-xl-3 col-6'>
-									<h6 class='m-0'>{{ address.floor }}</h6>
-								</div>
-								<div class='col-xl-3 col-6'>
-									<h6 class='m-0'>{{ address.ringbell }}</h6>
 								</div>
 								<div class='col-xl-2 col-12'>
 									<button v-on:click="deleteAddress(address.address)" class='btn btn-sm btn-danger mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button'>Διαγραφή</button>
@@ -97,7 +85,7 @@ export default {
 							title: 'Cofy',
 							text: 'Η διεύθυνση διαγράφηκε με επιτυχία.'
 						});
-						await store.dispatch('fetchUserAddresses')
+						await store.dispatch('fetchUserAddresses');
 					}
 					else if (res.status){
 						this.$notify({

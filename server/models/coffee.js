@@ -7,7 +7,8 @@ const CoffeeSchema = new mongoose.Schema({
 	adds: Array,
 	size: Array,
 	extras: Array,
-	decaf: Boolean
+	decaf: Boolean,
+	qty: Number
 });
 
 module.exports = mongoose.model('Coffees', CoffeeSchema);

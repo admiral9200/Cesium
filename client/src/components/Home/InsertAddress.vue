@@ -1,9 +1,24 @@
 <template>
 	<form v-on:submit.prevent="addAddress" class="mx-5 w-50">
+		<!-- 
+			<input  type="text" class="form-control" placeholder="Πρόσθεσε εδώ την διεύθυνσή σου" aria-describedby="insert">
+			
+		</div> -->
 		<div class="input-group">
-			<input v-model.trim="$v.address.$model" :class="{ 'error': $v.address.$error }" type="text" class="form-control" placeholder="Πρόσθεσε εδώ την διεύθυνσή σου" aria-describedby="insert">
+			<vue-google-autocomplete
+				ref="address"
+				id="ba021a1a9d298ee2"
+				classname="form-control"
+				placeholder="Πρόσθεσε εδώ την διεύθυνσή σου"
+				v-on:placechanged="getAddressData"
+				:country="['gr']"
+				:enable-geolocation=true
+				v-model.trim="$v.address.$model" :class="{ 'error': $v.address.$error }"
+			>
+			</vue-google-autocomplete>
 			<button class="btn mainbtn" type="submit" id="insert">Προσθήκη</button>
 		</div>
+		<div v-if="!$v.address.required && $v.address.$dirty" class="text-danger">Πρέπει να συμπληρώσεις μία διεύθυνση</div>
 	</form>
 </template>
 
@@ -11,18 +26,24 @@
 import NProgress from 'nprogress';
 import VueCookies from 'vue-cookies';
 import { required } from 'vuelidate/lib/validators';
+import VueGoogleAutocomplete from 'vue-google-autocomplete';
 
 export default {
 	name: "InsertAddress",
-	data() {
-		return {
-			address: ''
-		}
+
+	components: {
+		VueGoogleAutocomplete
 	},
 
 	validations: {
 		address: {
 			required
+		}
+	},
+
+	data() {
+		return {
+			address: null
 		}
 	},
 
@@ -32,14 +53,23 @@ export default {
 
 	methods: {
 		visibilityChange: function() {
-			this.$v.address.$reset();
+			this.$refs.address.clear();
+		},
+
+		getAddressData: function (addressData) {
+			this.address = addressData;
+        },
+
+		isAddressVerifiedObject: function(item) {
+			return 'route' in item &&
+					'longitude' in item &&
+					'latitude' in item &&
+					'country' in item &&
+					'locality' in item;
 		},
 
 		addAddress: async function() {
-			//TODO: Use google maps for searching legitimate addresses to insert
-			this.$v.address.$touch();
-
-			if (!this.$v.address.$invalid) {
+			if (this.$refs.address.autocompleteText && this.isAddressVerifiedObject(this.address)) {
 				NProgress.start();
 				try {
 					const token = VueCookies.get('token');
@@ -66,7 +96,8 @@ export default {
 								text: 'Η διεύθυνση προστέθηκε.'
 							});
 							this.$root.$emit('fetchAdresses');
-							this.address = '';
+							this.$refs.address.clear();
+							this.address = null;
 						}
 						else if (res.error) {
 							this.$notify({
@@ -104,5 +135,7 @@ export default {
 </script>
 
 <style>
-
+.pac-container {
+	border: none !important;
+}
 </style>
