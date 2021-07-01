@@ -2,26 +2,14 @@
 	<div>
 		<div class="form-group row mt-4">
 			<div class="col-12">
-				<button type="button" class="btn btn-block btn-danger" data-bs-toggle="modal" data-bs-target="#accountDelete">Διαγραφή Λογαριασμού</button>
+				<b-button v-b-modal.accountDelete type="button" class="btn btn-block btn-danger">Διαγραφή Λογαριασμού</b-button>
 			</div>
 		</div>
-		<div class="modal fade" id="accountDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLongTitle">Οριστική Διαγραφή Λογαριασμού</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						Η διαγραφή του λογαριασμού σου είναι οριστική και θα διαγραφούν όλα τα δεδομένα σου στο Cofy. Είσαι σίγουρος ότι θες να συνεχίσεις;
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ακύρωση</button>
-						<button v-on:click="deleteAccount()" type="button" class="btn btn-danger">Συνέχεια</button>
-					</div>
-				</div>
-			</div>
-		</div>
+		<b-modal class="modal fade" id="accountDelete" title="Οριστική Διαγραφή Λογαριασμού" @ok="deleteAccount" ok-variant="danger" ok-title="Συνέχεια" cancel-title="Ακύρωση">
+			<template>
+				Η διαγραφή του λογαριασμού σου είναι οριστική και θα διαγραφούν όλα τα δεδομένα σου στο Cofy. Είσαι σίγουρος ότι θες να συνεχίσεις;
+			</template>
+		</b-modal>
 	</div>
 </template>
 

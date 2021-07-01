@@ -16,7 +16,7 @@ router.post('/login', loginSanitizeRules(), validate, (req, res) => {
 			});
 		}
 
-		if (results) {
+		if (results !== null) {
 			bcrypt.compare(req.body.password, results.password, (error, result) => {
 				if (error) {
 					res.send({ 
@@ -47,6 +47,11 @@ router.post('/login', loginSanitizeRules(), validate, (req, res) => {
 								token: token 
 							});
 						}
+					});
+				}
+				else {
+					res.send({ 
+						'error': 'Το email ή ο κωδικός που έχεις εισάγει είναι λάθος!' 
 					});
 				}
 			});

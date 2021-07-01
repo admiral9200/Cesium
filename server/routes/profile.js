@@ -1,83 +1,112 @@
 const express = require('express');
-const db = require('../utils/db.config');
 const bcrypt = require('bcrypt');
 const { profileInfoRules, profileCredentialsRules , validate } = require('../middleware/sanitizer');
 const verifyToken = require('../middleware/verifyToken');
 const jwt_decode = require('jwt-decode');
+const User = require('../models/user');
 
 const router = express.Router();
 
 router.post('/info', profileInfoRules(), validate, verifyToken, (req, res) => {
-	const queryToChangeUserInfo = 'UPDATE cc_users SET firstName = ?, lastName = ? WHERE id = ?';
+	const user = jwt_decode(req.headers.authorization);
 
-	const user = jwt_decode(req.headers['authorization']);
+	User.findOneAndUpdate({ _id: user.id, email: user.email },{
+		firstName: req.body.name,
+		lastName: req.body.surname,
+	},
+	{
+		new: true
+	},
+	(error, results) => {
+		if (error) {
+			res.send({
+				'error': 'An unexpected error occured' 
+			});
+		}
 
-	db.execute(queryToChangeUserInfo, [req.body.name, req.body.surname, user.id], (error, results) => {
-		if (error) res.send({'error': error });
-
-		if (results) res.send({ 'completed': true });
-		else res.send({ 'error': 'An unexpected error occured'});
+		if (results) {
+			res.send({ 
+				'completed': true 
+			});
+		}
+		else {
+			res.send({ 
+				'error': 'An unexpected error occured'
+			});
+		}
 	});
 });
 
 router.post('/credentials', profileCredentialsRules(), validate, verifyToken, (req, res) => {
-	const queryToFetchOldPass = 'SELECT password FROM cc_users WHERE id = ?';
-	const queryToUpdatePassword = 'UPDATE cc_users SET password = ? WHERE id = ?';
-	const user = jwt_decode(req.headers['authorization']);
-	const newPass = req.body.newpass;
-	const oldPass = req.body.oldpass;
+	const user = jwt_decode(req.headers.authorization);
 
-	db.execute(queryToFetchOldPass, [user.id], (error, results) => {
-		if (error) res.send({'error': error });
+	User.findOne({ _id: user.id, email: user.email }, async (error, results) => {
+		if (error) {
+			res.send({
+				'error': error 
+			});
+		}
 
-		try {
-			if (results) {
-				(async (oldPassword) => {
-					await bcrypt.compare(oldPassword, results[0].password, (error, result) => {
-						if (error) res.send({ 'error': 'An internal error occured' });
-	
-						if (result){
-							bcrypt.hash(newPass, 10, (err, hash) => {
-								if (err) res.send({ 'error': 'An error occured' });
+		if (results.password) {
+			try {	
+				const comparedHashes = await bcrypt.compare(req.body.oldpass, results.password);
 
-								if (hash) {
-									db.execute(queryToUpdatePassword, [hash, user.id], (error, results) => {
-										if (error) res.send({ 'error': 'An internal Database error occured. Try again' });
+				if (comparedHashes) {
+					const hashed = await bcrypt.hash(req.body.newpass, 10);
 
-										if (results) {
-											res.send({ 'completed': true });
-										}
-									});
-								}
-							});
-						}
-						else {
-							res.send({ 'error': 'Ο παλαιός κωδικός είναι λάθος' });
-						}
+					if (hashed) {
+						User.findOneAndUpdate({ _id: user.id, email: user.email },{
+							password: hashed
+						},
+						{
+							new: true
+						},
+						(err, newPass) => {
+							if (err) {
+								res.send({ 
+									'error': 'An internal error occured' 
+								});
+							}
+
+							if (newPass.password !== results.password) {
+								res.send({ 
+									'completed': true,
+									'msg': 'Ο κωδικός σου άλλαξε με επιτυχία'
+								});
+							}
+						});
+					}
+				}
+				else {
+					res.send({ 
+						'error': 'Ο παλαιός κωδικός είναι λάθος' 
 					});
-				})(oldPass);
+				}
+			} 
+			catch (error) {
+				res.send({ 
+					'error': 'An internal error occured' 
+				});	
 			}
-			else {
-				res.send({ 'error': 'Ο παλαιός κωδικός είναι λάθος' });
-			}	
-		} 
-		catch (error) {
-			res.send({ error: 'An unexpected error occured. Try again' + error });
 		}
 	});
 });
 
-router.get('/delete', verifyToken, (req, res) => {
-	const user = jwt_decode(req.headers['authorization']);
-	const queryToDeleteUserAccount = 'DELETE cc_users, cc_address FROM cc_users users INNER JOIN cc_address addresses ON cc_users.id = cc_address.user_id WHERE cc_users.id = ?';
+router.get('/delete', verifyToken, async (req, res) => {
+	const user = jwt_decode(req.headers.authorization);
 
-	db.execute(queryToDeleteUserAccount, [user.id], (error, result) => {
-		if (error) res.send({ 'error': 'An internal Database error occured.' });
+	const userDeleted = await User.deleteOne({ _id: user.id });
 
-		if (result) {
-			res.send({ 'deleted': true });
-		}
-	});
+	if (userDeleted.ok === 1) {
+		res.send({ 
+			'deleted': true 
+		});
+	}
+	else {
+		res.send({ 
+			'error': 'An internal error occured' 
+		});	
+	}
 });
 
 module.exports = router;

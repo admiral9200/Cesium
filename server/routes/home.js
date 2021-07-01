@@ -36,6 +36,9 @@ router.post('/insert' , AddressRules(), validate, verifyToken, (req, res) => {
 				{
 					$push: { addresses: [ req.body.address ]}
 				},
+				{
+					new: true
+				},
 				(error, addressAdded) => {
 					if (error) {
 						res.send({ 'error': 'An unexpected error occured' });
@@ -67,6 +70,9 @@ router.post('/delete', AddressRule(), validate, verifyToken, (req, res) => {
 	{
 		"$pull": { "addresses": { "_id": req.body.id }}
 	},
+	{
+		new: true
+	},
 	(error, results) => {
 		if (error) {
 			console.log(error);
@@ -75,7 +81,7 @@ router.post('/delete', AddressRule(), validate, verifyToken, (req, res) => {
 			});
 		}
 
-		if (results !== null) {
+		if (results.find(address => address._id !== req.body.id)) {
 			res.send({ 
 				'deleted' : true,
 				'msg': 'Η διεύθυνση διαγράφηκε με επιτυχία.'

@@ -89,7 +89,7 @@ export default {
 								group: 'errors',
 								type: 'success',
 								title: 'Cofy',
-								text: 'Ο κωδικός σου άλλαξε με επιτυχία'
+								text: res.msg
 							});
 						}
 						else if (res.error) {
