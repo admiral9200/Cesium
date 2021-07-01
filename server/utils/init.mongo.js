@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/cofy', {
+mongoose.connect('mongodb://root:root@localhost:27017/cofy?authSource=admin', {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 	useCreateIndex: true,
@@ -35,7 +35,7 @@ mongoose.connect('mongodb://localhost:27017/cofy', {
 	let Merchants = mongoose.model('Merchants', MerchantsSchema);
 	let Coffees = mongoose.model('Coffees', CoffeeSchema);
 
-	new Coffees({
+	/* new Coffees({
 		name: 'Espresso',
 		price: 1.30,
 		decaf: true,
@@ -52,87 +52,15 @@ mongoose.connect('mongodb://localhost:27017/cofy', {
 		extras: [
 			'Σιρόπι σοκολάτα'
 		]
-	}).save().then(doc => console.log("COFFEE SAVED IN DB")).catch(err => console.log(err));
-	new Coffees({
-		name: 'Cappuccino',
-		price: 1.70,
-		decaf: true,
-		blends: [
-			'Fine Brazilian blend',
-			'100% Superior Arabica'
-		],
-		adds: [
-			'Γάλα',
-			'Κανέλα',
-		],
-		size: [
-			1,
-			2,
-			3,
-			4,
-			5
-		],
-		extras: [
-			'Σιρόπι σοκολάτα',
-			'Σαντιγυ'
-		]
-	}).save().then(doc => console.log("COFFEE SAVED IN DB")).catch(err => console.log(err));
-
-	new Coffees({
-		name: 'Cappucino Latte',
-		price: 1.70,
-		decaf: true,
-		blends: [
-			'Fine Brazilian blend',
-			'100% Superior Arabica'
-		],
-		adds: [
-			'Γάλα',
-			'Κανέλα',
-			'Σοκολατα'
-		],
-		size: [
-			1,
-			2,
-			3,
-			4,
-			5
-		],
-		extras: [
-			'Σιρόπι σοκολάτα'
-		]
-	}).save().then(doc => console.log("COFFEE SAVED IN DB")).catch(err => console.log(err));
-
-	new Coffees({
-		name: 'Freddo Cappuccino',
-		price: 1.70,
-		decaf: true,
-		blends: [
-			'Fine Brazilian blend',
-			'100% Superior Arabica'
-		],
-		adds: [
-			'Γάλα',
-			'Κανέλα',
-			'Σοκολατα'
-		],
-		size: [
-			1,
-			2,
-			3,
-			4,
-			5
-		],
-		extras: [
-			'Σιρόπι σοκολάτα'
-		]
-	}).save().then(doc => console.log("COFFEE SAVED IN DB")).catch(err => console.log(err));
+	}).save().then(doc => console.log("COFFEE SAVED IN DB")).catch(err => console.log(err)); */
 	
-	/* let data = new Merchants({
+	
+	new Merchants(
+		{
 			dateCreated: new Date(),
-			name: 'Veribet',
-			location: '06 Russell Point',
-			logo: 'https://picsum.photos/200',
+			name: 'Coffee Island',
+			location: 'Κολοκτρώνη 23 &, Kilikias, Athina 142 32',
+			logo: 'https://cdn.e-food.gr/cdn-cgi/image/f=auto/shop/2481531/logo',
 			menu: [
 				{
 					name: 'Espresso',
@@ -211,9 +139,12 @@ mongoose.connect('mongodb://localhost:27017/cofy', {
 				},
 			]
 		},
-	); */
-	
-	//data.save().then(doc => console.log(doc)).catch(err => console.log(err));
+	).save()
+	.then(doc => {
+		console.log(doc);
+		process.exit();
+	})
+	.catch(err => console.log(err));
 })
 .catch(() => {
 	console.error("Error in connecting");

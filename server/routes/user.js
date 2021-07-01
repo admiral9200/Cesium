@@ -62,7 +62,9 @@ router.get('/cart', verifyToken, (req, res) => {
 
 	Cart.find({ user_id: user.id }, (error, results) => {
 		if (error) {
-			res.send({ 'error': error });
+			res.send({ 
+				'error': error 
+			});
 		}
 		else {
 			if (results.length > 0) {
@@ -70,14 +72,20 @@ router.get('/cart', verifyToken, (req, res) => {
 					storeId: results[0].store_id,
 					products: results[0].products
 				};
-				res.send({ 'cart': payload });
+
+				res.send({ 
+					'cart': payload 
+				});
 			}
 			else {
 				const payload = {
 					storeId: '',
 					products: []
 				};
-				res.send({ 'cart': payload });
+
+				res.send({ 
+					'cart': payload 
+				});
 			}
 		}
 	});

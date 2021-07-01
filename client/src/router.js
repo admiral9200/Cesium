@@ -127,8 +127,11 @@ const routes = [
 			requiresAuth: true
 		},
 		beforeEnter (to, from, next) {
-			if (store.state.userCart.products.length === 0 && store.state.userCart.store_id === '') {
+			if (store.state.userCart.products.length === 0) {
 				next({ path: '/order' });
+			}
+			else if (store.state.userCart.store_id === '') {
+				next({ path: '/stores' });
 			}
 			else next();
 		}

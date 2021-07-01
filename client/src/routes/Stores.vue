@@ -43,10 +43,11 @@ export default {
 
 	async created() {
 		const token = VueCookies.get('token');
+		const userAddress = this.$store.state.userAddresses[0].route + ' ' + this.$store.state.userAddresses[0].street_number + ', ' + this.$store.state.userAddresses[0].locality + ' ' + this.$store.state.userAddresses[0].postal_code;
 
 		if (token) {
 			try {
-				const response = await fetch('http://localhost:3000/stores/merchants', {
+				const response = await fetch('http://localhost:3000/stores/merchants/' + userAddress, {
 					method: 'GET',
 					headers: {
 						"Authorization" : token,

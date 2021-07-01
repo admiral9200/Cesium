@@ -58,11 +58,16 @@ export default {
         },
 
 		isAddressVerifiedObject: function(item) {
-			return 'route' in item &&
+			try {	
+				return 'route' in item &&
 					'longitude' in item &&
 					'latitude' in item &&
 					'country' in item &&
 					'locality' in item;
+			} 
+			catch (error) {
+				return false;
+			}
 		},
 
 		addAddress: async function() {

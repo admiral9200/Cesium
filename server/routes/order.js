@@ -23,7 +23,9 @@ router.post('/cart', verifyToken, cartSanitizeRules(), validate, (req, res) => {
 
 	Cart.find({ user_id: req.body.user_id } , (error, results) => {
 		if (error) {
-			res.send({ 'error': error });
+			res.send({ 
+				'error': 'An unexpected error occured' 
+			});
 		}
 
 		if (results.length === 0) {

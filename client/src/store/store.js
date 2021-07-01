@@ -159,18 +159,15 @@ export default new Vuex.Store({
 						if (resolve.cart) {
 							commit('SET_USER_CART', resolve.cart);
 						}
-						else {
-							this.$notify({
-								group: 'errors',
-								type: 'error',
-								title: 'Error',
-								text: 'An unexpected error occured'
-							});
-						}
 					}
 				} 
 				catch (error) {	
-					console.log(error);
+					this.$notify({
+						group: 'errors',
+						type: 'error',
+						title: 'Error',
+						text: 'An unexpected error occured'
+					});
 				}
 				finally {
 					NProgress.inc();

@@ -56,7 +56,7 @@ router.get('/merchants/:userAddress', verifyToken, async (req, res) => {
 				}
 			})
 			.catch((error) => {
-				console.log(error);
+				console.log(error.config.params);
 				res.send({
 					'error': 'An unexpected error occured'
 				});

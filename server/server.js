@@ -8,7 +8,7 @@ const app = express();
 const port = 3000;
 
 const whitelist = [
-	"http://localhost:8081", 
+	"http://localhost:8080", 
 	"http://192.168.1.3:8081",
 ];
 
