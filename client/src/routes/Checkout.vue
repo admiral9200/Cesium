@@ -18,13 +18,13 @@
 						</div>
 						<div class="col-md-4">
 							<label>Όροφος*</label>
-							<input v-model.trim="$v.floor.$model" type="number" class="form-control" required>
+							<input v-model.trim="$v.floor.$model" type="text" class="form-control" required>
 							<div v-if="!$v.floor.required && $v.floor.$dirty" class="text-danger">Πρέπει να συμπληρώσεις τον όροφο.</div>
 						</div>
 					</div>
 					<div class="my-2">
 						<label>Προαιρετικό τηλ. επικοινωνίας</label>
-						<input type="number" class="form-control">
+						<input type="text" class="form-control">
 					</div>
 					<div class="form-group my-2">
 						<label>Σχόλια διεύθυνσης</label>
@@ -49,7 +49,9 @@
 				</div>
 				<div class="col-xl-4 col-md-12 col-12 card box shadow-lg p-xl-5 p-md-5">
 					<h4 class="d-flex justify-content-between align-items-center mb-4">3. Ολοκλήρωση</h4>
-					<ul class="list-group mb-1"></ul>
+					<ul class="list-group mb-1">
+						
+					</ul>
 					<button type="submit" class="btn mainbtn text-white btn-lg btn-block my-2">Αποστολή Παραγγελίας</button>
 				</div>
 			</form>
