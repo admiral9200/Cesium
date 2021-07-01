@@ -1,3 +1,0 @@
-db.users.findOne({
-	email: 'pazezyq@mailinator.com'
-})

@@ -1,21 +1,14 @@
-version: '3'
+version: '3.7'
 services:
-  db_chip_coffee:
-    build:
-      context: ./
-      dockerfile: MySQL.Dockerfile
-    ports:
-      - "3306:3306"
+  mongodb_container:
+    image: mongo:latest
     environment:
-      MYSQL_ROOT_PASSWORD: 'root'
-      MYSQL_ALLOW_EMPTY_PASSWORD : 'yes'
-    restart: always
-  db_admin_ChipCoffee:
-    image: phpmyadmin
-    environment:
-     - PMA_ARBITRARY=1
-    restart: always
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
     ports:
-     - 8080:80
+      - 27017:27017
     volumes:
-     - /sessions
+      - mongodb_data_container:/data/db
+
+volumes:
+  mongodb_data_container:
