@@ -96,6 +96,10 @@ export default {
         width: auto;
     }
 
+    .content-main-left {
+        padding-left: 5% !important;
+    }
+
 	.logo-responsive{
         display: grid;
         place-items: center;

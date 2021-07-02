@@ -81,12 +81,16 @@ router.post('/select', verifyToken, StoreSelectRule(), validate, (req, res) => {
 		},
 		(error, results) => {
 			if (error) {
-				res.send({ 'error': 'An unexpected error occured' });
+				res.send({ 
+					'error': 'An unexpected error occured' 
+				});
 				console.log(error);
 			}
 
 			if (results) {
-				res.send({ 'ok': true });			
+				res.send({ 
+					'ok': true 
+				});
 			}
 		}
 	);

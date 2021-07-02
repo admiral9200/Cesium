@@ -49,6 +49,7 @@ export default {
 						const res = await response.json();
 
 						if (res.ok) {
+							this.$store.state.userCart.store_id = id;
 							router.push('/checkout');
 						}
 						else {

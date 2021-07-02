@@ -20,7 +20,7 @@
 									<h6 class='m-0'>{{ address.route }} {{ address.street_number }}, {{ address.locality }} {{ address.postal_code }}</h6>
 								</div>
 								<div class='col-xl-5 col-12'>
-									<button v-on:click="MakeAddressActive()" class='btn btn-sm btn-outline-success mx-3 mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button'>Ενεργή</button>
+									<button v-on:click="MakeAddressActive(address._id)" :class="selected_cookie_set === address._id ? 'btn-success active' : 'btn-outline-success'" class='btn btn-sm mx-3 mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button'>Ενεργή</button>
 									<button v-on:click="deleteAddress(address._id)" class='btn btn-sm btn-danger mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button'>Διαγραφή</button>
 								</div>
 							</div>
@@ -42,13 +42,20 @@ export default {
 	
 	data() {
 		return {
-			addresses: []
+			addresses: [],
+			selected_addr: this.$cookies.get('selected_addr')
 		}
 	},
 
 	computed: {
 		UserAddresses() {
 			return this.$store.state.userAddresses;
+		}
+	},
+
+	watch: {
+		selected_addr: function() {
+			
 		}
 	},
 
@@ -110,6 +117,35 @@ export default {
 				NProgress.done();
 			}
 		},
+
+		MakeAddressActive: function(id) {
+			NProgress.start();
+			try {
+				const token = this.$cookies.get('token');
+
+				if (token) {
+					this.$cookies.set("selected_addr", id, Infinity);
+
+					this.$notify({
+						group: 'errors',
+						type: 'success',
+						title: 'Cofy',
+						text: 'Η ενεργή διεύθυνση άλλαξε'
+					});
+				}
+			} 
+			catch (error) {
+				this.$notify({
+					group: 'errors',
+					type: 'error',
+					title: 'Error',
+					text: error
+				});
+			}
+			finally {
+				NProgress.done();
+			}
+		}
 	},
 }
 </script>

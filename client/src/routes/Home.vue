@@ -184,16 +184,6 @@ export default {
         height: 50px !important;
         width: auto;
     }
-    .background h1 {
-        font-size: 40px !important;
-        padding-right: 0 !important;
-    }
-    .background h2{
-      font-size: 25px !important;
-    }
-    .background h3 {
-        text-align: center !important;
-    }
 }
 
 @media screen and (min-width: 400px) and (max-width: 850px){

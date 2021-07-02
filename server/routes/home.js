@@ -81,7 +81,7 @@ router.post('/delete', AddressRule(), validate, verifyToken, (req, res) => {
 			});
 		}
 
-		if (results.find(address => address._id !== req.body.id)) {
+		if (results.addresses.find(address => address._id !== req.body.id)) {
 			res.send({ 
 				'deleted' : true,
 				'msg': 'Η διεύθυνση διαγράφηκε με επιτυχία.'

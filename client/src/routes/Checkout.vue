@@ -50,7 +50,7 @@
 				<div class="col-xl-4 col-md-12 col-12 card box shadow-lg p-xl-5 p-md-5">
 					<h4 class="d-flex justify-content-between align-items-center mb-4">3. Ολοκλήρωση</h4>
 					<ul class="list-group mb-1">
-						
+
 					</ul>
 					<button type="submit" class="btn mainbtn text-white btn-lg btn-block my-2">Αποστολή Παραγγελίας</button>
 				</div>
@@ -99,6 +99,10 @@ export default {
 			required,
 			numeric
 		}
+	},
+
+	async created() {
+		
 	},
 
 	mounted() {
