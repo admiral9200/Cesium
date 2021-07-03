@@ -44,14 +44,9 @@ export default {
 
 	mounted() {
 		this.$refs.address.clear();
-		document.addEventListener('visibilitychange', this.visibilityChange);
 	},
 
 	methods: {
-		visibilityChange: function() {
-			this.$refs.address.clear();
-		},
-
 		getAddressData: function (addressData) {
 			this.address = addressData;
         },

@@ -134,7 +134,7 @@ const routes = [
 				next({ path: '/stores' });
 			}
 			else next();
-		}
+		},
 	},
 	{
 		path: '/profile',

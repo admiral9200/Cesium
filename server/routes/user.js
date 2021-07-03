@@ -69,7 +69,7 @@ router.get('/cart', verifyToken, (req, res) => {
 		else {
 			if (results.length > 0) {
 				const payload = {
-					storeId: results[0].store_id,
+					store_id: results[0].store_id,
 					products: results[0].products
 				};
 
@@ -79,7 +79,7 @@ router.get('/cart', verifyToken, (req, res) => {
 			}
 			else {
 				const payload = {
-					storeId: '',
+					store_id: '',
 					products: []
 				};
 

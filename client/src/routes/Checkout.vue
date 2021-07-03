@@ -109,6 +109,11 @@ export default {
 		NProgress.done();
 	},
 
+	beforeRouteLeave (to, from, next) {
+		this.$store.state.userCart.store_id = '';
+		next();
+	},
+
 	methods: {
 		sendOrder: function() {
 			this.$v.$touch();
