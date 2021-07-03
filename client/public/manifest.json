@@ -1,0 +1,27 @@
+{
+	"name": "Chip Coffee",
+	"short_name": "CC",
+	"theme_color": "#bb6b00",
+	"icons": [{
+		"src": "./img/icons/chip_coffee.png",
+		"sizes": "1000x1000",
+		"type": "icon"
+	}, {
+		"src": "./img/icons/chip_coffee.png",
+		"sizes": "1000x1000",
+		"type": "image/png"
+	}, {
+		"src": "./img/icons/chip_coffee.png",
+		"sizes": "1000x1000",
+		"type": "image/png",
+		"purpose": "maskable"
+	}, {
+		"src": "./img/icons/chip_coffee.png",
+		"sizes": "1000x1000",
+		"type": "image/png",
+		"purpose": "maskable"
+	}],
+	"start_url": ".",
+	"display": "standalone",
+	"background_color": "#000000"
+}

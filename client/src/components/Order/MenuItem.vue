@@ -86,7 +86,6 @@
 </template>
 
 <script>
-import VueCookies from 'vue-cookies';
 import { required, numeric, minLength } from 'vuelidate/lib/validators';
 import NProgress from 'nprogress';
 
@@ -161,7 +160,7 @@ export default {
 		},
 
 		AddToCart: async function() {
-			const token = VueCookies.get('token');
+			const token = this.$cookies.get('token');
 			this.$v.$touch();
 
 			if (token && !this.$v.$invalid) {

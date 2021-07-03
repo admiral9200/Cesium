@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import VueCookies from 'vue-cookies';
 import NProgress from 'nprogress';
 import { required, minLength } from 'vuelidate/lib/validators';
 
@@ -59,7 +58,7 @@ export default {
 		},
 
 		changeUserCreds: async function() {
-			const token = VueCookies.get('token');
+			const token = this.$cookies.get('token');
 			this.$v.oldPassword.$touch();
 			this.$v.newPassword.$touch();
 

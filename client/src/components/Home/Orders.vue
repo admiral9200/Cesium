@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import VueCookies from 'vue-cookies';
 import NProgress from 'nprogress';
 
 export default {
@@ -46,7 +45,7 @@ export default {
 
 	async created() {
 		try {
-			const token = VueCookies.get('token');
+			const token = this.$cookies.get('token');
 
 			let response = await fetch('http://localhost:3000/home/orders', {
 				method: 'GET',
@@ -106,7 +105,7 @@ export default {
 
 		orderAgain: async function(id) {
 			try {
-				const token = VueCookies.get('token');
+				const token = this.$cookies.get('token');
 
 				let res = await fetch('http://localhost:3000/order/reorder', {
 					method: 'POST',

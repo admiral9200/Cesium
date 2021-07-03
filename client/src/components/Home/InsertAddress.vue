@@ -20,7 +20,6 @@
 
 <script>
 import NProgress from 'nprogress';
-import VueCookies from 'vue-cookies';
 import { required } from 'vuelidate/lib/validators';
 import VueGoogleAutocomplete from 'vue-google-autocomplete';
 
@@ -74,7 +73,7 @@ export default {
 			if (this.$refs.address.autocompleteText && this.isAddressVerifiedObject(this.address)) {
 				NProgress.start();
 				try {
-					const token = VueCookies.get('token');
+					const token = this.$cookies.get('token');
 
 					let response = await fetch('http://localhost:3000/home/insert', {
 						method: 'POST',

@@ -15,7 +15,6 @@
 
 <script>
 import router from '../../router';
-import VueCookies from 'vue-cookies';
 import NProgress from 'nprogress';
 
 export default {
@@ -24,7 +23,7 @@ export default {
 	methods: {
 		deleteAccount: async function() {
 			NProgress.start();
-			const token = VueCookies.get('token');
+			const token = this.$cookies.get('token');
 
 			if (token) {
 				try {

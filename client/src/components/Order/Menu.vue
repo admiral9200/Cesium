@@ -11,7 +11,6 @@
 
 <script>
 import MenuItem from './MenuItem';
-import VueCookies from 'vue-cookies';
 import NProgress from 'nprogress';
 
 export default {
@@ -29,7 +28,7 @@ export default {
 	},
 
 	async created() {
-		const token = VueCookies.get('token');
+		const token = this.$cookies.get('token');
 
 		if (token) {
 			NProgress.start();

@@ -20,7 +20,7 @@
 									<h6 class='m-0'>{{ address.route }} {{ address.street_number }}, {{ address.locality }} {{ address.postal_code }}</h6>
 								</div>
 								<div class='col-xl-5 col-12'>
-									<button v-on:click="MakeAddressActive(address._id)" :class="selected_cookie_set === address._id ? 'btn-success active' : 'btn-outline-success'" class='btn btn-sm mx-3 mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button'>Ενεργή</button>
+									<button v-on:click="MakeAddressActive(address)" :class="selected._id === address._id ? 'btn-success active' : 'btn-outline-success'" class='btn btn-sm mx-3 mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button'>Ενεργή</button>
 									<button v-on:click="deleteAddress(address._id)" class='btn btn-sm btn-danger mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button'>Διαγραφή</button>
 								</div>
 							</div>
@@ -34,7 +34,6 @@
 
 <script>
 import store from '../../store/store';
-import VueCookies from 'vue-cookies';
 import NProgress from 'nprogress';
 
 export default {
@@ -43,7 +42,7 @@ export default {
 	data() {
 		return {
 			addresses: [],
-			selected_addr: this.$cookies.get('selected_addr')
+			selected: this.$cookies.get('selected_addr')
 		}
 	},
 
@@ -55,7 +54,7 @@ export default {
 
 	watch: {
 		selected_addr: function() {
-			
+			this.selected = this.$cookies.get('selected_addr');
 		}
 	},
 
@@ -70,7 +69,7 @@ export default {
 		deleteAddress: async function(address_id) {
 			NProgress.start();
 			try {
-				const token = VueCookies.get('token');
+				const token = this.$cookies.get('token');
 
 				let response = await fetch('http://localhost:3000/home/delete', {
 					method: 'POST',
@@ -118,13 +117,13 @@ export default {
 			}
 		},
 
-		MakeAddressActive: function(id) {
+		MakeAddressActive: function(addr) {
 			NProgress.start();
 			try {
 				const token = this.$cookies.get('token');
 
 				if (token) {
-					this.$cookies.set("selected_addr", id, Infinity);
+					this.$cookies.set("selected_addr", addr, Infinity);
 
 					this.$notify({
 						group: 'errors',
@@ -132,6 +131,8 @@ export default {
 						title: 'Cofy',
 						text: 'Η ενεργή διεύθυνση άλλαξε'
 					});
+
+					this.selected = this.$cookies.get('selected_addr');
 				}
 			} 
 			catch (error) {

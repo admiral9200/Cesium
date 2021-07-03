@@ -39,7 +39,6 @@
 
 <script>
 import store from '../../store/store';
-import VueCookies from 'vue-cookies';
 import NProgress from 'nprogress';
 import { required, numeric } from 'vuelidate/lib/validators';
 
@@ -75,7 +74,7 @@ export default {
 	},
 
 	async created() {
-		const token = VueCookies.get('token');
+		const token = this.$cookies.get('token');
 
 		if (token !== null) {
 			fetch('http://localhost:3000/user/info', {
@@ -114,7 +113,7 @@ export default {
 
 	methods: {
 		changeUserInfo: async function() {
-			const token = VueCookies.get('token');
+			const token = this.$cookies.get('token');
 			this.$v.$touch();
 
 			if (!this.$v.$invalid && token) {

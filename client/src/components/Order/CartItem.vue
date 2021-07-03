@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import VueCookies from 'vue-cookies';
 import NProgress from 'nprogress';
 
 export default {
@@ -43,7 +42,7 @@ export default {
 
 	methods: {
 		quantityIncrease: async function(id) {
-			const token = VueCookies.get('token');
+			const token = this.$cookies.get('token');
 
 			if (token) {
 				NProgress.start();
@@ -100,7 +99,7 @@ export default {
 		},
 
 		quantityDecrease: async function(id) {
-			const token = VueCookies.get('token');
+			const token = this.$cookies.get('token');
 
 			if (token) {
 				NProgress.start();
@@ -157,7 +156,7 @@ export default {
 		},
 
 		RemoveItemFromCart: async function(id) {
-			const token = VueCookies.get('token');
+			const token = this.$cookies.get('token');
 
 			if (token) {
 				NProgress.start();

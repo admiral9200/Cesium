@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import VueCookies from 'vue-cookies';
 import NProgress from 'nprogress';
 import router from '../../router';
 
@@ -27,7 +26,7 @@ export default {
 
 	methods: {
 		handleStoreSelection: async function(id) {
-			const token = VueCookies.get('token');
+			const token = this.$cookies.get('token');
 
 			if (token) {
 				NProgress.start();

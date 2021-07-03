@@ -21,7 +21,6 @@ import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import StoresList from '../components/Stores/StoresList';
 import OverviewCart from '../components/Stores/OverviewCart';
-import VueCookies from 'vue-cookies';
 import NProgress from 'nprogress';
 
 export default {
@@ -37,13 +36,15 @@ export default {
 
 	data() {
 		return {
-			stores: []
+			stores: [],
+			user_addr: this.$cookies.get('selected_addr')
 		}
 	},
 
 	async created() {
-		const token = VueCookies.get('token');
-		const userAddress = this.$store.state.userAddresses[0].route + ' ' + this.$store.state.userAddresses[0].street_number + ', ' + this.$store.state.userAddresses[0].locality + ' ' + this.$store.state.userAddresses[0].postal_code;
+		console.log();
+		const token = this.$cookies.get('token');
+		const userAddress = this.user_addr.route + ' ' + this.user_addr.street_number + ', ' + this.user_addr.locality + ' ' + this.user_addr.postal_code;
 
 		if (token) {
 			try {
