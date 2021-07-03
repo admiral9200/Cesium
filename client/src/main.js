@@ -9,6 +9,7 @@ import VueContentPlaceholders from 'vue-content-placeholders';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
+import './registerServiceWorker'
 
 Vue.use(Notifications);
 Vue.use(VueCookies);

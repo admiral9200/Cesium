@@ -10,8 +10,8 @@
   "keywords": [
     "nodejs",
     "express",
-    "mysql",
     "rest",
+    "mongodb",
     "api",
     "chipcoffee"
   ],

@@ -7,7 +7,7 @@ const MerchantsSchema = new mongoose.Schema({
 	logo: String,
 	active_orders: Number,
 	avg_order_preparation_min: Number,
-	open_hour: Date
+	open_hour: Date,
 	menu: [{
 		name: String,
 		price: Number,	
