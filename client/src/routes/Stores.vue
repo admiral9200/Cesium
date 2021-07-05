@@ -42,13 +42,12 @@ export default {
 	},
 
 	async created() {
-		console.log();
 		const token = this.$cookies.get('token');
 		const userAddress = this.user_addr.route + ' ' + this.user_addr.street_number + ', ' + this.user_addr.locality + ' ' + this.user_addr.postal_code;
 
 		if (token) {
 			try {
-				const response = await fetch('http://localhost:3000/stores/merchants/' + userAddress, {
+				const response = await fetch('http://localhost:3000/stores/' + userAddress, {
 					method: 'GET',
 					headers: {
 						"Authorization" : token,

@@ -6,9 +6,9 @@
 				<h1>Ολοκλήρωση Παραγγελίας</h1>
 			</div>
 		</div>
-		<div class="container my-5">
-			<form v-on:submit.prevent="sendOrder" class="row d-flex justify-content-center">
-				<div class="col-xl-4 col-md-12 col-12 card box shadow-lg p-xl-5 p-md-5">
+		<div class="container-fluid my-5">
+			<form v-on:submit.prevent="sendOrder" class="row d-flex justify-content-center" novalidate>
+				<div class="col-xl-3 col-md-12 col-12 card box shadow-lg p-xl-5 p-md-5 mx-3">
 					<h4 class="mb-2">1. Στοιχεία Παραγγελίας</h4>
 					<div class="row my-2">
 						<div class="col-xl-8 col-12">
@@ -31,28 +31,49 @@
 						<textarea class="form-control" rows="3" placeholder="Π.χ. Καλέστε στο τηλέφωνο αντί να χτυπήσετε κουδούνι"></textarea>
 					</div>
 				</div>
-				<div class="col-xl-4 col-md-12 col-12 card box shadow-lg p-xl-5 p-md-5">
+				<div class="col-xl-3 col-md-12 col-12 card box shadow-lg p-xl-5 p-md-5 mx-3">
 					<h4 class="mb-2">2. Τρόπος Πληρωμής</h4>
 					<div class="form-group">
 						<div class="d-block mt-4">
 							<div class="list-group form-check">
 								<select v-model.trim="$v.payment.$model" name="payment_method" class="form-select pointer-base">
 									<option value="none" selected disabled>Επέλεξε έναν τρόπο πληρωμής</option>
-									<option value="1">Μετρητά</option>
-									<option value="2">Paypal</option>
-									<option value="3">Χρεωστική/Πιστωτική κάρτα</option>
+									<option value="cash">Μετρητά</option>
+									<option value="paypal">Paypal</option>
+									<option value="crdeit">Χρεωστική/Πιστωτική κάρτα</option>
 								</select>
-								<div v-if="!$v.payment.required && !$v.payment.numeric && $v.payment.$dirty" class="text-danger">Πρέπει να διαλέξεις έναν τρόπο πληρωμής.</div>
+								<div v-if="!$v.payment.required && $v.payment.$dirty" class="text-danger">Πρέπει να διαλέξεις έναν τρόπο πληρωμής.</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-xl-4 col-md-12 col-12 card box shadow-lg p-xl-5 p-md-5">
-					<h4 class="d-flex justify-content-between align-items-center mb-4">3. Ολοκλήρωση</h4>
-					<ul class="list-group mb-1">
-
-					</ul>
-					<button type="submit" class="btn mainbtn text-white btn-lg btn-block my-2">Αποστολή Παραγγελίας</button>
+				<div class="col-xl-3 col-md-12 col-12 card box shadow-lg p-xl-5 p-md-5 mx-3">
+					<h4 class="mb-4">3. Επισκόπηση</h4>
+					<b-list-group class="mb-1">
+						<b-list-group-item v-for="(product, index) in cart" :key="index">
+							<div class="row">
+								<div class="col-9">
+									<p class="m-0">{{ product.name }}</p>
+									<p class='text-muted cc-p-font m-0'>{{ product.size > 1 ? product.size + 'πλος' : 'Μονός' }}, {{ product.blends + ', ' + product.sugar + ', ' + product.sugarType }}</p>
+								</div>
+								<div class="col">
+									<p class="text-center">2,50€</p>
+								</div>
+							</div>
+						</b-list-group-item>
+					</b-list-group>
+					<div class="card my-2">
+						<div class="d-flex">
+							<div class="card-body flex-grow-0">
+								<img :src="store.logo" class="store-img">
+							</div>
+							<div class="card-body flex-grow-1">
+								<h6 class="card-title mb-1">{{ store.name }}</h6>
+								<p class="card-text text-muted">{{ store.location }}</p>
+							</div>
+						</div>
+					</div>
+					<button type="submit" class="btn mainbtn my-2">Αποστολή Παραγγελίας</button>
 				</div>
 			</form>
 		</div>
@@ -67,6 +88,7 @@ import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import NProgress from 'nprogress';
 import { required, numeric } from 'vuelidate/lib/validators';
+import router from '../router';
 
 export default {
 	name: 'Checkout',
@@ -81,7 +103,10 @@ export default {
 
 	data() {
 		return {
-			payment: 'none'
+			payment: 'none',
+			cart: this.$store.state.userCart.products,
+			store_id: this.$store.state.userCart.store_id,
+			store: {}
 		}
 	},
 
@@ -97,12 +122,58 @@ export default {
 		},
 		payment: {
 			required,
-			numeric
 		}
 	},
 
 	async created() {
-		
+		const token = this.$cookies.get('token');
+
+		if (token) {
+			try {
+				const response = await fetch('http://localhost:3000/stores/id/' + this.store_id, {
+					method: 'GET',
+					headers: {
+						"Authorization" : token,
+					}
+				});
+				
+				if (response.ok) {
+					const res = await response.json();
+
+					if (res.store) {
+						this.store = res.store;
+					}
+					else {
+						this.$notify({
+							group: 'errors',
+							type: 'error',
+							title: 'Error',
+							text: 'Unexpected error: ' + res.error
+						});
+						router.push('/stores');
+					}
+				}
+				else if (!response.ok){
+					this.$notify({
+						group: 'errors',
+						type: 'error',
+						title: 'Error',
+						text: 'Unexpected error: ' + response.status
+					});
+				}
+			} 
+			catch (error) {
+				this.$notify({
+					group: 'errors',
+					type: 'error',
+					title: 'Error',
+					text: error
+				});
+			}
+			finally {
+				NProgress.done();
+			}
+		}
 	},
 
 	mounted() {
@@ -168,5 +239,9 @@ export default {
   .background h3 {
     text-align: center !important;
   }
+}
+
+.store-img {
+	width: 50px;
 }
 </style>
