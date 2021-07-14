@@ -37,7 +37,7 @@ export default {
 	data() {
 		return {
 			stores: [],
-			user_addr: this.$cookies.get('selected_addr')
+			user_addr: this.$cookies.get('actaddr')
 		}
 	},
 

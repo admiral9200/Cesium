@@ -1,8 +1,9 @@
+const { pricesSum } = require('../services/sort');
 const { Client } = require("@googlemaps/google-maps-services-js");
 
 const client = new Client({});
 
-function distanceMatrixMap (userAddress, stores, locations, res) {
+const distanceMatrixMap = (user, userAddress, stores, locations, res) => {
 	client.distancematrix({
 		params: {
 			origins: [ locations ],
@@ -24,11 +25,13 @@ function distanceMatrixMap (userAddress, stores, locations, res) {
 							name: stores[index].name,
 							logo: stores[index].logo,
 							distance: row.elements[0].distance,
-							duration: row.elements[0].duration
+							duration: row.elements[0].duration,
+							menu: stores[index].menu
 						});
 					}
 				});
-
+				
+				pricesSum(user, storesDistanceMatrix);
 				storesDistanceMatrix.sort((a, b) => a.distance.value - b.distance.value);
 
 				res.send({
@@ -43,7 +46,7 @@ function distanceMatrixMap (userAddress, stores, locations, res) {
 			'error': error
 		});
 	});
-}
+};
 
 module.exports = {
 	distanceMatrixMap

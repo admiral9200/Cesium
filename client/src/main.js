@@ -9,7 +9,8 @@ import VueContentPlaceholders from 'vue-content-placeholders';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
-import './registerServiceWorker'
+import './registerServiceWorker';
+import NProgress from 'nprogress';
 
 Vue.use(Notifications);
 Vue.use(VueCookies);
@@ -20,15 +21,20 @@ Vue.use(IconsPlugin);
 
 Vue.config.productionTip = false;
 
-(async function() {
-	if (VueCookies.get('token')) {
-		await store.dispatch('fetchUserInfo');
-		await store.dispatch('fetchUserAddresses');
-		await store.dispatch('fetchUserCart');
+(async () => {
+	try {	
+		if (VueCookies.get('token')) {
+			await store.dispatch('fetchUserInfo');
+			await store.dispatch('fetchUserAddresses');
+			await store.dispatch('fetchUserCart');
+		}
 	}
-	new Vue({
-		store,
-		router,
-		render: h => h(App)
-	}).$mount('#app');
+	finally {
+		new Vue({
+			store,
+			router,
+			render: h => h(App)
+		}).$mount('#app');
+		NProgress.done();
+	}
 })();

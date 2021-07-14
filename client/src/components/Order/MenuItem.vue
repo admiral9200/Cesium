@@ -66,8 +66,8 @@
 					<div v-if="coffee.extras.length > 0" class="row justify-content-between">
 						<h6 class="mt-3">Προσθέστε extra</h6>
 						<div v-for="(extra, index) in coffee.extras" :key="index" class="col-5 m-1 pointer user-select-none border border-white bg-white rounded-1 py-2 px-3">
-							<input v-model.trim="CoffeeExtras" class="form-check-input cc-input m-0 pointer-base" type="checkbox" :name="coffee._id + coffee.name + 'EXTRA'" :id="coffee._id + coffee.name + 'EXTRA'">
-							<label class="form-check-label ps-2 pointer-base" :for="coffee._id + coffee.name + 'EXTRA'">{{ extra }}</label>
+							<input v-model.trim="CoffeeExtras" :value="extra" class="form-check-input cc-input m-0 pointer-base" type="checkbox" :name="coffee._id + extra" :id="coffee._id + 'EXTRA' + index">
+							<label class="form-check-label ps-2 pointer-base" :for="coffee._id + 'EXTRA' + index">{{ extra }}</label>
 						</div>
 					</div>
 					<div class="row">

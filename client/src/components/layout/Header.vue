@@ -1,6 +1,6 @@
 <template>
 	<nav class="navbar py-4 container">
-		<router-link to="/home" class="navbar-brand">
+		<router-link to="/" class="navbar-brand">
 			<img src="/images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
 		</router-link>
 		<b-dropdown variant="link" toggle-class="cc-dropdown" lazy>
@@ -56,7 +56,7 @@ export default {
 							products: [],
 							store_id: ''
 						};
-						this.$cookies.keys().forEach(cookie => this.$cookies.remove(cookie));
+						this.$cookies.remove('token');
 						router.push("/");
 					}
 				}

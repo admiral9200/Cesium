@@ -10,6 +10,28 @@ module.exports = {
 			this.arrayEquals(product1.extras, product2.extras);
 	},
 
+	contains: function (base, tested) {
+		if (!base.blends.includes(tested.blends)) {
+			return false;
+		}
+
+		if (tested.adds.length > 0) {
+			if (!base.adds.some(add => tested.adds.includes(add))) {
+				return false;
+			}
+		}
+
+		if (tested.extras.length > 0) {
+			if (!base.extras.some(extra => tested.extras.includes(extra))) {
+				return false;
+			}
+		}
+
+		return base.name === tested.name &&
+			base.sugarType.includes(tested.sugarType) &&
+			base.size.includes(tested.size);
+	},
+
 	arrayEquals: function (a, b) {
 		return Array.isArray(a) &&
 			Array.isArray(b) &&

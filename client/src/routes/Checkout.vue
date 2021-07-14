@@ -11,12 +11,12 @@
 				<div class="col-xl-3 col-md-12 col-12 card box shadow-lg p-xl-5 p-md-5 mx-3">
 					<h4 class="mb-2">1. Στοιχεία Παραγγελίας</h4>
 					<div class="row my-2">
-						<div class="col-xl-8 col-12">
+						<div class="col-xl-9 col-12">
 							<label>Όνομα στο κουδούνι*</label>
 							<input type="text" v-model.trim="$v.ringbell.$model" class="form-control" required>
 							<div v-if="!$v.ringbell.required && $v.ringbell.$dirty" class="text-danger">Πρέπει να συμπληρώσεις όνομα στο κουδούνι.</div>
 						</div>
-						<div class="col-md-4">
+						<div class="col-3">
 							<label>Όροφος*</label>
 							<input v-model.trim="$v.floor.$model" type="text" class="form-control" required>
 							<div v-if="!$v.floor.required && $v.floor.$dirty" class="text-danger">Πρέπει να συμπληρώσεις τον όροφο.</div>
@@ -48,18 +48,24 @@
 					</div>
 				</div>
 				<div class="col-xl-3 col-md-12 col-12 card box shadow-lg p-xl-5 p-md-5 mx-3">
-					<h4 class="mb-4">3. Επισκόπηση</h4>
+					<h4 class="mb-4">3. Σύνοψη παραγγελίας</h4>
 					<b-list-group class="mb-1">
 						<b-list-group-item v-for="(product, index) in cart" :key="index">
-							<div class="row">
-								<div class="col-9">
+							<div class="d-flex justify-content-between">
+								<div class="row">
 									<p class="m-0">{{ product.name }}</p>
 									<p class='text-muted cc-p-font m-0'>{{ product.size > 1 ? product.size + 'πλος' : 'Μονός' }}, {{ product.blends + ', ' + product.sugar + ', ' + product.sugarType }}</p>
 								</div>
-								<div class="col">
+								<div>
 									<p class="text-center">2,50€</p>
 								</div>
 							</div>
+						</b-list-group-item>
+						<b-list-group-item>
+							<section class="d-flex justify-content-between">
+								<h6 class="m-0">Συνολικό Κόστος</h6>
+								<h6 class="m-0">price€</h6>
+							</section>
 						</b-list-group-item>
 					</b-list-group>
 					<div class="card my-2">

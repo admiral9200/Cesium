@@ -12,7 +12,9 @@ const MerchantsSchema = new mongoose.Schema({
 		name: String,
 		price: Number,	
 		blends: Array,
+		sugarType: Array,
 		adds: Array,
+		extras: Array,
 		size: Array,
 		decaf: Boolean
 	}],

@@ -41,8 +41,7 @@ export default {
 	
 	data() {
 		return {
-			addresses: [],
-			selected: this.$cookies.get('selected_addr')
+			selected: this.$cookies.get('actaddr')
 		}
 	},
 
@@ -54,13 +53,19 @@ export default {
 
 	watch: {
 		selected_addr: function() {
-			this.selected = this.$cookies.get('selected_addr');
+			this.selected = this.$cookies.get('actaddr');
+		}
+	},
+
+	created() {
+		if (this.selected === null) {
+			this.$cookies.set("actaddr", { _id: 0 }, Infinity);
 		}
 	},
 
 	mounted() {
 		this.$root.$on('fetchAdresses', async () => {
-			await store.dispatch('fetchUserAddresses')
+			await store.dispatch('fetchUserAddresses');
 			NProgress.done();
 		});
 	},
@@ -71,7 +76,7 @@ export default {
 			try {
 				const token = this.$cookies.get('token');
 
-				let response = await fetch('http://localhost:3000/home/delete', {
+				const response = await fetch('http://localhost:3000/home/delete', {
 					method: 'POST',
 					body: JSON.stringify({
 						id: address_id
@@ -123,7 +128,7 @@ export default {
 				const token = this.$cookies.get('token');
 
 				if (token) {
-					this.$cookies.set("selected_addr", addr, Infinity);
+					this.$cookies.set("actaddr", addr, Infinity);
 
 					this.$notify({
 						group: 'errors',
@@ -132,7 +137,7 @@ export default {
 						text: 'Η ενεργή διεύθυνση άλλαξε'
 					});
 
-					this.selected = this.$cookies.get('selected_addr');
+					this.selected = this.$cookies.get('actaddr');
 				}
 			} 
 			catch (error) {

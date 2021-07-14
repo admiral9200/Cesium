@@ -27,11 +27,20 @@ const routes = [
 			disallowAuthed: true
 		},
 		beforeEnter (to, from, next) {
-			if (VueCookies.get('token') === null) {
-				next();
+			if (VueCookies.get('token')) {
+				if (from.path === '/home') {
+					next({ 
+						path: '/'
+					});
+				}
+				else {
+					next({ 
+						path: '/home'
+					});
+				}
 			} 
 			else {
-				next({ path: '/home'});
+				next();
 			}
 		}
 	},

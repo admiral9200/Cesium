@@ -104,13 +104,10 @@ export default {
 						let resolve = await response.json();
 
 						if (resolve.auth === true) {
-							this.$store.state.token = resolve.token;
 							this.$cookies.set("token" , resolve.token , "2h");
-
 							await store.dispatch('fetchUserInfo');
 							await store.dispatch('fetchUserAddresses');
 							await store.dispatch('fetchUserCart');
-							
 							router.push("/home");
 						}
 						else if (resolve.error) {
