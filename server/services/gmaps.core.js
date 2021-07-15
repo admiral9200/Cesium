@@ -31,8 +31,8 @@ const distanceMatrixMap = (user, userAddress, stores, locations, res) => {
 					}
 				});
 				
-				pricesSum(user, storesDistanceMatrix);
-				storesDistanceMatrix.sort((a, b) => a.distance.value - b.distance.value);
+				let storesAfterCartCheck = pricesSum(user, storesDistanceMatrix);
+				storesAfterCartCheck.sort((a, b) => a.distance.value - b.distance.value);
 
 				res.send({
 					'stores': storesDistanceMatrix
