@@ -3,7 +3,7 @@
 		<router-link to="/" class="navbar-brand">
 			<img src="/images/chip_coffee_page.png" class="logo" alt="Chip Coffee">
 		</router-link>
-		<b-dropdown variant="link" toggle-class="cc-dropdown" lazy>
+		<b-dropdown variant="link" toggle-class="cc-dropdown" lazy right>
 			<template #button-content>{{ username }} <i class='far fa-user'></i></template>
 			<b-dropdown-item to="/profile">Ο λογαριασμός μου</b-dropdown-item>
 			<b-dropdown-item to="/rates">Οι Αξιολογήσεις μου</b-dropdown-item>
@@ -31,7 +31,7 @@ export default {
 		logout: async function() {
 			const user = this.username;
 			try {	
-				let response = await fetch('http://localhost:3000/auth/logout', {
+				let response = await fetch('http://' + this.$store.state.base_url + ':3000/auth/logout', {
 					method: 'POST',
 					body: JSON.stringify({
 						user

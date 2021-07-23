@@ -48,7 +48,7 @@ export default {
 				NProgress.start();
 
 				try {
-					const response = await fetch('http://localhost:3000/order/inc', {
+					const response = await fetch('http://' + this.$store.state.base_url + ':3000/order/inc', {
 						method: 'POST',
 						headers: {
 							"Content-type" : "application/json; charset=UTF-8",	
@@ -105,7 +105,7 @@ export default {
 				NProgress.start();
 
 				try {
-					const response = await fetch('http://localhost:3000/order/dec', {
+					const response = await fetch('http://' + this.$store.state.base_url + ':3000/order/dec', {
 						method: 'POST',
 						headers: {
 							"Content-type" : "application/json; charset=UTF-8",	
@@ -162,7 +162,7 @@ export default {
 				NProgress.start();
 
 				try {
-					const response = await fetch('http://localhost:3000/order/del', {
+					const response = await fetch('http://' + this.$store.state.base_url + ':3000/order/del', {
 						method: 'POST',
 						headers: {
 							"Content-type" : "application/json; charset=UTF-8",	

@@ -9,7 +9,8 @@ const port = 3000;
 
 const whitelist = [
 	"http://localhost:8080", 
-	"http://192.168.1.3:8081",
+	"http://192.168.1.9:8080",
+	"http://192.168.137.1:8080",
 ];
 
 var corsOptions = {

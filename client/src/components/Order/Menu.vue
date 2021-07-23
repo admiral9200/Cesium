@@ -34,7 +34,7 @@ export default {
 			NProgress.start();
 			
 			try {
-				const response = await fetch('http://localhost:3000/order/coffees', {
+				const response = await fetch('http://' + this.$store.state.base_url + ':3000/order/coffees', {
 					method: 'GET',
 					headers: {
 						"Authorization" : token,

@@ -47,7 +47,7 @@ export default {
 		try {
 			const token = this.$cookies.get('token');
 
-			let response = await fetch('http://localhost:3000/home/orders', {
+			let response = await fetch('http://' + this.$store.state.base_url + ':3000/home/orders', {
 				method: 'GET',
 				headers: {
 					"Authorization" : token,
@@ -107,7 +107,7 @@ export default {
 			try {
 				const token = this.$cookies.get('token');
 
-				let res = await fetch('http://localhost:3000/order/reorder', {
+				let res = await fetch('http://' + this.$store.state.base_url + ':3000/order/reorder', {
 					method: 'POST',
 					body: JSON.stringify({
 						id

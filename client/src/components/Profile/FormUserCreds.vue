@@ -68,7 +68,7 @@ export default {
 				const oldpass = this.oldPassword;
 				const newpass = this.newPassword;
 				try {
-					let response = await fetch('http://localhost:3000/profile/credentials', {
+					let response = await fetch('http://' + this.$store.state.base_url + ':3000/profile/credentials', {
 						method: 'POST',
 						body: JSON.stringify({
 							oldpass,

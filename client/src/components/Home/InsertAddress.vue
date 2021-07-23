@@ -1,5 +1,5 @@
 <template>
-	<form v-on:submit.prevent="addAddress" class="mx-5 w-50">
+	<form v-on:submit.prevent="addAddress" class="mx-xl-5 mx-lg-5">
 		<div class="input-group">
 			<vue-google-autocomplete
 				ref="address"
@@ -70,7 +70,7 @@ export default {
 				try {
 					const token = this.$cookies.get('token');
 
-					let response = await fetch('http://localhost:3000/home/insert', {
+					let response = await fetch('http://' + this.$store.state.base_url + ':3000/home/insert', {
 						method: 'POST',
 						body: JSON.stringify({
 							address: this.address

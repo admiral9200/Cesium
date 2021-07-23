@@ -27,7 +27,7 @@ export default {
 
 			if (token) {
 				try {
-					let response = await fetch('http://localhost:3000/profile/delete', {
+					let response = await fetch('http://' + this.$store.state.base_url + ':3000/profile/delete', {
 						method: 'GET',
 						headers: {
 							"Content-type" : "application/json; charset=UTF-8",

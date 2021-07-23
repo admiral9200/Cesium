@@ -1,14 +1,14 @@
 <template>
 	<div class="card my-4">
-		<div class="d-flex">
-			<div class="card-body flex-grow-0">
+		<div class="row">
+			<div class="card-body flex-grow-0 col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-3 ms-3 d-flex justify-content-center align-items-center">
 				<img :src="store.logo" class="store-img">
 			</div>
-			<div class="card-body flex-grow-1">
+			<div class="card-body flex-grow-1 col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-7">
 				<h5 class="card-title mb-1">{{ store.name }}</h5>
 				<p class="card-text text-muted">{{ store.location + ' - ' + 'Εκτιμώμενος χρόνος: ' + store.duration.text }}</p>
 			</div>
-			<div class="card-body flex-grow-0 d-flex justify-content-center align-self-center">
+			<div class="card-body flex-grow-0 col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-12 d-flex justify-content-center align-self-center">
 				<a v-on:click="handleStoreSelection(store._id)" class="btn mainbtn">Παράγγειλε από εδώ</a>
 			</div>
 		</div>
@@ -32,7 +32,7 @@ export default {
 				NProgress.start();
 
 				try {
-					const response = await fetch('http://localhost:3000/stores/select', {
+					const response = await fetch('http://' + this.$store.state.base_url + ':3000/stores/select', {
 						method: 'POST',
 						headers: {
 							"Content-type" : "application/json; charset=UTF-8",	
@@ -88,6 +88,6 @@ export default {
 
 <style scoped>
 .store-img {
-	width: 60px;
+	width: 70px;
 }
 </style>

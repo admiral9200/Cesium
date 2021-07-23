@@ -136,7 +136,7 @@ export default {
 
 		if (token) {
 			try {
-				const response = await fetch('http://localhost:3000/stores/id/' + this.store_id, {
+				const response = await fetch('http://' + this.$store.state.base_url + ':3000/stores/id/' + this.store_id, {
 					method: 'GET',
 					headers: {
 						"Authorization" : token,

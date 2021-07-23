@@ -166,7 +166,7 @@ export default {
 			if (token && !this.$v.$invalid) {
 				NProgress.start();
 				try {	
-					const response = await fetch('http://localhost:3000/order/cart', {
+					const response = await fetch('http://' + this.$store.state.base_url + ':3000/order/cart', {
 						method: 'POST',
 						headers: {
 							"Content-type" : "application/json; charset=UTF-8",	

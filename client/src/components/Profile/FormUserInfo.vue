@@ -77,7 +77,7 @@ export default {
 		const token = this.$cookies.get('token');
 
 		if (token !== null) {
-			fetch('http://localhost:3000/user/info', {
+			fetch('http://' + this.$store.state.base_url + ':3000/user/info', {
 				method: 'GET',
 				headers: {
 					"Authorization" : token,
@@ -119,7 +119,7 @@ export default {
 			if (!this.$v.$invalid && token) {
 				NProgress.start();
 				try {	
-					let response = await fetch('http://localhost:3000/profile/info', {
+					let response = await fetch('http://' + this.$store.state.base_url + ':3000/profile/info', {
 						method: 'POST',
 						body: JSON.stringify({
 							name: this.name,

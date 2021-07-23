@@ -3,13 +3,17 @@
 		<div class="background">
 			<Header/>
 			<div class="container py-3">
-				<h1 class="">Καλωσήρθες, {{ username }}</h1>
+				<h1>Καλωσήρθες, {{ username }}</h1>
 			</div>
 		</div>
 		<div class="container">
-			<div class="d-flex justify-content-center my-3">
-				<InsertAddress/>
-				<router-link to="/order" :class="{ 'disabled': UserHasAddress.length < 1 }" class="btn mainbtn" role="button">Παράγγειλε καφέ</router-link>
+			<div class="row mx-auto my-3 justify-content-center">
+				<InsertAddress class="col-xxl-5 col-xl-8 col-md-5 col-12 my-xl-0 mb-3"/>
+				<router-link 
+					to="/order" 
+					:class="{ 'disabled': UserHasAddress.length < 1 }" 
+					class="btn mainbtn col-xxl-2 col-xl-8 col-md-5 col-12" 
+					role="button">Παράγγειλε καφέ</router-link>
 			</div>
 			<h2 class="mb-2 mt-5">Οι διευθύνσεις μου</h2>
 			<Addresses/>

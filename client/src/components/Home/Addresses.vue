@@ -3,9 +3,9 @@
 		<div class="row">
 			<div class="col-12">
 				<ul class="list-group list-group-flush">
-					<li class="list-group-item mt-4 mb-4">
+					<li class="list-group-item my-3">
 						<div class="row">
-							<div class="col-xl-3 col-6">
+							<div class="col-12">
 								<h6>Διεύθυνση</h6>
 							</div>
 						</div>
@@ -16,12 +16,12 @@
 					<div v-else v-for="(address, index) in UserAddresses" :key="index" class="d-flex justify-content-center w-100">
 						<li class='w-100 list-group-item m-0 border-0'>
 							<div class='row d-flex justify-content-start align-items-center'>
-								<div class='col-xl-5 col-6'>
+								<div class='col-xl-5 col-12'>
 									<h6 class='m-0'>{{ address.route }} {{ address.street_number }}, {{ address.locality }} {{ address.postal_code }}</h6>
 								</div>
 								<div class='col-xl-5 col-12'>
-									<button v-on:click="MakeAddressActive(address)" :class="selected._id === address._id ? 'btn-success active' : 'btn-outline-success'" class='btn btn-sm mx-3 mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button'>Ενεργή</button>
-									<button v-on:click="deleteAddress(address._id)" class='btn btn-sm btn-danger mt-xl-0 mt-lg-0 mt-md-3 mt-sm-3 mt-3' role='button'>Διαγραφή</button>
+									<button v-on:click="MakeAddressActive(address)" :class="selected._id === address._id ? 'btn-success active' : 'btn-outline-success'" class='btn btn-sm mx-3' role='button'>Ενεργή</button>
+									<button v-on:click="deleteAddress(address._id)" class='btn btn-sm btn-danger' role='button'>Διαγραφή</button>
 								</div>
 							</div>
 						</li>
@@ -76,7 +76,7 @@ export default {
 			try {
 				const token = this.$cookies.get('token');
 
-				const response = await fetch('http://localhost:3000/home/delete', {
+				const response = await fetch('http://' + this.$store.state.base_url + ':3000/home/delete', {
 					method: 'POST',
 					body: JSON.stringify({
 						id: address_id

@@ -88,7 +88,7 @@ export default {
 				this.hasErrorMsg = '';
 
 				try {
-					let response = await fetch('http://localhost:3000/auth/login', {
+					let response = await fetch('http://' + this.$store.state.base_url + ':3000/auth/login', {
 						method: 'POST',
 						body: JSON.stringify({
 							email: this.email,

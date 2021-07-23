@@ -1,29 +1,39 @@
 const { contains } = require('../libs/functions');
 const Cart = require('../models/cart');
 
-const pricesSum = (user, stores) => {
-	Cart.findOne({ user_id: user.id }, (error, results) => {
-		if (error) {
-			res.send({ 
-				'error': error 
-			});
-		}
-		let a = [];  
-		if (results !== null) {
-			results.products.forEach(cartProduct => {
-				stores.forEach(store => {
+const pricesSum = async (user, stores) => {
+	let resolvedStores = [];
+	
+	try {
+		let cartProducts = await Cart.findOne({ user_id: user.id });
+
+		if (cartProducts !== null) {
+			stores.forEach(store => {
+
+				let helperLength = 0;
+
+				for (const cartProduct of cartProducts.products) {	
 					for (const menuProduct of store.menu) {
 						if (contains(menuProduct, cartProduct)) {
-							console.log('-----------------------------');
-							console.log(menuProduct);
-							console.log(cartProduct);
-							console.log('-----------------------------');
+							helperLength++;
+							break;
 						}
 					}
-				});
+				}
+
+				if (helperLength === cartProducts.products.length) {
+					resolvedStores.push(store);
+				}
 			});
+
+			return resolvedStores;
 		}
-	});
+	} 
+	catch (error) {
+		res.send({ 
+			'error': error 
+		});
+	}
 };
 
 module.exports = {

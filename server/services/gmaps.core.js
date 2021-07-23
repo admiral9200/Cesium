@@ -11,7 +11,7 @@ const distanceMatrixMap = (user, userAddress, stores, locations, res) => {
 			key: process.env.GMAPS_API_KEY,
 		}
 	})
-	.then((resApi) => {
+	.then(async (resApi) => {
 		if (resApi.status === 200) {
 			if (resApi.data.status === 'OK') {
 
@@ -30,13 +30,23 @@ const distanceMatrixMap = (user, userAddress, stores, locations, res) => {
 						});
 					}
 				});
-				
-				let storesAfterCartCheck = pricesSum(user, storesDistanceMatrix);
-				storesAfterCartCheck.sort((a, b) => a.distance.value - b.distance.value);
 
-				res.send({
-					'stores': storesDistanceMatrix
-				});
+				try {
+					let storesAfterCartCheck = await pricesSum(user, storesDistanceMatrix);
+
+					storesAfterCartCheck.sort((a, b) => a.duration.value - b.duration.value);
+					// TODO core sort algorithm 
+
+					res.send({
+						'stores': storesAfterCartCheck 
+					});
+				} 
+				catch (error) {
+					console.log(error);
+					res.send({ 
+						'error': 'An unexpected error occured'
+					});
+				}
 			}
 		}
 	})

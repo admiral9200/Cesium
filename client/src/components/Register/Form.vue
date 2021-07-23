@@ -114,7 +114,7 @@ export default {
 			if(!this.$v.$invalid){
 				NProgress.start();
 				try {
-					const response = await fetch('http://localhost:3000/auth/register', {
+					const response = await fetch('http://' + this.$store.state.base_url + ':3000/auth/register', {
 						method: 'POST',
 						body: JSON.stringify({
 							email: this.email,

@@ -3,8 +3,10 @@ import Vuex from 'vuex';
 import VueCookies from 'vue-cookies';
 import router from '../router';
 import NProgress from 'nprogress';
+import Notifications from 'vue-notification';
 
 Vue.use(Vuex);
+Vue.use(Notifications);
 
 export default new Vuex.Store({
 	state: {
@@ -19,7 +21,8 @@ export default new Vuex.Store({
 		userCart: {
 			products: [],
 			store_id: ''
-		}
+		},
+		base_url: window.location.hostname
 	},
 
 	mutations: {
@@ -43,8 +46,8 @@ export default new Vuex.Store({
 			if (token) {
 				NProgress.start();
 
-				try {	
-					const res = await fetch('http://localhost:3000/user/info', {
+				try {
+					const res = await fetch('http://' + this.state.base_url + ':3000/user/info', {
 						method: 'GET',
 						headers: {
 							"Authorization" : token,
@@ -67,17 +70,17 @@ export default new Vuex.Store({
 						}
 					}
 					else if (resolve.auth === false && res.status === 403) {
-						this.$store.state.userInfo.name = null;
-						this.$store.state.userInfo.surname = null;
-						this.$store.state.userInfo.mobile = null;
-						this.$store.state.userInfo.email = null;
-						this.$store.state.token = null;
-						this.$cookies.keys().forEach(cookie => this.$cookies.remove(cookie));
+						this.state.userInfo.name = null;
+						this.state.userInfo.surname = null;
+						this.state.userInfo.mobile = null;
+						this.state.userInfo.email = null;
+						this.state.token = null;
+						this.cookies.keys().forEach(cookie => this.$cookies.remove(cookie));
 						router.push("/");
 					}
 				} 
-				catch (error) {	
-					this.$notify({
+				catch (error) {
+					Vue.notify({
 						group: 'errors',
 						type: 'error',
 						title: 'Error',
@@ -97,7 +100,7 @@ export default new Vuex.Store({
 				NProgress.start();
 
 				try {	
-					const res = await fetch('http://localhost:3000/user/addresses', {
+					const res = await fetch('http://' + this.state.base_url + ':3000/user/addresses', {
 						method: 'GET',
 						headers: {
 							"Authorization" : token,
@@ -116,7 +119,7 @@ export default new Vuex.Store({
 							}
 						}
 						else {
-							this.$notify({
+							Vue.notify({
 								group: 'errors',
 								type: 'error',
 								title: 'Error',
@@ -126,7 +129,7 @@ export default new Vuex.Store({
 					}
 				} 
 				catch (error) {	
-					this.$notify({
+					Vue.notify({
 						group: 'errors',
 						type: 'error',
 						title: 'Error',
@@ -146,7 +149,7 @@ export default new Vuex.Store({
 				NProgress.start();
 
 				try {
-					const res = await fetch('http://localhost:3000/user/cart', {
+					const res = await fetch('http://' + this.state.base_url + ':3000/user/cart', {
 						method: 'GET',
 						headers: {
 							"Authorization" : token,
@@ -161,8 +164,8 @@ export default new Vuex.Store({
 						}
 					}
 				} 
-				catch (error) {	
-					this.$notify({
+				catch (error) {
+					Vue.notify({
 						group: 'errors',
 						type: 'error',
 						title: 'Error',
