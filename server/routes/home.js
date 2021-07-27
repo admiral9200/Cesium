@@ -61,7 +61,7 @@ router.post('/insert' , AddressRules(), validate, verifyToken, (req, res) => {
 	});
 });
 
-router.post('/delete', AddressRule(), validate, verifyToken, (req, res) => {
+router.delete('/delete', AddressRule(), validate, verifyToken, (req, res) => {
 	const user = jwt_decode(req.headers.authorization);
 
 	User.findOneAndUpdate({
@@ -77,19 +77,19 @@ router.post('/delete', AddressRule(), validate, verifyToken, (req, res) => {
 		if (error) {
 			console.log(error);
 			res.send({
-				'error': 'An unexpected error occured' 
+				'error': 'An unexpected error occured 1' 
 			});
 		}
 
-		if (results.addresses.find(address => address._id !== req.body.id)) {
-			res.send({ 
-				'deleted' : true,
-				'msg': 'Η διεύθυνση διαγράφηκε με επιτυχία.'
+		if (results.addresses.some(address => address._id === req.body.id)) {
+			res.send({
+				'error': 'Προέκυψε σφάλμα. Προσπαθείστε ξανά' 
 			});
 		}
 		else {
-			res.send({
-				'error': 'An unexpected error occured' 
+			res.send({ 
+				'deleted' : true,
+				'msg': 'Η διεύθυνση διαγράφηκε με επιτυχία.'
 			});
 		}
 	});

@@ -8,12 +8,8 @@
 		</div>
 		<div class="container">
 			<div class="row mx-auto my-3 justify-content-center">
-				<InsertAddress class="col-xxl-5 col-xl-8 col-md-5 col-12 my-xl-0 mb-3"/>
-				<router-link 
-					to="/order" 
-					:class="{ 'disabled': UserHasAddress.length < 1 }" 
-					class="btn mainbtn col-xxl-2 col-xl-8 col-md-5 col-12" 
-					role="button">Παράγγειλε καφέ</router-link>
+				<InsertAddress class="col-xxl-3 col-xl-4 col-md-4 col-12 my-xl-0 mb-3"/>
+				<AddressSelector class="col-xxl-5 col-xl-5 col-md-5 col-12 my-xl-0 mb-3"/>
 			</div>
 			<h2 class="mb-2 mt-5">Οι διευθύνσεις μου</h2>
 			<Addresses/>
@@ -53,6 +49,7 @@ import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import InsertAddress from '../components/Home/InsertAddress';
 import Addresses from '../components/Home/Addresses';
+import AddressSelector from '../components/Home/AddressSelector.vue';
 import Orders from '../components/Home/Orders';
 
 export default {
@@ -61,6 +58,7 @@ export default {
 	components: {
 		InsertAddress,
 		Addresses,
+		AddressSelector,
 		Orders,
 		Sale,
 		Header,
@@ -203,13 +201,6 @@ export default {
   .logo {
     height: 70px !important;
     width: auto;
-  }
-  .background h1 {
-    font-size: 40px !important;
-    padding-right: 0 !important;
-  }
-  .background h3 {
-    text-align: center !important;
   }
   .col-md* {
     padding: 0 !important;

@@ -32,11 +32,11 @@
 				</form>
 				<h2 class="d-flex justify-content-center mb-2">ή</h2>
 				<div class="group d-grid">
-					<router-link to="/register" type="button" class="btn mainbtn">Εγγραφή</router-link>
+					<router-link to="/register" class="btn mainbtn">Εγγραφή</router-link>
 				</div>
 				<hr class="my-4"/>
 				<div class="text-center"> 
-					<router-link to="/reset">Ξέχασες τον κωδικό σου?</router-link>
+					<router-link to="/reset" class="text-white">Ξέχασες τον κωδικό σου?</router-link>
 				</div>
 			</div>
 		</div>
@@ -140,9 +140,6 @@ export default {
 	.login-snip {
 		min-width: 200px !important;
 		padding: 20px 20px 20px 20px !important;
-	}
-
-	.login-snip {
 		border-radius: 0 !important;
 	}
 }
@@ -150,9 +147,8 @@ export default {
 @media screen and (min-width: 400px) and (max-width: 850px) {
 	.login-snip {
 		padding: 30px 40px 10px 40px !important;
-	}
-	.login-snip {
 		border-radius: 0 !important;
+		max-width: none !important;
 	}
 }
 

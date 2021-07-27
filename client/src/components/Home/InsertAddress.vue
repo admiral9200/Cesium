@@ -10,8 +10,7 @@
 				:country="['gr']"
 				:enable-geolocation=true
 				v-model.trim="$v.address.$model" :class="{ 'error': $v.address.$error }"
-			>
-			</vue-google-autocomplete>
+			></vue-google-autocomplete>
 			<button class="btn mainbtn" type="submit" id="insert">Προσθήκη</button>
 		</div>
 		<div v-if="!$v.address.required && $v.address.$dirty" class="text-danger">Πρέπει να συμπληρώσεις μία διεύθυνση</div>
@@ -33,6 +32,12 @@ export default {
 	validations: {
 		address: {
 			required
+		}
+	},
+
+	computed: {
+		UserAddresses() {
+			return this.$store.state.userAddresses;
 		}
 	},
 
@@ -82,9 +87,11 @@ export default {
 					});
 
 					if (response.ok) {
-						let res = await response.json();
+						const res = await response.json();
 
 						if (res.completed === true) {
+							this.$root.$emit('CookieUpdate');
+
 							this.$notify({
 								group: 'errors',
 								type: 'success',

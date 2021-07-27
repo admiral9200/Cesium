@@ -16,11 +16,10 @@
 					<div v-else v-for="(address, index) in UserAddresses" :key="index" class="d-flex justify-content-center w-100">
 						<li class='w-100 list-group-item m-0 border-0'>
 							<div class='row d-flex justify-content-start align-items-center'>
-								<div class='col-xl-5 col-12'>
+								<div class='col-xl-5 col-8'>
 									<h6 class='m-0'>{{ address.route }} {{ address.street_number }}, {{ address.locality }} {{ address.postal_code }}</h6>
 								</div>
-								<div class='col-xl-5 col-12'>
-									<button v-on:click="MakeAddressActive(address)" :class="selected._id === address._id ? 'btn-success active' : 'btn-outline-success'" class='btn btn-sm mx-3' role='button'>Ενεργή</button>
+								<div class='col-xl-5 col-4'>
 									<button v-on:click="deleteAddress(address._id)" class='btn btn-sm btn-danger' role='button'>Διαγραφή</button>
 								</div>
 							</div>
@@ -38,28 +37,10 @@ import NProgress from 'nprogress';
 
 export default {
 	name: 'Addresses',
-	
-	data() {
-		return {
-			selected: this.$cookies.get('actaddr')
-		}
-	},
 
 	computed: {
 		UserAddresses() {
 			return this.$store.state.userAddresses;
-		}
-	},
-
-	watch: {
-		selected_addr: function() {
-			this.selected = this.$cookies.get('actaddr');
-		}
-	},
-
-	created() {
-		if (this.selected === null) {
-			this.$cookies.set("actaddr", { _id: 0 }, Infinity);
 		}
 	},
 
@@ -77,7 +58,7 @@ export default {
 				const token = this.$cookies.get('token');
 
 				const response = await fetch('http://' + this.$store.state.base_url + ':3000/home/delete', {
-					method: 'POST',
+					method: 'DELETE',
 					body: JSON.stringify({
 						id: address_id
 					}),
@@ -91,6 +72,13 @@ export default {
 					let res = await response.json();
 
 					if (res.deleted === true) {
+						let cookie_addr = this.$cookies.get('actaddr');
+
+						if (address_id === cookie_addr._id) {
+							this.$cookies.remove("actaddr");
+							this.$root.$emit('CookieUpdate');
+						}
+
 						this.$notify({
 							group: 'errors',
 							type: 'success',
@@ -121,37 +109,6 @@ export default {
 				NProgress.done();
 			}
 		},
-
-		MakeAddressActive: function(addr) {
-			NProgress.start();
-			try {
-				const token = this.$cookies.get('token');
-
-				if (token) {
-					this.$cookies.set("actaddr", addr, Infinity);
-
-					this.$notify({
-						group: 'errors',
-						type: 'success',
-						title: 'Cofy',
-						text: 'Η ενεργή διεύθυνση άλλαξε'
-					});
-
-					this.selected = this.$cookies.get('actaddr');
-				}
-			} 
-			catch (error) {
-				this.$notify({
-					group: 'errors',
-					type: 'error',
-					title: 'Error',
-					text: error
-				});
-			}
-			finally {
-				NProgress.done();
-			}
-		}
 	},
 }
 </script>

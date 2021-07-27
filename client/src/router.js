@@ -174,7 +174,7 @@ router.beforeEach((to, from, next) => {
 
 	if (to.matched.some(record => record.meta.requiresAuth)) {
 		if (!VueCookies.get('token')) {
-			next({ path: '/'});
+			next({ path: '/' });
 		} 
 		else {
 			next();

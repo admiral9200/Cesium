@@ -8,7 +8,7 @@
 		</div>
 		<div class="container">
 			<OverviewCart/>
-			<StoresList :stores="stores"/>
+			<StoresList :stores="stores" :isApiStoresResolved="isApiStoresResolved" :noStoresFound="noStoresFound" :msg="msg"/>
 		</div>
 		<Sale/>
 		<Footer/>
@@ -37,7 +37,10 @@ export default {
 	data() {
 		return {
 			stores: [],
-			user_addr: this.$cookies.get('actaddr')
+			user_addr: this.$cookies.get('actaddr'),
+			isApiStoresResolved: false,
+			noStoresFound: false,
+			msg: ''
 		}
 	},
 
@@ -59,6 +62,11 @@ export default {
 
 					if (res.stores) {
 						this.stores = res.stores;
+					}
+					else if (res.noStoresFound) {
+						this.isApiStoresResolved = true;
+						this.noStoresFound = res.noStoresFound;
+						this.msg = res.msg;
 					}
 					else {
 						this.$notify({
@@ -88,6 +96,32 @@ export default {
 			}
 			finally {
 				NProgress.done();
+			}
+
+			// Remove StoreID each time stores page load
+			try {
+				const responseStoreRemoval = await fetch('http://' + this.$store.state.base_url + ':3000/stores/remove', {
+					method: 'DELETE',
+					headers: {
+						"Authorization" : token,
+					}
+				});
+
+				if (responseStoreRemoval.ok) {
+					const resStoreRemoved = responseStoreRemoval.json();
+
+					if (resStoreRemoved.ok) {
+						this.$store.state.userCart.store_id = '';
+					}
+				}
+			} 
+			catch (error) {
+				this.$notify({
+					group: 'errors',
+					type: 'error',
+					title: 'Error',
+					text: error
+				});
 			}
 		}
 	},

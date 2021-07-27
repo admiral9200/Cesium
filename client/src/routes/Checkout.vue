@@ -131,6 +131,12 @@ export default {
 		}
 	},
 
+	methods: {
+		SumPrice: function() {
+			
+		}
+	},
+
 	async created() {
 		const token = this.$cookies.get('token');
 
@@ -187,8 +193,34 @@ export default {
 	},
 
 	beforeRouteLeave (to, from, next) {
-		this.$store.state.userCart.store_id = '';
-		next();
+		// Remove StoreID each time stores page load
+		try {
+			const responseStoreRemoval = await fetch('http://' + this.$store.state.base_url + ':3000/stores/remove', {
+				method: 'DELETE',
+				headers: {
+					"Authorization" : token,
+				}
+			});
+
+			if (responseStoreRemoval.ok) {
+				const resStoreRemoved = responseStoreRemoval.json();
+
+				if (resStoreRemoved.ok) {
+					this.$store.state.userCart.store_id = '';
+				}
+			}
+		} 
+		catch (error) {
+			this.$notify({
+				group: 'errors',
+				type: 'error',
+				title: 'Error',
+				text: error
+			});
+		}
+		finally {
+			next();
+		}
 	},
 
 	methods: {
@@ -225,25 +257,11 @@ export default {
   .box {
     padding: 20px !important;
   }
-  .background h1 {
-    font-size: 40px !important;
-    padding-right: 0 !important;
-  }
-  .background h3 {
-    text-align: center !important;
-  }
 }
 
-@media screen and (min-width: 400px) and (max-width: 600px){
+@media screen and (min-width: 400px) and (max-width: 850px){
   .box {
     padding: 20px !important;
-  }
-  .background h1 {
-    font-size: 40px !important;
-    padding-right: 0 !important;
-  }
-  .background h3 {
-    text-align: center !important;
   }
 }
 

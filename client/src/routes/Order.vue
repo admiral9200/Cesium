@@ -128,11 +128,6 @@ export default {
 		width: auto;
 	}
 
-	.background h1 {
-		font-size: 40px !important;
-		padding-right: 0 !important;
-	}
-
 	.background h3 {
 		text-align: center !important;
 	}
@@ -160,10 +155,6 @@ export default {
 	}
 	.coffees {
 		padding: 0 !important;
-	}
-	.background h1 {
-		font-size: 40px !important;
-		padding-right: 0 !important;
 	}
 	.background h3 {
 		text-align: center !important;

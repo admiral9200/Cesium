@@ -31,20 +31,39 @@ const distanceMatrixMap = (user, userAddress, stores, locations, res) => {
 					}
 				});
 
-				try {
-					let storesAfterCartCheck = await pricesSum(user, storesDistanceMatrix);
+				if (storesDistanceMatrix.length > 0) {
+					try {
+						let storesAfterCartCheck = await pricesSum(user, storesDistanceMatrix);
 
-					storesAfterCartCheck.sort((a, b) => a.duration.value - b.duration.value);
-					// TODO core sort algorithm 
-
+						if (storesAfterCartCheck.length > 0) {
+							storesAfterCartCheck.sort((a, b) => a.duration.value - b.duration.value);
+							// TODO core sort algorithm 
+							/* 
+							* For each store we have and avg time for order prepare x the quantity of orders at this moment
+							*/
+		
+							res.send({
+								'stores': storesAfterCartCheck 
+							});
+						}
+						else {
+							res.send({
+								'noStoresFound': true,
+								'msg': 'Δε βρέθηκαν καταστήματα με τις επιλογές καφέ :('
+							});
+						}
+					} 
+					catch (error) {
+						console.log(error);
+						res.send({ 
+							'error': 'An unexpected error occured'
+						});
+					}
+				}
+				else {
 					res.send({
-						'stores': storesAfterCartCheck 
-					});
-				} 
-				catch (error) {
-					console.log(error);
-					res.send({ 
-						'error': 'An unexpected error occured'
+						'noStoresFound': true,
+						'msg': 'Δε βρέθηκαν καταστήματα με την διεύθυνση αυτή :('
 					});
 				}
 			}

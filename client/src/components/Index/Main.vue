@@ -2,7 +2,7 @@
 	<div class="overflow-hidden main">
 		<div class="row h-100 d-flex flex-row">
 			<div class="bg h-100 col-xxl-7 col-xl-7 col-lg-12 col-md-12 col-sm-12 col-12 p-0 pb-md-5">
-                <router-link class="logo-responsive d-grid content-main-left py-5 my-3" to="/"><img src="/images/chip_coffee_page.png" class="logo" alt="Chip Coffee"></router-link>
+                <a class="logo-responsive d-grid content-main-left py-xxl-5 py-xl-5 py-lg-5 py-md-5 py-sm-2 py-3 my-3" href="/"><img src="/images/chip_coffee_page.png" class="logo" alt="Chip Coffee"></a>
                 <div class="d-grid align-content-center flex-wrap content-main-left">
                     <h1 class="display-1">Παράγγειλε καφέ σε ένα 1'</h1>
                     <h3 class="text-white">Φθηνά, γρήγορα και ηλεκτρονικά</h3>
@@ -36,12 +36,21 @@ export default {
         right: -300px !important;
     }
 
+    .logo {
+        width: 250px;
+        height: auto;
+    }
+
+    .content-main-left {
+        padding-left: 5% !important;
+    }
+
 	.bg{
         border-radius: 0 !important;
     }
 
 	.bg h1{
-        font-size: 40px !important;
+        font-size: 3rem !important;
     }
 
     .bg h2{

@@ -17,18 +17,20 @@ export default {
 		background-position: center !important;
 	}
 	.background h1 {
-        font-size: 40px !important;
+        font-size: 2.5rem !important;
         padding-right: 0 !important;
     }
     .background h2{
       font-size: 25px !important;
     }
-    .background h3 {
-        text-align: center !important;
-    }
 }
 
 @media screen and (min-width: 400px) and (max-width: 850px){
+	.background h1 {
+        font-size: 2.5rem !important;
+        padding-right: 0 !important;
+    }
+
 	.background{
 		background-position: center !important;
 	}
@@ -61,7 +63,7 @@ a:hover {
 	color: white;
 	padding: 10% 0 0 0;
 	text-align: left;
-	font-size: 65px;
+	font-size: 4rem;
 	font-weight: 300;
 }
 

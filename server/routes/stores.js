@@ -91,4 +91,31 @@ router.post('/select', verifyToken, StoreSelectRule(), validate, (req, res) => {
 	);
 });
 
+router.delete('/remove', verifyToken, (req, res) => {
+	const user = jwt_decode(req.headers.authorization);
+	
+	Cart.findOneAndUpdate(
+		{ 
+			user_id: user.id,
+		},
+		{
+			store_id: ''
+		},
+		(error, results) => {
+			if (error) {
+				res.send({ 
+					'error': 'An unexpected error occured' 
+				});
+				console.log(error);
+			}
+
+			if (results) {
+				res.send({ 
+					'ok': true 
+				});
+			}
+		}
+	);
+});
+
 module.exports = router;
