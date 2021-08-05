@@ -167,7 +167,7 @@ router.post('/dec', verifyToken, CartOperationsRules(), validate, (req, res) => 
 	);
 });
 
-router.post('/del', verifyToken, CartOperationsRules(), validate, (req, res) => {
+router.delete('/product', verifyToken, CartOperationsRules(), validate, (req, res) => {
 	Cart.findOneAndUpdate(
 		{ 
 			user_id: req.body.user_id,

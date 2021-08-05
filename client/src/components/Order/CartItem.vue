@@ -162,8 +162,8 @@ export default {
 				NProgress.start();
 
 				try {
-					const response = await fetch('http://' + this.$store.state.base_url + ':3000/order/del', {
-						method: 'POST',
+					const response = await fetch('http://' + this.$store.state.base_url + ':3000/order/product', {
+						method: 'DELETE',
 						headers: {
 							"Content-type" : "application/json; charset=UTF-8",	
 							"Authorization" : token,

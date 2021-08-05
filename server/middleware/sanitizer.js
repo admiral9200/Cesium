@@ -91,10 +91,23 @@ const StoreSelectRule = () => {
 	];
 };
 
+const PaymentCheckoutRules = () => {
+	return [
+		check('ringbell').not().isEmpty().withMessage('Ringbell not provided').isString(),
+		check('floor').not().isEmpty().isNumeric(),
+		check('phone').not().isEmpty().isString(),
+		check('comments').not().isEmpty().isString()
+	];
+};
+
 const validate = (req, res, next) => {
 	const errors = validationResult(req);
+
 	if (errors.isEmpty()) return next();
-	return res.send({ 'errors': errors });
+
+	return res.send({ 
+		'errors': errors 
+	});
 };
 
 module.exports = {
@@ -109,5 +122,6 @@ module.exports = {
 	subscribeRule,
 	profileInfoRules,
 	profileCredentialsRules,
+	PaymentCheckoutRules,
 	validate
 };

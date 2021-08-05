@@ -171,6 +171,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
 	NProgress.start();
+	window.scrollTo(0, 0);
 
 	if (to.matched.some(record => record.meta.requiresAuth)) {
 		if (!VueCookies.get('token')) {

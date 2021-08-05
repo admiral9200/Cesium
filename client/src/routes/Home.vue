@@ -8,7 +8,6 @@
 		</div>
 		<div class="container">
 			<div class="row mx-auto my-3 justify-content-center">
-				<InsertAddress class="col-xxl-3 col-xl-4 col-md-4 col-12 my-xl-0 mb-3"/>
 				<AddressSelector class="col-xxl-5 col-xl-5 col-md-5 col-12 my-xl-0 mb-3"/>
 			</div>
 			<h2 class="mb-2 mt-5">Οι διευθύνσεις μου</h2>
@@ -47,7 +46,6 @@
 import Sale from '../components/layout/Sale';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
-import InsertAddress from '../components/Home/InsertAddress';
 import Addresses from '../components/Home/Addresses';
 import AddressSelector from '../components/Home/AddressSelector.vue';
 import Orders from '../components/Home/Orders';
@@ -56,7 +54,6 @@ export default {
 	name: 'Home',
 
 	components: {
-		InsertAddress,
 		Addresses,
 		AddressSelector,
 		Orders,

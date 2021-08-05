@@ -4,7 +4,7 @@
 			<vue-google-autocomplete
 				ref="address"
 				id="ba021a1a9d298ee2"
-				classname="form-control"
+				classname="form-control test"
 				placeholder="Πρόσθεσε εδώ την διεύθυνσή σου"
 				v-on:placechanged="getAddressData"
 				:country="['gr']"
@@ -75,7 +75,7 @@ export default {
 				try {
 					const token = this.$cookies.get('token');
 
-					let response = await fetch('http://' + this.$store.state.base_url + ':3000/home/insert', {
+					let response = await fetch('http://' + this.$store.state.base_url + ':3000/home/address', {
 						method: 'POST',
 						body: JSON.stringify({
 							address: this.address
@@ -91,13 +91,15 @@ export default {
 
 						if (res.completed === true) {
 							this.$root.$emit('CookieUpdate');
-
+							this.$root.$emit('InsertAddressResolved');
+							
 							this.$notify({
 								group: 'errors',
 								type: 'success',
 								title: 'Ειδοποίηση',
 								text: 'Η διεύθυνση προστέθηκε.'
 							});
+
 							this.$root.$emit('fetchAdresses');
 							this.$refs.address.clear();
 							this.address = null;
@@ -140,5 +142,6 @@ export default {
 <style>
 .pac-container {
 	border: none !important;
+	z-index: 1700;
 }
 </style>

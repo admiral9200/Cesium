@@ -1,14 +1,16 @@
 const express = require('express');
 const jwt_decode = require('jwt-decode');
-const { StoreSelectRule, validate } = require('../middleware/sanitizer');
 const verifyToken = require('../middleware/verifyToken');
+const { StoreSelectRule, validate } = require('../middleware/sanitizer');
+const { distanceMatrixMap } = require('../services/gmaps.core');
+
+//Models require
 const Cart = require('../models/cart');
 const Merchants = require('../models/merchant');
-const { distanceMatrixMap } = require('../services/gmaps.core');
 
 const router = express.Router();
 
-router.get('/:userAddress', verifyToken, async (req, res) => {
+router.get('/user/:userAddress', verifyToken, async (req, res) => {
 	const user = jwt_decode(req.headers.authorization);
 
 	try {
@@ -35,7 +37,7 @@ router.get('/:userAddress', verifyToken, async (req, res) => {
 	}
 });
 
-router.get('/id/:storeId', verifyToken, async (req, res) => {
+router.get('/:storeId', verifyToken, async (req, res) => {
 	try {
 		let store = await Merchants.findOne({
 			_id: req.params.storeId

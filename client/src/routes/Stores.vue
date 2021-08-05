@@ -44,13 +44,51 @@ export default {
 		}
 	},
 
+	async beforeRouteLeave (to, from, next) {
+		if (to.path !== '/checkout') {
+			const token = this.$cookies.get('token');
+
+			// Remove StoreID each time stores page load
+			try {
+				const responseStoreRemoval = await fetch('http://' + this.$store.state.base_url + ':3000/stores/remove', {
+					method: 'DELETE',
+					headers: {
+						"Authorization" : token,
+					}
+				});
+
+				if (responseStoreRemoval.ok) {
+					const resStoreRemoved = responseStoreRemoval.json();
+
+					if (resStoreRemoved.ok) {
+						this.$store.state.userCart.store_id = '';
+					}
+				}
+			} 
+			catch (error) {
+				this.$notify({
+					group: 'errors',
+					type: 'error',
+					title: 'Error',
+					text: error
+				});
+			}
+			finally {
+				next();
+			}
+		}
+		else {
+			next();
+		}
+	},
+
 	async created() {
 		const token = this.$cookies.get('token');
 		const userAddress = this.user_addr.route + ' ' + this.user_addr.street_number + ', ' + this.user_addr.locality + ' ' + this.user_addr.postal_code;
 
 		if (token) {
 			try {
-				const response = await fetch('http://' + this.$store.state.base_url + ':3000/stores/' + userAddress, {
+				const response = await fetch('http://' + this.$store.state.base_url + ':3000/stores/user/' + userAddress, {
 					method: 'GET',
 					headers: {
 						"Authorization" : token,
@@ -96,32 +134,6 @@ export default {
 			}
 			finally {
 				NProgress.done();
-			}
-
-			// Remove StoreID each time stores page load
-			try {
-				const responseStoreRemoval = await fetch('http://' + this.$store.state.base_url + ':3000/stores/remove', {
-					method: 'DELETE',
-					headers: {
-						"Authorization" : token,
-					}
-				});
-
-				if (responseStoreRemoval.ok) {
-					const resStoreRemoved = responseStoreRemoval.json();
-
-					if (resStoreRemoved.ok) {
-						this.$store.state.userCart.store_id = '';
-					}
-				}
-			} 
-			catch (error) {
-				this.$notify({
-					group: 'errors',
-					type: 'error',
-					title: 'Error',
-					text: error
-				});
 			}
 		}
 	},

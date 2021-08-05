@@ -53,6 +53,8 @@ app.use('/order' , require('./routes/order'));
 
 app.use('/stores' , require('./routes/stores'));
 
+app.use('/checkout' , require('./routes/checkout'));
+
 app.use('/home' , require('./routes/home'));
 
 app.use('/profile', require('./routes/profile'));

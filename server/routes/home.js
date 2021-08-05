@@ -6,7 +6,7 @@ const User = require('../models/user');
 
 const router = express.Router();
 
-router.post('/insert' , AddressRules(), validate, verifyToken, (req, res) => {
+router.post('/address' , AddressRules(), validate, verifyToken, (req, res) => {
 	const user = jwt_decode(req.headers.authorization);
 
 	User.findOne({ _id: user.id, email: user.email }, (error, results) => {
@@ -61,7 +61,7 @@ router.post('/insert' , AddressRules(), validate, verifyToken, (req, res) => {
 	});
 });
 
-router.delete('/delete', AddressRule(), validate, verifyToken, (req, res) => {
+router.delete('/address', AddressRule(), validate, verifyToken, (req, res) => {
 	const user = jwt_decode(req.headers.authorization);
 
 	User.findOneAndUpdate({
