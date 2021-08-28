@@ -249,7 +249,7 @@ export default {
 
 			if (!this.$v.$invalid) {
 				try {
-					const response = await fetch('http://' + this.$store.state.base_url + ':3000/checkout/payment', {
+					const response = await fetch('http://' + this.$store.state.base_url + ':3000/checkout/order', {
 						method: 'POST',
 						body: JSON.stringify({
 							ringbell: this.ringbell,

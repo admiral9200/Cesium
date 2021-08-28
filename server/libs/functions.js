@@ -37,5 +37,9 @@ module.exports = {
 			Array.isArray(b) &&
 			a.length === b.length &&
 			a.every((val, index) => val === b[index]);
+	},
+
+	duration_min: function(x) {
+		return Number.parseFloat(x).toFixed(0);
 	}
 };

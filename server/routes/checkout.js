@@ -8,8 +8,8 @@ const Merchants = require('../models/merchant');
 
 const router = express.Router();
 
-router.post('/payment', verifyToken, PaymentCheckoutRules(), validate, (res, req) => {
-	
+router.post('/order', verifyToken, PaymentCheckoutRules(), validate, (res, req) => {
+	// TODO integrate paypal and stripe apis
 });
 
 router.get('/cart', verifyToken, (req, res) => {
@@ -50,7 +50,7 @@ router.get('/cart', verifyToken, (req, res) => {
 									'blends': product.blends,
 									'decaf': product.decaf,
 								});
-								// * Known fields used here, maybe it can be dynamic
+								// * Known object properties used here, maybe it can be dynamic
 							}
 
 							sum += storeProduct.price;

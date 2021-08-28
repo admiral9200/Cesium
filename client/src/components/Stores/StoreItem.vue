@@ -6,7 +6,7 @@
 			</div>
 			<div class="card-body flex-grow-1 col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-7">
 				<h5 class="card-title mb-1">{{ store.name }}</h5>
-				<p class="card-text text-muted">{{ store.location + ' - ' + 'Εκτιμώμενος χρόνος: ' + store.duration.text }}</p>
+				<p class="card-text text-muted">{{ store.location + ' - ' + 'Εκτιμώμενος χρόνος: ' + store.order_time }} min</p>
 			</div>
 			<div class="card-body flex-grow-0 col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-12 d-flex justify-content-center align-self-center">
 				<a v-on:click="handleStoreSelection(store._id)" class="btn mainbtn">Παράγγειλε από εδώ</a>

@@ -1,15 +1,25 @@
 <template>
 	<form v-on:submit.prevent="Activator">
 		<div class="input-group">
-			<select v-model="selected._id" class="form-select pointer-base" :disabled="UserAddresses.length === 0">
+			<select
+				@change="handleSelector($event)"
+				class="form-select pointer-base" 
+				:disabled="UserAddresses.length === 0">
 				<option
 					v-for="(address, index) in UserAddresses" 
 					:key="index" 
-					:value="address._id">
+					:value="address._id"
+					:selected="address._id === selected._id"
+					>
 					{{ AddressFormat(address) }}
 				</option>
 			</select>
-			<button class="btn mainbtn" :class="{ 'disabled': UserAddresses.length === 0 }" type="submit" id="insert">Παράγγειλε</button>
+			<button 
+				class="btn mainbtn" 
+				:class="{ 'disabled': UserAddresses.length === 0 }" 
+				type="submit">
+				Παράγγειλε
+			</button>
 		</div>
 	</form>
 </template>
@@ -24,13 +34,6 @@ export default {
 	data() {
 		return {
 			selected: this.$cookies.get('actaddr'),
-		}
-	},
-	
-	created() {
-		if (this.UserAddresses.length > 0) {
-			this.$cookies.set("actaddr", this.UserAddresses[0], Infinity);
-			this.selected = this.UserAddresses[0];
 		}
 	},
 
@@ -58,13 +61,15 @@ export default {
 			return address.route + ' ' + address.street_number + ', ' + address.locality + ' ' + address.postal_code;
 		},
 
+		handleSelector: function (event) {
+			this.selected = this.UserAddresses.find(addr => addr._id === event.target.value);
+		},
+
 		Activator: function() {
 			NProgress.start();
 
 			try {
-				const token = this.$cookies.get('token');
-
-				if (token) {
+				if (this.$cookies.get('token')) {
 					this.$cookies.set("actaddr", this.UserAddresses.find(addr => addr._id === this.selected._id), Infinity);
 					this.selected = this.$cookies.get('actaddr');
 
