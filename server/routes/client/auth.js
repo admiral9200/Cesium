@@ -1,9 +1,9 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { loginSanitizeRules, signupSanitizeRules, validate } = require('../middleware/sanitizer');
-const cert = require('../utils/jwt.config');
-const User = require('../models/user');
+const { loginSanitizeRules, signupSanitizeRules, validate } = require('../../middleware/sanitizer');
+const cert = require('../../utils/jwt.config');
+const User = require('../../models/user');
 
 const router = express.Router();
 

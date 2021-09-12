@@ -1,6 +1,6 @@
 <template>
-	<div class="container-fluid">
-        <img src="/images/chip_coffee_page.png" class="logo" alt="Chip Coffee Logo">
+	<div class="d-flex flex-column justify-center align-center align-self-stretch flex-grow-1">
+        <img src="/images/chip_coffee_page.png" class="logo mb-10" alt="Chip Coffee Logo">
 		<Form/>
     </div>
 </template>
@@ -17,6 +17,6 @@ export default {
 
 <style scoped>
 .logo {
-	width: 300px;
+	width: 400px;
 }
 </style>

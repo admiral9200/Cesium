@@ -1,8 +1,8 @@
 const express = require('express');
-const verifyToken = require('../middleware/verifyToken');
+const verifyToken = require('../../middleware/verifyToken');
 const jwt_decode = require('jwt-decode');
-const Cart = require('../models/cart');
-const User = require('../models/user');
+const Cart = require('../../models/cart');
+const User = require('../../models/user');
 
 const router = express.Router();
 

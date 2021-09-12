@@ -1,14 +1,24 @@
 const express = require('express');
 const jwt_decode = require('jwt-decode');
-const { validate, PaymentCheckoutRules } = require('../middleware/sanitizer');
-const verifyToken = require('../middleware/verifyToken');
+const { validate, PaymentCheckoutRules } = require('../../middleware/sanitizer');
+const verifyToken = require('../../middleware/verifyToken');
+const rethinkdb = require('rethinkdb');
 
-const Cart = require('../models/cart');
-const Merchants = require('../models/merchant');
+const Cart = require('../../models/cart');
+const Merchants = require('../../models/merchant');
 
 const router = express.Router();
 
-router.post('/order', verifyToken, PaymentCheckoutRules(), validate, (res, req) => {
+let rethinkConnection = null;
+
+router.post('/order', verifyToken, PaymentCheckoutRules(), validate, async (res, req) => {
+	//RethinkDB connection
+	let rethinkConnection = await rethinkdb.connect({
+		host: 'localhost',
+		port: 49154,
+		db: 'CC_Orders'
+	},);
+
 	// TODO integrate paypal and stripe apis
 });
 
@@ -58,7 +68,7 @@ router.get('/cart', verifyToken, (req, res) => {
 
 						res.send({
 							'cart': cart,
-							'sum': sum.toFixed(2).replace('.', ',')
+							'sum': sum
 						});
 					}
 					else {
@@ -73,7 +83,8 @@ router.get('/cart', verifyToken, (req, res) => {
 			else {
 				res.send({ 
 					'cart': [],
-					'sum' : null
+					'sum' : null,
+					'msg': 'Το καλάθι σου είναι άδειο'
 				});
 			}
 		}

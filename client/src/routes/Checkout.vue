@@ -68,7 +68,7 @@
 						<b-list-group-item>
 							<section class="d-flex justify-content-between">
 								<h6 class="m-0">Συνολικό Κόστος</h6>
-								<h6 class="m-0">{{ sum }}€</h6>
+								<h6 class="m-0">{{ sum.toFixed(2).replace('.', ',') }}€</h6>
 							</section>
 						</b-list-group-item>
 					</b-list-group>
@@ -99,6 +99,7 @@ import Footer from '../components/layout/Footer';
 import NProgress from 'nprogress';
 import { required, numeric } from 'vuelidate/lib/validators';
 import router from '../router';
+import { io } from 'socket.io-client';
 
 const type = (value) => value === 'cash' || value === 'paypal' || value === 'credit'; 
 
@@ -242,31 +243,36 @@ export default {
 
 	methods: {
 		sendOrder: async function() {
-			const token = this.$cookies.get('token');
+			// const token = this.$cookies.get('token');
 
 			NProgress.start();
 			this.$v.$touch();
 
 			if (!this.$v.$invalid) {
 				try {
-					const response = await fetch('http://' + this.$store.state.base_url + ':3000/checkout/order', {
-						method: 'POST',
-						body: JSON.stringify({
-							ringbell: this.ringbell,
-							floor: this.floor,
-							phone: this.phone,
-							comments: this.comments
-						}),
-						headers: {
-							"Authorization" : token,
-						}
+					// !Reminder: Change domain for socket in prod
+					const socket = io('http://localhost:3000/', {
+						transports: ["websocket"] 
 					});
 
-					if (response.ok) {
-						let res = await response.json();
+					let orderDetails = {
+						store: this.store,
+						cart: this.cart,
+						ringbell: this.ringbell,
+						floor: this.floor,
+						phone: this.phone,
+						comments: this.comments
+					};
 
-						console.log(res);
-					}
+					socket.on("connect", () => {
+						socket.emit("order", orderDetails);
+					});
+
+					socket.on("disconnect", (reason) => {
+						if (socket.disconnect && !socket.connected) {
+							console.log(reason);
+						}
+					});
 				} 
 				catch (error) {
 					this.$notify({

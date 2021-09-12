@@ -11,9 +11,16 @@ const signupSanitizeRules = () => {
 	];
 };
 
-const loginSanitizeRules= () => {
+const loginSanitizeRules = () => {
 	return [ 
 		check('email').not().isEmpty().withMessage('Email is required').normalizeEmail().withMessage('3'), 
+		check('password').not().isEmpty().withMessage('Password is required').trim().escape()
+	];
+};
+
+const loginMerchantRule = () => {
+	return [ 
+		check('username').not().isEmpty().withMessage('Username is required').isString().trim().escape(), 
 		check('password').not().isEmpty().withMessage('Password is required').trim().escape()
 	];
 };
@@ -112,6 +119,7 @@ const validate = (req, res, next) => {
 
 module.exports = {
 	loginSanitizeRules,
+	loginMerchantRule,
 	signupSanitizeRules,
 	reorderSanitizeRules,
 	cartSanitizeRules,

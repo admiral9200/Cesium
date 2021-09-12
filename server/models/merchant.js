@@ -1,7 +1,18 @@
 const mongoose = require('mongoose');
 
 const MerchantsSchema = new mongoose.Schema({
-	dateCreated: Date,
+	username: {
+		type: String,
+		required: true,
+	},
+	password: {
+		type: String,
+		required: true,
+	},
+	dateCreated: {
+		type: Date,
+		required: true,
+	},
 	name: String,
 	location: String,
 	logo: String,

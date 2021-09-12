@@ -1,12 +1,12 @@
 const express = require('express');
 const jwt_decode = require('jwt-decode');
-const verifyToken = require('../middleware/verifyToken');
-const { StoreSelectRule, validate } = require('../middleware/sanitizer');
-const { distanceMatrixMap } = require('../services/gmaps.core');
+const verifyToken = require('../../middleware/verifyToken');
+const { StoreSelectRule, validate } = require('../../middleware/sanitizer');
+const { distanceMatrixMap } = require('../../services/gmaps.core');
 
 //Models require
-const Cart = require('../models/cart');
-const Merchants = require('../models/merchant');
+const Cart = require('../../models/cart');
+const Merchants = require('../../models/merchant');
 
 const router = express.Router();
 

@@ -1,9 +1,9 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const { profileInfoRules, profileCredentialsRules , validate } = require('../middleware/sanitizer');
-const verifyToken = require('../middleware/verifyToken');
+const { profileInfoRules, profileCredentialsRules , validate } = require('../../middleware/sanitizer');
+const verifyToken = require('../../middleware/verifyToken');
 const jwt_decode = require('jwt-decode');
-const User = require('../models/user');
+const User = require('../../models/user');
 
 const router = express.Router();
 

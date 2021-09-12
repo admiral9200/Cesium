@@ -1,9 +1,9 @@
 const express = require('express');
-const { reorderSanitizeRules, cartSanitizeRules, CartOperationsRules , validate } = require('../middleware/sanitizer');
-const verifyToken = require('../middleware/verifyToken');
-const Coffee = require('../models/coffee');
-const Cart = require('../models/cart');
-const tools = require('../libs/functions');
+const { reorderSanitizeRules, cartSanitizeRules, CartOperationsRules , validate } = require('../../middleware/sanitizer');
+const verifyToken = require('../../middleware/verifyToken');
+const Coffee = require('../../models/coffee');
+const Cart = require('../../models/cart');
+const tools = require('../../libs/functions');
 
 const router = express.Router();
 

@@ -28,6 +28,7 @@
     "jwt-decode": "^3.1.2",
     "mongoose": "^5.12.7",
     "rethinkdb": "^2.4.2",
+    "socket.io": "^4.2.0",
     "stripe": "^8.160.0"
   }
 }
