@@ -3,10 +3,8 @@ import Vuex from 'vuex';
 import VueCookies from 'vue-cookies';
 import router from '../router';
 import NProgress from 'nprogress';
-import Notifications from 'vue-notification';
 
 Vue.use(Vuex);
-Vue.use(Notifications);
 
 export default new Vuex.Store({
 	state: {
@@ -15,24 +13,25 @@ export default new Vuex.Store({
 			email: '',
 			username: '',
 		},
+		loggedIn: false,
 		base_url: window.location.hostname
 	},
 
 	mutations: {
 		SET_USER_INFO(state, user) {
-			state.userInfo = user;
+			state.user = user;
 		}
 	},
 
 	actions: {
 		async fetchUserInfo({ commit }) {
-			const token = VueCookies.get('token');
+			const token = VueCookies.get('cc_b_id');
 
 			if (token) {
 				NProgress.start();
 
 				try {
-					const res = await fetch('http://' + this.state.base_url + ':3000/m/user', {
+					const res = await fetch('http://' + this.state.base_url + ':3000/m/user/info', {
 						method: 'GET',
 						headers: {
 							"Authorization" : token,
@@ -42,26 +41,38 @@ export default new Vuex.Store({
 					const resolve = await res.json();
 
 					if (res.ok) {
-						if (!resolve.error) {
-							commit('SET_USER_INFO', resolve);
+						if (resolve.merchant) {
+							commit('SET_USER_INFO', resolve.merchant);
+							this.state.loggedIn = true;
+						}
+						else if (resolve.tokenExpired) {
+							this.state.loggedIn = false;
+	
+							Vue.notify({
+								group: 'errors',
+								type: 'error',
+								title: 'Error',
+								text: resolve.message
+							});
+
+							this.state.user = {
+								id: '',
+								email: '',
+								username: ''
+							};
+
+							VueCookies.remove('cc_b_id');
+
+							router.push("/");
 						}
 						else {
-							this.$notify({
+							Vue.notify({
 								group: 'errors',
 								type: 'error',
 								title: 'Error',
 								text: resolve.error
 							});
 						}
-					}
-					else if (resolve.auth === false && res.status === 403) {
-						this.state.userInfo.name = null;
-						this.state.userInfo.surname = null;
-						this.state.userInfo.mobile = null;
-						this.state.userInfo.email = null;
-						this.state.token = null;
-						this.cookies.keys().forEach(cookie => this.$cookies.remove(cookie));
-						router.push("/");
 					}
 				} 
 				catch (error) {

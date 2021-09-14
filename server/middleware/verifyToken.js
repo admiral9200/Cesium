@@ -3,19 +3,20 @@ const cert = require('../utils/jwt.config');
 
 const verifyToken = (req, res, next) => {
     if (!req.headers.authorization){
-        return res.status(403).send({ 
-            auth: false, 
-            message: 'You are logged off' 
+        return res.send({ 
+            loggedIn: false, 
+            message: 'You are logged off. Log in to continue' 
         });
     }
 
     jwt.verify(req.headers.authorization, cert.public, (error, decoded) => {
         if (error) {
-            console.log(error);
-            return res.status(403).send({ 
-                    auth: false, 
-                    message: 'Fail to authenticate. Try logging in again' 
+            if (error.name === 'TokenExpiredError') {
+                return res.send({ 
+                    tokenExpired: true, 
+                    message: 'Session expired. Log in again to continue.' 
                 });
+            }
         }
         // TODO Maybe check user token to verify if it is not expired.. Use Redis for this
         next();

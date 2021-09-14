@@ -3,10 +3,8 @@ import Vuex from 'vuex';
 import VueCookies from 'vue-cookies';
 import router from '../router';
 import NProgress from 'nprogress';
-import Notifications from 'vue-notification';
 
 Vue.use(Vuex);
-Vue.use(Notifications);
 
 export default new Vuex.Store({
 	state: {

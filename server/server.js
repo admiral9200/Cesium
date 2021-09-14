@@ -60,6 +60,7 @@ app.use('/profile', require('./routes/client/profile'));
 
 //ROUTES MERCHANTS
 app.use('/m/auth', require('./routes/merchants/auth'));
+app.use('/m/user', require('./routes/merchants/user'));
 
 io.on("connection", (socket) => {
 	socket.on("order", (order) => {

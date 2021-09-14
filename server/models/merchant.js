@@ -8,6 +8,7 @@ const MerchantsSchema = new mongoose.Schema({
 	password: {
 		type: String,
 		required: true,
+		select: false
 	},
 	dateCreated: {
 		type: Date,

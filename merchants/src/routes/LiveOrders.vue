@@ -1,15 +1,15 @@
 <template>
 	<div>
-
+		LIVE ORDERS
 	</div>
 </template>
 
 <script>
 export default {
-	name: 'Home'
+	name: 'LiveOrders'
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>

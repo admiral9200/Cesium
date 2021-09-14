@@ -1,5 +1,5 @@
 <template>
-	<div class="d-flex flex-column justify-center align-center align-self-stretch flex-grow-1">
+	<div>
         <img src="/images/chip_coffee_page.png" class="logo mb-10" alt="Chip Coffee Logo">
 		<Form/>
     </div>

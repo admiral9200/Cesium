@@ -19,7 +19,7 @@ Vue.config.productionTip = false;
 (async () => {
 	try {	
 		if (VueCookies.get('cc_b_id')) {
-			console.log('OK');
+			await store.dispatch('fetchUserInfo');
 		}
 	}
 	finally {

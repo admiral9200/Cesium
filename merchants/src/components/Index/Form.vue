@@ -1,5 +1,5 @@
 <template>
-	<v-form v-on:submit.prevent="Login" class="cc_form">
+	<v-form @submit.prevent="Login" class="cc_form">
 		<v-row>
 			<v-col cols="12">
 				<v-text-field 
@@ -15,14 +15,13 @@
 					:error-messages="passwordErrors"
 					:append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
 					:type="showPassword ? 'text' : 'password'"
-					name="input-10-1"
 					label="Password"
 					counter
 					@input="$v.password.$touch()"
 					@blur="$v.password.$touch()"
 					@click:append="showPassword = !showPassword"
 				></v-text-field>
-				<v-btn block color="amber" class="mt-8 black--text" @click="Login">Login</v-btn>
+				<v-btn type="submit" block color="amber" class="mt-8 black--text">Login</v-btn>
 				<div class="text-center my-3">
 					<v-progress-circular indeterminate color="amber" v-if="isLoading"></v-progress-circular>
 					<p v-if="hasErrorMsg" class='red--text'>{{ hasErrorMsg }}</p>
@@ -33,7 +32,6 @@
 </template>
 
 <script>
-import router from '@/router/index';
 import { required } from 'vuelidate/lib/validators';
 import store from '@/store/index';
 
@@ -95,21 +93,21 @@ export default {
 
 					if (response.ok) {
 						let resolve = await response.json();
-
+						
 						if (resolve.auth === true) {
 							this.$cookies.set("cc_b_id" , resolve.token , "5h");
 							await store.dispatch('fetchUserInfo');
-							router.push("/home");
+							this.$router.push("/home");
 						}
 						else if (resolve.error) {
-							this.isLoading = false;
-							this.hasErrorMsg = resolve.error;
+							this.hasErrorMsg = resolve.error.msg;
 						}
 					}
 					else if (!response.ok) {
-						this.isLoading = false;
 						this.hasErrorMsg = response.status;
 					}
+
+					this.isLoading = false;
 				}
 				catch (error) {
 					this.isLoading = false;

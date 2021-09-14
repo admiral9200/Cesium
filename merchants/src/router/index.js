@@ -1,5 +1,5 @@
 import Vue from 'vue';
-// import store from './store/store';
+//import store from './store/store';
 import VueRouter from 'vue-router';
 import VueCookies from 'vue-cookies';
 import NProgress from 'nprogress';
@@ -7,6 +7,8 @@ import NProgress from 'nprogress';
 //Components
 import Index from '../routes/Index';
 import Home from '../routes/Home';
+import Orders from '../routes/Orders';
+import LiveOrders from '../routes/LiveOrders';
 
 NProgress.configure({ showSpinner: false });
 
@@ -16,12 +18,60 @@ const routes = [
 	{
 		path: '/',
 		name: 'Index',
-		component: Index
+		component: Index,
+		meta: {
+			disallowAuthed: true
+		},
+		beforeEnter (to, from, next) {
+			if (VueCookies.get('cc_b_id')) {
+				if (from.path === '/home') {
+					next({ 
+						path: '/'
+					});
+				}
+				else {
+					next({ 
+						path: '/home'
+					});
+				}
+			} 
+			else {
+				next();
+			}
+		}
 	},
 	{
 		path: '/home',
 		name: 'Home',
-		component: Home
+		component: Home,
+		props: {
+			default: true
+		},
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: '/liveorders',
+		name: 'Live Orders',
+		component: LiveOrders,
+		props: {
+			default: true
+		},
+		meta: {
+			requiresAuth: true
+		},
+	},
+	{
+		path: '/orders',
+		name: 'Orders',
+		component: Orders,
+		props: {
+			default: true
+		},
+		meta: {
+			requiresAuth: true
+		},
 	}
 ];
 
@@ -33,10 +83,8 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
 	NProgress.start();
-	window.scrollTo(0, 0);
-
-	if (to.matched.some(record => record.meta.requiresAuth)) {
-		if (!VueCookies.get('token')) {
+	if (to.matched.some(route => route.meta.requiresAuth)) {
+		if (!VueCookies.get('cc_b_id')) {
 			next({ path: '/' });
 		} 
 		else {
@@ -44,7 +92,7 @@ router.beforeEach((to, from, next) => {
 		}
 	}
 	else if (to.matched.some(attr => attr.meta.disallowAuthed)) {
-		if (!VueCookies.get('token')) {
+		if (!VueCookies.get('cc_b_id')) {
 			next();
 		} 
 		else {
@@ -56,8 +104,6 @@ router.beforeEach((to, from, next) => {
 	}
 });
 
-router.afterEach(() => {
-	NProgress.done();
-});
+router.afterEach(() => NProgress.done());
 
 export default router;
