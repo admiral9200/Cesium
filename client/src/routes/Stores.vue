@@ -106,6 +106,16 @@ export default {
 						this.noStoresFound = res.noStoresFound;
 						this.msg = res.msg;
 					}
+					else if (res.error.name === 'UserAddressNotFound') {
+						this.$notify({
+							group: 'errors',
+							type: 'error',
+							title: 'Error',
+							text: 'Unexpected error: ' + res.error.msg
+						});
+
+						this.$router.push('/home');
+					}
 					else {
 						this.$notify({
 							group: 'errors',

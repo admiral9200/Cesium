@@ -7,6 +7,7 @@ import NProgress from 'nprogress';
 //Components
 import Index from '../routes/Index';
 import Home from '../routes/Home';
+import Settings from '../routes/Settings';
 import Orders from '../routes/Orders';
 import LiveOrders from '../routes/LiveOrders';
 
@@ -66,6 +67,17 @@ const routes = [
 		path: '/orders',
 		name: 'Orders',
 		component: Orders,
+		props: {
+			default: true
+		},
+		meta: {
+			requiresAuth: true
+		},
+	},
+	{
+		path: '/settings',
+		name: 'settings',
+		component: Settings,
 		props: {
 			default: true
 		},

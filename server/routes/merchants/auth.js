@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post('/login', loginMerchantRule(), validate, async (req, res) => {
 	try {
-		let merchant = await Merchant.findOne({ username: req.body.username }).select("+password");	
+		const merchant = await Merchant.findOne({ username: req.body.username }).select("+password");	
 
 		if (merchant) {
 			bcrypt.compare(req.body.password, merchant.password, (error, result) => {
@@ -27,7 +27,7 @@ router.post('/login', loginMerchantRule(), validate, async (req, res) => {
 					}, cert.secret,
 					{
 						algorithm: 'RS256',
-						expiresIn: '1h' // ! 2 hours for testing
+						expiresIn: '2h' // ! 2 hours for testing
 					}, (error, token) => {
 
 						if (error) {
@@ -42,6 +42,14 @@ router.post('/login', loginMerchantRule(), validate, async (req, res) => {
 								auth: true, 
 								token: token 
 							});
+						}
+					});
+				}
+				else {
+					res.send({
+						error: {
+							name: 'CredentialsIncorrect',
+							msg: 'Username or Password is incorrect'
 						}
 					});
 				}

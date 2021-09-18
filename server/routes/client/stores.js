@@ -14,18 +14,33 @@ router.get('/user/:userAddress', verifyToken, async (req, res) => {
 	const user = jwt_decode(req.headers.authorization);
 
 	try {
-		let stores = await Merchants.find({}).exec();
+		if (req.params.userAddress) {
+			let stores = await Merchants.find({
+				store_status: {
+					$eq: true
+				}
+			}).exec();
 
-		if (stores !== null) {
-			let locations = '';
-			stores.forEach(store => locations += store.location + '|');
-			locations.slice(0, -1);
-
-			distanceMatrixMap(user, req.params.userAddress, stores, locations, res);
+			if (stores.length > 0) {
+				let locations = '';
+				stores.forEach(store => locations += store.location + '|');
+				locations.slice(0, -1);
+	
+				distanceMatrixMap(user, req.params.userAddress, stores, locations, res);
+			}
+			else {	
+				res.send({
+					'noStoresFound': true,
+					'msg': 'Δε βρέθηκαν ανοιχτά καταστήματα στην περιοχή σου :('
+				});
+			}
 		}
-		else {	
+		else {
 			res.send({
-				'error': 'An unexpected error occured'
+				error: {
+					name: 'UserAddressNotFound',
+					msg: 'Πρέπει να εισάγεις την διέυθυνση σου πρώτα'
+				}
 			});
 		}
 	} 

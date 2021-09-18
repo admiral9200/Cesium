@@ -1,6 +1,6 @@
 <template>
-	<div>
-        <img src="/images/chip_coffee_page.png" class="logo mb-10" alt="Chip Coffee Logo">
+	<div class="d-flex flex-column align-center">
+        <img src="/images/chip_coffee_page.png" class="logo mb-10">
 		<Form/>
     </div>
 </template>

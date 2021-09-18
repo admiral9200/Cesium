@@ -8,11 +8,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
-		user: {
-			id: '',
-			email: '',
-			username: '',
-		},
+		user: {},
 		loggedIn: false,
 		base_url: window.location.hostname
 	},

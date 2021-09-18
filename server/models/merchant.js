@@ -17,6 +17,7 @@ const MerchantsSchema = new mongoose.Schema({
 	name: String,
 	location: String,
 	logo: String,
+	store_status: Boolean,
 	active_orders: Number,
 	avg_order_preparation: Number,
 	open_hour: Date,
@@ -30,6 +31,9 @@ const MerchantsSchema = new mongoose.Schema({
 		size: Array,
 		decaf: Boolean
 	}],
+	orders: [{
+		
+	}]
 });
 
 module.exports = mongoose.model('Merchants', MerchantsSchema);

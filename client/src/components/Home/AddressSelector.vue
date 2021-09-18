@@ -2,7 +2,7 @@
 	<form v-on:submit.prevent="Activator">
 		<div class="input-group">
 			<select
-				@change="handleSelector($event)"
+				@click="handleSelector($event)"
 				class="form-select pointer-base" 
 				:disabled="UserAddresses.length === 0">
 				<option
@@ -33,7 +33,7 @@ export default {
 
 	data() {
 		return {
-			selected: this.$cookies.get('actaddr'),
+			selected: this.$cookies.get('actaddr') || {},
 		}
 	},
 

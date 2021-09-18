@@ -4,10 +4,10 @@ const { duration_min } = require('../libs/functions');
 
 const client = new Client({});
 
-const distanceMatrixMap = (user, userAddress, stores, locations, res) => {
+const distanceMatrixMap = (user, userAddress, stores, storesLocations, res) => {
 	client.distancematrix({
 		params: {
-			origins: [ locations ],
+			origins: [ storesLocations ],
 			destinations: [ userAddress ],
 			key: process.env.GMAPS_API_KEY,
 		}

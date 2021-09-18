@@ -105,6 +105,12 @@ export default {
 					}
 					else if (!response.ok) {
 						this.hasErrorMsg = response.status;
+						this.$notify({
+							group: 'main',
+							type: 'error',
+							title: 'Cofy',
+							text: response.status
+						});
 					}
 
 					this.isLoading = false;
@@ -112,7 +118,7 @@ export default {
 				catch (error) {
 					this.isLoading = false;
 					this.$notify({
-						group: 'errors',
+						group: 'main',
 						type: 'error',
 						title: 'Cofy',
 						text: error
