@@ -5,6 +5,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const http = require('http');
 const socketio = require('socket.io');
+const registerOrderHandler = require('./services/orderHandler');
 
 const app = express();
 const server = http.createServer(app);
@@ -17,6 +18,7 @@ const whitelist = [
 	"http://192.168.1.9:8080",
 	"http://192.168.1.6:8080",
 	"http://192.168.137.1:8080",
+	"http://192.168.1.3:8080"
 ];
 
 let corsOptions = {
@@ -63,13 +65,8 @@ app.use('/m/auth', require('./routes/merchants/auth'));
 app.use('/m/user', require('./routes/merchants/user'));
 app.use('/m/store', require('./routes/merchants/store'));
 
-io.on("connection", (socket) => {
-	socket.on("order", (order) => {
-		console.log(order);
-	});
-
-	//socket.disconnect(true);
-});
+// Register socket events in handler file
+io.on("connection", (socket) => registerOrderHandler(io, socket));
 
 server.listen(port, () => {
 	console.log(`Cofy Backend running on port ${ port }`);

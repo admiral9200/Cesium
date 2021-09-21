@@ -58,7 +58,7 @@
 							<div class="d-flex justify-content-between">
 								<div class="row">
 									<p class="m-0">{{ product.name }}</p>
-									<p class='text-muted cc-p-font m-0'>{{ product.size > 1 ? product.size + 'πλος' : 'Μονός' }}, {{ product.blends + ', ' + product.sugar + ', ' + product.sugarType }}</p>
+									<p class='text-muted m-0'>{{ product.size > 1 ? product.size + 'πλος' : 'Μονός' }}, {{ product.blends + ', ' + product.sugar + ', ' + product.sugarType }}</p>
 								</div>
 								<div>
 									<p class="text-center">{{ product.price }}€</p>
@@ -244,28 +244,39 @@ export default {
 	methods: {
 		sendOrder: async function() {
 			// const token = this.$cookies.get('token');
-
-			NProgress.start();
 			this.$v.$touch();
 
 			if (!this.$v.$invalid) {
+				NProgress.start();
 				try {
 					// !Reminder: Change domain for socket in prod
 					const socket = io('http://localhost:3000/', {
 						transports: ["websocket"] 
 					});
 
+					let user = this.$store.state.userInfo;
+
+					user.address =  this.$cookies.get('actaddr');
+					user.payment = this.payment;
+					user.ringbell = this.ringbell;
+					user.floor = this.floor;
+					user.phone = this.phone;
+					user.comments = this.comments;
+
 					let orderDetails = {
 						store: this.store,
 						cart: this.cart,
-						ringbell: this.ringbell,
-						floor: this.floor,
-						phone: this.phone,
-						comments: this.comments
+						user: user
 					};
 
 					socket.on("connect", () => {
-						socket.emit("order", orderDetails);
+						socket.emit("order:client:send", orderDetails);
+						this.$notify({
+							group: 'errors',
+							type: 'success',
+							title: 'Cofy',
+							text: 'Order sent'
+						});
 					});
 
 					socket.on("disconnect", (reason) => {

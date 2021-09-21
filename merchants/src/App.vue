@@ -2,7 +2,7 @@
 	<v-app>
 		<notifications position="top center" class="ma-2 user-select-none" group="main"/>
 
-		<v-navigation-drawer app v-if="LoggedIn">
+		<v-navigation-drawer app :expand-on-hover="expandDrawer" v-if="LoggedIn">
 			<v-list-item>
 				<v-list-item-content>
 					<v-list-item-title class="text-h6">Cofy Merchants</v-list-item-title>
@@ -15,7 +15,10 @@
 			<v-list dense nav class="mt-5">
 				<v-list-item v-for="item in items" :key="item.title" :to="item.path" link>
 					<v-list-item-icon>
-						<v-icon>{{ item.icon }}</v-icon>
+						<v-badge v-if="item.notification" :content="RtOrderMsg" :value="RtOrderMsg" color="red" dot>
+							<v-icon>{{ item.icon }}</v-icon>
+						</v-badge>
+						<v-icon v-else>{{ item.icon }}</v-icon>
 					</v-list-item-icon>
 					<v-list-item-content>
 						<v-list-item-title>{{ item.title }}</v-list-item-title>
@@ -35,7 +38,13 @@
 
 			<v-spacer></v-spacer>
 
-			<v-switch flat v-model="StoreStatus" :label="StoreStatus ? 'Store Online' : 'Store Offline'" color="success" class="mt-6 mr-4"></v-switch>
+			<v-switch 
+				flat 
+				v-model="StoreStatus" 
+				:label="StoreStatus ? 'Store Online' : 'Store Offline'" 
+				color="success" 
+				class="mt-6 mr-4">
+			</v-switch>
 
 			<v-menu left bottom>
 				<template v-slot:activator="{ on, attrs }">
@@ -74,32 +83,41 @@ export default {
 
 	data() {
 		return {
+			RtOrderMsg: 0,
 			items: [
 				{ 
 					title: 'Dashboard', 
 					icon: 'mdi-view-dashboard',
-					path: '/home'
+					path: '/home',
+					notification: false
 				},
 				{ 
 					title: 'Realtime Orders', 
 					icon: 'mdi-access-point',
-					path: '/liveorders'
+					path: '/liveorders',
+					notification: true
 				},
 				{ 
 					title: 'Orders', 
 					icon: 'mdi-checkbox-marked-circle',
-					path: '/orders'
+					path: '/orders',
+					notification: false
 				},
 				{ 
 					title: 'Payments', 
 					icon: 'mdi-credit-card',
-					path: '/payments'
+					path: '/payments',
+					notification: false
 				},
 			],
 		}
 	},
 
 	computed: {
+		expandDrawer: function() {
+			return this.$store.state.settings.expandOnHover;
+		},
+
 		LoggedIn() {
 			return this.$store.state.loggedIn;
 		},
@@ -131,7 +149,7 @@ export default {
 					if (res.ok) {
 						let response = await res.json();
 
-						if (response.tokenExpired) {
+						if (response.tokenExpired || response.tokenMalformed) {
 							this.TokenExpiredHelper();
 
 							this.$notify({
@@ -165,7 +183,7 @@ export default {
 								group: 'main',
 								type: 'error',
 								title: 'Cofy',
-								text: response.error.msg
+								text: response.error.msg || response.error.message
 							});
 						}
 					}

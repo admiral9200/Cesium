@@ -10,7 +10,11 @@ export default new Vuex.Store({
 	state: {
 		user: {},
 		loggedIn: false,
-		base_url: window.location.hostname
+		base_url: window.location.hostname,
+		orders: [],
+		settings: {
+			expandOnHover: false
+		}
 	},
 
 	mutations: {
