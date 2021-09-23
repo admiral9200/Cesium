@@ -1,6 +1,6 @@
 <template>
-	<div>
-		<v-card v-for="newOrder in newOrders" :key="newOrder.id" class="d-flex justify-space-between my-3">
+	<v-scale-transition v-if="newOrders.length > 0" group>
+		<v-card :loading="newOrder.loaderInCard" v-for="newOrder in newOrders" :key="newOrder.id" class="d-flex justify-space-between my-3 pa-1 rounded-xl">
 			<div class="d-flex flex-column justify-center">
 				<v-card-title>Order ID: {{ newOrder.id }}</v-card-title>
 				<v-card-subtitle>Date: {{ newOrder.date }}</v-card-subtitle>
@@ -47,10 +47,17 @@
 				</v-card>
 			</div>
 			<v-card-actions class="d-flex flex-column align-self-start justify-center">
-				<v-btn @click="ConfirmOrderToClient" :disable="newOrder.confirmed" large block color="primary" class="my-1 mx-0">
-					Confirm
-					<v-icon dark right size="22">mdi-checkbox-marked-circle</v-icon>
-				</v-btn>
+				<v-tooltip left>
+					<template v-slot:activator="{ on }">
+						<div v-on="on">
+							<v-btn @click="ConfirmOrderToClient(newOrder)" :disabled="newOrder.confirmed" large block color="primary" class="my-1 mx-0">
+								Confirm
+								<v-icon dark right size="22">mdi-checkbox-marked-circle</v-icon>
+							</v-btn>
+						</div>
+					</template>
+					<span>You have confirmed this order!</span>
+				</v-tooltip>
 				<v-btn @click="CompleteOrder" large block color="success" class="my-1 mx-0">
 					Deliver
 					<v-icon dark right size="22">mdi-check-all</v-icon>
@@ -61,7 +68,10 @@
 				</v-btn>
 			</v-card-actions>
 		</v-card>
-	</div>
+	</v-scale-transition>
+	<v-scale-transition v-else>
+		<h2>No new orders</h2>
+	</v-scale-transition>
 </template>
 
 <script>
@@ -72,13 +82,20 @@ export default {
 
 	data() {
 		return {
-			newOrders: []
+			newOrders: [],
+			show: false
 		}
 	},
 
 	methods: {
-		ConfirmOrderToClient: async function() {
+		ConfirmOrderToClient: async function(order) {
+			order.loaderInCard = true;
+			// !Reminder: Change domain for socket in prod
+			const socket = io('http://' + this.$store.state.base_url + ':3000', {
+				transports: ["websocket"] 
+			});
 
+			socket.on("connect", () => socket.emit("merchant:confirm_order", this.$cookies.get('cc_b_id'), order.id));
 		},
 
 		CompleteOrder: async function() {
@@ -130,25 +147,45 @@ export default {
 			});
 		}
 		// !Reminder: Change domain for socket in prod
-		const socket = io('http://localhost:3000/', {
+		const socket = io('http://' + this.$store.state.base_url + ':3000', {
 			transports: ["websocket"] 
 		});
 
 		socket.on("connect", () => {
-			socket.emit("feed", this.$cookies.get('cc_b_id'));
+			socket.emit("merchant:feed", this.$cookies.get('cc_b_id'));
 		});
 
 		socket.on("new_order", (new_order) => {
-			this.newOrders.push(new_order);
+			try {
+				new Audio('/assets/cc_notification2.mp3').play();	
+			} 
+			finally {
+				this.newOrders.push(new_order);
+			}
+		});
+
+		socket.on('new_order:remove', (old_val) => {
+			let removeIndex = this.newOrders.map(order => order.id).indexOf(old_val.id);
+			~removeIndex && this.newOrders.splice(removeIndex, 1);
+		});
+
+		socket.on('new_order:change', (order_id) => {
+			this.newOrders.find(order => {
+				if (order.id === order_id) {
+					order.confirmed = true;
+					order.loaderInCard = false;
+				}
+			});
+
 		});
 	},
 
 	beforeRouteLeave (to, from, next) {
-		const socket = io('http://localhost:3000/', {
+		const socket = io('http://' + this.$store.state.base_url + ':3000', {
 			transports: ["websocket"] 
 		});
 		
-		socket.emit("stopFeed");
+		socket.emit("merchant:stopFeed");
 
 		socket.on("disconnect", (reason) => {
 			if (socket.disconnect && !socket.connected) {

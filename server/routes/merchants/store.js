@@ -7,7 +7,7 @@ const Merchant = require('../../models/merchant');
 
 const router = express.Router();
 
-const PORT = 49160;
+const PORT = 49154;
 
 router.post('/status', verifyToken, async (req, res) => {
 	try {

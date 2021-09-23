@@ -2,12 +2,12 @@
 	<div>
 		<div class="background">
 			<Header :userInfo="userInfo"/>
-			<div class="container py-3">
+			<div class="container py-3" v-if="orderNotSent">
 				<h1>Ολοκλήρωση Παραγγελίας</h1>
 			</div>
 		</div>
 		<div class="container-fluid my-5">
-			<form v-on:submit.prevent="sendOrder" class="row d-flex justify-content-center" novalidate>
+			<form v-if="orderNotSent" v-on:submit.prevent="sendOrder" class="row d-flex justify-content-center" novalidate>
 				<div class="col-xl-3 col-md-12 col-12 card box shadow-lg p-xl-5 p-md-5 mx-3">
 					<h4 class="mb-2">1. Στοιχεία Παραγγελίας</h4>
 					<div class="row my-2">
@@ -86,6 +86,21 @@
 					<button type="submit" class="btn mainbtn my-2">Αποστολή Παραγγελίας</button>
 				</div>
 			</form>
+			<div v-else-if="awaitConfirmation" class="confirm-section d-flex flex-column align-items-center justify-content-center mx-auto my-5 py-5">
+				<b-spinner style="width: 4.2rem; height: 4.2rem;" type="grow" class="mt-5 mb-4"></b-spinner>
+				<b-jumbotron header-level="5" header="Αποστολή παραγγελίας σε εξέλιξη" class="text-center">
+					<p>Η παραγγελία σου έχει φύγει από εμάς και περιμένουμε την επιβεβαίωση του καταστήματος.
+						<strong>Παρακαλούμε μην πατήσεις ανανέωση και μη κλείσεις το παράθυρο!</strong>
+					</p>
+				</b-jumbotron>
+			</div>
+			<div v-else-if="orderConfirmed">
+				<b-alert show variant="success" class="d-flex flex-column align-items-center justify-content-center mx-auto my-5 py-5 w-50">
+					<b-icon font-scale="8" icon="check-circle-fill"></b-icon>
+					<h1 class="alert-heading my-3">Η παραγγελία σου θα παραδωθεί σε 10'</h1>
+					<p class="text-center w-75 mt-4 mb-0">Ώρα επιβεβαίωσης: {{ orderSummary.date }}</p>
+				</b-alert>
+			</div>
 		</div>
 		<Sale/>
 		<Footer/>
@@ -116,6 +131,10 @@ export default {
 
 	data() {
 		return {
+			orderSummary: {},
+			orderNotSent: true,
+			awaitConfirmation: false,
+			orderConfirmed: false,
 			payment: 'none',
 			phone: '',
 			ringbell: '',
@@ -243,14 +262,13 @@ export default {
 
 	methods: {
 		sendOrder: async function() {
-			// const token = this.$cookies.get('token');
 			this.$v.$touch();
 
 			if (!this.$v.$invalid) {
 				NProgress.start();
 				try {
 					// !Reminder: Change domain for socket in prod
-					const socket = io('http://localhost:3000/', {
+					const socket = io('http://' + this.$store.state.base_url + ':3000', {
 						transports: ["websocket"] 
 					});
 
@@ -270,18 +288,26 @@ export default {
 					};
 
 					socket.on("connect", () => {
-						socket.emit("order:client:send", orderDetails);
-						this.$notify({
-							group: 'errors',
-							type: 'success',
-							title: 'Cofy',
-							text: 'Order sent'
-						});
+						socket.emit("order:client:send", this.$cookies.get('token'), orderDetails);
 					});
 
-					socket.on("disconnect", (reason) => {
+					socket.on('order:client:await_confirm', (orderId) => {
+						this.orderNotSent = false;
+						this.awaitConfirmation = true;
+						socket.emit('order:merchant:confirm', this.$cookies.get('token'), orderId);
+					});
+
+					socket.on('order:client:confirmed', (orderDate) => {
+						NProgress.start();
+						this.orderSummary.date = orderDate;
+						this.awaitConfirmation = false;
+						this.orderConfirmed = true;
+						socket.emit("order:completeddisconnect");
+					});
+
+					socket.on("disconnect", () => {
 						if (socket.disconnect && !socket.connected) {
-							console.log(reason);
+							NProgress.done();
 						}
 					});
 				} 
@@ -297,15 +323,16 @@ export default {
 					NProgress.done();
 				}
 			}
-			else {
-				NProgress.done();
-			}
 		}
 	},
 }
 </script>
 
 <style scoped>
+.confirm-section {
+	max-width: 600px;
+}
+
 .box {
 	border-radius: .9rem;
 }
