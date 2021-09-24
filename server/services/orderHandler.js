@@ -94,8 +94,6 @@ module.exports = (io, socket) => {
 				}
 			}
 			else {
-				const merchant = jwt_decode(token);
-
 				rethink.connect({
 					host: 'localhost',
 					port: PORT,
