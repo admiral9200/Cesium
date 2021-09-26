@@ -4,9 +4,12 @@ const cert = require('../utils/jwt.config');
 const rethink = require('rethinkdb');
 const uniqid = require('uniqid');
 
+const Merchant = require('../models/merchant');
+
 const PORT = 49154;
 
 module.exports = (io, socket) => {
+	// * CLIENT SOCKET EVENTS LISTENERS
 	socket.on("order:client:send", (token, order) => {
 		jwt.verify(token, cert.public, (error, decoded) => {
 			if (error) {
@@ -14,14 +17,15 @@ module.exports = (io, socket) => {
 			}
 			else {
 				const date = new Date();
-				const orderDate = date.toLocaleString('en-GB', {
+
+				order.id = uniqid.time('CC');
+				order.date = date.toLocaleString('en-GB', {
 					timeZone: 'Europe/Athens'
 				});
-
-				const orderID = uniqid.time('CC');
-				order.id = orderID;
-				order.date = orderDate;
 				order.confirmed = false;
+				order.completed = false;
+				order.cancelled = false;
+				order.cancelledReason = "";
 				order.loaderInCard = false;
 
 				rethink.connect({
@@ -39,7 +43,7 @@ module.exports = (io, socket) => {
 						if (err) throw err;
 
 						if (result.inserted === 1) {
-							socket.emit("order:client:await_confirm", orderID);
+							socket.emit("order:client:await_confirm", order.id);
 						}
 					});
 				});
@@ -83,15 +87,56 @@ module.exports = (io, socket) => {
 		});
 	});
 
-	socket.on('merchant:confirm_order', (token, orderId) => {
+	// * MERCHANT SOCKET EVENT LISTENERS	
+	socket.on('merchant:feed', (token) => {
 		jwt.verify(token, cert.public, (error, decoded) => {
 			if (error) {
-				if (error.name === 'TokenExpiredError') {
-					socket.disconnect();
-				}
-				else {
-					socket.disconnect();
-				}
+				socket.disconnect();
+				// * Reason for disconnect
+			}
+			else {
+				const merchant = jwt_decode(token);
+
+				rethink.connect({
+					host: 'localhost',
+					port: PORT,
+					db: 'CC_Orders',
+				}, (error, conn) => {
+					if (error) {
+						throw error;
+					}
+
+					rethink.table('orders')
+					.filter(rethink.row("store")("_id").eq(merchant.id))
+					.changes({ includeTypes: true })
+					.run(conn, function(err, cursor) {
+						if (err) throw err;
+						
+						cursor.each(function(err, row) {
+							if (err) throw err;
+
+							if (row.type === 'change' && row.new_val.confirmed) {
+								socket.emit('merchant:new_order:change', row.new_val.id);
+							}
+							else {
+								if (row.new_val !== null && Object.keys(row.new_val).length > 0) {
+									socket.emit('merchant:new_order:add', row.new_val);
+								}
+								else if (row.old_val !== null && Object.keys(row.old_val).length > 0) {
+									socket.emit('merchant:new_order:remove', row.old_val);
+								}
+							}
+						});
+					});
+				});
+			}
+		});
+	});
+
+	socket.on('merchant:order:confirm', (token, orderId) => {
+		jwt.verify(token, cert.public, (error, decoded) => {
+			if (error) {
+				socket.disconnect();
 			}
 			else {
 				rethink.connect({
@@ -120,15 +165,32 @@ module.exports = (io, socket) => {
 			}
 		});
 	});
-	
-	socket.on('merchant:feed', (token) => {
+
+	socket.on('merchant:order:cancel', (token, order) => {
 		jwt.verify(token, cert.public, (error, decoded) => {
 			if (error) {
 				socket.disconnect();
-				// * Reason for disconnect
 			}
 			else {
-				const merchant = jwt_decode(token);
+				order.cancelled = true;
+				
+				Merchant.findOneAndUpdate({
+					_id: order.store._id
+				},
+				{
+					$push: {
+						orders: [ order ]
+					}
+				},
+				{
+					new: true
+				},
+				(error, result) => {
+					if (error) {
+						throw error;
+					}
+				});
+
 
 				rethink.connect({
 					host: 'localhost',
@@ -136,39 +198,28 @@ module.exports = (io, socket) => {
 					db: 'CC_Orders',
 				}, (error, conn) => {
 					if (error) {
-						throw error;
+						socket.disconnect();
 					}
-
-					rethink.table('orders')
-					.filter(rethink.row("store")("_id").eq(merchant.id))
-					.changes({ includeTypes: true })
-					.run(conn, function(err, cursor) {
-						if (err) throw err;
-						
-						cursor.each(function(err, row) {
-							if (err) throw err;
-
-							if (row.type === 'change') {
-								if (row.new_val.confirmed) {
-									socket.emit('new_order:change', row.new_val.id);
-								}
+					else {
+						rethink.table('orders')
+						.filter(rethink.row("id").eq(order.id))
+						.delete()
+						.run(conn, (error, result) => {
+							if (error) {
+								throw error;
 							}
-							else {
-								if (row.new_val !== null && Object.keys(row.new_val).length > 0) {
-									socket.emit('new_order', row.new_val);
-								}
-								else if (row.old_val !== null && Object.keys(row.old_val).length > 0) {
-									socket.emit('new_order:remove', row.old_val);
-								}
+
+							if (result.deleted > 0) {
+								socket.emit('merchant:order:cancelled', order.cancelledReason);
 							}
 						});
-					});
+					}
 				});
 			}
 		});
 	});
 
-	//Close sockets events
+	// * Close socket events
 	socket.on('merchant:stopFeed', () => {
 		socket.disconnect();
 	});

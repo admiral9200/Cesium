@@ -2,23 +2,13 @@ const express = require('express');
 const jwt_decode = require('jwt-decode');
 const { validate, PaymentCheckoutRules } = require('../../middleware/sanitizer');
 const verifyToken = require('../../middleware/verifyToken');
-const rethinkdb = require('rethinkdb');
 
 const Cart = require('../../models/cart');
 const Merchants = require('../../models/merchant');
 
 const router = express.Router();
 
-let rethinkConnection = null;
-
 router.post('/order', verifyToken, PaymentCheckoutRules(), validate, async (res, req) => {
-	//RethinkDB connection
-	let rethinkConnection = await rethinkdb.connect({
-		host: 'localhost',
-		port: 49154,
-		db: 'CC_Orders'
-	},);
-
 	// TODO integrate paypal and stripe apis
 });
 
@@ -49,7 +39,7 @@ router.get('/cart', verifyToken, (req, res) => {
 
 							if (storeProduct !== undefined) {
 								cart.push({
-									'price': storeProduct.price.toFixed(2).replace('.', ','),
+									'price': storeProduct.price,
 									'adds': product.adds,
 									'extras': product.extras,
 									'qty': product.qty,

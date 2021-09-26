@@ -61,7 +61,7 @@
 									<p class='text-muted m-0'>{{ product.size > 1 ? product.size + 'πλος' : 'Μονός' }}, {{ product.blends + ', ' + product.sugar + ', ' + product.sugarType }}</p>
 								</div>
 								<div>
-									<p class="text-center">{{ product.price }}€</p>
+									<p class="text-center">{{ product.price.toFixed(2).replace('.', ',') }}€</p>
 								</div>
 							</div>
 						</b-list-group-item>
@@ -97,7 +97,7 @@
 			<div v-else-if="orderConfirmed">
 				<b-alert show variant="success" class="d-flex flex-column align-items-center justify-content-center mx-auto my-5 py-5 w-50">
 					<b-icon font-scale="8" icon="check-circle-fill"></b-icon>
-					<h1 class="alert-heading my-3">Η παραγγελία σου θα παραδωθεί σε 10'</h1>
+					<h1 class="alert-heading text-center my-3 w-75">Η παραγγελία σου θα παραδωθεί σε 10'</h1>
 					<p class="text-center w-75 mt-4 mb-0">Ώρα επιβεβαίωσης: {{ orderSummary.date }}</p>
 				</b-alert>
 			</div>

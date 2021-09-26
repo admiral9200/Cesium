@@ -58,14 +58,41 @@
 					</template>
 					<span>You have confirmed this order!</span>
 				</v-tooltip>
-				<v-btn @click="CompleteOrder" large block color="success" class="my-1 mx-0">
+				<v-btn @click="CompleteOrder(newOrder)" large block color="success" class="my-1 mx-0">
 					Deliver
 					<v-icon dark right size="22">mdi-check-all</v-icon>
 				</v-btn>
-				<v-btn @click="CancelOrder" large block color="error" class="my-1 mx-0">
-					Cancel
-					<v-icon dark right size="22">mdi-minus-circle</v-icon>
-				</v-btn>
+				<v-dialog max-width="550px">
+					<template v-slot:activator="{ on, attrs }">
+						<v-btn large block color="error" class="my-1 mx-0" v-bind="attrs" v-on="on">
+						Cancel
+						<v-icon dark right size="22">mdi-minus-circle</v-icon>
+						</v-btn>
+					</template>
+					<v-form ref="form" @submit.prevent="CancelOrder(newOrder)" lazy-validation>
+						<v-card>
+							<v-card-title>
+								<span class="text-h5">Reason for cancelling order {{ newOrder.id }}</span>
+							</v-card-title>
+
+							<v-card-text>
+								<v-col cols="12">
+									<v-text-field
+										v-model="newOrder.cancelledReason"
+										:rules="ReasonRules"
+										label="Reason" 
+										required>
+									</v-text-field>
+								</v-col>
+							</v-card-text>
+
+							<v-card-actions>
+								<v-spacer></v-spacer>
+								<v-btn color="blue darken-1" type="submit">Submit</v-btn>
+							</v-card-actions>
+						</v-card>
+					</v-form>
+				</v-dialog>
 			</v-card-actions>
 		</v-card>
 	</v-scale-transition>
@@ -83,27 +110,36 @@ export default {
 	data() {
 		return {
 			newOrders: [],
-			show: false
+			show: false,
+			ReasonRules: [
+				v => !!v || 'Name is required'	
+			]
 		}
 	},
 
 	methods: {
-		ConfirmOrderToClient: async function(order) {
-			order.loaderInCard = true;
-			// !Reminder: Change domain for socket in prod
+		ConfirmOrderToClient: function(order) {
 			const socket = io('http://' + this.$store.state.base_url + ':3000', {
 				transports: ["websocket"] 
 			});
 
-			socket.on("connect", () => socket.emit("merchant:confirm_order", this.$cookies.get('cc_b_id'), order.id));
+			order.loaderInCard = true;
+			socket.on("connect", () => socket.emit("merchant:order:confirm", this.$cookies.get('cc_b_id'), order.id));
 		},
 
-		CompleteOrder: async function() {
+		CancelOrder: function(order) {
+			if (order.cancelledReason !== '') {
+				const socket = io('http://' + this.$store.state.base_url + ':3000', {
+					transports: ["websocket"] 
+				});
 
+				order.loaderInCard = true;
+				socket.on("connect", () => socket.emit("merchant:order:cancel", this.$cookies.get('cc_b_id'), order));
+			}
 		},
 
-		CancelOrder: async function() {
-
+		CompleteOrder: function(order) {
+			order.loaderInCard = true;
 		}
 	},
 
@@ -146,38 +182,40 @@ export default {
 				text: error
 			});
 		}
-		// !Reminder: Change domain for socket in prod
-		const socket = io('http://' + this.$store.state.base_url + ':3000', {
-			transports: ["websocket"] 
-		});
+		finally {
+			const socket = io('http://' + this.$store.state.base_url + ':3000', {
+				transports: ["websocket"] 
+			});
 
-		socket.on("connect", () => {
-			socket.emit("merchant:feed", this.$cookies.get('cc_b_id'));
-		});
+			socket.on("connect", () => socket.emit("merchant:feed", this.$cookies.get('cc_b_id')));
 
-		socket.on("new_order", (new_order) => {
-			try {
-				new Audio('/assets/cc_notification2.mp3').play();	
-			} 
-			finally {
-				this.newOrders.push(new_order);
-			}
-		});
-
-		socket.on('new_order:remove', (old_val) => {
-			let removeIndex = this.newOrders.map(order => order.id).indexOf(old_val.id);
-			~removeIndex && this.newOrders.splice(removeIndex, 1);
-		});
-
-		socket.on('new_order:change', (order_id) => {
-			this.newOrders.find(order => {
-				if (order.id === order_id) {
-					order.confirmed = true;
-					order.loaderInCard = false;
+			socket.on("merchant:new_order:add", (new_order) => {
+				try {
+					new Audio('/assets/cc_notification2.mp3').play();	
+				} 
+				finally {
+					this.newOrders.push(new_order);
 				}
 			});
 
-		});
+			socket.on('merchant:new_order:remove', (old_val) => {
+				let removeIndex = this.newOrders.map(order => order.id).indexOf(old_val.id);
+				~removeIndex && this.newOrders.splice(removeIndex, 1);
+			});
+
+			socket.on('merchant:new_order:change', (order_id) => {
+				this.newOrders.find(order => {
+					if (order.id === order_id) {
+						order.confirmed = true;
+						order.loaderInCard = false;
+					}
+				});
+			});
+
+			socket.on('merchant:order:cancelled', () => {
+
+			});
+		}
 	},
 
 	beforeRouteLeave (to, from, next) {
