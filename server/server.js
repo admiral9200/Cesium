@@ -7,18 +7,23 @@ const http = require('http');
 const socketio = require('socket.io');
 const registerOrderHandler = require('./services/orderHandler');
 
+const jwt = require('jsonwebtoken');
+const cert = require('./utils/jwt.config');
+
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
-const port = 3000;
+
+const PORT = 3000;
 
 const whitelist = [
-	"http://localhost:8080",
 	"http://localhost:8081",
-	"http://192.168.1.9:8080",
-	"http://192.168.1.6:8080",
-	"http://192.168.137.1:8080",
-	"http://192.168.1.3:8080"
+	"http://localhost:8080",
+	"http://192.168.1.3:8080",
+	"http://192.168.1.6",
+	"http://192.168.1.7:8081",
+	"http://192.168.1.9",
+	"http://192.168.137.1",
 ];
 
 let corsOptions = {
@@ -64,10 +69,23 @@ app.use('/profile', require('./routes/client/profile'));
 app.use('/m/auth', require('./routes/merchants/auth'));
 app.use('/m/user', require('./routes/merchants/user'));
 app.use('/m/store', require('./routes/merchants/store'));
+app.use('/m/order', require('./routes/merchants/orders'));
 
+//* AUTH MIDDLEWARE
+io.use((socket, next) => {
+	if (socket.handshake.query && socket.handshake.query.token) {
+		jwt.verify(socket.handshake.query.token, cert.public, (error, decoded) => {
+			if (error) next(new Error('Auth error'));
+			else next();
+		});
+	}
+	else {
+		next(new Error('No auth token provided'));
+	}
+})
 // Register socket events in handler file
-io.on("connection", (socket) => registerOrderHandler(io, socket));
+.on("connection", (socket) => registerOrderHandler(io, socket));
 
-server.listen(port, () => {
-	console.log(`Cofy Backend running on port ${ port }`);
+server.listen(PORT, () => {
+	console.log(`Cofy Backend running on port ${ PORT }`);
 });

@@ -75,7 +75,7 @@ export default {
 		Login: async function() {
 			this.$v.$touch();
 
-			if(!this.$v.$invalid){
+			if (!this.$v.$invalid) {
 				this.isLoading = true;
 				this.hasErrorMsg = '';
 

@@ -107,6 +107,12 @@ const PaymentCheckoutRules = () => {
 	];
 };
 
+const OrderObjectRule = () => {
+	return [
+		check('')
+	];
+};
+
 const validate = (req, res, next) => {
 	const errors = validationResult(req);
 
@@ -131,5 +137,6 @@ module.exports = {
 	profileInfoRules,
 	profileCredentialsRules,
 	PaymentCheckoutRules,
+	OrderObjectRule,
 	validate
 };

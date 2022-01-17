@@ -99,6 +99,14 @@
 					<b-icon font-scale="8" icon="check-circle-fill"></b-icon>
 					<h1 class="alert-heading text-center my-3 w-75">Η παραγγελία σου θα παραδωθεί σε 10'</h1>
 					<p class="text-center w-75 mt-4 mb-0">Ώρα επιβεβαίωσης: {{ orderSummary.date }}</p>
+					<a class="mt-4" href='http://localhost:8080'>Επιστροφή στην αρχική</a>
+				</b-alert>
+			</div>
+			<div v-else-if="orderCancel.status">
+				<b-alert show variant="danger" class="d-flex flex-column align-items-center justify-content-center mx-auto my-5 py-5 w-50">
+					<b-icon font-scale="5" icon="exclamation-circle-fill"></b-icon>
+					<h3 class="alert-subheading text-center my-3 w-75">Η παραγγελία σου ακυρώθηκε με τον εξής λόγο: {{ orderCancel.reason }}</h3>
+					<a class="mt-4 text-white" href='http://localhost:8080'>Επιστροφή στην αρχική</a>
 				</b-alert>
 			</div>
 		</div>
@@ -135,6 +143,10 @@ export default {
 			orderNotSent: true,
 			awaitConfirmation: false,
 			orderConfirmed: false,
+			orderCancel: {
+				status: false,
+				reason: ''
+			},
 			payment: 'none',
 			phone: '',
 			ringbell: '',
@@ -164,95 +176,85 @@ export default {
 	},
 
 	async created() {
-		const token = this.$cookies.get('token');
+		// FETCH STORES
+		try {
+			const response = await fetch('http://' + this.$store.state.base_url + ':3000/stores/' + this.store_id, {
+				method: 'GET',
+				headers: {
+					"Authorization" : this.$cookies.get('token'),
+				}
+			});
+			
+			if (response.ok) {
+				const res = await response.json();
 
-		if (token) {
-			try {
-				const response = await fetch('http://' + this.$store.state.base_url + ':3000/stores/' + this.store_id, {
-					method: 'GET',
-					headers: {
-						"Authorization" : token,
+				if (res.error) {
+					if ('tokenMalformed' in res.error) {
+						this.sessionExpiredHandler(res.error.message);
 					}
-				});
-				
-				if (response.ok) {
-					const res = await response.json();
+				}
 
-					if (res.store) {
-						this.store = res.store;
+				if (res.store) {
+					this.store = res.store;
+				}
+				else {
+					router.push('/stores');
+					throw res.error
+				}
+			}
+			else if (!response.ok){
+				throw response.status;
+			}
+		} 
+		catch (error) {
+			this.$notify({
+				group: 'errors',
+				type: 'error',
+				title: 'Error',
+				text: error
+			});
+		}
+		finally {
+			NProgress.done();
+		}
+
+		// FETCH USER'S CART
+		try {
+			const response = await fetch('http://' + this.$store.state.base_url + ':3000/checkout/cart', {
+				method: 'GET',
+				headers: {
+					"Authorization" : this.$cookies.get('token'),
+				}
+			});
+
+			if (response.ok) {
+				const res = await response.json();
+
+				if (res.error) {
+					if ('tokenMalformed' in res.error) {
+						this.sessionExpiredHandler(res.error.message);
 					}
 					else {
-						this.$notify({
-							group: 'errors',
-							type: 'error',
-							title: 'Error',
-							text: 'Unexpected error: ' + res.error
-						});
-						router.push('/stores');
+						throw res.error
 					}
 				}
-				else if (!response.ok){
-					this.$notify({
-						group: 'errors',
-						type: 'error',
-						title: 'Error',
-						text: 'Unexpected error: ' + response.status
-					});
-				}
-			} 
-			catch (error) {
-				this.$notify({
-					group: 'errors',
-					type: 'error',
-					title: 'Error',
-					text: error
-				});
-			}
-			finally {
-				NProgress.done();
-			}
 
-			try {
-				const response = await fetch('http://' + this.$store.state.base_url + ':3000/checkout/cart', {
-					method: 'GET',
-					headers: {
-						"Authorization" : token,
-					}
-				});
-
-				if (response.ok) {
-					const res = await response.json();
-
-					if (res.cart && res.sum) {
-						this.cart = res.cart;
-						this.sum = res.sum;
-					}
-					else {
-						this.$notify({
-							group: 'errors',
-							type: 'error',
-							title: 'Error',
-							text: 'Unexpected error: ' + res.error
-						});
-					}
+				if (res.cart && res.sum) {
+					this.cart = res.cart;
+					this.sum = res.sum;
 				}
-				else if (!response.ok){
-					this.$notify({
-						group: 'errors',
-						type: 'error',
-						title: 'Error',
-						text: 'Unexpected error: ' + response.status
-					});
-				}
-			} 
-			catch (error) {
-				this.$notify({
-					group: 'errors',
-					type: 'error',
-					title: 'Error',
-					text: error
-				});
 			}
+			else if (!response.ok){
+				throw response;
+			}
+		} 
+		catch (error) {
+			this.$notify({
+				group: 'errors',
+				type: 'error',
+				title: 'Error',
+				text: error
+			});
 		}
 	},
 
@@ -266,49 +268,104 @@ export default {
 
 			if (!this.$v.$invalid) {
 				NProgress.start();
-				try {
-					// !Reminder: Change domain for socket in prod
-					const socket = io('http://' + this.$store.state.base_url + ':3000', {
-						transports: ["websocket"] 
-					});
 
+				try {
 					let user = this.$store.state.userInfo;
 
-					user.address =  this.$cookies.get('actaddr');
+					user.address = this.$cookies.get('actaddr');
 					user.payment = this.payment;
 					user.ringbell = this.ringbell;
 					user.floor = this.floor;
 					user.phone = this.phone;
 					user.comments = this.comments;
 
-					let orderDetails = {
+					let order = {
 						store: this.store,
 						cart: this.cart,
 						user: user
 					};
 
-					socket.on("connect", () => {
-						socket.emit("order:client:send", this.$cookies.get('token'), orderDetails);
+					const response = await fetch('http://' + this.$store.state.base_url + ':3000/checkout/sendorder', {
+						method: 'POST',
+						headers: {
+							"Authorization" : this.$cookies.get('token'),
+							"Content-type" : "application/json; charset=UTF-8"
+						},
+						body: JSON.stringify({
+							'order': order
+						}),
 					});
 
-					socket.on('order:client:await_confirm', (orderId) => {
-						this.orderNotSent = false;
-						this.awaitConfirmation = true;
-						socket.emit('order:merchant:confirm', this.$cookies.get('token'), orderId);
-					});
+					if (response.ok) {
+						let orderState = await response.json();
+
+						if (orderState.error) {
+							if ('tokenMalformed' in orderState.error) {
+								this.sessionExpiredHandler(orderState.error.message);
+							}
+						}
+
+						if (orderState.sent_success) {
+							this.orderNotSent = false;
+							this.awaitConfirmation = true;
+
+							const token = this.$cookies.get('token');
+
+							// !Reminder: Change domain for socket in prod
+							var socket = io('http://' + this.$store.state.base_url + ':3000', {
+								transports: ["websocket"],
+								query: {
+									token		
+								}
+							});
+
+							socket.on("connect", () => socket.emit("order:client:changes", orderState.order_id));
+
+							this.$store.state.userCart.products.length = 0;
+							this.$store.state.userCart.store_id = '';
+						}
+					}
 
 					socket.on('order:client:confirmed', (orderDate) => {
 						NProgress.start();
+
 						this.orderSummary.date = orderDate;
 						this.awaitConfirmation = false;
 						this.orderConfirmed = true;
-						socket.emit("order:completeddisconnect");
+
+						socket.emit("order:client:disconnect");
+
+						NProgress.done();
 					});
 
-					socket.on("disconnect", () => {
-						if (socket.disconnect && !socket.connected) {
-							NProgress.done();
-						}
+					socket.on('order:client:cancelled', (response) => {
+						NProgress.start();
+
+						this.awaitConfirmation = false;
+						this.orderCancel.status = true;
+						this.orderCancel.reason = response;
+
+						socket.emit("order:client:disconnect");
+
+						NProgress.done();
+					});
+
+					socket.on('order:client:error', (error_msg) => {
+
+						this.orderNotSent = true;
+						this.awaitConfirmation = false;
+						this.orderConfirmed = false;
+						this.orderCancel = {
+							status: false,
+							reason: ''
+						};
+						
+						this.$notify({
+							group: 'errors',
+							type: 'error',
+							title: 'Cofy',
+							text: error_msg
+						});
 					});
 				} 
 				catch (error) {

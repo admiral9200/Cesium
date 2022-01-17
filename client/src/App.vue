@@ -1,6 +1,7 @@
 <template>
 	<div class="h-100">
 		<notifications group="errors" position="top center" width="400px" class="m-2 user-select-none"/>
+		<notifications group="main" position="top center" width="400px" class="m-2 user-select-none"/>
 		<router-view class="h-100"/>
 	</div>
 </template>

@@ -8,7 +8,12 @@
 		</div>
 		<div class="container">
 			<OverviewCart/>
-			<StoresList :stores="stores" :isApiStoresResolved="isApiStoresResolved" :noStoresFound="noStoresFound" :msg="msg"/>
+			<StoresList 
+				:stores="stores" 
+				:isApiStoresResolved="isApiStoresResolved" 
+				:noStoresFound="noStoresFound" 
+				:msg="msg"
+			/>
 		</div>
 		<Sale/>
 		<Footer/>

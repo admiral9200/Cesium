@@ -1,6 +1,6 @@
 <template>
 	<v-scale-transition v-if="newOrders.length > 0" group>
-		<v-card :loading="newOrder.loaderInCard" v-for="newOrder in newOrders" :key="newOrder.id" class="d-flex justify-space-between my-3 pa-1 rounded-xl">
+		<v-card :loading="newOrder.loaderInCard" v-for="newOrder in newOrders" :key="newOrder.id" class="d-flex justify-space-between my-3 rounded-xl">
 			<div class="d-flex flex-column justify-center">
 				<v-card-title>Order ID: {{ newOrder.id }}</v-card-title>
 				<v-card-subtitle>Date: {{ newOrder.date }}</v-card-subtitle>
@@ -47,52 +47,26 @@
 				</v-card>
 			</div>
 			<v-card-actions class="d-flex flex-column align-self-start justify-center">
-				<v-tooltip left>
+
+				<v-tooltip left :disabled="!newOrder.confirmed">
 					<template v-slot:activator="{ on }">
 						<div v-on="on">
-							<v-btn @click="ConfirmOrderToClient(newOrder)" :disabled="newOrder.confirmed" large block color="primary" class="my-1 mx-0">
-								Confirm
-								<v-icon dark right size="22">mdi-checkbox-marked-circle</v-icon>
+							<v-btn @click="OrderConfirmed(newOrder)" :disabled="newOrder.confirmed" large block color="primary" class="my-1 mx-0">
+								Confirm<v-icon dark right size="22">mdi-checkbox-marked-circle</v-icon>
 							</v-btn>
 						</div>
 					</template>
 					<span>You have confirmed this order!</span>
 				</v-tooltip>
-				<v-btn @click="CompleteOrder(newOrder)" large block color="success" class="my-1 mx-0">
-					Deliver
-					<v-icon dark right size="22">mdi-check-all</v-icon>
+
+				<v-btn @click="OrderDelivered(newOrder)" large block color="success" class="my-1 mx-0">
+					Deliver<v-icon dark right size="22">mdi-check-all</v-icon>
 				</v-btn>
-				<v-dialog max-width="550px">
-					<template v-slot:activator="{ on, attrs }">
-						<v-btn large block color="error" class="my-1 mx-0" v-bind="attrs" v-on="on">
-						Cancel
-						<v-icon dark right size="22">mdi-minus-circle</v-icon>
-						</v-btn>
-					</template>
-					<v-form ref="form" @submit.prevent="CancelOrder(newOrder)" lazy-validation>
-						<v-card>
-							<v-card-title>
-								<span class="text-h5">Reason for cancelling order {{ newOrder.id }}</span>
-							</v-card-title>
 
-							<v-card-text>
-								<v-col cols="12">
-									<v-text-field
-										v-model="newOrder.cancelledReason"
-										:rules="ReasonRules"
-										label="Reason" 
-										required>
-									</v-text-field>
-								</v-col>
-							</v-card-text>
-
-							<v-card-actions>
-								<v-spacer></v-spacer>
-								<v-btn color="blue darken-1" type="submit">Submit</v-btn>
-							</v-card-actions>
-						</v-card>
-					</v-form>
-				</v-dialog>
+				<OrderCancel 
+					:order="newOrder" 
+					@remove_cancelled_order="removeCancelledOrder"
+				/>
 			</v-card-actions>
 		</v-card>
 	</v-scale-transition>
@@ -102,44 +76,133 @@
 </template>
 
 <script>
+import OrderCancel from '../components/LiveOrders/OrderCancel.vue';
 import { io } from 'socket.io-client';
 
 export default {
 	name: 'LiveOrders',
 
+	components: {
+		OrderCancel
+	},
+
 	data() {
 		return {
-			newOrders: [],
-			show: false,
-			ReasonRules: [
-				v => !!v || 'Name is required'	
-			]
+			newOrders: []
 		}
 	},
 
 	methods: {
-		ConfirmOrderToClient: function(order) {
-			const socket = io('http://' + this.$store.state.base_url + ':3000', {
-				transports: ["websocket"] 
-			});
-
-			order.loaderInCard = true;
-			socket.on("connect", () => socket.emit("merchant:order:confirm", this.$cookies.get('cc_b_id'), order.id));
+		removeCancelledOrder: function (orderToCancel) {
+			let removeIndex = this.newOrders.map(order => order.id).indexOf(orderToCancel);
+			~removeIndex && this.newOrders.splice(removeIndex, 1);
 		},
 
-		CancelOrder: function(order) {
-			if (order.cancelledReason !== '') {
-				const socket = io('http://' + this.$store.state.base_url + ':3000', {
-					transports: ["websocket"] 
+		OrderConfirmed: async function(order) {
+			order.loaderInCard = true;
+
+			try {
+				const response = await fetch('http://' + this.$store.state.base_url + ':3000/m/order/confirm', {
+					method: 'POST',
+					headers: {
+						"Authorization" : this.$cookies.get('cc_b_id'),
+						"Content-type" : "application/json; charset=UTF-8"
+					},
+					body: JSON.stringify({
+						'order': order.id
+					}),
 				});
 
-				order.loaderInCard = true;
-				socket.on("connect", () => socket.emit("merchant:order:cancel", this.$cookies.get('cc_b_id'), order));
+				if (response.ok) {
+					let OrderStatus = await response.json();
+
+					if (OrderStatus.error) {
+						if ('tokenMalformed' in OrderStatus.error) {
+							this.sessionExpiredHandler(OrderStatus.error.message);
+						}
+					}
+
+					if (OrderStatus.confirmed) {
+						order.confirmed = true;
+						this.$notify({
+							group: 'main',
+							type: 'success',
+							title: 'Order Status',
+							text: 'Order confirmed successfully. Client has been notified'
+						});
+					}
+				}
+			} 
+			catch (error) {
+				this.$notify({
+					group: 'main',
+					type: 'error',
+					title: 'Error',
+					text: error
+				});
+			}
+			finally {
+				order.loaderInCard = false;
 			}
 		},
 
-		CompleteOrder: function(order) {
+		OrderDelivered: async function(order) {
 			order.loaderInCard = true;
+
+			try {
+				const response = await fetch('http://' + this.$store.state.base_url + ':3000/m/order/deliver', {
+					method: 'POST',
+					headers: {
+						"Authorization" : this.$cookies.get('cc_b_id'),
+						"Content-type" : "application/json; charset=UTF-8"
+					},
+					body: JSON.stringify({
+						'order': order.id
+					}),
+				});
+
+				if (response.ok) {
+					let orderStatus = await response.json();
+
+					if (orderStatus.error) {
+						if ('tokenMalformed' in orderStatus.error) {
+							this.sessionExpiredHandler(orderStatus.error.message);
+						}
+					}
+
+					if (orderStatus.completed) {
+						let removeIndex = this.newOrders.map(order => order.id).indexOf(order.id);
+						~removeIndex && this.newOrders.splice(removeIndex, 1);
+						order.loaderInCard = false;
+						this.$notify({
+							group: 'main',
+							type: 'success',
+							title: 'Order Status',
+							text: 'Order completed successfully'
+						});
+					}
+
+					if (orderStatus.error) {
+						this.$notify({
+							group: 'main',
+							type: 'error',
+							title: 'Error',
+							text: orderStatus.error
+						});
+					}
+				}
+			} 
+			catch (error) {
+				this.$notify({
+					group: 'main',
+					type: 'error',
+					title: 'Error',
+					text: error
+				});
+			}
+			finally {
+				order.loaderInCard = false;
+			}
 		}
 	},
 
@@ -156,15 +219,10 @@ export default {
 			if (response.ok) {
 				const res = await response.json();
 
-				if (res.tokenExpired || res.tokenMalformed) {
-					this.TokenExpiredHelper();
-
-					this.$notify({
-						group: 'main',
-						type: 'error',
-						title: 'Cofy',
-						text: res.message
-					});
+				if (res.error) {
+					if ('tokenMalformed' in res.error) {
+						this.sessionExpiredHandler(res.error.message);
+					}
 				}
 
 				if (!res.no_new_orders && res.new_orders.length > 0) {
@@ -182,54 +240,44 @@ export default {
 				text: error
 			});
 		}
-		finally {
-			const socket = io('http://' + this.$store.state.base_url + ':3000', {
-				transports: ["websocket"] 
-			});
 
-			socket.on("connect", () => socket.emit("merchant:feed", this.$cookies.get('cc_b_id')));
+		const token = this.$cookies.get('cc_b_id');
 
-			socket.on("merchant:new_order:add", (new_order) => {
-				try {
-					new Audio('/assets/cc_notification2.mp3').play();	
-				} 
-				finally {
-					this.newOrders.push(new_order);
-				}
-			});
+		const socket = io('http://' + this.$store.state.base_url + ':3000', {
+			transports: ["websocket"],
+			query: {
+				token
+			}
+		});
 
-			socket.on('merchant:new_order:remove', (old_val) => {
-				let removeIndex = this.newOrders.map(order => order.id).indexOf(old_val.id);
-				~removeIndex && this.newOrders.splice(removeIndex, 1);
-			});
+		socket.on("connect", () => socket.emit("merchant:feed"));
 
-			socket.on('merchant:new_order:change', (order_id) => {
-				this.newOrders.find(order => {
-					if (order.id === order_id) {
-						order.confirmed = true;
-						order.loaderInCard = false;
-					}
-				});
-			});
+		socket.on("merchant:order:add", (new_order) => {
+			try {
+				new Audio('/assets/cc_notification2.mp3').play();	
+			} 
+			finally {
+				this.newOrders.unshift(new_order);
+			}
+		});
 
-			socket.on('merchant:order:cancelled', () => {
-
-			});
-		}
+		socket.on('merchant:order:deleted', (order_id) => this.removeCancelledOrder(order_id));
 	},
 
 	beforeRouteLeave (to, from, next) {
+		const token = this.$cookies.get('cc_b_id');
+		
 		const socket = io('http://' + this.$store.state.base_url + ':3000', {
-			transports: ["websocket"] 
+			transports: ["websocket"],
+			query: {
+				token
+			}
 		});
 		
 		socket.emit("merchant:stopFeed");
 
-		socket.on("disconnect", (reason) => {
-			if (socket.disconnect && !socket.connected) {
-				console.log(reason);
-			}
-		});
+		socket.on("disconnect");
+
 		next();
 	}
 }

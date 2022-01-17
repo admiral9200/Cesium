@@ -46,7 +46,7 @@ router.post('/status', verifyToken, async (req, res) => {
 		}
 	} 
 	catch (error) {
-		// * Log error to file
+		//! Log error to file
 		console.log(error);
 		res.send({
 			error: {
@@ -70,6 +70,8 @@ router.get('/feed', verifyToken, (req, res) => {
 
 		rethink.table('orders')
 		.filter(rethink.row("store")("_id").eq(merchant.id))
+		.filter(rethink.row("cancelled").eq(false))
+		.filter(rethink.row("completed").eq(false))
 		.run(conn , function(err, cursor) {
 			if (err) throw err;
 			cursor.toArray(function(err, result) {

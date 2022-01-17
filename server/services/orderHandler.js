@@ -1,222 +1,111 @@
 const jwt_decode = require('jwt-decode');
-const jwt = require('jsonwebtoken');
-const cert = require('../utils/jwt.config');
 const rethink = require('rethinkdb');
-const uniqid = require('uniqid');
-
-const Merchant = require('../models/merchant');
 
 const PORT = 49154;
 
 module.exports = (io, socket) => {
-	// * CLIENT SOCKET EVENTS LISTENERS
-	socket.on("order:client:send", (token, order) => {
-		jwt.verify(token, cert.public, (error, decoded) => {
-			if (error) {
-				socket.disconnect();
-			}
-			else {
-				const date = new Date();
 
-				order.id = uniqid.time('CC');
-				order.date = date.toLocaleString('en-GB', {
-					timeZone: 'Europe/Athens'
-				});
-				order.confirmed = false;
-				order.completed = false;
-				order.cancelled = false;
-				order.cancelledReason = "";
-				order.loaderInCard = false;
-
+	//* CLIENT SOCKET EVENTS
+	socket.on('order:client:changes', (orderId) => {
+		try {
+			if (orderId) {
 				rethink.connect({
 					host: 'localhost',
 					port: PORT,
 					db: 'CC_Orders',
 				}, (error, conn) => {
-					if (error) {
-						throw error;
-					}
-
+					if (error) throw error;
+		
 					rethink.table('orders')
-					.insert(order)
-					.run(conn, (err, result) => {
-						if (err) throw err;
-
-						if (result.inserted === 1) {
-							socket.emit("order:client:await_confirm", order.id);
-						}
-					});
-				});
-			}
-		});
-	});
-
-	socket.on('order:merchant:confirm', (token, orderID) => {
-		jwt.verify(token, cert.public, (error, decoded) => {
-			if (error) {
-				socket.disconnect();
-			}
-			else {
-				rethink.connect({
-					host: 'localhost',
-					port: PORT,
-					db: 'CC_Orders',
-				}, (error, conn) => {
-					if (error) {
-						throw error;
-					}
-
-					rethink.table('orders')
-					.filter(rethink.row("id").eq(orderID))
+					.filter(rethink.row("id").eq(orderId))
 					.changes()
 					.run(conn, function(err, cursor) {
 						if (err) throw err;
 						
 						cursor.each(function(err, row) {
 							if (err) throw err;
-							
-							if (row.new_val !== null && Object.keys(row.new_val).length > 0 && row.new_val.confirmed) {
-								socket.emit('order:client:confirmed', new Date().toLocaleString('en-GB', {
-									timeZone: 'Europe/Athens'
-								}));
+		
+							if (Object.keys(row.new_val).length > 0) {
+								if (row.new_val.confirmed) {
+									socket.emit('order:client:confirmed', new Date().toLocaleString('en-GB', {
+										timeZone: 'Europe/Athens'
+									}));
+								}
+								else if (row.new_val.cancelled) {
+									socket.emit('order:client:cancelled', row.new_val.cancelledReason);
+								}
+								else if (row.new_val.cancelled && row.new_val.cancelledReason !== '') {
+									let res = {
+										cancelled: row.new_val.cancelled,
+										cancelledReason: row.new_val.cancelledReason
+									};
+			
+									socket.emit('order:client:cancelled', res);
+								}
 							}
 						});
 					});
 				});
 			}
-		});
+			else {
+				throw 'No order id provided';
+			}
+		} 
+		catch (error) {
+			//! LOG ERROR
+			console.log(error);
+			socket.emit('order:client:error', error);
+		}
 	});
 
-	// * MERCHANT SOCKET EVENT LISTENERS	
-	socket.on('merchant:feed', (token) => {
-		jwt.verify(token, cert.public, (error, decoded) => {
-			if (error) {
-				socket.disconnect();
-				// * Reason for disconnect
-			}
-			else {
-				const merchant = jwt_decode(token);
+	//* MERCHANT SOCKET EVENT 
+	socket.on('merchant:feed', () => {
+		try {
+			const merchant = jwt_decode(socket.handshake.query.token);
 
-				rethink.connect({
-					host: 'localhost',
-					port: PORT,
-					db: 'CC_Orders',
-				}, (error, conn) => {
-					if (error) {
-						throw error;
-					}
+			rethink.connect({
+				host: 'localhost',
+				port: PORT,
+				db: 'CC_Orders',
+			}, (error, conn) => {
+				if (error) {
+					throw error;
+				}
 
-					rethink.table('orders')
-					.filter(rethink.row("store")("_id").eq(merchant.id))
-					.changes({ includeTypes: true })
-					.run(conn, function(err, cursor) {
+				rethink.table('orders')
+				.filter(rethink.row("store")("_id").eq(merchant.id))
+				.changes({ 
+					includeTypes: true 
+				})
+				.run(conn, (err, cursor) => {
+					if (err) throw err;
+					
+					cursor.each((err, row) => {
 						if (err) throw err;
-						
-						cursor.each(function(err, row) {
-							if (err) throw err;
 
-							if (row.type === 'change' && row.new_val.confirmed) {
-								socket.emit('merchant:new_order:change', row.new_val.id);
-							}
-							else {
-								if (row.new_val !== null && Object.keys(row.new_val).length > 0) {
-									socket.emit('merchant:new_order:add', row.new_val);
-								}
-								else if (row.old_val !== null && Object.keys(row.old_val).length > 0) {
-									socket.emit('merchant:new_order:remove', row.old_val);
-								}
-							}
-						});
+						if (row.type === 'add' && !row.new_val.confirmed && !row.new_val.cancelled && !row.new_val.completed && Object.keys(row.new_val).length > 0) {
+							socket.emit('merchant:order:add', row.new_val);
+						}
+						else if (row.type === 'change' && row.new_val.cancelled && row.new_val.cancelledReason !== '') {
+							let res = {
+								cancelled: row.new_val.cancelled,
+								cancelledReason: row.new_val.cancelledReason
+							};
+
+							socket.emit('order:client:cancelled', res);
+						}
+						else if (row.type === 'remove' && Object.keys(row.old_val).length > 0) {
+							socket.emit('merchant:order:deleted', row.old_val.id);
+						}
 					});
 				});
-			}
-		});
-	});
-
-	socket.on('merchant:order:confirm', (token, orderId) => {
-		jwt.verify(token, cert.public, (error, decoded) => {
-			if (error) {
-				socket.disconnect();
-			}
-			else {
-				rethink.connect({
-					host: 'localhost',
-					port: PORT,
-					db: 'CC_Orders',
-				}, (error, conn) => {
-					if (error) {	
-						socket.disconnect();
-					}
-					else {
-						rethink.table('orders')
-						.filter(rethink.row("id").eq(orderId))
-						.update({ confirmed: true })
-						.run(conn, (error, order) => {
-							if (error) {
-								throw error;
-							}
-
-							if (order.replaced) {
-
-							}
-						});
-					}
-				});
-			}
-		});
-	});
-
-	socket.on('merchant:order:cancel', (token, order) => {
-		jwt.verify(token, cert.public, (error, decoded) => {
-			if (error) {
-				socket.disconnect();
-			}
-			else {
-				order.cancelled = true;
-				
-				Merchant.findOneAndUpdate({
-					_id: order.store._id
-				},
-				{
-					$push: {
-						orders: [ order ]
-					}
-				},
-				{
-					new: true
-				},
-				(error, result) => {
-					if (error) {
-						throw error;
-					}
-				});
-
-
-				rethink.connect({
-					host: 'localhost',
-					port: PORT,
-					db: 'CC_Orders',
-				}, (error, conn) => {
-					if (error) {
-						socket.disconnect();
-					}
-					else {
-						rethink.table('orders')
-						.filter(rethink.row("id").eq(order.id))
-						.delete()
-						.run(conn, (error, result) => {
-							if (error) {
-								throw error;
-							}
-
-							if (result.deleted > 0) {
-								socket.emit('merchant:order:cancelled', order.cancelledReason);
-							}
-						});
-					}
-				});
-			}
-		});
+			});	
+		} 
+		catch (error) {
+			//! LOG ERROR
+			console.log(error);
+			socket.emit('order:client:error', error);
+		}
 	});
 
 	// * Close socket events
@@ -224,7 +113,7 @@ module.exports = (io, socket) => {
 		socket.disconnect();
 	});
 
-	socket.on('order:completeddisconnect', () => {
+	socket.on('order:client:disconnect', () => {
 		socket.disconnect();
 	});
 };

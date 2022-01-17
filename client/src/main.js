@@ -21,6 +21,29 @@ Vue.use(IconsPlugin);
 
 Vue.config.productionTip = false;
 
+Vue.mixin({
+	methods: {
+		sessionExpiredHandler: function (message) {
+			this.$cookies.remove('token');
+			
+			this.$store.userOrders = {};
+			this.$store.userInfo = {};
+			this.$store.userCart = {};
+			this.$store.userAddresses = {};
+			this.$store.loggedIn = false;
+
+			Vue.notify({
+				group: 'main',
+				type: 'error',
+				title: 'Logged out',
+				text: message
+			});
+
+			router.push("/");
+		}
+	}
+});
+
 (async () => {
 	try {	
 		if (VueCookies.get('token')) {

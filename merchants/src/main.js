@@ -49,8 +49,24 @@ Vue.mixin({
 					text: error
 				});
 			}
+		},
+
+		sessionExpiredHandler: function (message) {
+			this.$cookies.remove('token');
+			this.$store.orders = [];
+			this.$store.user = {};
+			this.$store.loggedIn = false;
+
+			Vue.notify({
+				group: 'main',
+				type: 'error',
+				title: 'Logged out',
+				text: message
+			});
+
+			router.push("/");
 		}
-	},
+	}
 });
 
 Vue.config.productionTip = false;
