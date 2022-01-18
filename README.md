@@ -5,6 +5,7 @@ Coffee order Web App made with VueJS, ExpressJS, NodeJS, socket.io, RethinkDB, M
 * Responsive design
 * Vuex for state management
 * Vue Router for main routing
+* Vue Mixins for global helpers
 
 NPM packages used in Vue app:
 * vuex
