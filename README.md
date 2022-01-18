@@ -1,5 +1,5 @@
 # Cofy
-Coffee order Web App made with VueJS, ExpressJS, NodeJS, RethinkDB, MongoDB and socketio.
+Coffee order Web App made with VueJS, ExpressJS, NodeJS, socket.io, RethinkDB, MongoDB.
 
 * Auth with JWT
 * Responsive design
