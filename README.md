@@ -14,6 +14,7 @@ NPM packages used in Vue app:
 * vue-router
 * vuelidate
 * bootstrap-vue
+* socket.io
 
 NPM packages used in NodeJS server:
 * bcrypt
@@ -23,3 +24,4 @@ NPM packages used in NodeJS server:
 * jwt-decode
 * mongoosejs
 * googlemaps/google-maps-services-js
+* socket.io
