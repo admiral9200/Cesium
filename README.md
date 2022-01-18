@@ -21,6 +21,5 @@ NPM packages used in NodeJS server:
 * express-validator
 * jsonwebtoken
 * jwt-decode
-* mysql2
 * mongoosejs
 * googlemaps/google-maps-services-js
