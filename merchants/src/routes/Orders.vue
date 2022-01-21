@@ -1,25 +1,25 @@
 <template>
-	<v-scale-transition v-if="newOrders.length > 0" group>
-		<v-card :loading="newOrder.loaderInCard" v-for="newOrder in newOrders" :key="newOrder.id" class="d-flex justify-space-between my-3 rounded-xl">
+	<v-scale-transition v-if="MerchantOrders.length > 0" group>
+		<v-card :loading="order.loaderInCard" v-for="order in MerchantOrders" :key="order.id" class="d-flex justify-space-between my-3 rounded-xl">
 			<div class="d-flex flex-column justify-center">
-				<v-card-title>Order ID: {{ newOrder.id }}</v-card-title>
-				<v-card-subtitle>Date: {{ newOrder.date }}</v-card-subtitle>
+				<v-card-title>Order ID: {{ order.id }}</v-card-title>
+				<v-card-subtitle>Date: {{ order.date }}</v-card-subtitle>
 			</div>
 			<div class="d-flex flex-column">
-				<v-card-title class="pl-0">{{ newOrder.user.name + ' ' + newOrder.user.surname }}</v-card-title>
-				<p class="my-1">{{ newOrder.user.email }}</p>
-				<p class="my-1">{{ newOrder.user.address.route + ' ' + newOrder.user.address.street_number + ', ' + newOrder.user.address.locality + ' ' + newOrder.user.address.postal_code }}</p>
+				<v-card-title class="pl-0">{{ order.user.name + ' ' + order.user.surname }}</v-card-title>
+				<p class="my-1">{{ order.user.email }}</p>
+				<p class="my-1">{{ order.user.address.route + ' ' + order.user.address.street_number + ', ' + order.user.address.locality + ' ' + order.user.address.postal_code }}</p>
 			</div>
 			<div class="d-flex flex-column">
 				<v-card-title class="pl-0">Order Info</v-card-title>
-				<p class="my-1">Payment method: {{ newOrder.user.payment }}</p>
-				<p class="my-1">Apartment: {{ newOrder.user.ringbell + ' ' + newOrder.user.floor }}</p>
-				<p class="my-1">Mobile: {{ newOrder.user.phone }}</p>
-				<p class="my-1">Comments: {{ newOrder.user.comments }}</p>
+				<p class="my-1">Payment method: {{ order.user.payment }}</p>
+				<p class="my-1">Apartment: {{ order.user.ringbell + ' ' + order.user.floor }}</p>
+				<p class="my-1">Mobile: {{ order.user.phone }}</p>
+				<p class="my-1">Comments: {{ order.user.comments }}</p>
 			</div>
 			<div class="d-flex flex-column">
 				<v-card-title class="pl-0">Contents</v-card-title>
-				<v-card outlined v-for="product in newOrder.cart" :key="product._id" class="d-flex justify-space-between pa-2 ma-1">
+				<v-card outlined v-for="product in order.cart" :key="product._id" class="d-flex justify-space-between pa-2 ma-1">
 					<div>
 						<p class="ma-1">{{ product.name + ' x' + product.qty }}</p>
 						<p class='ma-1'>{{ product.size > 1 ? product.size + 'πλος' : 'Μονός' }}, {{ product.blends + ', ' + product.sugar + ', ' + product.sugarType }}</p>
@@ -50,7 +50,7 @@
 				<v-tooltip left>
 					<template v-slot:activator="{ on }">
 						<div v-on="on">
-							<v-btn @click="ConfirmOrderToClient(newOrder)" :disabled="newOrder.confirmed" large block color="primary" class="my-1 mx-0">
+							<v-btn @click="ConfirmOrderToClient(order)" :disabled="order.confirmed" large block color="primary" class="my-1 mx-0">
 								Confirm
 								<v-icon dark right size="22">mdi-checkbox-marked-circle</v-icon>
 							</v-btn>
@@ -58,7 +58,7 @@
 					</template>
 					<span>You have confirmed this order!</span>
 				</v-tooltip>
-				<v-btn @click="CompleteOrder(newOrder)" large block color="success" class="my-1 mx-0">
+				<v-btn @click="CompleteOrder(order)" large block color="success" class="my-1 mx-0">
 					Deliver
 					<v-icon dark right size="22">mdi-check-all</v-icon>
 				</v-btn>
@@ -69,16 +69,16 @@
 							<v-icon dark right size="22">mdi-minus-circle</v-icon>
 						</v-btn>
 					</template>
-					<v-form ref="form" @submit.prevent="CancelOrder(newOrder)" lazy-validation>
+					<v-form ref="form" @submit.prevent="CancelOrder(order)" lazy-validation>
 						<v-card>
 							<v-card-title>
-								<span class="text-h5">Reason for cancelling order {{ newOrder.id }}</span>
+								<span class="text-h5">Reason for cancelling order {{ order.id }}</span>
 							</v-card-title>
 
 							<v-card-text>
 								<v-col cols="12">
 									<v-text-field
-										v-model="newOrder.cancelledReason"
+										v-model="order.cancelledReason"
 										:rules="ReasonRules"
 										label="Reason" 
 										required>
@@ -103,7 +103,47 @@
 
 <script>
 export default {
+	data() {
+		return {
+			MerchantOrders: []
+		}
+	},
 
+	async created() {
+		try {
+			const response = await fetch('http://' + this.$store.state.base_url + ':3000/m/store/orders', {
+				method: 'GET',
+				headers: {
+					"Authorization" : this.$cookies.get('cc_b_id'),
+					"Content-type" : "application/json; charset=UTF-8"
+				}
+			});
+
+			if (response.ok) {
+				const res = await response.json();
+
+				if (res.error) {
+					if ('tokenMalformed' in res.error) {
+						this.sessionExpiredHandler(res.error.message);
+					}
+				}
+
+				if (!res.no_new_orders && res.new_orders.length > 0) {
+					res.new_orders.forEach(order => {
+						this.orders.push(order);
+					});
+				}
+			}
+		} 
+		catch (error) {
+			this.$notify({
+				group: 'main',
+				type: 'error',
+				title: 'Error',
+				text: error
+			});
+		}
+	},
 }
 </script>
 

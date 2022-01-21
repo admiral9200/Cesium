@@ -68,9 +68,9 @@
 				<router-view></router-view>
 			</v-container>
 		</v-main>
-		<main v-else class="d-flex flex-column justify-center align-center align-self-stretch flex-grow-1">
+		<v-main v-else class="d-flex flex-column justify-center align-center align-self-stretch flex-grow-1">
 			<router-view></router-view>
-		</main>
+		</v-main>
 	</v-app>
 </template>
 
