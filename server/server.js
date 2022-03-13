@@ -19,6 +19,7 @@ const PORT = 3000;
 const whitelist = [
 	"http://localhost:8081",
 	"http://localhost:8080",
+	"http://localhost:8082",
 	"http://192.168.1.3:8080",
 	"http://192.168.1.6",
 	"http://192.168.1.7:8081",
