@@ -26,3 +26,6 @@ NPM packages used in NodeJS server:
 * mongoosejs
 * googlemaps/google-maps-services-js
 * socket.io
+
+* ## Contact
+  email address: lion9200.world@gmail.com
